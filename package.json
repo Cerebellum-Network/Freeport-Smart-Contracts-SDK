@@ -1,0 +1,66 @@
+{
+  "version": "0.1.0",
+  "name": "@cere/davinci-sdk",
+  "license": "MIT",
+  "main": "dist/index.js",
+  "module": "dist/davinci-sdk.esm.js",
+  "typings": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "require": "./dist/index.js",
+      "default": "./dist/davinci-sdk.esm.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "size-limit": [
+    {
+      "path": "dist/davinci-sdk.cjs.production.min.js",
+      "limit": "10 KB"
+    }
+  ],
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org/",
+    "access": "public"
+  },
+  "files": [
+    "dist",
+    "src"
+  ],
+  "engines": {
+    "node": ">=12"
+  },
+  "scripts": {
+    "start": "tsdx watch",
+    "build": "tsdx build",
+    "test": "tsdx test --passWithNoTests",
+    "lint": "tsdx lint",
+    "prepare": "tsdx build",
+    "size": "size-limit",
+    "analyze": "size-limit --why",
+    "deploy": "np"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "tsdx lint"
+    }
+  },
+  "prettier": {
+    "printWidth": 80,
+    "semi": true,
+    "singleQuote": true,
+    "trailingComma": "es5"
+  },
+  "devDependencies": {
+    "@size-limit/preset-small-lib": "^5.0.3",
+    "ethers": "^5.4.4",
+    "husky": "^7.0.1",
+    "np": "^7.5.0",
+    "size-limit": "^5.0.3",
+    "tsdx": "^0.14.1",
+    "tslib": "^2.3.1",
+    "typescript": "^4.3.5"
+  },
+  "peerDependencies": {
+    "ethers": "^5.4.4"
+  }
+}
