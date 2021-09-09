@@ -1,6 +1,6 @@
 {
   "version": "0.1.0",
-  "name": "@cere/davinci-sdk",
+  "name": "@cere-dev/davinci-sdk",
   "license": "MIT",
   "main": "dist/index.js",
   "module": "dist/davinci-sdk.esm.js",

@@ -1,4 +1,4 @@
-import { ethers } from 'ethers';
+import { ethers, BigNumber } from 'ethers';
 import { ExternalProvider } from '@ethersproject/providers/src.ts/web3-provider';
 import {
   networks as DavinciNetworks,
@@ -37,4 +37,62 @@ export const getDavinciContract = async (
   address: string
 ): Promise<ethers.Contract> => {
   return new ethers.Contract(address, DavinciABI, provider);
+};
+
+export const getCurrentDavinciContract = async (): Promise<ethers.Contract> => {
+  const provider = importProvider();
+  const davinciAddress = await getDavinciAddress(provider);
+  return await getDavinciContract(provider, davinciAddress);
+};
+
+// TODO: DRY, create correct abstractions
+export const balanceOf = async (
+  address: string,
+  nftId: string
+): Promise<number> => {
+  const provider = importProvider();
+  const davinciAddress = await getDavinciAddress(provider);
+  const davinciContract = await getDavinciContract(provider, davinciAddress);
+  const result: BigNumber = await davinciContract.balanceOf(address, nftId);
+  return result.toNumber();
+};
+
+export const getOffer = async (
+  seller: string,
+  nftId: string
+): Promise<number> => {
+  const provider = importProvider();
+  const davinciAddress = await getDavinciAddress(provider);
+  let davinciContract = await getDavinciContract(provider, davinciAddress);
+  const signer = provider.getSigner()
+  davinciContract = davinciContract.connect(signer);
+  const result = await davinciContract.getOffer(seller, nftId);
+  return result.toNumber();
+};
+
+export const makeOffer = async (
+  nftId: string,
+  price: number
+): Promise<void> => {
+  const provider = importProvider();
+  const davinciAddress = await getDavinciAddress(provider);
+  let davinciContract = await getDavinciContract(provider, davinciAddress);
+  const signer = provider.getSigner()
+  davinciContract = davinciContract.connect(signer);
+  await davinciContract.makeOffer(nftId, price);
+};
+
+export const takeOffer = async (
+    buyer: string,
+    seller: string,
+    nftId: string,
+    price: number,
+    amount: number
+): Promise<void> => {
+  const provider = importProvider();
+  const davinciAddress = await getDavinciAddress(provider);
+  let davinciContract = await getDavinciContract(provider, davinciAddress);
+  const signer = provider.getSigner()
+  davinciContract = davinciContract.connect(signer);
+  await davinciContract.takeOffer(buyer, seller, nftId, price, amount);
 };
