@@ -13,6 +13,8 @@ declare global {
 
 type Provider = ethers.providers.Web3Provider;
 
+export { ethers };
+
 export const importProvider = () => {
   return new ethers.providers.Web3Provider(window.ethereum);
 };
