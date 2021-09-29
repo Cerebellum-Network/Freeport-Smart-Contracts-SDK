@@ -1,8 +1,10 @@
-import { ethers, BigNumber } from 'ethers';
+// eslint-disable-next-line import/no-extraneous-dependencies
 import { ExternalProvider } from '@ethersproject/providers';
+import { BigNumber, ethers } from 'ethers';
+
 import {
-  networks as DavinciNetworks,
   abi as DavinciABI,
+  networks as DavinciNetworks,
 } from './artifacts/Davinci.json';
 
 declare global {
@@ -15,9 +17,8 @@ type Provider = ethers.providers.Web3Provider;
 
 export { ethers };
 
-export const importProvider = () => {
-  return new ethers.providers.Web3Provider(window.ethereum);
-};
+export const importProvider = () =>
+  new ethers.providers.Web3Provider(window.ethereum);
 
 export const getDavinciAddress = async (
   provider: Provider
@@ -37,14 +38,13 @@ export const getDavinciAddress = async (
 export const getDavinciContract = async (
   provider: Provider,
   address: string
-): Promise<ethers.Contract> => {
-  return new ethers.Contract(address, DavinciABI, provider);
-};
+): Promise<ethers.Contract> =>
+  new ethers.Contract(address, DavinciABI, provider);
 
 export const getCurrentDavinciContract = async (): Promise<ethers.Contract> => {
   const provider = importProvider();
   const davinciAddress = await getDavinciAddress(provider);
-  return await getDavinciContract(provider, davinciAddress);
+  return getDavinciContract(provider, davinciAddress);
 };
 
 // TODO: DRY, create correct abstractions

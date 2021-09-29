@@ -1,0 +1,19 @@
+# Dependencies
+node_modules
+
+# Build files
+dist
+build
+coverage
+typescript
+
+# IDE
+.idea
+.vscode
+
+# Misc
+.husky
+.temp
+.npm
+.cache
+.*-cache

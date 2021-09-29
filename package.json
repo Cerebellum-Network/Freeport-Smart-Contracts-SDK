@@ -12,12 +12,6 @@
     },
     "./package.json": "./package.json"
   },
-  "size-limit": [
-    {
-      "path": "dist/davinci-sdk.cjs.production.min.js",
-      "limit": "10 KB"
-    }
-  ],
   "publishConfig": {
     "registry": "https://registry.npmjs.org/",
     "access": "public"
@@ -27,39 +21,62 @@
     "src"
   ],
   "engines": {
-    "node": ">=12"
+    "node": ">=14.17.3"
   },
   "scripts": {
     "start": "tsdx watch",
     "build": "tsdx build",
     "test": "tsdx test --passWithNoTests",
-    "lint": "tsdx lint",
-    "prepare": "tsdx build",
+    "qa": "yarn ts && yarn lint && yarn codestyle && yarn test",
+    "fix": "yarn eslint --fix && yarn format",
+    "lint": "eslint '**/*.{js,jsx,ts,tsx}' --quiet",
+    "format": "prettier '**/*' --write --ignore-unknown --loglevel warn",
+    "codestyle": "prettier '**/*' --check --ignore-unknown",
+    "ts": "tsc -p tsconfig.json",
+    "ts-files": "tsc --listFiles -p tsconfig.json",
+    "ts-cov": "shx mkdir -p coverage/typescript && typescript-coverage-report -s -t 98 -o coverage/typescript",
+    "test-cov": "yarn test --coverage",
+    "prepare": "husky install",
+    "precommit": "git status && yarn lint-staged",
     "size": "size-limit",
     "analyze": "size-limit --why",
     "deploy": "np"
   },
-  "husky": {
-    "hooks": {
-      "pre-commit": "tsdx lint"
-    }
-  },
-  "prettier": {
-    "printWidth": 80,
-    "semi": true,
-    "singleQuote": true,
-    "trailingComma": "es5"
+  "dependencies": {
+    "ethers": "^5.4.7"
   },
   "devDependencies": {
-    "@size-limit/preset-small-lib": "^5.0.5",
+    "@size-limit/preset-big-lib": "^5.0.5",
+    "@types/eslint": "^7.28.0",
+    "@types/micromatch": "^4.0.2",
+    "@types/node": "^12.0.0",
+    "@typescript-eslint/eslint-plugin": "^4.32.0",
+    "@typescript-eslint/parser": "^4.32.0",
+    "eslint": "^7.32.0",
+    "eslint-config-airbnb": "^18.2.1",
+    "eslint-config-airbnb-typescript": "^14.0.0",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-config-xo-react": "^0.25.0",
+    "eslint-config-xo-space": "^0.29.0",
+    "eslint-config-xo-typescript": "^0.44.0",
+    "eslint-import-resolver-typescript": "^2.5.0",
+    "eslint-plugin-import": "^2.24.2",
+    "eslint-plugin-jest": "^24.5.0",
+    "eslint-plugin-jsx-a11y": "^6.4.1",
+    "eslint-plugin-react": "^7.26.0",
+    "eslint-plugin-react-hooks": "^4.2.0",
+    "eslint-plugin-simple-import-sort": "^7.0.0",
+    "eslint-plugin-unicorn": "^36.0.0",
     "husky": "^7.0.2",
+    "lint-staged": "^11.1.2",
+    "micromatch": "^4.0.4",
     "np": "^7.5.0",
+    "prettier": "^2.4.1",
+    "shx": "^0.3.3",
     "size-limit": "^5.0.5",
     "tsdx": "^0.14.1",
     "tslib": "^2.3.1",
-    "typescript": "^4.4.3"
-  },
-  "dependencies": {
-    "ethers": "^5.4.7"
+    "typescript": "^4.4.3",
+    "typescript-coverage-report": "^0.6.0"
   }
 }

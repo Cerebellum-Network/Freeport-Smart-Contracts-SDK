@@ -6753,36 +6753,16 @@
   "ast": {
     "absolutePath": "project:/contracts/BypassForwarder.sol",
     "exportedSymbols": {
-      "AccessControl": [
-        809
-      ],
-      "BypassForwarder": [
-        52
-      ],
-      "Context": [
-        4107
-      ],
-      "ECDSA": [
-        4454
-      ],
-      "EIP712": [
-        4592
-      ],
-      "ERC165": [
-        4616
-      ],
-      "IAccessControl": [
-        485
-      ],
-      "IERC165": [
-        4628
-      ],
-      "MinimalForwarder": [
-        441
-      ],
-      "Strings": [
-        4310
-      ]
+      "AccessControl": [809],
+      "BypassForwarder": [52],
+      "Context": [4107],
+      "ECDSA": [4454],
+      "EIP712": [4592],
+      "ERC165": [4616],
+      "IAccessControl": [485],
+      "IERC165": [4628],
+      "MinimalForwarder": [441],
+      "Strings": [4310]
     },
     "id": 53,
     "license": "MIT",
@@ -6790,12 +6770,7 @@
     "nodes": [
       {
         "id": 1,
-        "literals": [
-          "solidity",
-          "^",
-          "0.8",
-          ".0"
-        ],
+        "literals": ["solidity", "^", "0.8", ".0"],
         "nodeType": "PragmaDirective",
         "src": "33:23:0"
       },
@@ -6843,11 +6818,7 @@
         "contractKind": "contract",
         "fullyImplemented": true,
         "id": 52,
-        "linearizedBaseContracts": [
-          52,
-          441,
-          4592
-        ],
+        "linearizedBaseContracts": [52, 441, 4592],
         "name": "BypassForwarder",
         "nameLocation": "498:15:0",
         "nodeType": "ContractDefinition",
@@ -6933,18 +6904,14 @@
             "visibility": "public"
           },
           {
-            "baseFunctions": [
-              374
-            ],
+            "baseFunctions": [374],
             "body": {
               "id": 50,
               "nodeType": "Block",
               "src": "902:223:0",
               "statements": [
                 {
-                  "assignments": [
-                    24
-                  ],
+                  "assignments": [24],
                   "declarations": [
                     {
                       "constant": false,
@@ -7049,9 +7016,7 @@
                   "src": "912:46:0"
                 },
                 {
-                  "assignments": [
-                    31
-                  ],
+                  "assignments": [31],
                   "declarations": [
                     {
                       "constant": false,
@@ -7458,36 +7423,16 @@
   "legacyAST": {
     "absolutePath": "project:/contracts/BypassForwarder.sol",
     "exportedSymbols": {
-      "AccessControl": [
-        809
-      ],
-      "BypassForwarder": [
-        52
-      ],
-      "Context": [
-        4107
-      ],
-      "ECDSA": [
-        4454
-      ],
-      "EIP712": [
-        4592
-      ],
-      "ERC165": [
-        4616
-      ],
-      "IAccessControl": [
-        485
-      ],
-      "IERC165": [
-        4628
-      ],
-      "MinimalForwarder": [
-        441
-      ],
-      "Strings": [
-        4310
-      ]
+      "AccessControl": [809],
+      "BypassForwarder": [52],
+      "Context": [4107],
+      "ECDSA": [4454],
+      "EIP712": [4592],
+      "ERC165": [4616],
+      "IAccessControl": [485],
+      "IERC165": [4628],
+      "MinimalForwarder": [441],
+      "Strings": [4310]
     },
     "id": 53,
     "license": "MIT",
@@ -7495,12 +7440,7 @@
     "nodes": [
       {
         "id": 1,
-        "literals": [
-          "solidity",
-          "^",
-          "0.8",
-          ".0"
-        ],
+        "literals": ["solidity", "^", "0.8", ".0"],
         "nodeType": "PragmaDirective",
         "src": "33:23:0"
       },
@@ -7548,11 +7488,7 @@
         "contractKind": "contract",
         "fullyImplemented": true,
         "id": 52,
-        "linearizedBaseContracts": [
-          52,
-          441,
-          4592
-        ],
+        "linearizedBaseContracts": [52, 441, 4592],
         "name": "BypassForwarder",
         "nameLocation": "498:15:0",
         "nodeType": "ContractDefinition",
@@ -7638,18 +7574,14 @@
             "visibility": "public"
           },
           {
-            "baseFunctions": [
-              374
-            ],
+            "baseFunctions": [374],
             "body": {
               "id": 50,
               "nodeType": "Block",
               "src": "902:223:0",
               "statements": [
                 {
-                  "assignments": [
-                    24
-                  ],
+                  "assignments": [24],
                   "declarations": [
                     {
                       "constant": false,
@@ -7754,9 +7686,7 @@
                   "src": "912:46:0"
                 },
                 {
-                  "assignments": [
-                    31
-                  ],
+                  "assignments": [31],
                   "declarations": [
                     {
                       "constant": false,

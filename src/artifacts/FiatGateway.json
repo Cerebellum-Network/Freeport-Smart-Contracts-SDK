@@ -6078,84 +6078,35 @@
   "ast": {
     "absolutePath": "project:/contracts/FiatGateway.sol",
     "exportedSymbols": {
-      "AccessControl": [
-        809
-      ],
-      "Address": [
-        4084
-      ],
-      "BaseNFT": [
-        912
-      ],
-      "Context": [
-        4107
-      ],
-      "Currency": [
-        985
-      ],
-      "Davinci": [
-        59
-      ],
-      "ERC1155": [
-        3610
-      ],
-      "ERC165": [
-        4616
-      ],
-      "FiatGateway": [
-        271
-      ],
-      "IAccessControl": [
-        485
-      ],
-      "IERC1155": [
-        3732
-      ],
-      "IERC1155MetadataURI": [
-        3788
-      ],
-      "IERC1155Receiver": [
-        3773
-      ],
-      "IERC165": [
-        4628
-      ],
-      "Issuance": [
-        1239
-      ],
-      "JointAccounts": [
-        1576
-      ],
-      "MetaTxContext": [
-        1646
-      ],
-      "PolygonChildERC20": [
-        1795
-      ],
-      "SimpleExchange": [
-        1966
-      ],
-      "Strings": [
-        4310
-      ],
-      "TransferFees": [
-        2540
-      ],
-      "TransferOperator": [
-        2577
-      ]
+      "AccessControl": [809],
+      "Address": [4084],
+      "BaseNFT": [912],
+      "Context": [4107],
+      "Currency": [985],
+      "Davinci": [59],
+      "ERC1155": [3610],
+      "ERC165": [4616],
+      "FiatGateway": [271],
+      "IAccessControl": [485],
+      "IERC1155": [3732],
+      "IERC1155MetadataURI": [3788],
+      "IERC1155Receiver": [3773],
+      "IERC165": [4628],
+      "Issuance": [1239],
+      "JointAccounts": [1576],
+      "MetaTxContext": [1646],
+      "PolygonChildERC20": [1795],
+      "SimpleExchange": [1966],
+      "Strings": [4310],
+      "TransferFees": [2540],
+      "TransferOperator": [2577]
     },
     "id": 272,
     "nodeType": "SourceUnit",
     "nodes": [
       {
         "id": 61,
-        "literals": [
-          "solidity",
-          "^",
-          "0.8",
-          ".0"
-        ],
+        "literals": ["solidity", "^", "0.8", ".0"],
         "nodeType": "PragmaDirective",
         "src": "0:23:2"
       },
@@ -6209,14 +6160,7 @@
         },
         "fullyImplemented": true,
         "id": 271,
-        "linearizedBaseContracts": [
-          271,
-          809,
-          4616,
-          4628,
-          485,
-          4107
-        ],
+        "linearizedBaseContracts": [271, 809, 4616, 4628, 485, 4107],
         "name": "FiatGateway",
         "nameLocation": "356:11:2",
         "nodeType": "ContractDefinition",
@@ -6906,9 +6850,7 @@
               "src": "1708:277:2",
               "statements": [
                 {
-                  "assignments": [
-                    132
-                  ],
+                  "assignments": [132],
                   "declarations": [
                     {
                       "constant": false,
@@ -6974,9 +6916,7 @@
                   "src": "1719:28:2"
                 },
                 {
-                  "assignments": [
-                    137
-                  ],
+                  "assignments": [137],
                   "declarations": [
                     {
                       "constant": false,
@@ -7507,10 +7447,7 @@
                       "id": 178,
                       "name": "require",
                       "nodeType": "Identifier",
-                      "overloadedDeclarations": [
-                        4294967278,
-                        4294967278
-                      ],
+                      "overloadedDeclarations": [4294967278, 4294967278],
                       "referencedDeclaration": 4294967278,
                       "src": "2384:7:2",
                       "typeDescriptions": {
@@ -7538,9 +7475,7 @@
                   "src": "2384:62:2"
                 },
                 {
-                  "assignments": [
-                    186
-                  ],
+                  "assignments": [186],
                   "declarations": [
                     {
                       "constant": false,
@@ -8080,9 +8015,7 @@
               "src": "3364:258:2",
               "statements": [
                 {
-                  "assignments": [
-                    235
-                  ],
+                  "assignments": [235],
                   "declarations": [
                     {
                       "constant": false,
@@ -8272,10 +8205,7 @@
                       "id": 242,
                       "name": "require",
                       "nodeType": "Identifier",
-                      "overloadedDeclarations": [
-                        4294967278,
-                        4294967278
-                      ],
+                      "overloadedDeclarations": [4294967278, 4294967278],
                       "referencedDeclaration": 4294967278,
                       "src": "3449:7:2",
                       "typeDescriptions": {
@@ -8303,9 +8233,7 @@
                   "src": "3449:73:2"
                 },
                 {
-                  "assignments": [
-                    250
-                  ],
+                  "assignments": [250],
                   "declarations": [
                     {
                       "constant": false,
@@ -8770,84 +8698,35 @@
   "legacyAST": {
     "absolutePath": "project:/contracts/FiatGateway.sol",
     "exportedSymbols": {
-      "AccessControl": [
-        809
-      ],
-      "Address": [
-        4084
-      ],
-      "BaseNFT": [
-        912
-      ],
-      "Context": [
-        4107
-      ],
-      "Currency": [
-        985
-      ],
-      "Davinci": [
-        59
-      ],
-      "ERC1155": [
-        3610
-      ],
-      "ERC165": [
-        4616
-      ],
-      "FiatGateway": [
-        271
-      ],
-      "IAccessControl": [
-        485
-      ],
-      "IERC1155": [
-        3732
-      ],
-      "IERC1155MetadataURI": [
-        3788
-      ],
-      "IERC1155Receiver": [
-        3773
-      ],
-      "IERC165": [
-        4628
-      ],
-      "Issuance": [
-        1239
-      ],
-      "JointAccounts": [
-        1576
-      ],
-      "MetaTxContext": [
-        1646
-      ],
-      "PolygonChildERC20": [
-        1795
-      ],
-      "SimpleExchange": [
-        1966
-      ],
-      "Strings": [
-        4310
-      ],
-      "TransferFees": [
-        2540
-      ],
-      "TransferOperator": [
-        2577
-      ]
+      "AccessControl": [809],
+      "Address": [4084],
+      "BaseNFT": [912],
+      "Context": [4107],
+      "Currency": [985],
+      "Davinci": [59],
+      "ERC1155": [3610],
+      "ERC165": [4616],
+      "FiatGateway": [271],
+      "IAccessControl": [485],
+      "IERC1155": [3732],
+      "IERC1155MetadataURI": [3788],
+      "IERC1155Receiver": [3773],
+      "IERC165": [4628],
+      "Issuance": [1239],
+      "JointAccounts": [1576],
+      "MetaTxContext": [1646],
+      "PolygonChildERC20": [1795],
+      "SimpleExchange": [1966],
+      "Strings": [4310],
+      "TransferFees": [2540],
+      "TransferOperator": [2577]
     },
     "id": 272,
     "nodeType": "SourceUnit",
     "nodes": [
       {
         "id": 61,
-        "literals": [
-          "solidity",
-          "^",
-          "0.8",
-          ".0"
-        ],
+        "literals": ["solidity", "^", "0.8", ".0"],
         "nodeType": "PragmaDirective",
         "src": "0:23:2"
       },
@@ -8901,14 +8780,7 @@
         },
         "fullyImplemented": true,
         "id": 271,
-        "linearizedBaseContracts": [
-          271,
-          809,
-          4616,
-          4628,
-          485,
-          4107
-        ],
+        "linearizedBaseContracts": [271, 809, 4616, 4628, 485, 4107],
         "name": "FiatGateway",
         "nameLocation": "356:11:2",
         "nodeType": "ContractDefinition",
@@ -9598,9 +9470,7 @@
               "src": "1708:277:2",
               "statements": [
                 {
-                  "assignments": [
-                    132
-                  ],
+                  "assignments": [132],
                   "declarations": [
                     {
                       "constant": false,
@@ -9666,9 +9536,7 @@
                   "src": "1719:28:2"
                 },
                 {
-                  "assignments": [
-                    137
-                  ],
+                  "assignments": [137],
                   "declarations": [
                     {
                       "constant": false,
@@ -10199,10 +10067,7 @@
                       "id": 178,
                       "name": "require",
                       "nodeType": "Identifier",
-                      "overloadedDeclarations": [
-                        4294967278,
-                        4294967278
-                      ],
+                      "overloadedDeclarations": [4294967278, 4294967278],
                       "referencedDeclaration": 4294967278,
                       "src": "2384:7:2",
                       "typeDescriptions": {
@@ -10230,9 +10095,7 @@
                   "src": "2384:62:2"
                 },
                 {
-                  "assignments": [
-                    186
-                  ],
+                  "assignments": [186],
                   "declarations": [
                     {
                       "constant": false,
@@ -10772,9 +10635,7 @@
               "src": "3364:258:2",
               "statements": [
                 {
-                  "assignments": [
-                    235
-                  ],
+                  "assignments": [235],
                   "declarations": [
                     {
                       "constant": false,
@@ -10964,10 +10825,7 @@
                       "id": 242,
                       "name": "require",
                       "nodeType": "Identifier",
-                      "overloadedDeclarations": [
-                        4294967278,
-                        4294967278
-                      ],
+                      "overloadedDeclarations": [4294967278, 4294967278],
                       "referencedDeclaration": 4294967278,
                       "src": "3449:7:2",
                       "typeDescriptions": {
@@ -10995,9 +10853,7 @@
                   "src": "3449:73:2"
                 },
                 {
-                  "assignments": [
-                    250
-                  ],
+                  "assignments": [250],
                   "declarations": [
                     {
                       "constant": false,

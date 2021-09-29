@@ -6217,15 +6217,9 @@
   "ast": {
     "absolutePath": "project:/contracts/MinimalForwarder.sol",
     "exportedSymbols": {
-      "ECDSA": [
-        4454
-      ],
-      "EIP712": [
-        4592
-      ],
-      "MinimalForwarder": [
-        441
-      ]
+      "ECDSA": [4454],
+      "EIP712": [4592],
+      "MinimalForwarder": [441]
     },
     "id": 442,
     "license": "MIT",
@@ -6233,12 +6227,7 @@
     "nodes": [
       {
         "id": 273,
-        "literals": [
-          "solidity",
-          "^",
-          "0.8",
-          ".0"
-        ],
+        "literals": ["solidity", "^", "0.8", ".0"],
         "nodeType": "PragmaDirective",
         "src": "33:23:3"
       },
@@ -6286,10 +6275,7 @@
         "contractKind": "contract",
         "fullyImplemented": true,
         "id": 441,
-        "linearizedBaseContracts": [
-          441,
-          4592
-        ],
+        "linearizedBaseContracts": [441, 4592],
         "name": "MinimalForwarder",
         "nameLocation": "276:16:3",
         "nodeType": "ContractDefinition",
@@ -6838,9 +6824,7 @@
               "src": "968:335:3",
               "statements": [
                 {
-                  "assignments": [
-                    333
-                  ],
+                  "assignments": [333],
                   "declarations": [
                     {
                       "constant": false,
@@ -7682,10 +7666,7 @@
                       "id": 386,
                       "name": "require",
                       "nodeType": "Identifier",
-                      "overloadedDeclarations": [
-                        4294967278,
-                        4294967278
-                      ],
+                      "overloadedDeclarations": [4294967278, 4294967278],
                       "referencedDeclaration": 4294967278,
                       "src": "1435:7:3",
                       "typeDescriptions": {
@@ -7845,10 +7826,7 @@
                   "src": "1530:33:3"
                 },
                 {
-                  "assignments": [
-                    405,
-                    407
-                  ],
+                  "assignments": [405, 407],
                   "declarations": [
                     {
                       "constant": false,
@@ -8076,10 +8054,7 @@
                       "isLValue": false,
                       "isPure": false,
                       "lValueRequested": false,
-                      "names": [
-                        "gas",
-                        "value"
-                      ],
+                      "names": ["gas", "value"],
                       "nodeType": "FunctionCallOptions",
                       "options": [
                         {
@@ -8513,15 +8488,9 @@
   "legacyAST": {
     "absolutePath": "project:/contracts/MinimalForwarder.sol",
     "exportedSymbols": {
-      "ECDSA": [
-        4454
-      ],
-      "EIP712": [
-        4592
-      ],
-      "MinimalForwarder": [
-        441
-      ]
+      "ECDSA": [4454],
+      "EIP712": [4592],
+      "MinimalForwarder": [441]
     },
     "id": 442,
     "license": "MIT",
@@ -8529,12 +8498,7 @@
     "nodes": [
       {
         "id": 273,
-        "literals": [
-          "solidity",
-          "^",
-          "0.8",
-          ".0"
-        ],
+        "literals": ["solidity", "^", "0.8", ".0"],
         "nodeType": "PragmaDirective",
         "src": "33:23:3"
       },
@@ -8582,10 +8546,7 @@
         "contractKind": "contract",
         "fullyImplemented": true,
         "id": 441,
-        "linearizedBaseContracts": [
-          441,
-          4592
-        ],
+        "linearizedBaseContracts": [441, 4592],
         "name": "MinimalForwarder",
         "nameLocation": "276:16:3",
         "nodeType": "ContractDefinition",
@@ -9134,9 +9095,7 @@
               "src": "968:335:3",
               "statements": [
                 {
-                  "assignments": [
-                    333
-                  ],
+                  "assignments": [333],
                   "declarations": [
                     {
                       "constant": false,
@@ -9978,10 +9937,7 @@
                       "id": 386,
                       "name": "require",
                       "nodeType": "Identifier",
-                      "overloadedDeclarations": [
-                        4294967278,
-                        4294967278
-                      ],
+                      "overloadedDeclarations": [4294967278, 4294967278],
                       "referencedDeclaration": 4294967278,
                       "src": "1435:7:3",
                       "typeDescriptions": {
@@ -10141,10 +10097,7 @@
                   "src": "1530:33:3"
                 },
                 {
-                  "assignments": [
-                    405,
-                    407
-                  ],
+                  "assignments": [405, 407],
                   "declarations": [
                     {
                       "constant": false,
@@ -10372,10 +10325,7 @@
                       "isLValue": false,
                       "isPure": false,
                       "lValueRequested": false,
-                      "names": [
-                        "gas",
-                        "value"
-                      ],
+                      "names": ["gas", "value"],
                       "nodeType": "FunctionCallOptions",
                       "options": [
                         {
