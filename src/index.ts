@@ -1,11 +1,24 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { ExternalProvider } from '@ethersproject/providers';
-import { BigNumber, ethers } from 'ethers';
+import {
+  BigNumber,
+  Contract,
+  ContractInterface,
+  ethers,
+  providers,
+  Wallet,
+} from 'ethers';
 
 import {
   abi as DavinciABI,
   networks as DavinciNetworks,
 } from './artifacts/Davinci.json';
+import {
+  abi as FiatGatewayABI,
+  networks as FiatGatewayNetworks,
+} from './artifacts/FiatGateway.json';
+
+export { ethers };
 
 declare global {
   interface Window {
@@ -13,21 +26,24 @@ declare global {
   }
 }
 
-type Provider = ethers.providers.Web3Provider;
+type Network = { address: string };
+export type Provider = providers.Web3Provider | providers.JsonRpcProvider;
 
-export { ethers };
+export const importProvider = (): providers.Web3Provider =>
+  new providers.Web3Provider(window.ethereum);
 
-export const importProvider = () =>
-  new ethers.providers.Web3Provider(window.ethereum);
+export const createProvider = (
+  providerUrl: string
+): providers.JsonRpcProvider => new providers.JsonRpcProvider(providerUrl);
 
-export const getDavinciAddress = async (
-  provider: Provider
+export const getContractAddress = async (
+  provider: Provider,
+  networks: Record<string, Network>
 ): Promise<string> => {
   const { chainId } = await provider.getNetwork();
 
-  if (chainId in DavinciNetworks) {
-    // @ts-expect-error: index networks using string
-    const network = DavinciNetworks[chainId];
+  if (chainId in networks) {
+    const network = networks[chainId];
 
     return network.address;
   }
@@ -35,66 +51,115 @@ export const getDavinciAddress = async (
   throw new Error('Cannot find contract address');
 };
 
-export const getDavinciContract = async (
-  provider: Provider,
-  address: string
-): Promise<ethers.Contract> =>
-  new ethers.Contract(address, DavinciABI, provider);
+export const getDavinciAddress = async (provider: Provider): Promise<string> =>
+  getContractAddress(provider, DavinciNetworks);
 
-export const getCurrentDavinciContract = async (): Promise<ethers.Contract> => {
-  const provider = importProvider();
-  const davinciAddress = await getDavinciAddress(provider);
-  return getDavinciContract(provider, davinciAddress);
+export const getFiatGatewayAddress = async (
+  provider: Provider
+): Promise<string> => getContractAddress(provider, FiatGatewayNetworks);
+
+export type CreateContractConfig = {
+  provider: Provider;
+  contractAddress: string;
+  abi: ContractInterface;
+  mnemonic?: string;
 };
 
-// TODO: DRY, create correct abstractions
-export const balanceOf = async (
-  address: string,
-  nftId: string
-): Promise<number> => {
-  const provider = importProvider();
-  const davinciAddress = await getDavinciAddress(provider);
-  const davinciContract = await getDavinciContract(provider, davinciAddress);
-  const result: BigNumber = await davinciContract.balanceOf(address, nftId);
-  return result.toNumber();
+export const createContract = ({
+  provider,
+  contractAddress,
+  abi,
+  mnemonic,
+}: CreateContractConfig): Contract => {
+  const signer = mnemonic
+    ? Wallet.fromMnemonic(mnemonic).connect(provider)
+    : null;
+
+  return new Contract(contractAddress, abi, signer ?? provider);
 };
 
-export const getOffer = async (
-  seller: string,
-  nftId: string
-): Promise<number> => {
-  const provider = importProvider();
-  const davinciAddress = await getDavinciAddress(provider);
-  let davinciContract = await getDavinciContract(provider, davinciAddress);
-  const signer = provider.getSigner();
-  davinciContract = davinciContract.connect(signer);
-  const result = await davinciContract.getOffer(seller, nftId);
-  return result.toNumber();
+export type Davinci = ReturnType<typeof createDavinci>;
+export type CreateDavinciConfig = {
+  provider: Provider;
+  contractAddress: string;
+  mnemonic?: string;
 };
 
-export const makeOffer = async (
-  nftId: string,
-  price: number
-): Promise<void> => {
-  const provider = importProvider();
-  const davinciAddress = await getDavinciAddress(provider);
-  let davinciContract = await getDavinciContract(provider, davinciAddress);
-  const signer = provider.getSigner();
-  davinciContract = davinciContract.connect(signer);
-  await davinciContract.makeOffer(nftId, price);
+// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
+export const createDavinci = ({
+  provider,
+  contractAddress,
+  mnemonic,
+}: CreateDavinciConfig) => {
+  const contract = createContract({
+    provider,
+    contractAddress,
+    mnemonic,
+    abi: DavinciABI,
+  });
+
+  const balanceOf = async (
+    address: string,
+    nftId: string
+  ): Promise<BigNumber> => contract.balanceOf(address, nftId);
+
+  const getOffer = async (seller: string, nftId: string): Promise<BigNumber> =>
+    contract.getOffer(seller, nftId);
+
+  const makeOffer = async (nftId: string, price: number): Promise<void> => {
+    contract.makeOffer(nftId, price);
+  };
+
+  const takeOffer = async (
+    buyer: string,
+    seller: string,
+    nftId: string,
+    price: number,
+    amount: number
+  ): Promise<void> => {
+    contract.takeOffer(buyer, seller, nftId, price, amount);
+  };
+
+  return { balanceOf, getOffer, makeOffer, takeOffer };
 };
 
-export const takeOffer = async (
-  buyer: string,
-  seller: string,
-  nftId: string,
-  price: number,
-  amount: number
-): Promise<void> => {
-  const provider = importProvider();
-  const davinciAddress = await getDavinciAddress(provider);
-  let davinciContract = await getDavinciContract(provider, davinciAddress);
-  const signer = provider.getSigner();
-  davinciContract = davinciContract.connect(signer);
-  await davinciContract.takeOffer(buyer, seller, nftId, price, amount);
+export type FiatGateway = ReturnType<typeof createFiatGateway>;
+export type CreateFiatGatewayConfig = {
+  provider: Provider;
+  contractAddress: string;
+  mnemonic?: string;
+};
+
+// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
+export const createFiatGateway = ({
+  provider,
+  contractAddress,
+  mnemonic,
+}: CreateFiatGatewayConfig) => {
+  const contract = createContract({
+    provider,
+    contractAddress,
+    mnemonic,
+    abi: FiatGatewayABI,
+  });
+
+  const buyNftFromUsd = async (
+    paidAmountUSDCents: number,
+    buyerEthAddress: string,
+    sellerEthAddress: string,
+    nftId: string,
+    nftPriceCEREUnits: number,
+    nonce: number
+  ): Promise<void> => {
+    contract.buyNftFromUsd(
+      paidAmountUSDCents,
+      buyerEthAddress,
+      sellerEthAddress,
+      nftId,
+      nftPriceCEREUnits,
+      nonce
+    );
+  };
+
+  return { buyNftFromUsd };
 };
