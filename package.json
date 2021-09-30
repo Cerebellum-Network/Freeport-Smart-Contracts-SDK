@@ -1,5 +1,5 @@
 {
-  "version": "1.0.0",
+  "version": "2.0.0-rc.1",
   "name": "@cere/davinci-sdk",
   "license": "MIT",
   "main": "dist/index.js",
