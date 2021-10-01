@@ -1,16 +1,70 @@
-# TSDX User Guide
+## Usage
 
-Congrats! You just saved yourself hours of work by bootstrapping this project
-with TSDX. Let’s get you oriented with what’s here and how to use it.
+DaVinci-SDK provides an interface to work with each smart-contract.
 
-> This TSDX setup is meant for developing libraries (not apps!) that can be
-> published to NPM. If you’re looking to build a Node app, you could use
-> `ts-node-dev`, plain `ts-node`, or simple `tsc`.
+In order to call smart-contract methods you have to create an object with them
+using the creator function:
 
-> If you’re new to TypeScript, checkout
-> [this handy cheatsheet](https://devhints.io/typescript)
+```ts
+const fiatGateway = createFiatGateway({ provider, contractAddress, mnemonic });
+```
 
-## Commands
+You need to create a provider. You can get a Web3 provider from the browser (if
+you use for example Metamask) or you can create a JsonRpc provider using
+`providerUrl`:
+
+```ts
+const provider = importProvider(); // browser
+```
+
+```ts
+const provider = createProvider(providerUrl); // Node.js
+```
+
+You also need to specify `contractAddress`. You can get the current address for
+your chain or get it from configuration params:
+
+```ts
+const contractAddress = getDavinciAddress(provider); // browser
+```
+
+```ts
+const contractAddress = config.get('CONTRACT_ADDRESS'); // Node.js
+```
+
+Here is an example of usage in browser:
+
+```ts
+const provider = importProvider();
+const contractAddress = getDavinciAddress(provider);
+const davinci = createDavinci({ provider, contractAddress });
+
+const balance = await davinci.balanceOf(address, nftId);
+```
+
+And here is for Node.js:
+
+```ts
+const mnemonic = config.get('WALLET_MNEMONIC');
+const providerUrl = config.get('PROVIDER_URL');
+const contractAddress = config.get('CONTRACT_ADDRESS');
+const provider = createProvider(providerUrl);
+
+const fiatGateway = createFiatGateway({ provider, contractAddress, mnemonic });
+
+await fiatGateway.buyNftFromUsd(...args);
+```
+
+## For developers
+
+### Versioning
+
+- update the major version if the smart contract addresses change
+- also update the major version in case of breaking changes (even if the
+  addresses do not change)
+- use [`semver`](https://semver.org/) in other cases
+
+### Commands
 
 TSDX scaffolds your new library inside `/src`.
 
@@ -27,50 +81,34 @@ To do a one-off build, use `npm run build` or `yarn build`.
 
 To run tests, use `npm test` or `yarn test`.
 
-## Configuration
+### Configuration
 
-Code quality is set up for you with `prettier`, `husky`, and `lint-staged`.
-Adjust the respective fields in `package.json` accordingly.
+Code quality is set up for you with `eslint`, `prettier`, `husky`, and
+`lint-staged`. Adjust your IDE.
 
-### Jest
+#### Jest
 
 Jest tests are set up to run with `npm test` or `yarn test`.
 
-### Bundle Analysis
+#### Bundle Analysis
 
 [`size-limit`](https://github.com/ai/size-limit) is set up to calculate the real
 cost of your library with `npm run size` and visualize the bundle with
 `npm run analyze`.
 
-#### Setup Files
-
-This is the folder structure we set up for you:
-
-```txt
-/src
-  index.tsx       # EDIT THIS
-/test
-  blah.test.tsx   # EDIT THIS
-.gitignore
-package.json
-README.md         # EDIT THIS
-tsconfig.json
-```
-
-### Rollup
+#### Rollup
 
 TSDX uses [Rollup](https://rollupjs.org) as a bundler and generates multiple
-rollup configs for various module formats and build settings. See
-[Optimizations](#optimizations) for details.
+rollup configs for various module formats and build settings.
 
-### TypeScript
+#### TypeScript
 
 `tsconfig.json` is set up to interpret `dom` and `esnext` types, as well as
-`react` for `jsx`. Adjust according to your needs.
+`react` for `jsx`.
 
-## Continuous Integration
+### Continuous Integration
 
-### GitHub Actions
+#### GitHub Actions
 
 Two actions are added by default:
 
@@ -79,28 +117,14 @@ Two actions are added by default:
 - `size` which comments cost comparison of your library on every pull request
   using [`size-limit`](https://github.com/ai/size-limit)
 
-## Module Formats
+### Module Formats
 
 CJS, ESModules, and UMD module formats are supported.
 
 The appropriate paths are configured in `package.json` and `dist/index.js`
 accordingly. Please report if any issues are found.
 
-## Named Exports
+### Publishing to NPM
 
-Per Palmer Group guidelines,
-[always use named exports.](https://github.com/palmerhq/typescript#exports) Code
-split inside your React app instead of your React library.
-
-## Including Styles
-
-There are many ways to ship styles, including with CSS-in-JS. TSDX has no
-opinion on this, configure how you like.
-
-For vanilla CSS, you can include it at the root directory and add it to the
-`files` section in your `package.json`, so that it can be imported separately by
-your users and run through their bundler's loader.
-
-## Publishing to NPM
-
-We recommend using [np](https://github.com/sindresorhus/np).
+You can use [np](https://github.com/sindresorhus/np) just by running
+`yarn deploy`

@@ -10,15 +10,15 @@ import {
 } from 'ethers';
 
 import {
-  abi as DavinciABI,
-  networks as DavinciNetworks,
+  abi as davinciABI,
+  networks as davinciNetworks,
 } from './artifacts/Davinci.json';
 import {
-  abi as FiatGatewayABI,
-  networks as FiatGatewayNetworks,
+  abi as fiatGatewayABI,
+  networks as fiatGatewayNetworks,
 } from './artifacts/FiatGateway.json';
 
-export { ethers };
+export { davinciABI, ethers, fiatGatewayABI };
 
 declare global {
   interface Window {
@@ -52,11 +52,11 @@ export const getContractAddress = async (
 };
 
 export const getDavinciAddress = async (provider: Provider): Promise<string> =>
-  getContractAddress(provider, DavinciNetworks);
+  getContractAddress(provider, davinciNetworks);
 
 export const getFiatGatewayAddress = async (
   provider: Provider
-): Promise<string> => getContractAddress(provider, FiatGatewayNetworks);
+): Promise<string> => getContractAddress(provider, fiatGatewayNetworks);
 
 export type CreateContractConfig = {
   provider: Provider;
@@ -95,7 +95,7 @@ export const createDavinci = ({
     provider,
     contractAddress,
     mnemonic,
-    abi: DavinciABI,
+    abi: davinciABI,
   });
 
   const balanceOf = async (
@@ -140,7 +140,7 @@ export const createFiatGateway = ({
     provider,
     contractAddress,
     mnemonic,
-    abi: FiatGatewayABI,
+    abi: fiatGatewayABI,
   });
 
   const buyNftFromUsd = async (
