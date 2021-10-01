@@ -25,7 +25,7 @@
   },
   "scripts": {
     "start": "tsdx watch",
-    "build": "tsdx build",
+    "build": "tsdx build && shx cp -r src/abi-types/* dist/abi-types",
     "test": "tsdx test --passWithNoTests",
     "qa": "yarn ts && yarn lint && yarn codestyle && yarn test",
     "fix": "yarn eslint --fix && yarn format",

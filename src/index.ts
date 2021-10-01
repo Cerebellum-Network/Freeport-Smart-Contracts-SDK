@@ -2,12 +2,8 @@
 import { ExternalProvider } from '@ethersproject/providers';
 import { ethers, providers, Wallet } from 'ethers';
 
-import {
-  Davinci,
-  Davinci__factory,
-  FiatGateway,
-  FiatGateway__factory,
-} from './abi-types';
+import type { Davinci, FiatGateway } from './abi-types';
+import { Davinci__factory, FiatGateway__factory } from './abi-types';
 import { networks as davinciNetworks } from './artifacts/Davinci.json';
 import { networks as fiatGatewayNetworks } from './artifacts/FiatGateway.json';
 
