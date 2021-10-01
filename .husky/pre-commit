@@ -1,7 +1,5 @@
 #!/bin/bash
 
-. "$NVM_DIR/nvm.sh"
-
 . "$(dirname "$0")/_/husky.sh"
 
-nvm exec yarn && nvm exec yarn lint-staged
+yarn && yarn lint-staged
