@@ -41,7 +41,7 @@
     "size": "size-limit",
     "analyze": "size-limit --why",
     "abi-types": "typechain --target=ethers-v5 --out-dir src/abi-types --always-generate-overloads src/artifacts/*.json",
-    "deploy": "np"
+    "deploy": "yarn build && np"
   },
   "dependencies": {
     "ethers": "^5.4.7"
