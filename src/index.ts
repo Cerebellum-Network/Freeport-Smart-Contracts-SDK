@@ -120,7 +120,7 @@ export const createDavinci = ({
     contract.takeOffer(buyer, seller, nftId, price, amount);
   };
 
-  return { balanceOf, getOffer, makeOffer, takeOffer };
+  return { contract, balanceOf, getOffer, makeOffer, takeOffer };
 };
 
 export type FiatGateway = ReturnType<typeof createFiatGateway>;
@@ -161,5 +161,5 @@ export const createFiatGateway = ({
     );
   };
 
-  return { buyNftFromUsd };
+  return { contract, buyNftFromUsd };
 };
