@@ -1,24 +1,17 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { ExternalProvider } from '@ethersproject/providers';
-import {
-  BigNumber,
-  Contract,
-  ContractInterface,
-  ethers,
-  providers,
-  Wallet,
-} from 'ethers';
+import { ethers, providers, Wallet } from 'ethers';
 
 import {
-  abi as davinciABI,
-  networks as davinciNetworks,
-} from './artifacts/Davinci.json';
-import {
-  abi as fiatGatewayABI,
-  networks as fiatGatewayNetworks,
-} from './artifacts/FiatGateway.json';
+  Davinci,
+  Davinci__factory,
+  FiatGateway,
+  FiatGateway__factory,
+} from './abi-types';
+import { networks as davinciNetworks } from './artifacts/Davinci.json';
+import { networks as fiatGatewayNetworks } from './artifacts/FiatGateway.json';
 
-export { davinciABI, ethers, fiatGatewayABI };
+export { ethers };
 
 declare global {
   interface Window {
@@ -58,108 +51,38 @@ export const getFiatGatewayAddress = async (
   provider: Provider
 ): Promise<string> => getContractAddress(provider, fiatGatewayNetworks);
 
-export type CreateContractConfig = {
-  provider: Provider;
-  contractAddress: string;
-  abi: ContractInterface;
-  mnemonic?: string;
-};
-
-export const createContract = ({
-  provider,
-  contractAddress,
-  abi,
-  mnemonic,
-}: CreateContractConfig): Contract => {
-  const signer = mnemonic
-    ? Wallet.fromMnemonic(mnemonic).connect(provider)
-    : null;
-
-  return new Contract(contractAddress, abi, signer ?? provider);
-};
-
-export type Davinci = ReturnType<typeof createDavinci>;
 export type CreateDavinciConfig = {
   provider: Provider;
   contractAddress: string;
   mnemonic?: string;
 };
 
-// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 export const createDavinci = ({
   provider,
   contractAddress,
   mnemonic,
-}: CreateDavinciConfig) => {
-  const contract = createContract({
-    provider,
-    contractAddress,
-    mnemonic,
-    abi: davinciABI,
-  });
+}: CreateDavinciConfig): Davinci => {
+  const signer = mnemonic
+    ? Wallet.fromMnemonic(mnemonic).connect(provider)
+    : null;
 
-  const balanceOf = async (
-    address: string,
-    nftId: string
-  ): Promise<BigNumber> => contract.balanceOf(address, nftId);
-
-  const getOffer = async (seller: string, nftId: string): Promise<BigNumber> =>
-    contract.getOffer(seller, nftId);
-
-  const makeOffer = async (nftId: string, price: number): Promise<void> => {
-    contract.makeOffer(nftId, price);
-  };
-
-  const takeOffer = async (
-    buyer: string,
-    seller: string,
-    nftId: string,
-    price: number,
-    amount: number
-  ): Promise<void> => {
-    contract.takeOffer(buyer, seller, nftId, price, amount);
-  };
-
-  return { contract, balanceOf, getOffer, makeOffer, takeOffer };
+  return Davinci__factory.connect(contractAddress, signer ?? provider);
 };
 
-export type FiatGateway = ReturnType<typeof createFiatGateway>;
 export type CreateFiatGatewayConfig = {
   provider: Provider;
   contractAddress: string;
   mnemonic?: string;
 };
 
-// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 export const createFiatGateway = ({
   provider,
   contractAddress,
   mnemonic,
-}: CreateFiatGatewayConfig) => {
-  const contract = createContract({
-    provider,
-    contractAddress,
-    mnemonic,
-    abi: fiatGatewayABI,
-  });
+}: CreateFiatGatewayConfig): FiatGateway => {
+  const signer = mnemonic
+    ? Wallet.fromMnemonic(mnemonic).connect(provider)
+    : null;
 
-  const buyNftFromUsd = async (
-    paidAmountUSDCents: number,
-    buyerEthAddress: string,
-    sellerEthAddress: string,
-    nftId: string,
-    nftPriceCEREUnits: number,
-    nonce: number
-  ): Promise<void> => {
-    contract.buyNftFromUsd(
-      paidAmountUSDCents,
-      buyerEthAddress,
-      sellerEthAddress,
-      nftId,
-      nftPriceCEREUnits,
-      nonce
-    );
-  };
-
-  return { contract, buyNftFromUsd };
+  return FiatGateway__factory.connect(contractAddress, signer ?? provider);
 };
