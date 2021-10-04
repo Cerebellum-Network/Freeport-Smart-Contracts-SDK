@@ -47,6 +47,19 @@ export const getFiatGatewayAddress = async (
   provider: Provider
 ): Promise<string> => getContractAddress(provider, fiatGatewayNetworks);
 
+export type CreateSignerConfig = {
+  provider: Provider;
+  mnemonic?: string;
+};
+
+export const createSigner = ({
+  provider,
+  mnemonic,
+}: CreateSignerConfig): ethers.Wallet | ethers.providers.JsonRpcSigner =>
+  mnemonic
+    ? Wallet.fromMnemonic(mnemonic).connect(provider)
+    : provider.getSigner();
+
 export type CreateDavinciConfig = {
   provider: Provider;
   contractAddress: string;
@@ -58,11 +71,9 @@ export const createDavinci = ({
   contractAddress,
   mnemonic,
 }: CreateDavinciConfig): Davinci => {
-  const signer = mnemonic
-    ? Wallet.fromMnemonic(mnemonic).connect(provider)
-    : null;
+  const signer = createSigner({ provider, mnemonic });
 
-  return Davinci__factory.connect(contractAddress, signer ?? provider);
+  return Davinci__factory.connect(contractAddress, signer);
 };
 
 export type CreateFiatGatewayConfig = {
@@ -76,9 +87,7 @@ export const createFiatGateway = ({
   contractAddress,
   mnemonic,
 }: CreateFiatGatewayConfig): FiatGateway => {
-  const signer = mnemonic
-    ? Wallet.fromMnemonic(mnemonic).connect(provider)
-    : null;
+  const signer = createSigner({ provider, mnemonic });
 
-  return FiatGateway__factory.connect(contractAddress, signer ?? provider);
+  return FiatGateway__factory.connect(contractAddress, signer);
 };
