@@ -40,8 +40,9 @@
     "precommit": "git status && yarn lint-staged",
     "size": "size-limit",
     "analyze": "size-limit --why",
-    "abi-types": "typechain --target=ethers-v5 --out-dir src/abi-types --always-generate-overloads src/artifacts/*.json",
-    "deploy": "yarn build && np"
+    "typechain": "typechain --target=ethers-v5 --out-dir src/abi-types --always-generate-overloads src/artifacts/*.json",
+    "update-types": "yarn typechain && yarn format",
+    "deploy": "yarn update-types && yarn build && np"
   },
   "dependencies": {
     "ethers": "^5.4.7"
