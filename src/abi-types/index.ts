@@ -5,8 +5,10 @@ export type { BypassForwarder } from './BypassForwarder';
 export type { Davinci } from './Davinci';
 export type { FiatGateway } from './FiatGateway';
 export type { MinimalForwarder } from './MinimalForwarder';
+export type { SimpleAuction } from './SimpleAuction';
 
 export { BypassForwarder__factory } from './factories/BypassForwarder__factory';
 export { Davinci__factory } from './factories/Davinci__factory';
 export { FiatGateway__factory } from './factories/FiatGateway__factory';
 export { MinimalForwarder__factory } from './factories/MinimalForwarder__factory';
+export { SimpleAuction__factory } from './factories/SimpleAuction__factory';
