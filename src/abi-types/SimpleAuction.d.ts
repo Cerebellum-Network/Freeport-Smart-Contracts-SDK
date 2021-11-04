@@ -33,6 +33,7 @@ interface SimpleAuctionInterface extends ethers.utils.Interface {
     'onERC1155Received(address,address,uint256,uint256,bytes)': FunctionFragment;
     'renounceRole(bytes32,address)': FunctionFragment;
     'revokeRole(bytes32,address)': FunctionFragment;
+    'sellerNftBids(address,uint256)': FunctionFragment;
     'supportsInterface(bytes4)': FunctionFragment;
     'startAuction(uint256,uint256,uint256)': FunctionFragment;
     'bidOnAuction(address,uint256,uint256)': FunctionFragment;
@@ -80,6 +81,10 @@ interface SimpleAuctionInterface extends ethers.utils.Interface {
   encodeFunctionData(
     functionFragment: 'revokeRole',
     values: [BytesLike, string]
+  ): string;
+  encodeFunctionData(
+    functionFragment: 'sellerNftBids',
+    values: [string, BigNumberish]
   ): string;
   encodeFunctionData(
     functionFragment: 'supportsInterface',
@@ -131,6 +136,10 @@ interface SimpleAuctionInterface extends ethers.utils.Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: 'revokeRole', data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: 'sellerNftBids',
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(
     functionFragment: 'supportsInterface',
     data: BytesLike
@@ -407,6 +416,36 @@ export class SimpleAuction extends BaseContract {
     ): Promise<ContractTransaction>;
 
     /**
+     * Seller => NFT ID => Bid.
+     */
+    sellerNftBids(
+      arg0: string,
+      arg1: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<
+      [string, BigNumber, BigNumber] & {
+        buyer: string;
+        price: BigNumber;
+        closeTimeSec: BigNumber;
+      }
+    >;
+
+    /**
+     * Seller => NFT ID => Bid.
+     */
+    'sellerNftBids(address,uint256)'(
+      arg0: string,
+      arg1: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<
+      [string, BigNumber, BigNumber] & {
+        buyer: string;
+        price: BigNumber;
+        closeTimeSec: BigNumber;
+      }
+    >;
+
+    /**
      * Supports interfaces of AccessControl and ERC1155Receiver.
      */
     supportsInterface(
@@ -617,6 +656,36 @@ export class SimpleAuction extends BaseContract {
   ): Promise<ContractTransaction>;
 
   /**
+   * Seller => NFT ID => Bid.
+   */
+  sellerNftBids(
+    arg0: string,
+    arg1: BigNumberish,
+    overrides?: CallOverrides
+  ): Promise<
+    [string, BigNumber, BigNumber] & {
+      buyer: string;
+      price: BigNumber;
+      closeTimeSec: BigNumber;
+    }
+  >;
+
+  /**
+   * Seller => NFT ID => Bid.
+   */
+  'sellerNftBids(address,uint256)'(
+    arg0: string,
+    arg1: BigNumberish,
+    overrides?: CallOverrides
+  ): Promise<
+    [string, BigNumber, BigNumber] & {
+      buyer: string;
+      price: BigNumber;
+      closeTimeSec: BigNumber;
+    }
+  >;
+
+  /**
    * Supports interfaces of AccessControl and ERC1155Receiver.
    */
   supportsInterface(
@@ -825,6 +894,36 @@ export class SimpleAuction extends BaseContract {
       account: string,
       overrides?: CallOverrides
     ): Promise<void>;
+
+    /**
+     * Seller => NFT ID => Bid.
+     */
+    sellerNftBids(
+      arg0: string,
+      arg1: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<
+      [string, BigNumber, BigNumber] & {
+        buyer: string;
+        price: BigNumber;
+        closeTimeSec: BigNumber;
+      }
+    >;
+
+    /**
+     * Seller => NFT ID => Bid.
+     */
+    'sellerNftBids(address,uint256)'(
+      arg0: string,
+      arg1: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<
+      [string, BigNumber, BigNumber] & {
+        buyer: string;
+        price: BigNumber;
+        closeTimeSec: BigNumber;
+      }
+    >;
 
     /**
      * Supports interfaces of AccessControl and ERC1155Receiver.
@@ -1181,6 +1280,24 @@ export class SimpleAuction extends BaseContract {
     ): Promise<BigNumber>;
 
     /**
+     * Seller => NFT ID => Bid.
+     */
+    sellerNftBids(
+      arg0: string,
+      arg1: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    /**
+     * Seller => NFT ID => Bid.
+     */
+    'sellerNftBids(address,uint256)'(
+      arg0: string,
+      arg1: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    /**
      * Supports interfaces of AccessControl and ERC1155Receiver.
      */
     supportsInterface(
@@ -1398,6 +1515,24 @@ export class SimpleAuction extends BaseContract {
       role: BytesLike,
       account: string,
       overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
+
+    /**
+     * Seller => NFT ID => Bid.
+     */
+    sellerNftBids(
+      arg0: string,
+      arg1: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    /**
+     * Seller => NFT ID => Bid.
+     */
+    'sellerNftBids(address,uint256)'(
+      arg0: string,
+      arg1: BigNumberish,
+      overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
     /**
