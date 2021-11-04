@@ -2,10 +2,15 @@
 import { ExternalProvider } from '@ethersproject/providers';
 import { ethers, providers, Wallet } from 'ethers';
 
-import type { Davinci, FiatGateway } from './abi-types';
-import { Davinci__factory, FiatGateway__factory } from './abi-types';
+import type { Davinci, FiatGateway, SimpleAuction } from './abi-types';
+import {
+  Davinci__factory,
+  FiatGateway__factory,
+  SimpleAuction__factory,
+} from './abi-types';
 import { networks as davinciNetworks } from './artifacts/Davinci.json';
 import { networks as fiatGatewayNetworks } from './artifacts/FiatGateway.json';
+import { networks as simpleAuctionNetworks } from './artifacts/SimpleAuction.json';
 
 export { ethers };
 
@@ -47,6 +52,10 @@ export const getFiatGatewayAddress = async (
   provider: Provider
 ): Promise<string> => getContractAddress(provider, fiatGatewayNetworks);
 
+export const getSimpleAuctionAddress = async (
+  provider: Provider
+): Promise<string> => getContractAddress(provider, simpleAuctionNetworks);
+
 export type CreateSignerConfig = {
   provider: Provider;
   mnemonic?: string;
@@ -60,7 +69,7 @@ export const createSigner = ({
     ? Wallet.fromMnemonic(mnemonic).connect(provider)
     : provider.getSigner();
 
-export type CreateDavinciConfig = {
+export type CreateConfig = {
   provider: Provider;
   contractAddress: string;
   mnemonic?: string;
@@ -70,24 +79,28 @@ export const createDavinci = ({
   provider,
   contractAddress,
   mnemonic,
-}: CreateDavinciConfig): Davinci => {
+}: CreateConfig): Davinci => {
   const signer = createSigner({ provider, mnemonic });
 
   return Davinci__factory.connect(contractAddress, signer);
-};
-
-export type CreateFiatGatewayConfig = {
-  provider: Provider;
-  contractAddress: string;
-  mnemonic?: string;
 };
 
 export const createFiatGateway = ({
   provider,
   contractAddress,
   mnemonic,
-}: CreateFiatGatewayConfig): FiatGateway => {
+}: CreateConfig): FiatGateway => {
   const signer = createSigner({ provider, mnemonic });
 
   return FiatGateway__factory.connect(contractAddress, signer);
+};
+
+export const createSimpleAuction = ({
+  provider,
+  contractAddress,
+  mnemonic,
+}: CreateConfig): SimpleAuction => {
+  const signer = createSigner({ provider, mnemonic });
+
+  return SimpleAuction__factory.connect(contractAddress, signer);
 };
