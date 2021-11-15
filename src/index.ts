@@ -12,6 +12,7 @@ import { networks as davinciNetworks } from './artifacts/Davinci.json';
 import { networks as fiatGatewayNetworks } from './artifacts/FiatGateway.json';
 import { networks as simpleAuctionNetworks } from './artifacts/SimpleAuction.json';
 
+export * from './abi-types';
 export type { ContractTransaction } from 'ethers';
 export { BigNumber, ethers } from 'ethers';
 
