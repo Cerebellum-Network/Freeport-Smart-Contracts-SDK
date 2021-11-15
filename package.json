@@ -1,14 +1,14 @@
 {
-  "version": "2.4.0",
-  "name": "@cere/davinci-sdk",
+  "version": "0.0.0",
+  "name": "@cere/freeport-sdk",
   "license": "Apache-2.0",
   "main": "dist/index.js",
-  "module": "dist/davinci-sdk.esm.js",
+  "module": "dist/freeport-sdk.esm.js",
   "typings": "dist/index.d.ts",
   "exports": {
     ".": {
       "require": "./dist/index.js",
-      "default": "./dist/davinci-sdk.esm.js"
+      "default": "./dist/freeport-sdk.esm.js"
     },
     "./package.json": "./package.json"
   },
