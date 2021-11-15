@@ -17,9 +17,14 @@ import {
 import { BytesLike } from '@ethersproject/bytes';
 import { Listener, Provider } from '@ethersproject/providers';
 import { FunctionFragment, EventFragment, Result } from '@ethersproject/abi';
-import type { TypedEventFilter, TypedEvent, TypedListener } from './common';
+import type {
+  TypedEventFilter,
+  TypedEvent,
+  TypedListener,
+  OnEvent,
+} from './common';
 
-interface DavinciInterface extends ethers.utils.Interface {
+export interface DavinciInterface extends ethers.utils.Interface {
   functions: {
     'BASIS_POINTS()': FunctionFragment;
     'BYPASS_SENDER()': FunctionFragment;
@@ -407,47 +412,52 @@ interface DavinciInterface extends ethers.utils.Interface {
 }
 
 export type ApprovalForAllEvent = TypedEvent<
-  [string, string, boolean] & {
-    account: string;
-    operator: string;
-    approved: boolean;
-  }
+  [string, string, boolean],
+  { account: string; operator: string; approved: boolean }
 >;
+
+export type ApprovalForAllEventFilter = TypedEventFilter<ApprovalForAllEvent>;
 
 export type JointAccountShareCreatedEvent = TypedEvent<
-  [string, string, BigNumber] & {
-    account: string;
-    owner: string;
-    fraction: BigNumber;
-  }
+  [string, string, BigNumber],
+  { account: string; owner: string; fraction: BigNumber }
 >;
+
+export type JointAccountShareCreatedEventFilter =
+  TypedEventFilter<JointAccountShareCreatedEvent>;
 
 export type MakeOfferEvent = TypedEvent<
-  [string, BigNumber, BigNumber] & {
-    seller: string;
-    nftId: BigNumber;
-    price: BigNumber;
-  }
+  [string, BigNumber, BigNumber],
+  { seller: string; nftId: BigNumber; price: BigNumber }
 >;
+
+export type MakeOfferEventFilter = TypedEventFilter<MakeOfferEvent>;
 
 export type RoleAdminChangedEvent = TypedEvent<
-  [string, string, string] & {
-    role: string;
-    previousAdminRole: string;
-    newAdminRole: string;
-  }
+  [string, string, string],
+  { role: string; previousAdminRole: string; newAdminRole: string }
 >;
+
+export type RoleAdminChangedEventFilter =
+  TypedEventFilter<RoleAdminChangedEvent>;
 
 export type RoleGrantedEvent = TypedEvent<
-  [string, string, string] & { role: string; account: string; sender: string }
+  [string, string, string],
+  { role: string; account: string; sender: string }
 >;
+
+export type RoleGrantedEventFilter = TypedEventFilter<RoleGrantedEvent>;
 
 export type RoleRevokedEvent = TypedEvent<
-  [string, string, string] & { role: string; account: string; sender: string }
+  [string, string, string],
+  { role: string; account: string; sender: string }
 >;
 
+export type RoleRevokedEventFilter = TypedEventFilter<RoleRevokedEvent>;
+
 export type RoyaltiesConfiguredEvent = TypedEvent<
-  [BigNumber, string, BigNumber, BigNumber, string, BigNumber, BigNumber] & {
+  [BigNumber, string, BigNumber, BigNumber, string, BigNumber, BigNumber],
+  {
     nftId: BigNumber;
     primaryRoyaltyAccount: string;
     primaryRoyaltyCut: BigNumber;
@@ -458,12 +468,19 @@ export type RoyaltiesConfiguredEvent = TypedEvent<
   }
 >;
 
+export type RoyaltiesConfiguredEventFilter =
+  TypedEventFilter<RoyaltiesConfiguredEvent>;
+
 export type RoyaltiesLockedEvent = TypedEvent<
-  [BigNumber, BigNumber] & { nftId: BigNumber; lockUntil: BigNumber }
+  [BigNumber, BigNumber],
+  { nftId: BigNumber; lockUntil: BigNumber }
 >;
 
+export type RoyaltiesLockedEventFilter = TypedEventFilter<RoyaltiesLockedEvent>;
+
 export type TakeOfferEvent = TypedEvent<
-  [string, string, BigNumber, BigNumber, BigNumber] & {
+  [string, string, BigNumber, BigNumber, BigNumber],
+  {
     buyer: string;
     seller: string;
     nftId: BigNumber;
@@ -472,12 +489,18 @@ export type TakeOfferEvent = TypedEvent<
   }
 >;
 
+export type TakeOfferEventFilter = TypedEventFilter<TakeOfferEvent>;
+
 export type TransferEvent = TypedEvent<
-  [string, string, BigNumber] & { from: string; to: string; value: BigNumber }
+  [string, string, BigNumber],
+  { from: string; to: string; value: BigNumber }
 >;
 
+export type TransferEventFilter = TypedEventFilter<TransferEvent>;
+
 export type TransferBatchEvent = TypedEvent<
-  [string, string, string, BigNumber[], BigNumber[]] & {
+  [string, string, string, BigNumber[], BigNumber[]],
+  {
     operator: string;
     from: string;
     to: string;
@@ -486,8 +509,11 @@ export type TransferBatchEvent = TypedEvent<
   }
 >;
 
+export type TransferBatchEventFilter = TypedEventFilter<TransferBatchEvent>;
+
 export type TransferSingleEvent = TypedEvent<
-  [string, string, string, BigNumber, BigNumber] & {
+  [string, string, string, BigNumber, BigNumber],
+  {
     operator: string;
     from: string;
     to: string;
@@ -496,52 +522,40 @@ export type TransferSingleEvent = TypedEvent<
   }
 >;
 
+export type TransferSingleEventFilter = TypedEventFilter<TransferSingleEvent>;
+
 export type URIEvent = TypedEvent<
-  [string, BigNumber] & { value: string; id: BigNumber }
+  [string, BigNumber],
+  { value: string; id: BigNumber }
 >;
 
-export class Davinci extends BaseContract {
+export type URIEventFilter = TypedEventFilter<URIEvent>;
+
+export interface Davinci extends BaseContract {
   connect(signerOrProvider: Signer | Provider | string): this;
   attach(addressOrName: string): this;
   deployed(): Promise<this>;
 
-  listeners<EventArgsArray extends Array<any>, EventArgsObject>(
-    eventFilter?: TypedEventFilter<EventArgsArray, EventArgsObject>
-  ): Array<TypedListener<EventArgsArray, EventArgsObject>>;
-  off<EventArgsArray extends Array<any>, EventArgsObject>(
-    eventFilter: TypedEventFilter<EventArgsArray, EventArgsObject>,
-    listener: TypedListener<EventArgsArray, EventArgsObject>
-  ): this;
-  on<EventArgsArray extends Array<any>, EventArgsObject>(
-    eventFilter: TypedEventFilter<EventArgsArray, EventArgsObject>,
-    listener: TypedListener<EventArgsArray, EventArgsObject>
-  ): this;
-  once<EventArgsArray extends Array<any>, EventArgsObject>(
-    eventFilter: TypedEventFilter<EventArgsArray, EventArgsObject>,
-    listener: TypedListener<EventArgsArray, EventArgsObject>
-  ): this;
-  removeListener<EventArgsArray extends Array<any>, EventArgsObject>(
-    eventFilter: TypedEventFilter<EventArgsArray, EventArgsObject>,
-    listener: TypedListener<EventArgsArray, EventArgsObject>
-  ): this;
-  removeAllListeners<EventArgsArray extends Array<any>, EventArgsObject>(
-    eventFilter: TypedEventFilter<EventArgsArray, EventArgsObject>
-  ): this;
+  interface: DavinciInterface;
 
-  listeners(eventName?: string): Array<Listener>;
-  off(eventName: string, listener: Listener): this;
-  on(eventName: string, listener: Listener): this;
-  once(eventName: string, listener: Listener): this;
-  removeListener(eventName: string, listener: Listener): this;
-  removeAllListeners(eventName?: string): this;
-
-  queryFilter<EventArgsArray extends Array<any>, EventArgsObject>(
-    event: TypedEventFilter<EventArgsArray, EventArgsObject>,
+  queryFilter<TEvent extends TypedEvent>(
+    event: TypedEventFilter<TEvent>,
     fromBlockOrBlockhash?: string | number | undefined,
     toBlock?: string | number | undefined
-  ): Promise<Array<TypedEvent<EventArgsArray & EventArgsObject>>>;
+  ): Promise<Array<TEvent>>;
 
-  interface: DavinciInterface;
+  listeners<TEvent extends TypedEvent>(
+    eventFilter?: TypedEventFilter<TEvent>
+  ): Array<TypedListener<TEvent>>;
+  listeners(eventName?: string): Array<Listener>;
+  removeAllListeners<TEvent extends TypedEvent>(
+    eventFilter: TypedEventFilter<TEvent>
+  ): this;
+  removeAllListeners(eventName?: string): this;
+  off: OnEvent<this>;
+  on: OnEvent<this>;
+  once: OnEvent<this>;
+  removeListener: OnEvent<this>;
 
   functions: {
     /**
@@ -2612,109 +2626,67 @@ export class Davinci extends BaseContract {
       account?: string | null,
       operator?: string | null,
       approved?: null
-    ): TypedEventFilter<
-      [string, string, boolean],
-      { account: string; operator: string; approved: boolean }
-    >;
-
+    ): ApprovalForAllEventFilter;
     ApprovalForAll(
       account?: string | null,
       operator?: string | null,
       approved?: null
-    ): TypedEventFilter<
-      [string, string, boolean],
-      { account: string; operator: string; approved: boolean }
-    >;
+    ): ApprovalForAllEventFilter;
 
     'JointAccountShareCreated(address,address,uint256)'(
       account?: string | null,
       owner?: string | null,
       fraction?: null
-    ): TypedEventFilter<
-      [string, string, BigNumber],
-      { account: string; owner: string; fraction: BigNumber }
-    >;
-
+    ): JointAccountShareCreatedEventFilter;
     JointAccountShareCreated(
       account?: string | null,
       owner?: string | null,
       fraction?: null
-    ): TypedEventFilter<
-      [string, string, BigNumber],
-      { account: string; owner: string; fraction: BigNumber }
-    >;
+    ): JointAccountShareCreatedEventFilter;
 
     'MakeOffer(address,uint256,uint256)'(
       seller?: string | null,
       nftId?: BigNumberish | null,
       price?: null
-    ): TypedEventFilter<
-      [string, BigNumber, BigNumber],
-      { seller: string; nftId: BigNumber; price: BigNumber }
-    >;
-
+    ): MakeOfferEventFilter;
     MakeOffer(
       seller?: string | null,
       nftId?: BigNumberish | null,
       price?: null
-    ): TypedEventFilter<
-      [string, BigNumber, BigNumber],
-      { seller: string; nftId: BigNumber; price: BigNumber }
-    >;
+    ): MakeOfferEventFilter;
 
     'RoleAdminChanged(bytes32,bytes32,bytes32)'(
       role?: BytesLike | null,
       previousAdminRole?: BytesLike | null,
       newAdminRole?: BytesLike | null
-    ): TypedEventFilter<
-      [string, string, string],
-      { role: string; previousAdminRole: string; newAdminRole: string }
-    >;
-
+    ): RoleAdminChangedEventFilter;
     RoleAdminChanged(
       role?: BytesLike | null,
       previousAdminRole?: BytesLike | null,
       newAdminRole?: BytesLike | null
-    ): TypedEventFilter<
-      [string, string, string],
-      { role: string; previousAdminRole: string; newAdminRole: string }
-    >;
+    ): RoleAdminChangedEventFilter;
 
     'RoleGranted(bytes32,address,address)'(
       role?: BytesLike | null,
       account?: string | null,
       sender?: string | null
-    ): TypedEventFilter<
-      [string, string, string],
-      { role: string; account: string; sender: string }
-    >;
-
+    ): RoleGrantedEventFilter;
     RoleGranted(
       role?: BytesLike | null,
       account?: string | null,
       sender?: string | null
-    ): TypedEventFilter<
-      [string, string, string],
-      { role: string; account: string; sender: string }
-    >;
+    ): RoleGrantedEventFilter;
 
     'RoleRevoked(bytes32,address,address)'(
       role?: BytesLike | null,
       account?: string | null,
       sender?: string | null
-    ): TypedEventFilter<
-      [string, string, string],
-      { role: string; account: string; sender: string }
-    >;
-
+    ): RoleRevokedEventFilter;
     RoleRevoked(
       role?: BytesLike | null,
       account?: string | null,
       sender?: string | null
-    ): TypedEventFilter<
-      [string, string, string],
-      { role: string; account: string; sender: string }
-    >;
+    ): RoleRevokedEventFilter;
 
     'RoyaltiesConfigured(uint256,address,uint256,uint256,address,uint256,uint256)'(
       nftId?: BigNumberish | null,
@@ -2724,19 +2696,7 @@ export class Davinci extends BaseContract {
       secondaryRoyaltyAccount?: null,
       secondaryRoyaltyCut?: null,
       secondaryRoyaltyMinimum?: null
-    ): TypedEventFilter<
-      [BigNumber, string, BigNumber, BigNumber, string, BigNumber, BigNumber],
-      {
-        nftId: BigNumber;
-        primaryRoyaltyAccount: string;
-        primaryRoyaltyCut: BigNumber;
-        primaryRoyaltyMinimum: BigNumber;
-        secondaryRoyaltyAccount: string;
-        secondaryRoyaltyCut: BigNumber;
-        secondaryRoyaltyMinimum: BigNumber;
-      }
-    >;
-
+    ): RoyaltiesConfiguredEventFilter;
     RoyaltiesConfigured(
       nftId?: BigNumberish | null,
       primaryRoyaltyAccount?: null,
@@ -2745,34 +2705,16 @@ export class Davinci extends BaseContract {
       secondaryRoyaltyAccount?: null,
       secondaryRoyaltyCut?: null,
       secondaryRoyaltyMinimum?: null
-    ): TypedEventFilter<
-      [BigNumber, string, BigNumber, BigNumber, string, BigNumber, BigNumber],
-      {
-        nftId: BigNumber;
-        primaryRoyaltyAccount: string;
-        primaryRoyaltyCut: BigNumber;
-        primaryRoyaltyMinimum: BigNumber;
-        secondaryRoyaltyAccount: string;
-        secondaryRoyaltyCut: BigNumber;
-        secondaryRoyaltyMinimum: BigNumber;
-      }
-    >;
+    ): RoyaltiesConfiguredEventFilter;
 
     'RoyaltiesLocked(uint256,uint256)'(
       nftId?: BigNumberish | null,
       lockUntil?: null
-    ): TypedEventFilter<
-      [BigNumber, BigNumber],
-      { nftId: BigNumber; lockUntil: BigNumber }
-    >;
-
+    ): RoyaltiesLockedEventFilter;
     RoyaltiesLocked(
       nftId?: BigNumberish | null,
       lockUntil?: null
-    ): TypedEventFilter<
-      [BigNumber, BigNumber],
-      { nftId: BigNumber; lockUntil: BigNumber }
-    >;
+    ): RoyaltiesLockedEventFilter;
 
     'TakeOffer(address,address,uint256,uint256,uint256)'(
       buyer?: string | null,
@@ -2780,51 +2722,25 @@ export class Davinci extends BaseContract {
       nftId?: BigNumberish | null,
       price?: null,
       amount?: null
-    ): TypedEventFilter<
-      [string, string, BigNumber, BigNumber, BigNumber],
-      {
-        buyer: string;
-        seller: string;
-        nftId: BigNumber;
-        price: BigNumber;
-        amount: BigNumber;
-      }
-    >;
-
+    ): TakeOfferEventFilter;
     TakeOffer(
       buyer?: string | null,
       seller?: string | null,
       nftId?: BigNumberish | null,
       price?: null,
       amount?: null
-    ): TypedEventFilter<
-      [string, string, BigNumber, BigNumber, BigNumber],
-      {
-        buyer: string;
-        seller: string;
-        nftId: BigNumber;
-        price: BigNumber;
-        amount: BigNumber;
-      }
-    >;
+    ): TakeOfferEventFilter;
 
     'Transfer(address,address,uint256)'(
       from?: string | null,
       to?: string | null,
       value?: null
-    ): TypedEventFilter<
-      [string, string, BigNumber],
-      { from: string; to: string; value: BigNumber }
-    >;
-
+    ): TransferEventFilter;
     Transfer(
       from?: string | null,
       to?: string | null,
       value?: null
-    ): TypedEventFilter<
-      [string, string, BigNumber],
-      { from: string; to: string; value: BigNumber }
-    >;
+    ): TransferEventFilter;
 
     'TransferBatch(address,address,address,uint256[],uint256[])'(
       operator?: string | null,
@@ -2832,33 +2748,14 @@ export class Davinci extends BaseContract {
       to?: string | null,
       ids?: null,
       values?: null
-    ): TypedEventFilter<
-      [string, string, string, BigNumber[], BigNumber[]],
-      {
-        operator: string;
-        from: string;
-        to: string;
-        ids: BigNumber[];
-        values: BigNumber[];
-      }
-    >;
-
+    ): TransferBatchEventFilter;
     TransferBatch(
       operator?: string | null,
       from?: string | null,
       to?: string | null,
       ids?: null,
       values?: null
-    ): TypedEventFilter<
-      [string, string, string, BigNumber[], BigNumber[]],
-      {
-        operator: string;
-        from: string;
-        to: string;
-        ids: BigNumber[];
-        values: BigNumber[];
-      }
-    >;
+    ): TransferBatchEventFilter;
 
     'TransferSingle(address,address,address,uint256,uint256)'(
       operator?: string | null,
@@ -2866,43 +2763,20 @@ export class Davinci extends BaseContract {
       to?: string | null,
       id?: null,
       value?: null
-    ): TypedEventFilter<
-      [string, string, string, BigNumber, BigNumber],
-      {
-        operator: string;
-        from: string;
-        to: string;
-        id: BigNumber;
-        value: BigNumber;
-      }
-    >;
-
+    ): TransferSingleEventFilter;
     TransferSingle(
       operator?: string | null,
       from?: string | null,
       to?: string | null,
       id?: null,
       value?: null
-    ): TypedEventFilter<
-      [string, string, string, BigNumber, BigNumber],
-      {
-        operator: string;
-        from: string;
-        to: string;
-        id: BigNumber;
-        value: BigNumber;
-      }
-    >;
+    ): TransferSingleEventFilter;
 
     'URI(string,uint256)'(
       value?: null,
       id?: BigNumberish | null
-    ): TypedEventFilter<[string, BigNumber], { value: string; id: BigNumber }>;
-
-    URI(
-      value?: null,
-      id?: BigNumberish | null
-    ): TypedEventFilter<[string, BigNumber], { value: string; id: BigNumber }>;
+    ): URIEventFilter;
+    URI(value?: null, id?: BigNumberish | null): URIEventFilter;
   };
 
   estimateGas: {

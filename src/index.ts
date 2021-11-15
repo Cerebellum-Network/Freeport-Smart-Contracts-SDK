@@ -1,6 +1,6 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { ExternalProvider } from '@ethersproject/providers';
-import { ethers, providers, Wallet } from 'ethers';
+import { providers, Wallet } from 'ethers';
 
 import type { Davinci, FiatGateway, SimpleAuction } from './abi-types';
 import {
@@ -12,7 +12,8 @@ import { networks as davinciNetworks } from './artifacts/Davinci.json';
 import { networks as fiatGatewayNetworks } from './artifacts/FiatGateway.json';
 import { networks as simpleAuctionNetworks } from './artifacts/SimpleAuction.json';
 
-export { ethers };
+export type { ContractTransaction } from 'ethers';
+export { BigNumber, ethers } from 'ethers';
 
 declare global {
   interface Window {
@@ -21,6 +22,7 @@ declare global {
 }
 
 type Network = { address: string };
+
 export type Provider = providers.Web3Provider | providers.JsonRpcProvider;
 
 export const importProvider = (): providers.Web3Provider =>
@@ -64,7 +66,7 @@ export type CreateSignerConfig = {
 export const createSigner = ({
   provider,
   mnemonic,
-}: CreateSignerConfig): ethers.Wallet | ethers.providers.JsonRpcSigner =>
+}: CreateSignerConfig): Wallet | providers.JsonRpcSigner =>
   mnemonic
     ? Wallet.fromMnemonic(mnemonic).connect(provider)
     : provider.getSigner();

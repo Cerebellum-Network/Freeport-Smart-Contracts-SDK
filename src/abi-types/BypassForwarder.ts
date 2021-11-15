@@ -17,14 +17,44 @@ import {
 import { BytesLike } from '@ethersproject/bytes';
 import { Listener, Provider } from '@ethersproject/providers';
 import { FunctionFragment, EventFragment, Result } from '@ethersproject/abi';
-import type { TypedEventFilter, TypedEvent, TypedListener } from './common';
+import type {
+  TypedEventFilter,
+  TypedEvent,
+  TypedListener,
+  OnEvent,
+} from './common';
 
-interface BypassForwarderInterface extends ethers.utils.Interface {
+export type ForwardRequestStruct = {
+  from: string;
+  to: string;
+  value: BigNumberish;
+  gas: BigNumberish;
+  nonce: BigNumberish;
+  data: BytesLike;
+};
+
+export type ForwardRequestStructOutput = [
+  string,
+  string,
+  BigNumber,
+  BigNumber,
+  BigNumber,
+  string
+] & {
+  from: string;
+  to: string;
+  value: BigNumber;
+  gas: BigNumber;
+  nonce: BigNumber;
+  data: string;
+};
+
+export interface BypassForwarderInterface extends ethers.utils.Interface {
   functions: {
     'BYPASS_SENDER()': FunctionFragment;
-    'execute(tuple,bytes)': FunctionFragment;
+    'execute((address,address,uint256,uint256,uint256,bytes),bytes)': FunctionFragment;
     'getNonce(address)': FunctionFragment;
-    'verify(tuple,bytes)': FunctionFragment;
+    'verify((address,address,uint256,uint256,uint256,bytes),bytes)': FunctionFragment;
   };
 
   encodeFunctionData(
@@ -33,32 +63,12 @@ interface BypassForwarderInterface extends ethers.utils.Interface {
   ): string;
   encodeFunctionData(
     functionFragment: 'execute',
-    values: [
-      {
-        from: string;
-        to: string;
-        value: BigNumberish;
-        gas: BigNumberish;
-        nonce: BigNumberish;
-        data: BytesLike;
-      },
-      BytesLike
-    ]
+    values: [ForwardRequestStruct, BytesLike]
   ): string;
   encodeFunctionData(functionFragment: 'getNonce', values: [string]): string;
   encodeFunctionData(
     functionFragment: 'verify',
-    values: [
-      {
-        from: string;
-        to: string;
-        value: BigNumberish;
-        gas: BigNumberish;
-        nonce: BigNumberish;
-        data: BytesLike;
-      },
-      BytesLike
-    ]
+    values: [ForwardRequestStruct, BytesLike]
   ): string;
 
   decodeFunctionResult(
@@ -72,48 +82,31 @@ interface BypassForwarderInterface extends ethers.utils.Interface {
   events: {};
 }
 
-export class BypassForwarder extends BaseContract {
+export interface BypassForwarder extends BaseContract {
   connect(signerOrProvider: Signer | Provider | string): this;
   attach(addressOrName: string): this;
   deployed(): Promise<this>;
 
-  listeners<EventArgsArray extends Array<any>, EventArgsObject>(
-    eventFilter?: TypedEventFilter<EventArgsArray, EventArgsObject>
-  ): Array<TypedListener<EventArgsArray, EventArgsObject>>;
-  off<EventArgsArray extends Array<any>, EventArgsObject>(
-    eventFilter: TypedEventFilter<EventArgsArray, EventArgsObject>,
-    listener: TypedListener<EventArgsArray, EventArgsObject>
-  ): this;
-  on<EventArgsArray extends Array<any>, EventArgsObject>(
-    eventFilter: TypedEventFilter<EventArgsArray, EventArgsObject>,
-    listener: TypedListener<EventArgsArray, EventArgsObject>
-  ): this;
-  once<EventArgsArray extends Array<any>, EventArgsObject>(
-    eventFilter: TypedEventFilter<EventArgsArray, EventArgsObject>,
-    listener: TypedListener<EventArgsArray, EventArgsObject>
-  ): this;
-  removeListener<EventArgsArray extends Array<any>, EventArgsObject>(
-    eventFilter: TypedEventFilter<EventArgsArray, EventArgsObject>,
-    listener: TypedListener<EventArgsArray, EventArgsObject>
-  ): this;
-  removeAllListeners<EventArgsArray extends Array<any>, EventArgsObject>(
-    eventFilter: TypedEventFilter<EventArgsArray, EventArgsObject>
-  ): this;
+  interface: BypassForwarderInterface;
 
-  listeners(eventName?: string): Array<Listener>;
-  off(eventName: string, listener: Listener): this;
-  on(eventName: string, listener: Listener): this;
-  once(eventName: string, listener: Listener): this;
-  removeListener(eventName: string, listener: Listener): this;
-  removeAllListeners(eventName?: string): this;
-
-  queryFilter<EventArgsArray extends Array<any>, EventArgsObject>(
-    event: TypedEventFilter<EventArgsArray, EventArgsObject>,
+  queryFilter<TEvent extends TypedEvent>(
+    event: TypedEventFilter<TEvent>,
     fromBlockOrBlockhash?: string | number | undefined,
     toBlock?: string | number | undefined
-  ): Promise<Array<TypedEvent<EventArgsArray & EventArgsObject>>>;
+  ): Promise<Array<TEvent>>;
 
-  interface: BypassForwarderInterface;
+  listeners<TEvent extends TypedEvent>(
+    eventFilter?: TypedEventFilter<TEvent>
+  ): Array<TypedListener<TEvent>>;
+  listeners(eventName?: string): Array<Listener>;
+  removeAllListeners<TEvent extends TypedEvent>(
+    eventFilter: TypedEventFilter<TEvent>
+  ): this;
+  removeAllListeners(eventName?: string): this;
+  off: OnEvent<this>;
+  on: OnEvent<this>;
+  once: OnEvent<this>;
+  removeListener: OnEvent<this>;
 
   functions: {
     BYPASS_SENDER(overrides?: CallOverrides): Promise<[string]>;
@@ -121,27 +114,13 @@ export class BypassForwarder extends BaseContract {
     'BYPASS_SENDER()'(overrides?: CallOverrides): Promise<[string]>;
 
     execute(
-      req: {
-        from: string;
-        to: string;
-        value: BigNumberish;
-        gas: BigNumberish;
-        nonce: BigNumberish;
-        data: BytesLike;
-      },
+      req: ForwardRequestStruct,
       signature: BytesLike,
       overrides?: PayableOverrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
     'execute((address,address,uint256,uint256,uint256,bytes),bytes)'(
-      req: {
-        from: string;
-        to: string;
-        value: BigNumberish;
-        gas: BigNumberish;
-        nonce: BigNumberish;
-        data: BytesLike;
-      },
+      req: ForwardRequestStruct,
       signature: BytesLike,
       overrides?: PayableOverrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
@@ -154,27 +133,13 @@ export class BypassForwarder extends BaseContract {
     ): Promise<[BigNumber]>;
 
     verify(
-      req: {
-        from: string;
-        to: string;
-        value: BigNumberish;
-        gas: BigNumberish;
-        nonce: BigNumberish;
-        data: BytesLike;
-      },
+      req: ForwardRequestStruct,
       signature: BytesLike,
       overrides?: CallOverrides
     ): Promise<[boolean]>;
 
     'verify((address,address,uint256,uint256,uint256,bytes),bytes)'(
-      req: {
-        from: string;
-        to: string;
-        value: BigNumberish;
-        gas: BigNumberish;
-        nonce: BigNumberish;
-        data: BytesLike;
-      },
+      req: ForwardRequestStruct,
       signature: BytesLike,
       overrides?: CallOverrides
     ): Promise<[boolean]>;
@@ -185,27 +150,13 @@ export class BypassForwarder extends BaseContract {
   'BYPASS_SENDER()'(overrides?: CallOverrides): Promise<string>;
 
   execute(
-    req: {
-      from: string;
-      to: string;
-      value: BigNumberish;
-      gas: BigNumberish;
-      nonce: BigNumberish;
-      data: BytesLike;
-    },
+    req: ForwardRequestStruct,
     signature: BytesLike,
     overrides?: PayableOverrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
   'execute((address,address,uint256,uint256,uint256,bytes),bytes)'(
-    req: {
-      from: string;
-      to: string;
-      value: BigNumberish;
-      gas: BigNumberish;
-      nonce: BigNumberish;
-      data: BytesLike;
-    },
+    req: ForwardRequestStruct,
     signature: BytesLike,
     overrides?: PayableOverrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
@@ -218,27 +169,13 @@ export class BypassForwarder extends BaseContract {
   ): Promise<BigNumber>;
 
   verify(
-    req: {
-      from: string;
-      to: string;
-      value: BigNumberish;
-      gas: BigNumberish;
-      nonce: BigNumberish;
-      data: BytesLike;
-    },
+    req: ForwardRequestStruct,
     signature: BytesLike,
     overrides?: CallOverrides
   ): Promise<boolean>;
 
   'verify((address,address,uint256,uint256,uint256,bytes),bytes)'(
-    req: {
-      from: string;
-      to: string;
-      value: BigNumberish;
-      gas: BigNumberish;
-      nonce: BigNumberish;
-      data: BytesLike;
-    },
+    req: ForwardRequestStruct,
     signature: BytesLike,
     overrides?: CallOverrides
   ): Promise<boolean>;
@@ -249,27 +186,13 @@ export class BypassForwarder extends BaseContract {
     'BYPASS_SENDER()'(overrides?: CallOverrides): Promise<string>;
 
     execute(
-      req: {
-        from: string;
-        to: string;
-        value: BigNumberish;
-        gas: BigNumberish;
-        nonce: BigNumberish;
-        data: BytesLike;
-      },
+      req: ForwardRequestStruct,
       signature: BytesLike,
       overrides?: CallOverrides
     ): Promise<[boolean, string]>;
 
     'execute((address,address,uint256,uint256,uint256,bytes),bytes)'(
-      req: {
-        from: string;
-        to: string;
-        value: BigNumberish;
-        gas: BigNumberish;
-        nonce: BigNumberish;
-        data: BytesLike;
-      },
+      req: ForwardRequestStruct,
       signature: BytesLike,
       overrides?: CallOverrides
     ): Promise<[boolean, string]>;
@@ -282,27 +205,13 @@ export class BypassForwarder extends BaseContract {
     ): Promise<BigNumber>;
 
     verify(
-      req: {
-        from: string;
-        to: string;
-        value: BigNumberish;
-        gas: BigNumberish;
-        nonce: BigNumberish;
-        data: BytesLike;
-      },
+      req: ForwardRequestStruct,
       signature: BytesLike,
       overrides?: CallOverrides
     ): Promise<boolean>;
 
     'verify((address,address,uint256,uint256,uint256,bytes),bytes)'(
-      req: {
-        from: string;
-        to: string;
-        value: BigNumberish;
-        gas: BigNumberish;
-        nonce: BigNumberish;
-        data: BytesLike;
-      },
+      req: ForwardRequestStruct,
       signature: BytesLike,
       overrides?: CallOverrides
     ): Promise<boolean>;
@@ -316,27 +225,13 @@ export class BypassForwarder extends BaseContract {
     'BYPASS_SENDER()'(overrides?: CallOverrides): Promise<BigNumber>;
 
     execute(
-      req: {
-        from: string;
-        to: string;
-        value: BigNumberish;
-        gas: BigNumberish;
-        nonce: BigNumberish;
-        data: BytesLike;
-      },
+      req: ForwardRequestStruct,
       signature: BytesLike,
       overrides?: PayableOverrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
     'execute((address,address,uint256,uint256,uint256,bytes),bytes)'(
-      req: {
-        from: string;
-        to: string;
-        value: BigNumberish;
-        gas: BigNumberish;
-        nonce: BigNumberish;
-        data: BytesLike;
-      },
+      req: ForwardRequestStruct,
       signature: BytesLike,
       overrides?: PayableOverrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
@@ -349,27 +244,13 @@ export class BypassForwarder extends BaseContract {
     ): Promise<BigNumber>;
 
     verify(
-      req: {
-        from: string;
-        to: string;
-        value: BigNumberish;
-        gas: BigNumberish;
-        nonce: BigNumberish;
-        data: BytesLike;
-      },
+      req: ForwardRequestStruct,
       signature: BytesLike,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
     'verify((address,address,uint256,uint256,uint256,bytes),bytes)'(
-      req: {
-        from: string;
-        to: string;
-        value: BigNumberish;
-        gas: BigNumberish;
-        nonce: BigNumberish;
-        data: BytesLike;
-      },
+      req: ForwardRequestStruct,
       signature: BytesLike,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
@@ -381,27 +262,13 @@ export class BypassForwarder extends BaseContract {
     'BYPASS_SENDER()'(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     execute(
-      req: {
-        from: string;
-        to: string;
-        value: BigNumberish;
-        gas: BigNumberish;
-        nonce: BigNumberish;
-        data: BytesLike;
-      },
+      req: ForwardRequestStruct,
       signature: BytesLike,
       overrides?: PayableOverrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 
     'execute((address,address,uint256,uint256,uint256,bytes),bytes)'(
-      req: {
-        from: string;
-        to: string;
-        value: BigNumberish;
-        gas: BigNumberish;
-        nonce: BigNumberish;
-        data: BytesLike;
-      },
+      req: ForwardRequestStruct,
       signature: BytesLike,
       overrides?: PayableOverrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
@@ -417,27 +284,13 @@ export class BypassForwarder extends BaseContract {
     ): Promise<PopulatedTransaction>;
 
     verify(
-      req: {
-        from: string;
-        to: string;
-        value: BigNumberish;
-        gas: BigNumberish;
-        nonce: BigNumberish;
-        data: BytesLike;
-      },
+      req: ForwardRequestStruct,
       signature: BytesLike,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
     'verify((address,address,uint256,uint256,uint256,bytes),bytes)'(
-      req: {
-        from: string;
-        to: string;
-        value: BigNumberish;
-        gas: BigNumberish;
-        nonce: BigNumberish;
-        data: BytesLike;
-      },
+      req: ForwardRequestStruct,
       signature: BytesLike,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
