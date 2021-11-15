@@ -45,7 +45,9 @@ export const getContractAddress = async (
     return network.address;
   }
 
-  throw new Error('Cannot find contract address');
+  throw new Error(
+    `Cannot find smart contract address for chain id #${chainId}`
+  );
 };
 
 export const getDavinciAddress = async (provider: Provider): Promise<string> =>
