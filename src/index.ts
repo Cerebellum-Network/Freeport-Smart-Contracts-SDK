@@ -24,6 +24,7 @@ declare global {
 
 type Network = { address: string };
 
+export type Signer = providers.JsonRpcSigner;
 export type Provider = providers.Web3Provider | providers.JsonRpcProvider;
 
 export const importProvider = (): providers.Web3Provider =>
@@ -64,28 +65,39 @@ export const getSimpleAuctionAddress = async (
 export type CreateSignerConfig = {
   provider: Provider;
   mnemonic?: string;
+  privateKey?: string;
 };
 
 export const createSigner = ({
   provider,
   mnemonic,
-}: CreateSignerConfig): Wallet | providers.JsonRpcSigner =>
-  mnemonic
-    ? Wallet.fromMnemonic(mnemonic).connect(provider)
-    : provider.getSigner();
+  privateKey,
+}: CreateSignerConfig): Wallet | providers.JsonRpcSigner => {
+  if (mnemonic) {
+    return Wallet.fromMnemonic(mnemonic).connect(provider);
+  }
+
+  if (privateKey) {
+    return new Wallet(privateKey, provider);
+  }
+
+  return provider.getSigner();
+};
 
 export type CreateConfig = {
   provider: Provider;
   contractAddress: string;
   mnemonic?: string;
+  privateKey?: string;
 };
 
 export const createDavinci = ({
   provider,
   contractAddress,
   mnemonic,
+  privateKey,
 }: CreateConfig): Davinci => {
-  const signer = createSigner({ provider, mnemonic });
+  const signer = createSigner({ provider, mnemonic, privateKey });
 
   return Davinci__factory.connect(contractAddress, signer);
 };
@@ -94,8 +106,9 @@ export const createFiatGateway = ({
   provider,
   contractAddress,
   mnemonic,
+  privateKey,
 }: CreateConfig): FiatGateway => {
-  const signer = createSigner({ provider, mnemonic });
+  const signer = createSigner({ provider, mnemonic, privateKey });
 
   return FiatGateway__factory.connect(contractAddress, signer);
 };
@@ -104,8 +117,9 @@ export const createSimpleAuction = ({
   provider,
   contractAddress,
   mnemonic,
+  privateKey,
 }: CreateConfig): SimpleAuction => {
-  const signer = createSigner({ provider, mnemonic });
+  const signer = createSigner({ provider, mnemonic, privateKey });
 
   return SimpleAuction__factory.connect(contractAddress, signer);
 };
