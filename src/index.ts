@@ -72,7 +72,7 @@ export const createSigner = ({
   provider,
   mnemonic,
   privateKey,
-}: CreateSignerConfig): Wallet | providers.JsonRpcSigner => {
+}: CreateSignerConfig): Wallet | Signer => {
   if (mnemonic) {
     return Wallet.fromMnemonic(mnemonic).connect(provider);
   }
