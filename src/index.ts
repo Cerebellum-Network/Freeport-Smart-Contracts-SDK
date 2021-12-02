@@ -12,10 +12,7 @@ import {
   NFTAttachment__factory,
   SimpleAuction__factory,
 } from './abi-types';
-import { networks as fiatGatewayNetworks } from './artifacts/FiatGateway.json';
-import { networks as freeportNetworks } from './artifacts/Freeport.json';
-import { networks as nftAttachmentNetworks } from './artifacts/NFTAttachment.json';
-import { networks as simpleAuctionNetworks } from './artifacts/SimpleAuction.json';
+import config from './config.json';
 
 export * from './abi-types';
 
@@ -25,7 +22,10 @@ declare global {
   }
 }
 
-type Network = { address: string };
+type Config = typeof config;
+export type Deployment = keyof Config;
+type ChainId = keyof Config[Deployment];
+export type ContractName = keyof Config[Deployment][ChainId];
 
 export type Signer = providers.JsonRpcSigner;
 export type Provider = providers.Web3Provider | providers.JsonRpcProvider;
@@ -37,37 +37,84 @@ export const createProvider = (
   providerUrl: string
 ): providers.JsonRpcProvider => new providers.JsonRpcProvider(providerUrl);
 
-export const getContractAddress = async (
-  provider: Provider,
-  networks: Record<string, Network>
-): Promise<string> => {
-  const { chainId } = await provider.getNetwork();
+export type GetContractAddressConfig = {
+  deployment?: Deployment;
+  chainId: number;
+  contractName: ContractName;
+};
 
-  if (chainId in networks) {
-    const network = networks[chainId];
+export const getContractAddress = ({
+  deployment = 'prod',
+  chainId,
+  contractName,
+}: GetContractAddressConfig): string => {
+  const networks = config[deployment];
 
-    return network.address;
+  if (networks && chainId in networks) {
+    const contracts = networks[String(chainId) as ChainId];
+    const contractAddress = contracts[contractName];
+
+    if (contractAddress) {
+      return contractAddress;
+    }
   }
 
   throw new Error(
-    `Cannot find smart contract address for chain id #${chainId}`
+    `Cannot find ${contractName} SC address in ${deployment} deployment for chain id #${chainId}`
   );
 };
 
-export const getFreeportAddress = async (provider: Provider): Promise<string> =>
-  getContractAddress(provider, freeportNetworks);
+export const getFreeportAddress = async (
+  provider: Provider,
+  deployment: Deployment = 'prod'
+): Promise<string> => {
+  const { chainId } = await provider.getNetwork();
+
+  return getContractAddress({
+    deployment,
+    chainId,
+    contractName: 'Freeport',
+  });
+};
 
 export const getFiatGatewayAddress = async (
-  provider: Provider
-): Promise<string> => getContractAddress(provider, fiatGatewayNetworks);
+  provider: Provider,
+  deployment: Deployment = 'prod'
+): Promise<string> => {
+  const { chainId } = await provider.getNetwork();
+
+  return getContractAddress({
+    deployment,
+    chainId,
+    contractName: 'FiatGateway',
+  });
+};
 
 export const getSimpleAuctionAddress = async (
-  provider: Provider
-): Promise<string> => getContractAddress(provider, simpleAuctionNetworks);
+  provider: Provider,
+  deployment: Deployment = 'prod'
+): Promise<string> => {
+  const { chainId } = await provider.getNetwork();
+
+  return getContractAddress({
+    deployment,
+    chainId,
+    contractName: 'SimpleAuction',
+  });
+};
 
 export const getNFTAttachmentAddress = async (
-  provider: Provider
-): Promise<string> => getContractAddress(provider, nftAttachmentNetworks);
+  provider: Provider,
+  deployment: Deployment = 'prod'
+): Promise<string> => {
+  const { chainId } = await provider.getNetwork();
+
+  return getContractAddress({
+    deployment,
+    chainId,
+    contractName: 'NFTAttachment',
+  });
+};
 
 export type CreateSignerConfig = {
   provider: Provider;
