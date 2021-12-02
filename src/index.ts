@@ -1,24 +1,27 @@
-// eslint-disable-next-line import/no-extraneous-dependencies
-import { ExternalProvider } from '@ethersproject/providers';
 import { providers, Wallet } from 'ethers';
 
-import type { Davinci, FiatGateway, SimpleAuction } from './abi-types';
+import type {
+  FiatGateway,
+  Freeport,
+  NFTAttachment,
+  SimpleAuction,
+} from './abi-types';
 import {
-  Davinci__factory,
   FiatGateway__factory,
+  Freeport__factory,
+  NFTAttachment__factory,
   SimpleAuction__factory,
 } from './abi-types';
-import { networks as davinciNetworks } from './artifacts/Davinci.json';
 import { networks as fiatGatewayNetworks } from './artifacts/FiatGateway.json';
+import { networks as freeportNetworks } from './artifacts/Freeport.json';
+import { networks as nftAttachmentNetworks } from './artifacts/NFTAttachment.json';
 import { networks as simpleAuctionNetworks } from './artifacts/SimpleAuction.json';
 
 export * from './abi-types';
-export type { ContractTransaction } from 'ethers';
-export { BigNumber, ethers } from 'ethers';
 
 declare global {
   interface Window {
-    ethereum: ExternalProvider;
+    ethereum: ConstructorParameters<typeof providers.Web3Provider>[0];
   }
 }
 
@@ -51,8 +54,8 @@ export const getContractAddress = async (
   );
 };
 
-export const getDavinciAddress = async (provider: Provider): Promise<string> =>
-  getContractAddress(provider, davinciNetworks);
+export const getFreeportAddress = async (provider: Provider): Promise<string> =>
+  getContractAddress(provider, freeportNetworks);
 
 export const getFiatGatewayAddress = async (
   provider: Provider
@@ -61,6 +64,10 @@ export const getFiatGatewayAddress = async (
 export const getSimpleAuctionAddress = async (
   provider: Provider
 ): Promise<string> => getContractAddress(provider, simpleAuctionNetworks);
+
+export const getNFTAttachmentAddress = async (
+  provider: Provider
+): Promise<string> => getContractAddress(provider, nftAttachmentNetworks);
 
 export type CreateSignerConfig = {
   provider: Provider;
@@ -84,22 +91,22 @@ export const createSigner = ({
   return provider.getSigner();
 };
 
-export type CreateConfig = {
+export type CreateContractConfig = {
   provider: Provider;
   contractAddress: string;
   mnemonic?: string;
   privateKey?: string;
 };
 
-export const createDavinci = ({
+export const createFreeport = ({
   provider,
   contractAddress,
   mnemonic,
   privateKey,
-}: CreateConfig): Davinci => {
+}: CreateContractConfig): Freeport => {
   const signer = createSigner({ provider, mnemonic, privateKey });
 
-  return Davinci__factory.connect(contractAddress, signer);
+  return Freeport__factory.connect(contractAddress, signer);
 };
 
 export const createFiatGateway = ({
@@ -107,7 +114,7 @@ export const createFiatGateway = ({
   contractAddress,
   mnemonic,
   privateKey,
-}: CreateConfig): FiatGateway => {
+}: CreateContractConfig): FiatGateway => {
   const signer = createSigner({ provider, mnemonic, privateKey });
 
   return FiatGateway__factory.connect(contractAddress, signer);
@@ -118,8 +125,19 @@ export const createSimpleAuction = ({
   contractAddress,
   mnemonic,
   privateKey,
-}: CreateConfig): SimpleAuction => {
+}: CreateContractConfig): SimpleAuction => {
   const signer = createSigner({ provider, mnemonic, privateKey });
 
   return SimpleAuction__factory.connect(contractAddress, signer);
+};
+
+export const createNFTAttachment = ({
+  provider,
+  contractAddress,
+  mnemonic,
+  privateKey,
+}: CreateContractConfig): NFTAttachment => {
+  const signer = createSigner({ provider, mnemonic, privateKey });
+
+  return NFTAttachment__factory.connect(contractAddress, signer);
 };

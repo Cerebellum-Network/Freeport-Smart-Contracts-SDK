@@ -9,8 +9,8 @@ const _abi = [
   {
     inputs: [
       {
-        internalType: 'contract Davinci',
-        name: '_davinci',
+        internalType: 'contract Freeport',
+        name: '_freeport',
         type: 'address',
       },
     ],
@@ -235,10 +235,10 @@ const _abi = [
   },
   {
     inputs: [],
-    name: 'davinci',
+    name: 'freeport',
     outputs: [
       {
-        internalType: 'contract Davinci',
+        internalType: 'contract Freeport',
         name: '',
         type: 'address',
       },
@@ -586,16 +586,16 @@ export class SimpleAuction__factory extends ContractFactory {
   }
 
   deploy(
-    _davinci: string,
+    _freeport: string,
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<SimpleAuction> {
-    return super.deploy(_davinci, overrides || {}) as Promise<SimpleAuction>;
+    return super.deploy(_freeport, overrides || {}) as Promise<SimpleAuction>;
   }
   getDeployTransaction(
-    _davinci: string,
+    _freeport: string,
     overrides?: Overrides & { from?: string | Promise<string> }
   ): TransactionRequest {
-    return super.getDeployTransaction(_davinci, overrides || {});
+    return super.getDeployTransaction(_freeport, overrides || {});
   }
   attach(address: string): SimpleAuction {
     return super.attach(address) as SimpleAuction;

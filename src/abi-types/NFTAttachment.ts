@@ -17,28 +17,21 @@ import { FunctionFragment, Result, EventFragment } from '@ethersproject/abi';
 import { Listener, Provider } from '@ethersproject/providers';
 import { TypedEventFilter, TypedEvent, TypedListener, OnEvent } from './common';
 
-export interface SimpleAuctionInterface extends utils.Interface {
+export interface NFTAttachmentInterface extends utils.Interface {
   functions: {
-    'CURRENCY()': FunctionFragment;
     'DEFAULT_ADMIN_ROLE()': FunctionFragment;
     'META_TX_FORWARDER()': FunctionFragment;
-    'freeport()': FunctionFragment;
     'getRoleAdmin(bytes32)': FunctionFragment;
     'grantRole(bytes32,address)': FunctionFragment;
     'hasRole(bytes32,address)': FunctionFragment;
     'isTrustedForwarder(address)': FunctionFragment;
-    'onERC1155BatchReceived(address,address,uint256[],uint256[],bytes)': FunctionFragment;
-    'onERC1155Received(address,address,uint256,uint256,bytes)': FunctionFragment;
+    'nftContract()': FunctionFragment;
     'renounceRole(bytes32,address)': FunctionFragment;
     'revokeRole(bytes32,address)': FunctionFragment;
-    'sellerNftBids(address,uint256)': FunctionFragment;
     'supportsInterface(bytes4)': FunctionFragment;
-    'startAuction(uint256,uint256,uint256)': FunctionFragment;
-    'bidOnAuction(address,uint256,uint256)': FunctionFragment;
-    'settleAuction(address,uint256)': FunctionFragment;
+    'attachToNFT(uint256,bytes32)': FunctionFragment;
   };
 
-  encodeFunctionData(functionFragment: 'CURRENCY', values?: undefined): string;
   encodeFunctionData(
     functionFragment: 'DEFAULT_ADMIN_ROLE',
     values?: undefined
@@ -47,7 +40,6 @@ export interface SimpleAuctionInterface extends utils.Interface {
     functionFragment: 'META_TX_FORWARDER',
     values?: undefined
   ): string;
-  encodeFunctionData(functionFragment: 'freeport', values?: undefined): string;
   encodeFunctionData(
     functionFragment: 'getRoleAdmin',
     values: [BytesLike]
@@ -65,12 +57,8 @@ export interface SimpleAuctionInterface extends utils.Interface {
     values: [string]
   ): string;
   encodeFunctionData(
-    functionFragment: 'onERC1155BatchReceived',
-    values: [string, string, BigNumberish[], BigNumberish[], BytesLike]
-  ): string;
-  encodeFunctionData(
-    functionFragment: 'onERC1155Received',
-    values: [string, string, BigNumberish, BigNumberish, BytesLike]
+    functionFragment: 'nftContract',
+    values?: undefined
   ): string;
   encodeFunctionData(
     functionFragment: 'renounceRole',
@@ -81,27 +69,14 @@ export interface SimpleAuctionInterface extends utils.Interface {
     values: [BytesLike, string]
   ): string;
   encodeFunctionData(
-    functionFragment: 'sellerNftBids',
-    values: [string, BigNumberish]
-  ): string;
-  encodeFunctionData(
     functionFragment: 'supportsInterface',
     values: [BytesLike]
   ): string;
   encodeFunctionData(
-    functionFragment: 'startAuction',
-    values: [BigNumberish, BigNumberish, BigNumberish]
-  ): string;
-  encodeFunctionData(
-    functionFragment: 'bidOnAuction',
-    values: [string, BigNumberish, BigNumberish]
-  ): string;
-  encodeFunctionData(
-    functionFragment: 'settleAuction',
-    values: [string, BigNumberish]
+    functionFragment: 'attachToNFT',
+    values: [BigNumberish, BytesLike]
   ): string;
 
-  decodeFunctionResult(functionFragment: 'CURRENCY', data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: 'DEFAULT_ADMIN_ROLE',
     data: BytesLike
@@ -110,7 +85,6 @@ export interface SimpleAuctionInterface extends utils.Interface {
     functionFragment: 'META_TX_FORWARDER',
     data: BytesLike
   ): Result;
-  decodeFunctionResult(functionFragment: 'freeport', data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: 'getRoleAdmin',
     data: BytesLike
@@ -122,11 +96,7 @@ export interface SimpleAuctionInterface extends utils.Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(
-    functionFragment: 'onERC1155BatchReceived',
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: 'onERC1155Received',
+    functionFragment: 'nftContract',
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -135,55 +105,33 @@ export interface SimpleAuctionInterface extends utils.Interface {
   ): Result;
   decodeFunctionResult(functionFragment: 'revokeRole', data: BytesLike): Result;
   decodeFunctionResult(
-    functionFragment: 'sellerNftBids',
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
     functionFragment: 'supportsInterface',
     data: BytesLike
   ): Result;
   decodeFunctionResult(
-    functionFragment: 'startAuction',
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: 'bidOnAuction',
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: 'settleAuction',
+    functionFragment: 'attachToNFT',
     data: BytesLike
   ): Result;
 
   events: {
-    'BidOnAuction(address,uint256,uint256,uint256,address)': EventFragment;
+    'AttachToNFT(address,uint256,bytes32)': EventFragment;
     'RoleAdminChanged(bytes32,bytes32,bytes32)': EventFragment;
     'RoleGranted(bytes32,address,address)': EventFragment;
     'RoleRevoked(bytes32,address,address)': EventFragment;
-    'SettleAuction(address,uint256,uint256,address)': EventFragment;
-    'StartAuction(address,uint256,uint256,uint256)': EventFragment;
   };
 
-  getEvent(nameOrSignatureOrTopic: 'BidOnAuction'): EventFragment;
+  getEvent(nameOrSignatureOrTopic: 'AttachToNFT'): EventFragment;
   getEvent(nameOrSignatureOrTopic: 'RoleAdminChanged'): EventFragment;
   getEvent(nameOrSignatureOrTopic: 'RoleGranted'): EventFragment;
   getEvent(nameOrSignatureOrTopic: 'RoleRevoked'): EventFragment;
-  getEvent(nameOrSignatureOrTopic: 'SettleAuction'): EventFragment;
-  getEvent(nameOrSignatureOrTopic: 'StartAuction'): EventFragment;
 }
 
-export type BidOnAuctionEvent = TypedEvent<
-  [string, BigNumber, BigNumber, BigNumber, string],
-  {
-    seller: string;
-    nftId: BigNumber;
-    price: BigNumber;
-    closeTimeSec: BigNumber;
-    buyer: string;
-  }
+export type AttachToNFTEvent = TypedEvent<
+  [string, BigNumber, string],
+  { sender: string; nftId: BigNumber; cid: string }
 >;
 
-export type BidOnAuctionEventFilter = TypedEventFilter<BidOnAuctionEvent>;
+export type AttachToNFTEventFilter = TypedEventFilter<AttachToNFTEvent>;
 
 export type RoleAdminChangedEvent = TypedEvent<
   [string, string, string],
@@ -207,31 +155,12 @@ export type RoleRevokedEvent = TypedEvent<
 
 export type RoleRevokedEventFilter = TypedEventFilter<RoleRevokedEvent>;
 
-export type SettleAuctionEvent = TypedEvent<
-  [string, BigNumber, BigNumber, string],
-  { seller: string; nftId: BigNumber; price: BigNumber; buyer: string }
->;
-
-export type SettleAuctionEventFilter = TypedEventFilter<SettleAuctionEvent>;
-
-export type StartAuctionEvent = TypedEvent<
-  [string, BigNumber, BigNumber, BigNumber],
-  {
-    seller: string;
-    nftId: BigNumber;
-    price: BigNumber;
-    closeTimeSec: BigNumber;
-  }
->;
-
-export type StartAuctionEventFilter = TypedEventFilter<StartAuctionEvent>;
-
-export interface SimpleAuction extends BaseContract {
+export interface NFTAttachment extends BaseContract {
   connect(signerOrProvider: Signer | Provider | string): this;
   attach(addressOrName: string): this;
   deployed(): Promise<this>;
 
-  interface: SimpleAuctionInterface;
+  interface: NFTAttachmentInterface;
 
   queryFilter<TEvent extends TypedEvent>(
     event: TypedEventFilter<TEvent>,
@@ -253,16 +182,6 @@ export interface SimpleAuction extends BaseContract {
   removeListener: OnEvent<this>;
 
   functions: {
-    /**
-     * The token ID that represents the CERE currency for all payments in this contract.
-     */
-    CURRENCY(overrides?: CallOverrides): Promise<[BigNumber]>;
-
-    /**
-     * The token ID that represents the CERE currency for all payments in this contract.
-     */
-    'CURRENCY()'(overrides?: CallOverrides): Promise<[BigNumber]>;
-
     DEFAULT_ADMIN_ROLE(overrides?: CallOverrides): Promise<[string]>;
 
     'DEFAULT_ADMIN_ROLE()'(overrides?: CallOverrides): Promise<[string]>;
@@ -270,10 +189,6 @@ export interface SimpleAuction extends BaseContract {
     META_TX_FORWARDER(overrides?: CallOverrides): Promise<[string]>;
 
     'META_TX_FORWARDER()'(overrides?: CallOverrides): Promise<[string]>;
-
-    freeport(overrides?: CallOverrides): Promise<[string]>;
-
-    'freeport()'(overrides?: CallOverrides): Promise<[string]>;
 
     /**
      * Returns the admin role that controls `role`. See {grantRole} and {revokeRole}. To change a role's admin, use {_setRoleAdmin}.
@@ -334,41 +249,15 @@ export interface SimpleAuction extends BaseContract {
       overrides?: CallOverrides
     ): Promise<[boolean]>;
 
-    onERC1155BatchReceived(
-      arg0: string,
-      arg1: string,
-      arg2: BigNumberish[],
-      arg3: BigNumberish[],
-      arg4: BytesLike,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>;
+    /**
+     * This attachment contract refers to the NFT contract in this variable. This is informative, there is no validation.
+     */
+    nftContract(overrides?: CallOverrides): Promise<[string]>;
 
-    'onERC1155BatchReceived(address,address,uint256[],uint256[],bytes)'(
-      arg0: string,
-      arg1: string,
-      arg2: BigNumberish[],
-      arg3: BigNumberish[],
-      arg4: BytesLike,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>;
-
-    onERC1155Received(
-      arg0: string,
-      arg1: string,
-      arg2: BigNumberish,
-      arg3: BigNumberish,
-      arg4: BytesLike,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>;
-
-    'onERC1155Received(address,address,uint256,uint256,bytes)'(
-      arg0: string,
-      arg1: string,
-      arg2: BigNumberish,
-      arg3: BigNumberish,
-      arg4: BytesLike,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>;
+    /**
+     * This attachment contract refers to the NFT contract in this variable. This is informative, there is no validation.
+     */
+    'nftContract()'(overrides?: CallOverrides): Promise<[string]>;
 
     /**
      * Revokes `role` from the calling account. Roles are often managed via {grantRole} and {revokeRole}: this function's purpose is to provide a mechanism for accounts to lose their privileges if they are compromised (such as when a trusted device is misplaced). If the calling account had been granted `role`, emits a {RoleRevoked} event. Requirements: - the caller must be `account`.
@@ -407,37 +296,7 @@ export interface SimpleAuction extends BaseContract {
     ): Promise<ContractTransaction>;
 
     /**
-     * Seller => NFT ID => Bid.
-     */
-    sellerNftBids(
-      arg0: string,
-      arg1: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<
-      [string, BigNumber, BigNumber] & {
-        buyer: string;
-        price: BigNumber;
-        closeTimeSec: BigNumber;
-      }
-    >;
-
-    /**
-     * Seller => NFT ID => Bid.
-     */
-    'sellerNftBids(address,uint256)'(
-      arg0: string,
-      arg1: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<
-      [string, BigNumber, BigNumber] & {
-        buyer: string;
-        price: BigNumber;
-        closeTimeSec: BigNumber;
-      }
-    >;
-
-    /**
-     * Supports interfaces of AccessControl and ERC1155Receiver.
+     * See {IERC165-supportsInterface}.
      */
     supportsInterface(
       interfaceId: BytesLike,
@@ -445,63 +304,31 @@ export interface SimpleAuction extends BaseContract {
     ): Promise<[boolean]>;
 
     /**
-     * Supports interfaces of AccessControl and ERC1155Receiver.
+     * See {IERC165-supportsInterface}.
      */
     'supportsInterface(bytes4)'(
       interfaceId: BytesLike,
       overrides?: CallOverrides
     ): Promise<[boolean]>;
 
-    startAuction(
+    /**
+     * Attach an object identified by `cid` to the NFT type `nftId`. There is absolutely no validation. It is the responsibility of the reader of this event to decide who the sender is and what the object means.
+     */
+    attachToNFT(
       nftId: BigNumberish,
-      minPrice: BigNumberish,
-      closeTimeSec: BigNumberish,
+      cid: BytesLike,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
-    'startAuction(uint256,uint256,uint256)'(
+    /**
+     * Attach an object identified by `cid` to the NFT type `nftId`. There is absolutely no validation. It is the responsibility of the reader of this event to decide who the sender is and what the object means.
+     */
+    'attachToNFT(uint256,bytes32)'(
       nftId: BigNumberish,
-      minPrice: BigNumberish,
-      closeTimeSec: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>;
-
-    bidOnAuction(
-      seller: string,
-      nftId: BigNumberish,
-      price: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>;
-
-    'bidOnAuction(address,uint256,uint256)'(
-      seller: string,
-      nftId: BigNumberish,
-      price: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>;
-
-    settleAuction(
-      seller: string,
-      nftId: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>;
-
-    'settleAuction(address,uint256)'(
-      seller: string,
-      nftId: BigNumberish,
+      cid: BytesLike,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
   };
-
-  /**
-   * The token ID that represents the CERE currency for all payments in this contract.
-   */
-  CURRENCY(overrides?: CallOverrides): Promise<BigNumber>;
-
-  /**
-   * The token ID that represents the CERE currency for all payments in this contract.
-   */
-  'CURRENCY()'(overrides?: CallOverrides): Promise<BigNumber>;
 
   DEFAULT_ADMIN_ROLE(overrides?: CallOverrides): Promise<string>;
 
@@ -510,10 +337,6 @@ export interface SimpleAuction extends BaseContract {
   META_TX_FORWARDER(overrides?: CallOverrides): Promise<string>;
 
   'META_TX_FORWARDER()'(overrides?: CallOverrides): Promise<string>;
-
-  freeport(overrides?: CallOverrides): Promise<string>;
-
-  'freeport()'(overrides?: CallOverrides): Promise<string>;
 
   /**
    * Returns the admin role that controls `role`. See {grantRole} and {revokeRole}. To change a role's admin, use {_setRoleAdmin}.
@@ -574,41 +397,15 @@ export interface SimpleAuction extends BaseContract {
     overrides?: CallOverrides
   ): Promise<boolean>;
 
-  onERC1155BatchReceived(
-    arg0: string,
-    arg1: string,
-    arg2: BigNumberish[],
-    arg3: BigNumberish[],
-    arg4: BytesLike,
-    overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>;
+  /**
+   * This attachment contract refers to the NFT contract in this variable. This is informative, there is no validation.
+   */
+  nftContract(overrides?: CallOverrides): Promise<string>;
 
-  'onERC1155BatchReceived(address,address,uint256[],uint256[],bytes)'(
-    arg0: string,
-    arg1: string,
-    arg2: BigNumberish[],
-    arg3: BigNumberish[],
-    arg4: BytesLike,
-    overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>;
-
-  onERC1155Received(
-    arg0: string,
-    arg1: string,
-    arg2: BigNumberish,
-    arg3: BigNumberish,
-    arg4: BytesLike,
-    overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>;
-
-  'onERC1155Received(address,address,uint256,uint256,bytes)'(
-    arg0: string,
-    arg1: string,
-    arg2: BigNumberish,
-    arg3: BigNumberish,
-    arg4: BytesLike,
-    overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>;
+  /**
+   * This attachment contract refers to the NFT contract in this variable. This is informative, there is no validation.
+   */
+  'nftContract()'(overrides?: CallOverrides): Promise<string>;
 
   /**
    * Revokes `role` from the calling account. Roles are often managed via {grantRole} and {revokeRole}: this function's purpose is to provide a mechanism for accounts to lose their privileges if they are compromised (such as when a trusted device is misplaced). If the calling account had been granted `role`, emits a {RoleRevoked} event. Requirements: - the caller must be `account`.
@@ -647,37 +444,7 @@ export interface SimpleAuction extends BaseContract {
   ): Promise<ContractTransaction>;
 
   /**
-   * Seller => NFT ID => Bid.
-   */
-  sellerNftBids(
-    arg0: string,
-    arg1: BigNumberish,
-    overrides?: CallOverrides
-  ): Promise<
-    [string, BigNumber, BigNumber] & {
-      buyer: string;
-      price: BigNumber;
-      closeTimeSec: BigNumber;
-    }
-  >;
-
-  /**
-   * Seller => NFT ID => Bid.
-   */
-  'sellerNftBids(address,uint256)'(
-    arg0: string,
-    arg1: BigNumberish,
-    overrides?: CallOverrides
-  ): Promise<
-    [string, BigNumber, BigNumber] & {
-      buyer: string;
-      price: BigNumber;
-      closeTimeSec: BigNumber;
-    }
-  >;
-
-  /**
-   * Supports interfaces of AccessControl and ERC1155Receiver.
+   * See {IERC165-supportsInterface}.
    */
   supportsInterface(
     interfaceId: BytesLike,
@@ -685,64 +452,32 @@ export interface SimpleAuction extends BaseContract {
   ): Promise<boolean>;
 
   /**
-   * Supports interfaces of AccessControl and ERC1155Receiver.
+   * See {IERC165-supportsInterface}.
    */
   'supportsInterface(bytes4)'(
     interfaceId: BytesLike,
     overrides?: CallOverrides
   ): Promise<boolean>;
 
-  startAuction(
+  /**
+   * Attach an object identified by `cid` to the NFT type `nftId`. There is absolutely no validation. It is the responsibility of the reader of this event to decide who the sender is and what the object means.
+   */
+  attachToNFT(
     nftId: BigNumberish,
-    minPrice: BigNumberish,
-    closeTimeSec: BigNumberish,
+    cid: BytesLike,
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
-  'startAuction(uint256,uint256,uint256)'(
+  /**
+   * Attach an object identified by `cid` to the NFT type `nftId`. There is absolutely no validation. It is the responsibility of the reader of this event to decide who the sender is and what the object means.
+   */
+  'attachToNFT(uint256,bytes32)'(
     nftId: BigNumberish,
-    minPrice: BigNumberish,
-    closeTimeSec: BigNumberish,
-    overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>;
-
-  bidOnAuction(
-    seller: string,
-    nftId: BigNumberish,
-    price: BigNumberish,
-    overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>;
-
-  'bidOnAuction(address,uint256,uint256)'(
-    seller: string,
-    nftId: BigNumberish,
-    price: BigNumberish,
-    overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>;
-
-  settleAuction(
-    seller: string,
-    nftId: BigNumberish,
-    overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>;
-
-  'settleAuction(address,uint256)'(
-    seller: string,
-    nftId: BigNumberish,
+    cid: BytesLike,
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
   callStatic: {
-    /**
-     * The token ID that represents the CERE currency for all payments in this contract.
-     */
-    CURRENCY(overrides?: CallOverrides): Promise<BigNumber>;
-
-    /**
-     * The token ID that represents the CERE currency for all payments in this contract.
-     */
-    'CURRENCY()'(overrides?: CallOverrides): Promise<BigNumber>;
-
     DEFAULT_ADMIN_ROLE(overrides?: CallOverrides): Promise<string>;
 
     'DEFAULT_ADMIN_ROLE()'(overrides?: CallOverrides): Promise<string>;
@@ -750,10 +485,6 @@ export interface SimpleAuction extends BaseContract {
     META_TX_FORWARDER(overrides?: CallOverrides): Promise<string>;
 
     'META_TX_FORWARDER()'(overrides?: CallOverrides): Promise<string>;
-
-    freeport(overrides?: CallOverrides): Promise<string>;
-
-    'freeport()'(overrides?: CallOverrides): Promise<string>;
 
     /**
      * Returns the admin role that controls `role`. See {grantRole} and {revokeRole}. To change a role's admin, use {_setRoleAdmin}.
@@ -814,41 +545,15 @@ export interface SimpleAuction extends BaseContract {
       overrides?: CallOverrides
     ): Promise<boolean>;
 
-    onERC1155BatchReceived(
-      arg0: string,
-      arg1: string,
-      arg2: BigNumberish[],
-      arg3: BigNumberish[],
-      arg4: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<string>;
+    /**
+     * This attachment contract refers to the NFT contract in this variable. This is informative, there is no validation.
+     */
+    nftContract(overrides?: CallOverrides): Promise<string>;
 
-    'onERC1155BatchReceived(address,address,uint256[],uint256[],bytes)'(
-      arg0: string,
-      arg1: string,
-      arg2: BigNumberish[],
-      arg3: BigNumberish[],
-      arg4: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<string>;
-
-    onERC1155Received(
-      arg0: string,
-      arg1: string,
-      arg2: BigNumberish,
-      arg3: BigNumberish,
-      arg4: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<string>;
-
-    'onERC1155Received(address,address,uint256,uint256,bytes)'(
-      arg0: string,
-      arg1: string,
-      arg2: BigNumberish,
-      arg3: BigNumberish,
-      arg4: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<string>;
+    /**
+     * This attachment contract refers to the NFT contract in this variable. This is informative, there is no validation.
+     */
+    'nftContract()'(overrides?: CallOverrides): Promise<string>;
 
     /**
      * Revokes `role` from the calling account. Roles are often managed via {grantRole} and {revokeRole}: this function's purpose is to provide a mechanism for accounts to lose their privileges if they are compromised (such as when a trusted device is misplaced). If the calling account had been granted `role`, emits a {RoleRevoked} event. Requirements: - the caller must be `account`.
@@ -887,37 +592,7 @@ export interface SimpleAuction extends BaseContract {
     ): Promise<void>;
 
     /**
-     * Seller => NFT ID => Bid.
-     */
-    sellerNftBids(
-      arg0: string,
-      arg1: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<
-      [string, BigNumber, BigNumber] & {
-        buyer: string;
-        price: BigNumber;
-        closeTimeSec: BigNumber;
-      }
-    >;
-
-    /**
-     * Seller => NFT ID => Bid.
-     */
-    'sellerNftBids(address,uint256)'(
-      arg0: string,
-      arg1: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<
-      [string, BigNumber, BigNumber] & {
-        buyer: string;
-        price: BigNumber;
-        closeTimeSec: BigNumber;
-      }
-    >;
-
-    /**
-     * Supports interfaces of AccessControl and ERC1155Receiver.
+     * See {IERC165-supportsInterface}.
      */
     supportsInterface(
       interfaceId: BytesLike,
@@ -925,69 +600,43 @@ export interface SimpleAuction extends BaseContract {
     ): Promise<boolean>;
 
     /**
-     * Supports interfaces of AccessControl and ERC1155Receiver.
+     * See {IERC165-supportsInterface}.
      */
     'supportsInterface(bytes4)'(
       interfaceId: BytesLike,
       overrides?: CallOverrides
     ): Promise<boolean>;
 
-    startAuction(
+    /**
+     * Attach an object identified by `cid` to the NFT type `nftId`. There is absolutely no validation. It is the responsibility of the reader of this event to decide who the sender is and what the object means.
+     */
+    attachToNFT(
       nftId: BigNumberish,
-      minPrice: BigNumberish,
-      closeTimeSec: BigNumberish,
+      cid: BytesLike,
       overrides?: CallOverrides
     ): Promise<void>;
 
-    'startAuction(uint256,uint256,uint256)'(
+    /**
+     * Attach an object identified by `cid` to the NFT type `nftId`. There is absolutely no validation. It is the responsibility of the reader of this event to decide who the sender is and what the object means.
+     */
+    'attachToNFT(uint256,bytes32)'(
       nftId: BigNumberish,
-      minPrice: BigNumberish,
-      closeTimeSec: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<void>;
-
-    bidOnAuction(
-      seller: string,
-      nftId: BigNumberish,
-      price: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<void>;
-
-    'bidOnAuction(address,uint256,uint256)'(
-      seller: string,
-      nftId: BigNumberish,
-      price: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<void>;
-
-    settleAuction(
-      seller: string,
-      nftId: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<void>;
-
-    'settleAuction(address,uint256)'(
-      seller: string,
-      nftId: BigNumberish,
+      cid: BytesLike,
       overrides?: CallOverrides
     ): Promise<void>;
   };
 
   filters: {
-    'BidOnAuction(address,uint256,uint256,uint256,address)'(
-      seller?: string | null,
+    'AttachToNFT(address,uint256,bytes32)'(
+      sender?: string | null,
       nftId?: BigNumberish | null,
-      price?: null,
-      closeTimeSec?: null,
-      buyer?: null
-    ): BidOnAuctionEventFilter;
-    BidOnAuction(
-      seller?: string | null,
+      cid?: null
+    ): AttachToNFTEventFilter;
+    AttachToNFT(
+      sender?: string | null,
       nftId?: BigNumberish | null,
-      price?: null,
-      closeTimeSec?: null,
-      buyer?: null
-    ): BidOnAuctionEventFilter;
+      cid?: null
+    ): AttachToNFTEventFilter;
 
     'RoleAdminChanged(bytes32,bytes32,bytes32)'(
       role?: BytesLike | null,
@@ -1021,45 +670,9 @@ export interface SimpleAuction extends BaseContract {
       account?: string | null,
       sender?: string | null
     ): RoleRevokedEventFilter;
-
-    'SettleAuction(address,uint256,uint256,address)'(
-      seller?: string | null,
-      nftId?: BigNumberish | null,
-      price?: null,
-      buyer?: null
-    ): SettleAuctionEventFilter;
-    SettleAuction(
-      seller?: string | null,
-      nftId?: BigNumberish | null,
-      price?: null,
-      buyer?: null
-    ): SettleAuctionEventFilter;
-
-    'StartAuction(address,uint256,uint256,uint256)'(
-      seller?: string | null,
-      nftId?: BigNumberish | null,
-      price?: null,
-      closeTimeSec?: null
-    ): StartAuctionEventFilter;
-    StartAuction(
-      seller?: string | null,
-      nftId?: BigNumberish | null,
-      price?: null,
-      closeTimeSec?: null
-    ): StartAuctionEventFilter;
   };
 
   estimateGas: {
-    /**
-     * The token ID that represents the CERE currency for all payments in this contract.
-     */
-    CURRENCY(overrides?: CallOverrides): Promise<BigNumber>;
-
-    /**
-     * The token ID that represents the CERE currency for all payments in this contract.
-     */
-    'CURRENCY()'(overrides?: CallOverrides): Promise<BigNumber>;
-
     DEFAULT_ADMIN_ROLE(overrides?: CallOverrides): Promise<BigNumber>;
 
     'DEFAULT_ADMIN_ROLE()'(overrides?: CallOverrides): Promise<BigNumber>;
@@ -1067,10 +680,6 @@ export interface SimpleAuction extends BaseContract {
     META_TX_FORWARDER(overrides?: CallOverrides): Promise<BigNumber>;
 
     'META_TX_FORWARDER()'(overrides?: CallOverrides): Promise<BigNumber>;
-
-    freeport(overrides?: CallOverrides): Promise<BigNumber>;
-
-    'freeport()'(overrides?: CallOverrides): Promise<BigNumber>;
 
     /**
      * Returns the admin role that controls `role`. See {grantRole} and {revokeRole}. To change a role's admin, use {_setRoleAdmin}.
@@ -1134,41 +743,15 @@ export interface SimpleAuction extends BaseContract {
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
-    onERC1155BatchReceived(
-      arg0: string,
-      arg1: string,
-      arg2: BigNumberish[],
-      arg3: BigNumberish[],
-      arg4: BytesLike,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>;
+    /**
+     * This attachment contract refers to the NFT contract in this variable. This is informative, there is no validation.
+     */
+    nftContract(overrides?: CallOverrides): Promise<BigNumber>;
 
-    'onERC1155BatchReceived(address,address,uint256[],uint256[],bytes)'(
-      arg0: string,
-      arg1: string,
-      arg2: BigNumberish[],
-      arg3: BigNumberish[],
-      arg4: BytesLike,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>;
-
-    onERC1155Received(
-      arg0: string,
-      arg1: string,
-      arg2: BigNumberish,
-      arg3: BigNumberish,
-      arg4: BytesLike,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>;
-
-    'onERC1155Received(address,address,uint256,uint256,bytes)'(
-      arg0: string,
-      arg1: string,
-      arg2: BigNumberish,
-      arg3: BigNumberish,
-      arg4: BytesLike,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>;
+    /**
+     * This attachment contract refers to the NFT contract in this variable. This is informative, there is no validation.
+     */
+    'nftContract()'(overrides?: CallOverrides): Promise<BigNumber>;
 
     /**
      * Revokes `role` from the calling account. Roles are often managed via {grantRole} and {revokeRole}: this function's purpose is to provide a mechanism for accounts to lose their privileges if they are compromised (such as when a trusted device is misplaced). If the calling account had been granted `role`, emits a {RoleRevoked} event. Requirements: - the caller must be `account`.
@@ -1207,25 +790,7 @@ export interface SimpleAuction extends BaseContract {
     ): Promise<BigNumber>;
 
     /**
-     * Seller => NFT ID => Bid.
-     */
-    sellerNftBids(
-      arg0: string,
-      arg1: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
-    /**
-     * Seller => NFT ID => Bid.
-     */
-    'sellerNftBids(address,uint256)'(
-      arg0: string,
-      arg1: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
-    /**
-     * Supports interfaces of AccessControl and ERC1155Receiver.
+     * See {IERC165-supportsInterface}.
      */
     supportsInterface(
       interfaceId: BytesLike,
@@ -1233,65 +798,33 @@ export interface SimpleAuction extends BaseContract {
     ): Promise<BigNumber>;
 
     /**
-     * Supports interfaces of AccessControl and ERC1155Receiver.
+     * See {IERC165-supportsInterface}.
      */
     'supportsInterface(bytes4)'(
       interfaceId: BytesLike,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
-    startAuction(
+    /**
+     * Attach an object identified by `cid` to the NFT type `nftId`. There is absolutely no validation. It is the responsibility of the reader of this event to decide who the sender is and what the object means.
+     */
+    attachToNFT(
       nftId: BigNumberish,
-      minPrice: BigNumberish,
-      closeTimeSec: BigNumberish,
+      cid: BytesLike,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
-    'startAuction(uint256,uint256,uint256)'(
+    /**
+     * Attach an object identified by `cid` to the NFT type `nftId`. There is absolutely no validation. It is the responsibility of the reader of this event to decide who the sender is and what the object means.
+     */
+    'attachToNFT(uint256,bytes32)'(
       nftId: BigNumberish,
-      minPrice: BigNumberish,
-      closeTimeSec: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>;
-
-    bidOnAuction(
-      seller: string,
-      nftId: BigNumberish,
-      price: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>;
-
-    'bidOnAuction(address,uint256,uint256)'(
-      seller: string,
-      nftId: BigNumberish,
-      price: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>;
-
-    settleAuction(
-      seller: string,
-      nftId: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>;
-
-    'settleAuction(address,uint256)'(
-      seller: string,
-      nftId: BigNumberish,
+      cid: BytesLike,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
   };
 
   populateTransaction: {
-    /**
-     * The token ID that represents the CERE currency for all payments in this contract.
-     */
-    CURRENCY(overrides?: CallOverrides): Promise<PopulatedTransaction>;
-
-    /**
-     * The token ID that represents the CERE currency for all payments in this contract.
-     */
-    'CURRENCY()'(overrides?: CallOverrides): Promise<PopulatedTransaction>;
-
     DEFAULT_ADMIN_ROLE(
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
@@ -1306,10 +839,6 @@ export interface SimpleAuction extends BaseContract {
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
-    freeport(overrides?: CallOverrides): Promise<PopulatedTransaction>;
-
-    'freeport()'(overrides?: CallOverrides): Promise<PopulatedTransaction>;
-
     /**
      * Returns the admin role that controls `role`. See {grantRole} and {revokeRole}. To change a role's admin, use {_setRoleAdmin}.
      */
@@ -1372,41 +901,15 @@ export interface SimpleAuction extends BaseContract {
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
-    onERC1155BatchReceived(
-      arg0: string,
-      arg1: string,
-      arg2: BigNumberish[],
-      arg3: BigNumberish[],
-      arg4: BytesLike,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>;
+    /**
+     * This attachment contract refers to the NFT contract in this variable. This is informative, there is no validation.
+     */
+    nftContract(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
-    'onERC1155BatchReceived(address,address,uint256[],uint256[],bytes)'(
-      arg0: string,
-      arg1: string,
-      arg2: BigNumberish[],
-      arg3: BigNumberish[],
-      arg4: BytesLike,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>;
-
-    onERC1155Received(
-      arg0: string,
-      arg1: string,
-      arg2: BigNumberish,
-      arg3: BigNumberish,
-      arg4: BytesLike,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>;
-
-    'onERC1155Received(address,address,uint256,uint256,bytes)'(
-      arg0: string,
-      arg1: string,
-      arg2: BigNumberish,
-      arg3: BigNumberish,
-      arg4: BytesLike,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>;
+    /**
+     * This attachment contract refers to the NFT contract in this variable. This is informative, there is no validation.
+     */
+    'nftContract()'(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     /**
      * Revokes `role` from the calling account. Roles are often managed via {grantRole} and {revokeRole}: this function's purpose is to provide a mechanism for accounts to lose their privileges if they are compromised (such as when a trusted device is misplaced). If the calling account had been granted `role`, emits a {RoleRevoked} event. Requirements: - the caller must be `account`.
@@ -1445,25 +948,7 @@ export interface SimpleAuction extends BaseContract {
     ): Promise<PopulatedTransaction>;
 
     /**
-     * Seller => NFT ID => Bid.
-     */
-    sellerNftBids(
-      arg0: string,
-      arg1: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    /**
-     * Seller => NFT ID => Bid.
-     */
-    'sellerNftBids(address,uint256)'(
-      arg0: string,
-      arg1: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    /**
-     * Supports interfaces of AccessControl and ERC1155Receiver.
+     * See {IERC165-supportsInterface}.
      */
     supportsInterface(
       interfaceId: BytesLike,
@@ -1471,50 +956,28 @@ export interface SimpleAuction extends BaseContract {
     ): Promise<PopulatedTransaction>;
 
     /**
-     * Supports interfaces of AccessControl and ERC1155Receiver.
+     * See {IERC165-supportsInterface}.
      */
     'supportsInterface(bytes4)'(
       interfaceId: BytesLike,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
-    startAuction(
+    /**
+     * Attach an object identified by `cid` to the NFT type `nftId`. There is absolutely no validation. It is the responsibility of the reader of this event to decide who the sender is and what the object means.
+     */
+    attachToNFT(
       nftId: BigNumberish,
-      minPrice: BigNumberish,
-      closeTimeSec: BigNumberish,
+      cid: BytesLike,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 
-    'startAuction(uint256,uint256,uint256)'(
+    /**
+     * Attach an object identified by `cid` to the NFT type `nftId`. There is absolutely no validation. It is the responsibility of the reader of this event to decide who the sender is and what the object means.
+     */
+    'attachToNFT(uint256,bytes32)'(
       nftId: BigNumberish,
-      minPrice: BigNumberish,
-      closeTimeSec: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>;
-
-    bidOnAuction(
-      seller: string,
-      nftId: BigNumberish,
-      price: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>;
-
-    'bidOnAuction(address,uint256,uint256)'(
-      seller: string,
-      nftId: BigNumberish,
-      price: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>;
-
-    settleAuction(
-      seller: string,
-      nftId: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>;
-
-    'settleAuction(address,uint256)'(
-      seller: string,
-      nftId: BigNumberish,
+      cid: BytesLike,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
   };

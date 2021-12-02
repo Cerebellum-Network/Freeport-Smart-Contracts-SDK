@@ -1,8 +1,27 @@
-## Usage
+## Freeport SDK
 
-Freeport-SDK provides an interface to work with each smart-contract.
+### Installation
 
-In order to call smart-contract methods you must create an object with them
+Freeport SDK uses [ethers](https://github.com/ethers-io/ethers.js/) library
+under the hood, but it is not included in this package. Install `ethers` as a
+dependency in your project along with the SDK:
+
+```
+npm install ethers @cere/freeport-sdk
+```
+
+or
+
+```
+yarn add ethers @cere/freeport-sdk
+```
+
+### Usage
+
+Freeport SDK provides an interface to work with
+[Freeport Smart Contracts](https://github.com/Cerebellum-Network/Freeport-Smart-Contracts).
+
+In order to call smart contract methods you must create an object with them
 using the creator function:
 
 ```ts
@@ -24,7 +43,7 @@ You also need to specify `contractAddress`. You can get the current address for
 your chain from SDK or get it from configuration params:
 
 ```ts
-const contractAddress = getDavinciAddress(provider); // browser
+const contractAddress = getFreeportAddress(provider); // browser
 ```
 
 ```ts
@@ -35,10 +54,10 @@ Here is an example of usage in browser:
 
 ```ts
 const provider = importProvider();
-const contractAddress = getDavinciAddress(provider);
-const davinci = createDavinci({ provider, contractAddress });
+const contractAddress = getFreeportAddress(provider);
+const freeport = createFreeport({ provider, contractAddress });
 
-const balance = await davinci.balanceOf(address, nftId);
+const balance = await freeport.balanceOf(address, nftId);
 ```
 
 And here is how you can use it without the browser :
@@ -65,8 +84,8 @@ await fiatGateway.buyNftFromUsd(...args);
 
 ### Commands
 
-To run the project in watch mode so any edits you save inside `src` causes a
-rebuild to `/dist`, use `yarn start`.
+To run the project in watch mode so that any edits you save inside `src` causes
+a rebuild to `/dist`, use `yarn start`.
 
 To do a one-off build, use `yarn build`.
 
@@ -87,7 +106,7 @@ Code quality is set up for you with `eslint`, `prettier`, `husky`, and
 
 ### Publishing to NPM
 
-1. Copy smart-contract artifacts to `/src/artifacts`
+1. Copy smart contract artifacts to `/src/artifacts`
 2. Run `yarn update-types`
 3. Commit changes with message like _"artifacts from commit e57691bc"_
 4. Check that `npm whoami` returns "cere-io" (otherwise update your NPM_TOKEN
@@ -103,7 +122,7 @@ Code quality is set up for you with `eslint`, `prettier`, `husky`, and
 
 Two actions are added by default:
 
-- `main` which installs deps w/ cache, lints, tests, and builds on all pushes
+- `main` which installs deps with cache, lints, tests, and builds on all pushes
   against a Node and OS matrix
 - `size` which comments cost comparison of your library on every pull request
   using [`size-limit`](https://github.com/ai/size-limit)

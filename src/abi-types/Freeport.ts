@@ -17,7 +17,7 @@ import { FunctionFragment, Result, EventFragment } from '@ethersproject/abi';
 import { Listener, Provider } from '@ethersproject/providers';
 import { TypedEventFilter, TypedEvent, TypedListener, OnEvent } from './common';
 
-export interface DavinciInterface extends utils.Interface {
+export interface FreeportInterface extends utils.Interface {
   functions: {
     'BASIS_POINTS()': FunctionFragment;
     'BYPASS_SENDER()': FunctionFragment;
@@ -30,6 +30,7 @@ export interface DavinciInterface extends utils.Interface {
     'balanceOf(address,uint256)': FunctionFragment;
     'balanceOfBatch(address[],uint256[])': FunctionFragment;
     'balanceOfJAOwner(address,address)': FunctionFragment;
+    'captureFee(address,uint256,uint256,uint256)': FunctionFragment;
     'childChainManagerProxy()': FunctionFragment;
     'configureRoyalties(uint256,address,uint256,uint256,address,uint256,uint256)': FunctionFragment;
     'createJointAccount(address[],uint256[])': FunctionFragment;
@@ -104,6 +105,10 @@ export interface DavinciInterface extends utils.Interface {
   encodeFunctionData(
     functionFragment: 'balanceOfJAOwner',
     values: [string, string]
+  ): string;
+  encodeFunctionData(
+    functionFragment: 'captureFee',
+    values: [string, BigNumberish, BigNumberish, BigNumberish]
   ): string;
   encodeFunctionData(
     functionFragment: 'childChainManagerProxy',
@@ -277,6 +282,7 @@ export interface DavinciInterface extends utils.Interface {
     functionFragment: 'balanceOfJAOwner',
     data: BytesLike
   ): Result;
+  decodeFunctionResult(functionFragment: 'captureFee', data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: 'childChainManagerProxy',
     data: BytesLike
@@ -524,12 +530,12 @@ export type URIEvent = TypedEvent<
 
 export type URIEventFilter = TypedEventFilter<URIEvent>;
 
-export interface Davinci extends BaseContract {
+export interface Freeport extends BaseContract {
   connect(signerOrProvider: Signer | Provider | string): this;
   attach(addressOrName: string): this;
   deployed(): Promise<this>;
 
-  interface: DavinciInterface;
+  interface: FreeportInterface;
 
   queryFilter<TEvent extends TypedEvent>(
     event: TypedEventFilter<TEvent>,
@@ -656,6 +662,28 @@ export interface Davinci extends BaseContract {
       owner: string,
       overrides?: CallOverrides
     ): Promise<[BigNumber]>;
+
+    /**
+     * Collect the royalty due on a transfer. The royalty is calculated based on NFT configuration and the price. It is collected by an internal transfer of currency between "from" and the beneficiary. Return the amount collected. The caller must be approved by "from", or a TRANSFER_OPERATOR.
+     */
+    captureFee(
+      from: string,
+      nftId: BigNumberish,
+      price: BigNumberish,
+      amount: BigNumberish,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
+
+    /**
+     * Collect the royalty due on a transfer. The royalty is calculated based on NFT configuration and the price. It is collected by an internal transfer of currency between "from" and the beneficiary. Return the amount collected. The caller must be approved by "from", or a TRANSFER_OPERATOR.
+     */
+    'captureFee(address,uint256,uint256,uint256)'(
+      from: string,
+      nftId: BigNumberish,
+      price: BigNumberish,
+      amount: BigNumberish,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
 
     /**
      * The address of the Polygon bridge contract that is allowed to deposit tokens.
@@ -1172,25 +1200,25 @@ export interface Davinci extends BaseContract {
     ): Promise<[boolean]>;
 
     /**
-     * Accept an offer, paying the price per unit for an amount of NFTs. The offer must have been created beforehand by makeOffer. The same authorization as safeTransferFrom apply to the buyer (sender or approved operator)..
+     * Accept an offer, paying the price per unit for an amount of NFTs. The offer must have been created beforehand by makeOffer. The same authorization as safeTransferFrom apply to the buyer (sender or approved operator). The parameter expectedPriceOrZero can be used to validate the price that the buyer expects to pay. This prevents a race condition with makeOffer or setExchangeRate. Pass 0 to disable this validation and accept any current price.
      */
     takeOffer(
       buyer: string,
       seller: string,
       nftId: BigNumberish,
-      price: BigNumberish,
+      expectedPriceOrZero: BigNumberish,
       amount: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
     /**
-     * Accept an offer, paying the price per unit for an amount of NFTs. The offer must have been created beforehand by makeOffer. The same authorization as safeTransferFrom apply to the buyer (sender or approved operator)..
+     * Accept an offer, paying the price per unit for an amount of NFTs. The offer must have been created beforehand by makeOffer. The same authorization as safeTransferFrom apply to the buyer (sender or approved operator). The parameter expectedPriceOrZero can be used to validate the price that the buyer expects to pay. This prevents a race condition with makeOffer or setExchangeRate. Pass 0 to disable this validation and accept any current price.
      */
     'takeOffer(address,address,uint256,uint256,uint256)'(
       buyer: string,
       seller: string,
       nftId: BigNumberish,
-      price: BigNumberish,
+      expectedPriceOrZero: BigNumberish,
       amount: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
@@ -1344,6 +1372,28 @@ export interface Davinci extends BaseContract {
     owner: string,
     overrides?: CallOverrides
   ): Promise<BigNumber>;
+
+  /**
+   * Collect the royalty due on a transfer. The royalty is calculated based on NFT configuration and the price. It is collected by an internal transfer of currency between "from" and the beneficiary. Return the amount collected. The caller must be approved by "from", or a TRANSFER_OPERATOR.
+   */
+  captureFee(
+    from: string,
+    nftId: BigNumberish,
+    price: BigNumberish,
+    amount: BigNumberish,
+    overrides?: Overrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
+
+  /**
+   * Collect the royalty due on a transfer. The royalty is calculated based on NFT configuration and the price. It is collected by an internal transfer of currency between "from" and the beneficiary. Return the amount collected. The caller must be approved by "from", or a TRANSFER_OPERATOR.
+   */
+  'captureFee(address,uint256,uint256,uint256)'(
+    from: string,
+    nftId: BigNumberish,
+    price: BigNumberish,
+    amount: BigNumberish,
+    overrides?: Overrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
 
   /**
    * The address of the Polygon bridge contract that is allowed to deposit tokens.
@@ -1860,25 +1910,25 @@ export interface Davinci extends BaseContract {
   ): Promise<boolean>;
 
   /**
-   * Accept an offer, paying the price per unit for an amount of NFTs. The offer must have been created beforehand by makeOffer. The same authorization as safeTransferFrom apply to the buyer (sender or approved operator)..
+   * Accept an offer, paying the price per unit for an amount of NFTs. The offer must have been created beforehand by makeOffer. The same authorization as safeTransferFrom apply to the buyer (sender or approved operator). The parameter expectedPriceOrZero can be used to validate the price that the buyer expects to pay. This prevents a race condition with makeOffer or setExchangeRate. Pass 0 to disable this validation and accept any current price.
    */
   takeOffer(
     buyer: string,
     seller: string,
     nftId: BigNumberish,
-    price: BigNumberish,
+    expectedPriceOrZero: BigNumberish,
     amount: BigNumberish,
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
   /**
-   * Accept an offer, paying the price per unit for an amount of NFTs. The offer must have been created beforehand by makeOffer. The same authorization as safeTransferFrom apply to the buyer (sender or approved operator)..
+   * Accept an offer, paying the price per unit for an amount of NFTs. The offer must have been created beforehand by makeOffer. The same authorization as safeTransferFrom apply to the buyer (sender or approved operator). The parameter expectedPriceOrZero can be used to validate the price that the buyer expects to pay. This prevents a race condition with makeOffer or setExchangeRate. Pass 0 to disable this validation and accept any current price.
    */
   'takeOffer(address,address,uint256,uint256,uint256)'(
     buyer: string,
     seller: string,
     nftId: BigNumberish,
-    price: BigNumberish,
+    expectedPriceOrZero: BigNumberish,
     amount: BigNumberish,
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
@@ -2030,6 +2080,28 @@ export interface Davinci extends BaseContract {
     'balanceOfJAOwner(address,address)'(
       account: string,
       owner: string,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    /**
+     * Collect the royalty due on a transfer. The royalty is calculated based on NFT configuration and the price. It is collected by an internal transfer of currency between "from" and the beneficiary. Return the amount collected. The caller must be approved by "from", or a TRANSFER_OPERATOR.
+     */
+    captureFee(
+      from: string,
+      nftId: BigNumberish,
+      price: BigNumberish,
+      amount: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    /**
+     * Collect the royalty due on a transfer. The royalty is calculated based on NFT configuration and the price. It is collected by an internal transfer of currency between "from" and the beneficiary. Return the amount collected. The caller must be approved by "from", or a TRANSFER_OPERATOR.
+     */
+    'captureFee(address,uint256,uint256,uint256)'(
+      from: string,
+      nftId: BigNumberish,
+      price: BigNumberish,
+      amount: BigNumberish,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
@@ -2548,25 +2620,25 @@ export interface Davinci extends BaseContract {
     ): Promise<boolean>;
 
     /**
-     * Accept an offer, paying the price per unit for an amount of NFTs. The offer must have been created beforehand by makeOffer. The same authorization as safeTransferFrom apply to the buyer (sender or approved operator)..
+     * Accept an offer, paying the price per unit for an amount of NFTs. The offer must have been created beforehand by makeOffer. The same authorization as safeTransferFrom apply to the buyer (sender or approved operator). The parameter expectedPriceOrZero can be used to validate the price that the buyer expects to pay. This prevents a race condition with makeOffer or setExchangeRate. Pass 0 to disable this validation and accept any current price.
      */
     takeOffer(
       buyer: string,
       seller: string,
       nftId: BigNumberish,
-      price: BigNumberish,
+      expectedPriceOrZero: BigNumberish,
       amount: BigNumberish,
       overrides?: CallOverrides
     ): Promise<void>;
 
     /**
-     * Accept an offer, paying the price per unit for an amount of NFTs. The offer must have been created beforehand by makeOffer. The same authorization as safeTransferFrom apply to the buyer (sender or approved operator)..
+     * Accept an offer, paying the price per unit for an amount of NFTs. The offer must have been created beforehand by makeOffer. The same authorization as safeTransferFrom apply to the buyer (sender or approved operator). The parameter expectedPriceOrZero can be used to validate the price that the buyer expects to pay. This prevents a race condition with makeOffer or setExchangeRate. Pass 0 to disable this validation and accept any current price.
      */
     'takeOffer(address,address,uint256,uint256,uint256)'(
       buyer: string,
       seller: string,
       nftId: BigNumberish,
-      price: BigNumberish,
+      expectedPriceOrZero: BigNumberish,
       amount: BigNumberish,
       overrides?: CallOverrides
     ): Promise<void>;
@@ -2875,6 +2947,28 @@ export interface Davinci extends BaseContract {
       account: string,
       owner: string,
       overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    /**
+     * Collect the royalty due on a transfer. The royalty is calculated based on NFT configuration and the price. It is collected by an internal transfer of currency between "from" and the beneficiary. Return the amount collected. The caller must be approved by "from", or a TRANSFER_OPERATOR.
+     */
+    captureFee(
+      from: string,
+      nftId: BigNumberish,
+      price: BigNumberish,
+      amount: BigNumberish,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<BigNumber>;
+
+    /**
+     * Collect the royalty due on a transfer. The royalty is calculated based on NFT configuration and the price. It is collected by an internal transfer of currency between "from" and the beneficiary. Return the amount collected. The caller must be approved by "from", or a TRANSFER_OPERATOR.
+     */
+    'captureFee(address,uint256,uint256,uint256)'(
+      from: string,
+      nftId: BigNumberish,
+      price: BigNumberish,
+      amount: BigNumberish,
+      overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
     /**
@@ -3363,25 +3457,25 @@ export interface Davinci extends BaseContract {
     ): Promise<BigNumber>;
 
     /**
-     * Accept an offer, paying the price per unit for an amount of NFTs. The offer must have been created beforehand by makeOffer. The same authorization as safeTransferFrom apply to the buyer (sender or approved operator)..
+     * Accept an offer, paying the price per unit for an amount of NFTs. The offer must have been created beforehand by makeOffer. The same authorization as safeTransferFrom apply to the buyer (sender or approved operator). The parameter expectedPriceOrZero can be used to validate the price that the buyer expects to pay. This prevents a race condition with makeOffer or setExchangeRate. Pass 0 to disable this validation and accept any current price.
      */
     takeOffer(
       buyer: string,
       seller: string,
       nftId: BigNumberish,
-      price: BigNumberish,
+      expectedPriceOrZero: BigNumberish,
       amount: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
     /**
-     * Accept an offer, paying the price per unit for an amount of NFTs. The offer must have been created beforehand by makeOffer. The same authorization as safeTransferFrom apply to the buyer (sender or approved operator)..
+     * Accept an offer, paying the price per unit for an amount of NFTs. The offer must have been created beforehand by makeOffer. The same authorization as safeTransferFrom apply to the buyer (sender or approved operator). The parameter expectedPriceOrZero can be used to validate the price that the buyer expects to pay. This prevents a race condition with makeOffer or setExchangeRate. Pass 0 to disable this validation and accept any current price.
      */
     'takeOffer(address,address,uint256,uint256,uint256)'(
       buyer: string,
       seller: string,
       nftId: BigNumberish,
-      price: BigNumberish,
+      expectedPriceOrZero: BigNumberish,
       amount: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
@@ -3549,6 +3643,28 @@ export interface Davinci extends BaseContract {
       account: string,
       owner: string,
       overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    /**
+     * Collect the royalty due on a transfer. The royalty is calculated based on NFT configuration and the price. It is collected by an internal transfer of currency between "from" and the beneficiary. Return the amount collected. The caller must be approved by "from", or a TRANSFER_OPERATOR.
+     */
+    captureFee(
+      from: string,
+      nftId: BigNumberish,
+      price: BigNumberish,
+      amount: BigNumberish,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
+
+    /**
+     * Collect the royalty due on a transfer. The royalty is calculated based on NFT configuration and the price. It is collected by an internal transfer of currency between "from" and the beneficiary. Return the amount collected. The caller must be approved by "from", or a TRANSFER_OPERATOR.
+     */
+    'captureFee(address,uint256,uint256,uint256)'(
+      from: string,
+      nftId: BigNumberish,
+      price: BigNumberish,
+      amount: BigNumberish,
+      overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 
     /**
@@ -4046,25 +4162,25 @@ export interface Davinci extends BaseContract {
     ): Promise<PopulatedTransaction>;
 
     /**
-     * Accept an offer, paying the price per unit for an amount of NFTs. The offer must have been created beforehand by makeOffer. The same authorization as safeTransferFrom apply to the buyer (sender or approved operator)..
+     * Accept an offer, paying the price per unit for an amount of NFTs. The offer must have been created beforehand by makeOffer. The same authorization as safeTransferFrom apply to the buyer (sender or approved operator). The parameter expectedPriceOrZero can be used to validate the price that the buyer expects to pay. This prevents a race condition with makeOffer or setExchangeRate. Pass 0 to disable this validation and accept any current price.
      */
     takeOffer(
       buyer: string,
       seller: string,
       nftId: BigNumberish,
-      price: BigNumberish,
+      expectedPriceOrZero: BigNumberish,
       amount: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 
     /**
-     * Accept an offer, paying the price per unit for an amount of NFTs. The offer must have been created beforehand by makeOffer. The same authorization as safeTransferFrom apply to the buyer (sender or approved operator)..
+     * Accept an offer, paying the price per unit for an amount of NFTs. The offer must have been created beforehand by makeOffer. The same authorization as safeTransferFrom apply to the buyer (sender or approved operator). The parameter expectedPriceOrZero can be used to validate the price that the buyer expects to pay. This prevents a race condition with makeOffer or setExchangeRate. Pass 0 to disable this validation and accept any current price.
      */
     'takeOffer(address,address,uint256,uint256,uint256)'(
       buyer: string,
       seller: string,
       nftId: BigNumberish,
-      price: BigNumberish,
+      expectedPriceOrZero: BigNumberish,
       amount: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;

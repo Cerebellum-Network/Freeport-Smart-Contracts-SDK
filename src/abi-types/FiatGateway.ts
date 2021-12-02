@@ -23,7 +23,7 @@ export interface FiatGatewayInterface extends utils.Interface {
     'DEFAULT_ADMIN_ROLE()': FunctionFragment;
     'EXCHANGE_RATE_ORACLE()': FunctionFragment;
     'PAYMENT_SERVICE()': FunctionFragment;
-    'davinci()': FunctionFragment;
+    'freeport()': FunctionFragment;
     'getRoleAdmin(bytes32)': FunctionFragment;
     'grantRole(bytes32,address)': FunctionFragment;
     'hasRole(bytes32,address)': FunctionFragment;
@@ -52,7 +52,7 @@ export interface FiatGatewayInterface extends utils.Interface {
     functionFragment: 'PAYMENT_SERVICE',
     values?: undefined
   ): string;
-  encodeFunctionData(functionFragment: 'davinci', values?: undefined): string;
+  encodeFunctionData(functionFragment: 'freeport', values?: undefined): string;
   encodeFunctionData(
     functionFragment: 'getRoleAdmin',
     values: [BytesLike]
@@ -123,7 +123,7 @@ export interface FiatGatewayInterface extends utils.Interface {
     functionFragment: 'PAYMENT_SERVICE',
     data: BytesLike
   ): Result;
-  decodeFunctionResult(functionFragment: 'davinci', data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'freeport', data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: 'getRoleAdmin',
     data: BytesLike
@@ -256,9 +256,9 @@ export interface FiatGateway extends BaseContract {
 
     'PAYMENT_SERVICE()'(overrides?: CallOverrides): Promise<[string]>;
 
-    davinci(overrides?: CallOverrides): Promise<[string]>;
+    freeport(overrides?: CallOverrides): Promise<[string]>;
 
-    'davinci()'(overrides?: CallOverrides): Promise<[string]>;
+    'freeport()'(overrides?: CallOverrides): Promise<[string]>;
 
     /**
      * Returns the admin role that controls `role`. See {grantRole} and {revokeRole}. To change a role's admin, use {_setRoleAdmin}.
@@ -382,7 +382,7 @@ export interface FiatGateway extends BaseContract {
     'totalPenniesReceived()'(overrides?: CallOverrides): Promise<[BigNumber]>;
 
     /**
-     * Set the exchange rate between fiat (USD) and Davinci currency (CERE). The rate is given as number of CERE Units (with 10 decimals) per USD cent (1 penny). Only the rate service with the EXCHANGE_RATE_ORACLE role can change the rate.
+     * Set the exchange rate between fiat (USD) and Freeport currency (CERE). The rate is given as number of CERE Units (with 10 decimals) per USD cent (1 penny). Only the rate service with the EXCHANGE_RATE_ORACLE role can change the rate.
      */
     setExchangeRate(
       _cereUnitsPerPenny: BigNumberish,
@@ -390,7 +390,7 @@ export interface FiatGateway extends BaseContract {
     ): Promise<ContractTransaction>;
 
     /**
-     * Set the exchange rate between fiat (USD) and Davinci currency (CERE). The rate is given as number of CERE Units (with 10 decimals) per USD cent (1 penny). Only the rate service with the EXCHANGE_RATE_ORACLE role can change the rate.
+     * Set the exchange rate between fiat (USD) and Freeport currency (CERE). The rate is given as number of CERE Units (with 10 decimals) per USD cent (1 penny). Only the rate service with the EXCHANGE_RATE_ORACLE role can change the rate.
      */
     'setExchangeRate(uint256)'(
       _cereUnitsPerPenny: BigNumberish,
@@ -442,27 +442,27 @@ export interface FiatGateway extends BaseContract {
     ): Promise<ContractTransaction>;
 
     /**
-     * Obtain CERE and buy an NFT based on a fiat payment. CERE tokens are obtained in the same way as buyCereFromUsd. Then, the tokens are used to buy an NFT in the same transaction. The NFT must be available for sale from the seller in SimpleExchange. Only the gateway with PAYMENT_SERVICE role can report successful payments.
+     * Obtain CERE and buy an NFT based on a fiat payment. CERE tokens are obtained in the same way as buyCereFromUsd. Then, the tokens are used to buy an NFT in the same transaction. The NFT must be available for sale from the seller in SimpleExchange. Only the gateway with PAYMENT_SERVICE role can report successful payments. The parameter expectedPriceOrZero can be used to validate the price that the buyer expects to pay. This prevents a race condition with makeOffer or setExchangeRate. Pass 0 to disable this validation and accept any current price.
      */
     buyNftFromUsd(
       penniesReceived: BigNumberish,
       buyer: string,
       seller: string,
       nftId: BigNumberish,
-      nftPrice: BigNumberish,
+      expectedPriceOrZero: BigNumberish,
       nonce: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
     /**
-     * Obtain CERE and buy an NFT based on a fiat payment. CERE tokens are obtained in the same way as buyCereFromUsd. Then, the tokens are used to buy an NFT in the same transaction. The NFT must be available for sale from the seller in SimpleExchange. Only the gateway with PAYMENT_SERVICE role can report successful payments.
+     * Obtain CERE and buy an NFT based on a fiat payment. CERE tokens are obtained in the same way as buyCereFromUsd. Then, the tokens are used to buy an NFT in the same transaction. The NFT must be available for sale from the seller in SimpleExchange. Only the gateway with PAYMENT_SERVICE role can report successful payments. The parameter expectedPriceOrZero can be used to validate the price that the buyer expects to pay. This prevents a race condition with makeOffer or setExchangeRate. Pass 0 to disable this validation and accept any current price.
      */
     'buyNftFromUsd(uint256,address,address,uint256,uint256,uint256)'(
       penniesReceived: BigNumberish,
       buyer: string,
       seller: string,
       nftId: BigNumberish,
-      nftPrice: BigNumberish,
+      expectedPriceOrZero: BigNumberish,
       nonce: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
@@ -490,9 +490,9 @@ export interface FiatGateway extends BaseContract {
 
   'PAYMENT_SERVICE()'(overrides?: CallOverrides): Promise<string>;
 
-  davinci(overrides?: CallOverrides): Promise<string>;
+  freeport(overrides?: CallOverrides): Promise<string>;
 
-  'davinci()'(overrides?: CallOverrides): Promise<string>;
+  'freeport()'(overrides?: CallOverrides): Promise<string>;
 
   /**
    * Returns the admin role that controls `role`. See {grantRole} and {revokeRole}. To change a role's admin, use {_setRoleAdmin}.
@@ -616,7 +616,7 @@ export interface FiatGateway extends BaseContract {
   'totalPenniesReceived()'(overrides?: CallOverrides): Promise<BigNumber>;
 
   /**
-   * Set the exchange rate between fiat (USD) and Davinci currency (CERE). The rate is given as number of CERE Units (with 10 decimals) per USD cent (1 penny). Only the rate service with the EXCHANGE_RATE_ORACLE role can change the rate.
+   * Set the exchange rate between fiat (USD) and Freeport currency (CERE). The rate is given as number of CERE Units (with 10 decimals) per USD cent (1 penny). Only the rate service with the EXCHANGE_RATE_ORACLE role can change the rate.
    */
   setExchangeRate(
     _cereUnitsPerPenny: BigNumberish,
@@ -624,7 +624,7 @@ export interface FiatGateway extends BaseContract {
   ): Promise<ContractTransaction>;
 
   /**
-   * Set the exchange rate between fiat (USD) and Davinci currency (CERE). The rate is given as number of CERE Units (with 10 decimals) per USD cent (1 penny). Only the rate service with the EXCHANGE_RATE_ORACLE role can change the rate.
+   * Set the exchange rate between fiat (USD) and Freeport currency (CERE). The rate is given as number of CERE Units (with 10 decimals) per USD cent (1 penny). Only the rate service with the EXCHANGE_RATE_ORACLE role can change the rate.
    */
   'setExchangeRate(uint256)'(
     _cereUnitsPerPenny: BigNumberish,
@@ -676,27 +676,27 @@ export interface FiatGateway extends BaseContract {
   ): Promise<ContractTransaction>;
 
   /**
-   * Obtain CERE and buy an NFT based on a fiat payment. CERE tokens are obtained in the same way as buyCereFromUsd. Then, the tokens are used to buy an NFT in the same transaction. The NFT must be available for sale from the seller in SimpleExchange. Only the gateway with PAYMENT_SERVICE role can report successful payments.
+   * Obtain CERE and buy an NFT based on a fiat payment. CERE tokens are obtained in the same way as buyCereFromUsd. Then, the tokens are used to buy an NFT in the same transaction. The NFT must be available for sale from the seller in SimpleExchange. Only the gateway with PAYMENT_SERVICE role can report successful payments. The parameter expectedPriceOrZero can be used to validate the price that the buyer expects to pay. This prevents a race condition with makeOffer or setExchangeRate. Pass 0 to disable this validation and accept any current price.
    */
   buyNftFromUsd(
     penniesReceived: BigNumberish,
     buyer: string,
     seller: string,
     nftId: BigNumberish,
-    nftPrice: BigNumberish,
+    expectedPriceOrZero: BigNumberish,
     nonce: BigNumberish,
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
   /**
-   * Obtain CERE and buy an NFT based on a fiat payment. CERE tokens are obtained in the same way as buyCereFromUsd. Then, the tokens are used to buy an NFT in the same transaction. The NFT must be available for sale from the seller in SimpleExchange. Only the gateway with PAYMENT_SERVICE role can report successful payments.
+   * Obtain CERE and buy an NFT based on a fiat payment. CERE tokens are obtained in the same way as buyCereFromUsd. Then, the tokens are used to buy an NFT in the same transaction. The NFT must be available for sale from the seller in SimpleExchange. Only the gateway with PAYMENT_SERVICE role can report successful payments. The parameter expectedPriceOrZero can be used to validate the price that the buyer expects to pay. This prevents a race condition with makeOffer or setExchangeRate. Pass 0 to disable this validation and accept any current price.
    */
   'buyNftFromUsd(uint256,address,address,uint256,uint256,uint256)'(
     penniesReceived: BigNumberish,
     buyer: string,
     seller: string,
     nftId: BigNumberish,
-    nftPrice: BigNumberish,
+    expectedPriceOrZero: BigNumberish,
     nonce: BigNumberish,
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
@@ -724,9 +724,9 @@ export interface FiatGateway extends BaseContract {
 
     'PAYMENT_SERVICE()'(overrides?: CallOverrides): Promise<string>;
 
-    davinci(overrides?: CallOverrides): Promise<string>;
+    freeport(overrides?: CallOverrides): Promise<string>;
 
-    'davinci()'(overrides?: CallOverrides): Promise<string>;
+    'freeport()'(overrides?: CallOverrides): Promise<string>;
 
     /**
      * Returns the admin role that controls `role`. See {grantRole} and {revokeRole}. To change a role's admin, use {_setRoleAdmin}.
@@ -850,7 +850,7 @@ export interface FiatGateway extends BaseContract {
     'totalPenniesReceived()'(overrides?: CallOverrides): Promise<BigNumber>;
 
     /**
-     * Set the exchange rate between fiat (USD) and Davinci currency (CERE). The rate is given as number of CERE Units (with 10 decimals) per USD cent (1 penny). Only the rate service with the EXCHANGE_RATE_ORACLE role can change the rate.
+     * Set the exchange rate between fiat (USD) and Freeport currency (CERE). The rate is given as number of CERE Units (with 10 decimals) per USD cent (1 penny). Only the rate service with the EXCHANGE_RATE_ORACLE role can change the rate.
      */
     setExchangeRate(
       _cereUnitsPerPenny: BigNumberish,
@@ -858,7 +858,7 @@ export interface FiatGateway extends BaseContract {
     ): Promise<void>;
 
     /**
-     * Set the exchange rate between fiat (USD) and Davinci currency (CERE). The rate is given as number of CERE Units (with 10 decimals) per USD cent (1 penny). Only the rate service with the EXCHANGE_RATE_ORACLE role can change the rate.
+     * Set the exchange rate between fiat (USD) and Freeport currency (CERE). The rate is given as number of CERE Units (with 10 decimals) per USD cent (1 penny). Only the rate service with the EXCHANGE_RATE_ORACLE role can change the rate.
      */
     'setExchangeRate(uint256)'(
       _cereUnitsPerPenny: BigNumberish,
@@ -906,27 +906,27 @@ export interface FiatGateway extends BaseContract {
     ): Promise<BigNumber>;
 
     /**
-     * Obtain CERE and buy an NFT based on a fiat payment. CERE tokens are obtained in the same way as buyCereFromUsd. Then, the tokens are used to buy an NFT in the same transaction. The NFT must be available for sale from the seller in SimpleExchange. Only the gateway with PAYMENT_SERVICE role can report successful payments.
+     * Obtain CERE and buy an NFT based on a fiat payment. CERE tokens are obtained in the same way as buyCereFromUsd. Then, the tokens are used to buy an NFT in the same transaction. The NFT must be available for sale from the seller in SimpleExchange. Only the gateway with PAYMENT_SERVICE role can report successful payments. The parameter expectedPriceOrZero can be used to validate the price that the buyer expects to pay. This prevents a race condition with makeOffer or setExchangeRate. Pass 0 to disable this validation and accept any current price.
      */
     buyNftFromUsd(
       penniesReceived: BigNumberish,
       buyer: string,
       seller: string,
       nftId: BigNumberish,
-      nftPrice: BigNumberish,
+      expectedPriceOrZero: BigNumberish,
       nonce: BigNumberish,
       overrides?: CallOverrides
     ): Promise<void>;
 
     /**
-     * Obtain CERE and buy an NFT based on a fiat payment. CERE tokens are obtained in the same way as buyCereFromUsd. Then, the tokens are used to buy an NFT in the same transaction. The NFT must be available for sale from the seller in SimpleExchange. Only the gateway with PAYMENT_SERVICE role can report successful payments.
+     * Obtain CERE and buy an NFT based on a fiat payment. CERE tokens are obtained in the same way as buyCereFromUsd. Then, the tokens are used to buy an NFT in the same transaction. The NFT must be available for sale from the seller in SimpleExchange. Only the gateway with PAYMENT_SERVICE role can report successful payments. The parameter expectedPriceOrZero can be used to validate the price that the buyer expects to pay. This prevents a race condition with makeOffer or setExchangeRate. Pass 0 to disable this validation and accept any current price.
      */
     'buyNftFromUsd(uint256,address,address,uint256,uint256,uint256)'(
       penniesReceived: BigNumberish,
       buyer: string,
       seller: string,
       nftId: BigNumberish,
-      nftPrice: BigNumberish,
+      expectedPriceOrZero: BigNumberish,
       nonce: BigNumberish,
       overrides?: CallOverrides
     ): Promise<void>;
@@ -995,9 +995,9 @@ export interface FiatGateway extends BaseContract {
 
     'PAYMENT_SERVICE()'(overrides?: CallOverrides): Promise<BigNumber>;
 
-    davinci(overrides?: CallOverrides): Promise<BigNumber>;
+    freeport(overrides?: CallOverrides): Promise<BigNumber>;
 
-    'davinci()'(overrides?: CallOverrides): Promise<BigNumber>;
+    'freeport()'(overrides?: CallOverrides): Promise<BigNumber>;
 
     /**
      * Returns the admin role that controls `role`. See {grantRole} and {revokeRole}. To change a role's admin, use {_setRoleAdmin}.
@@ -1124,7 +1124,7 @@ export interface FiatGateway extends BaseContract {
     'totalPenniesReceived()'(overrides?: CallOverrides): Promise<BigNumber>;
 
     /**
-     * Set the exchange rate between fiat (USD) and Davinci currency (CERE). The rate is given as number of CERE Units (with 10 decimals) per USD cent (1 penny). Only the rate service with the EXCHANGE_RATE_ORACLE role can change the rate.
+     * Set the exchange rate between fiat (USD) and Freeport currency (CERE). The rate is given as number of CERE Units (with 10 decimals) per USD cent (1 penny). Only the rate service with the EXCHANGE_RATE_ORACLE role can change the rate.
      */
     setExchangeRate(
       _cereUnitsPerPenny: BigNumberish,
@@ -1132,7 +1132,7 @@ export interface FiatGateway extends BaseContract {
     ): Promise<BigNumber>;
 
     /**
-     * Set the exchange rate between fiat (USD) and Davinci currency (CERE). The rate is given as number of CERE Units (with 10 decimals) per USD cent (1 penny). Only the rate service with the EXCHANGE_RATE_ORACLE role can change the rate.
+     * Set the exchange rate between fiat (USD) and Freeport currency (CERE). The rate is given as number of CERE Units (with 10 decimals) per USD cent (1 penny). Only the rate service with the EXCHANGE_RATE_ORACLE role can change the rate.
      */
     'setExchangeRate(uint256)'(
       _cereUnitsPerPenny: BigNumberish,
@@ -1184,27 +1184,27 @@ export interface FiatGateway extends BaseContract {
     ): Promise<BigNumber>;
 
     /**
-     * Obtain CERE and buy an NFT based on a fiat payment. CERE tokens are obtained in the same way as buyCereFromUsd. Then, the tokens are used to buy an NFT in the same transaction. The NFT must be available for sale from the seller in SimpleExchange. Only the gateway with PAYMENT_SERVICE role can report successful payments.
+     * Obtain CERE and buy an NFT based on a fiat payment. CERE tokens are obtained in the same way as buyCereFromUsd. Then, the tokens are used to buy an NFT in the same transaction. The NFT must be available for sale from the seller in SimpleExchange. Only the gateway with PAYMENT_SERVICE role can report successful payments. The parameter expectedPriceOrZero can be used to validate the price that the buyer expects to pay. This prevents a race condition with makeOffer or setExchangeRate. Pass 0 to disable this validation and accept any current price.
      */
     buyNftFromUsd(
       penniesReceived: BigNumberish,
       buyer: string,
       seller: string,
       nftId: BigNumberish,
-      nftPrice: BigNumberish,
+      expectedPriceOrZero: BigNumberish,
       nonce: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
     /**
-     * Obtain CERE and buy an NFT based on a fiat payment. CERE tokens are obtained in the same way as buyCereFromUsd. Then, the tokens are used to buy an NFT in the same transaction. The NFT must be available for sale from the seller in SimpleExchange. Only the gateway with PAYMENT_SERVICE role can report successful payments.
+     * Obtain CERE and buy an NFT based on a fiat payment. CERE tokens are obtained in the same way as buyCereFromUsd. Then, the tokens are used to buy an NFT in the same transaction. The NFT must be available for sale from the seller in SimpleExchange. Only the gateway with PAYMENT_SERVICE role can report successful payments. The parameter expectedPriceOrZero can be used to validate the price that the buyer expects to pay. This prevents a race condition with makeOffer or setExchangeRate. Pass 0 to disable this validation and accept any current price.
      */
     'buyNftFromUsd(uint256,address,address,uint256,uint256,uint256)'(
       penniesReceived: BigNumberish,
       buyer: string,
       seller: string,
       nftId: BigNumberish,
-      nftPrice: BigNumberish,
+      expectedPriceOrZero: BigNumberish,
       nonce: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
@@ -1243,9 +1243,9 @@ export interface FiatGateway extends BaseContract {
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
-    davinci(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+    freeport(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
-    'davinci()'(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+    'freeport()'(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     /**
      * Returns the admin role that controls `role`. See {grantRole} and {revokeRole}. To change a role's admin, use {_setRoleAdmin}.
@@ -1380,7 +1380,7 @@ export interface FiatGateway extends BaseContract {
     ): Promise<PopulatedTransaction>;
 
     /**
-     * Set the exchange rate between fiat (USD) and Davinci currency (CERE). The rate is given as number of CERE Units (with 10 decimals) per USD cent (1 penny). Only the rate service with the EXCHANGE_RATE_ORACLE role can change the rate.
+     * Set the exchange rate between fiat (USD) and Freeport currency (CERE). The rate is given as number of CERE Units (with 10 decimals) per USD cent (1 penny). Only the rate service with the EXCHANGE_RATE_ORACLE role can change the rate.
      */
     setExchangeRate(
       _cereUnitsPerPenny: BigNumberish,
@@ -1388,7 +1388,7 @@ export interface FiatGateway extends BaseContract {
     ): Promise<PopulatedTransaction>;
 
     /**
-     * Set the exchange rate between fiat (USD) and Davinci currency (CERE). The rate is given as number of CERE Units (with 10 decimals) per USD cent (1 penny). Only the rate service with the EXCHANGE_RATE_ORACLE role can change the rate.
+     * Set the exchange rate between fiat (USD) and Freeport currency (CERE). The rate is given as number of CERE Units (with 10 decimals) per USD cent (1 penny). Only the rate service with the EXCHANGE_RATE_ORACLE role can change the rate.
      */
     'setExchangeRate(uint256)'(
       _cereUnitsPerPenny: BigNumberish,
@@ -1442,27 +1442,27 @@ export interface FiatGateway extends BaseContract {
     ): Promise<PopulatedTransaction>;
 
     /**
-     * Obtain CERE and buy an NFT based on a fiat payment. CERE tokens are obtained in the same way as buyCereFromUsd. Then, the tokens are used to buy an NFT in the same transaction. The NFT must be available for sale from the seller in SimpleExchange. Only the gateway with PAYMENT_SERVICE role can report successful payments.
+     * Obtain CERE and buy an NFT based on a fiat payment. CERE tokens are obtained in the same way as buyCereFromUsd. Then, the tokens are used to buy an NFT in the same transaction. The NFT must be available for sale from the seller in SimpleExchange. Only the gateway with PAYMENT_SERVICE role can report successful payments. The parameter expectedPriceOrZero can be used to validate the price that the buyer expects to pay. This prevents a race condition with makeOffer or setExchangeRate. Pass 0 to disable this validation and accept any current price.
      */
     buyNftFromUsd(
       penniesReceived: BigNumberish,
       buyer: string,
       seller: string,
       nftId: BigNumberish,
-      nftPrice: BigNumberish,
+      expectedPriceOrZero: BigNumberish,
       nonce: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 
     /**
-     * Obtain CERE and buy an NFT based on a fiat payment. CERE tokens are obtained in the same way as buyCereFromUsd. Then, the tokens are used to buy an NFT in the same transaction. The NFT must be available for sale from the seller in SimpleExchange. Only the gateway with PAYMENT_SERVICE role can report successful payments.
+     * Obtain CERE and buy an NFT based on a fiat payment. CERE tokens are obtained in the same way as buyCereFromUsd. Then, the tokens are used to buy an NFT in the same transaction. The NFT must be available for sale from the seller in SimpleExchange. Only the gateway with PAYMENT_SERVICE role can report successful payments. The parameter expectedPriceOrZero can be used to validate the price that the buyer expects to pay. This prevents a race condition with makeOffer or setExchangeRate. Pass 0 to disable this validation and accept any current price.
      */
     'buyNftFromUsd(uint256,address,address,uint256,uint256,uint256)'(
       penniesReceived: BigNumberish,
       buyer: string,
       seller: string,
       nftId: BigNumberish,
-      nftPrice: BigNumberish,
+      expectedPriceOrZero: BigNumberish,
       nonce: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
