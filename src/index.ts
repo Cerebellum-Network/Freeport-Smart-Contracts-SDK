@@ -60,7 +60,9 @@ export const getContractAddress = ({
   }
 
   throw new Error(
-    `Cannot find ${contractName} SC address in ${deployment} deployment for chain id #${chainId}`
+    `Cannot find ${String(
+      contractName
+    )} SC address in ${deployment} deployment for chain id #${chainId}`
   );
 };
 
