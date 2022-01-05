@@ -1,26 +1,26 @@
 {
   "dev": {
     "80001": {
-      "Freeport": "0xd1EdBAC660307c5B6d22E678FB5e22668C70Ad96",
-      "FiatGateway": "0x1f8eC932B6ec39A0326b74E9648A158F88B24082",
-      "SimpleAuction": "0xd7cd23C84F9109F57f13eF28319e8787628DD7ad",
-      "NFTAttachment": "0x270693f873287a39172856Ad8cfbCd79b040b287"
+      "Freeport": "0xC59Af7FbE4553e07aA668C1A13CAa78Cd4550579",
+      "FiatGateway": "0xE8949692827C3034c6fF185a38c192ca3059f6e5",
+      "SimpleAuction": "0x8B05131559a510f60f0A496B4428D449390A3f00",
+      "NFTAttachment": "0x2e8538913dEF3abAC5c4fCFAD7F40722A19099Ee"
     }
   },
   "stage": {
     "80001": {
-      "Freeport": "0xAD56017BAD84Fa4Eab489314C1e158C6adaca598",
-      "FiatGateway": "0x7B7e644c49D6C1e7C4af63eFB8cAD382a7b397fB",
-      "SimpleAuction": "0x49a08A6d213649b50655979E222C8496ADac050c",
-      "NFTAttachment": "0x1282fdeC36aC4aaf025059D69077d4450703eeD0"
+      "Freeport": "0x8bD1D3a93C7FB1786fFE3d0610987C3879287698",
+      "FiatGateway": "0x1C59A68ff017f14D1a8B80644F25F047b1CC58C5",
+      "SimpleAuction": "0x8fD690fFf020547e9Ca027Bf96F7B3A084Be485B",
+      "NFTAttachment": "0x2d16772036e7FA7D752b075b6b559A8bE57B8cCe"
     }
   },
   "prod": {
-    "80001": {
-      "Freeport": "0x4F908981A3CFdd440f7a3d114b06b1695DA8373b",
-      "FiatGateway": "0xe4708fcCEA49b9305f48901bc2195664dC198097",
-      "SimpleAuction": "0x573fc9819FD436C9Dc74b10949b2404C99C54A33",
-      "NFTAttachment": "0x1282fdeC36aC4aaf025059D69077d4450703eeD0"
+    "137": {
+      "Freeport": "0x521296be238B164b9A391b6F6175741826CB5F33",
+      "FiatGateway": "0xf6d782Cd0dC9976170242B94C8E653C7bA489634",
+      "SimpleAuction": "0xd26d11faceA9798B3be6C8a42803eb31204DA790",
+      "NFTAttachment": "0x147595af3de969a64f3Fb8A3ACC505325EBE1334"
     }
   }
 }
