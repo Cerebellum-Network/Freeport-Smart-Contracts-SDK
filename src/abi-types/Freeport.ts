@@ -22,7 +22,6 @@ export interface FreeportInterface extends utils.Interface {
     'BASIS_POINTS()': FunctionFragment;
     'BYPASS_SENDER()': FunctionFragment;
     'CURRENCY()': FunctionFragment;
-    'CURRENCY_SUPPLY()': FunctionFragment;
     'DEFAULT_ADMIN_ROLE()': FunctionFragment;
     'MAX_JOINT_ACCOUNT_SHARES()': FunctionFragment;
     'META_TX_FORWARDER()': FunctionFragment;
@@ -31,11 +30,10 @@ export interface FreeportInterface extends utils.Interface {
     'balanceOfBatch(address[],uint256[])': FunctionFragment;
     'balanceOfJAOwner(address,address)': FunctionFragment;
     'captureFee(address,uint256,uint256,uint256)': FunctionFragment;
-    'childChainManagerProxy()': FunctionFragment;
     'configureRoyalties(uint256,address,uint256,uint256,address,uint256,uint256)': FunctionFragment;
     'createJointAccount(address[],uint256[])': FunctionFragment;
-    'currencyInBridge()': FunctionFragment;
-    'deposit(address,bytes)': FunctionFragment;
+    'currencyContract()': FunctionFragment;
+    'deposit(uint256)': FunctionFragment;
     'distributeJointAccount(address)': FunctionFragment;
     'fractionOfJAOwner(address,address)': FunctionFragment;
     'getNftId(address,uint32,uint64)': FunctionFragment;
@@ -58,9 +56,9 @@ export interface FreeportInterface extends utils.Interface {
     'safeBatchTransferFrom(address,address,uint256[],uint256[],bytes)': FunctionFragment;
     'safeTransferFrom(address,address,uint256,uint256,bytes)': FunctionFragment;
     'setApprovalForAll(address,bool)': FunctionFragment;
+    'setERC20(address)': FunctionFragment;
     'supportsInterface(bytes4)': FunctionFragment;
     'takeOffer(address,address,uint256,uint256,uint256)': FunctionFragment;
-    'updateChildChainManager(address)': FunctionFragment;
     'uri(uint256)': FunctionFragment;
     'withdraw(uint256)': FunctionFragment;
   };
@@ -74,10 +72,6 @@ export interface FreeportInterface extends utils.Interface {
     values?: undefined
   ): string;
   encodeFunctionData(functionFragment: 'CURRENCY', values?: undefined): string;
-  encodeFunctionData(
-    functionFragment: 'CURRENCY_SUPPLY',
-    values?: undefined
-  ): string;
   encodeFunctionData(
     functionFragment: 'DEFAULT_ADMIN_ROLE',
     values?: undefined
@@ -111,10 +105,6 @@ export interface FreeportInterface extends utils.Interface {
     values: [string, BigNumberish, BigNumberish, BigNumberish]
   ): string;
   encodeFunctionData(
-    functionFragment: 'childChainManagerProxy',
-    values?: undefined
-  ): string;
-  encodeFunctionData(
     functionFragment: 'configureRoyalties',
     values: [
       BigNumberish,
@@ -131,12 +121,12 @@ export interface FreeportInterface extends utils.Interface {
     values: [string[], BigNumberish[]]
   ): string;
   encodeFunctionData(
-    functionFragment: 'currencyInBridge',
+    functionFragment: 'currencyContract',
     values?: undefined
   ): string;
   encodeFunctionData(
     functionFragment: 'deposit',
-    values: [string, BytesLike]
+    values: [BigNumberish]
   ): string;
   encodeFunctionData(
     functionFragment: 'distributeJointAccount',
@@ -226,6 +216,7 @@ export interface FreeportInterface extends utils.Interface {
     functionFragment: 'setApprovalForAll',
     values: [string, boolean]
   ): string;
+  encodeFunctionData(functionFragment: 'setERC20', values: [string]): string;
   encodeFunctionData(
     functionFragment: 'supportsInterface',
     values: [BytesLike]
@@ -233,10 +224,6 @@ export interface FreeportInterface extends utils.Interface {
   encodeFunctionData(
     functionFragment: 'takeOffer',
     values: [string, string, BigNumberish, BigNumberish, BigNumberish]
-  ): string;
-  encodeFunctionData(
-    functionFragment: 'updateChildChainManager',
-    values: [string]
   ): string;
   encodeFunctionData(functionFragment: 'uri', values: [BigNumberish]): string;
   encodeFunctionData(
@@ -253,10 +240,6 @@ export interface FreeportInterface extends utils.Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: 'CURRENCY', data: BytesLike): Result;
-  decodeFunctionResult(
-    functionFragment: 'CURRENCY_SUPPLY',
-    data: BytesLike
-  ): Result;
   decodeFunctionResult(
     functionFragment: 'DEFAULT_ADMIN_ROLE',
     data: BytesLike
@@ -284,10 +267,6 @@ export interface FreeportInterface extends utils.Interface {
   ): Result;
   decodeFunctionResult(functionFragment: 'captureFee', data: BytesLike): Result;
   decodeFunctionResult(
-    functionFragment: 'childChainManagerProxy',
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
     functionFragment: 'configureRoyalties',
     data: BytesLike
   ): Result;
@@ -296,7 +275,7 @@ export interface FreeportInterface extends utils.Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(
-    functionFragment: 'currencyInBridge',
+    functionFragment: 'currencyContract',
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: 'deposit', data: BytesLike): Result;
@@ -367,15 +346,12 @@ export interface FreeportInterface extends utils.Interface {
     functionFragment: 'setApprovalForAll',
     data: BytesLike
   ): Result;
+  decodeFunctionResult(functionFragment: 'setERC20', data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: 'supportsInterface',
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: 'takeOffer', data: BytesLike): Result;
-  decodeFunctionResult(
-    functionFragment: 'updateChildChainManager',
-    data: BytesLike
-  ): Result;
   decodeFunctionResult(functionFragment: 'uri', data: BytesLike): Result;
   decodeFunctionResult(functionFragment: 'withdraw', data: BytesLike): Result;
 
@@ -389,7 +365,6 @@ export interface FreeportInterface extends utils.Interface {
     'RoyaltiesConfigured(uint256,address,uint256,uint256,address,uint256,uint256)': EventFragment;
     'RoyaltiesLocked(uint256,uint256)': EventFragment;
     'TakeOffer(address,address,uint256,uint256,uint256)': EventFragment;
-    'Transfer(address,address,uint256)': EventFragment;
     'TransferBatch(address,address,address,uint256[],uint256[])': EventFragment;
     'TransferSingle(address,address,address,uint256,uint256)': EventFragment;
     'URI(string,uint256)': EventFragment;
@@ -404,7 +379,6 @@ export interface FreeportInterface extends utils.Interface {
   getEvent(nameOrSignatureOrTopic: 'RoyaltiesConfigured'): EventFragment;
   getEvent(nameOrSignatureOrTopic: 'RoyaltiesLocked'): EventFragment;
   getEvent(nameOrSignatureOrTopic: 'TakeOffer'): EventFragment;
-  getEvent(nameOrSignatureOrTopic: 'Transfer'): EventFragment;
   getEvent(nameOrSignatureOrTopic: 'TransferBatch'): EventFragment;
   getEvent(nameOrSignatureOrTopic: 'TransferSingle'): EventFragment;
   getEvent(nameOrSignatureOrTopic: 'URI'): EventFragment;
@@ -490,13 +464,6 @@ export type TakeOfferEvent = TypedEvent<
 
 export type TakeOfferEventFilter = TypedEventFilter<TakeOfferEvent>;
 
-export type TransferEvent = TypedEvent<
-  [string, string, BigNumber],
-  { from: string; to: string; value: BigNumber }
->;
-
-export type TransferEventFilter = TypedEventFilter<TransferEvent>;
-
 export type TransferBatchEvent = TypedEvent<
   [string, string, string, BigNumber[], BigNumber[]],
   {
@@ -572,24 +539,14 @@ export interface Freeport extends BaseContract {
     'BYPASS_SENDER()'(overrides?: CallOverrides): Promise<[string]>;
 
     /**
-     * The token ID that represents the CERE currency for all payments in this contract.
+     * The token ID that represents the internal currency for all payments in this contract.
      */
     CURRENCY(overrides?: CallOverrides): Promise<[BigNumber]>;
 
     /**
-     * The token ID that represents the CERE currency for all payments in this contract.
+     * The token ID that represents the internal currency for all payments in this contract.
      */
     'CURRENCY()'(overrides?: CallOverrides): Promise<[BigNumber]>;
-
-    /**
-     * The global supply of CERE tokens on all chains. That is 10 billion tokens, with 10 decimals.
-     */
-    CURRENCY_SUPPLY(overrides?: CallOverrides): Promise<[BigNumber]>;
-
-    /**
-     * The global supply of CERE tokens on all chains. That is 10 billion tokens, with 10 decimals.
-     */
-    'CURRENCY_SUPPLY()'(overrides?: CallOverrides): Promise<[BigNumber]>;
 
     DEFAULT_ADMIN_ROLE(overrides?: CallOverrides): Promise<[string]>;
 
@@ -686,16 +643,6 @@ export interface Freeport extends BaseContract {
     ): Promise<ContractTransaction>;
 
     /**
-     * The address of the Polygon bridge contract that is allowed to deposit tokens.
-     */
-    childChainManagerProxy(overrides?: CallOverrides): Promise<[string]>;
-
-    /**
-     * The address of the Polygon bridge contract that is allowed to deposit tokens.
-     */
-    'childChainManagerProxy()'(overrides?: CallOverrides): Promise<[string]>;
-
-    /**
      * Configure the amounts and beneficiaries of royalties on primary and secondary transfers of this NFT. This configuration is available to the issuer of this NFT. A transfer is primary if it comes from the issuer of this NFT (normally the first sale after issuance). Otherwise, it is a secondary transfer. A royalty is defined in two parts (both optional): a cut of the sale price of an NFT, and a minimum royalty per transfer. For simple transfers not attached to a price, or a too low price, the minimum royalty is charged. The cuts are given in basis points (1% of 1%). The minimums are given in currency amounts. The configuration can be changed at any time by default. However, the issuer may commit to it for a period of time, effectively giving up his ability to modify the royalties. See the function lockRoyalties. There can be one beneficiary account for each primary and secondary royalties. To distribute revenues amongst several parties, use a Joint Account (see function createJointAccount).
      */
     configureRoyalties(
@@ -742,30 +689,28 @@ export interface Freeport extends BaseContract {
     ): Promise<ContractTransaction>;
 
     /**
-     * Return the total amount of currency available in the bridge, which can be deposited into this contract.
+     * The address of ERC-20 token's contract
      */
-    currencyInBridge(overrides?: CallOverrides): Promise<[BigNumber]>;
+    currencyContract(overrides?: CallOverrides): Promise<[string]>;
 
     /**
-     * Return the total amount of currency available in the bridge, which can be deposited into this contract.
+     * The address of ERC-20 token's contract
      */
-    'currencyInBridge()'(overrides?: CallOverrides): Promise<[BigNumber]>;
+    'currencyContract()'(overrides?: CallOverrides): Promise<[string]>;
 
     /**
-     * Deposit currency from Ethereum into a user account in this contract. This is implemented by moving tokens from the bridge account to the user account. Two events will be emitted: ERC20 Transfer for the relayers, and ERC1155 TransferSingle like all transfers. There is an extra encoding necessary for the amount. In JavaScript, add this: `web3.eth.abi.encodeParameter('uint256', amount)`
+     * Deposit currency from ERC20 into the internal currency. This requires payer to approve deposit.
      */
     deposit(
-      user: string,
-      depositData: BytesLike,
+      amount: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
     /**
-     * Deposit currency from Ethereum into a user account in this contract. This is implemented by moving tokens from the bridge account to the user account. Two events will be emitted: ERC20 Transfer for the relayers, and ERC1155 TransferSingle like all transfers. There is an extra encoding necessary for the amount. In JavaScript, add this: `web3.eth.abi.encodeParameter('uint256', amount)`
+     * Deposit currency from ERC20 into the internal currency. This requires payer to approve deposit.
      */
-    'deposit(address,bytes)'(
-      user: string,
-      depositData: BytesLike,
+    'deposit(uint256)'(
+      amount: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
@@ -1184,6 +1129,22 @@ export interface Freeport extends BaseContract {
     ): Promise<ContractTransaction>;
 
     /**
+     * Sets token's contract address. This token is used to deposit and withdraw on chain adapter's contract is deployed.
+     */
+    setERC20(
+      _currencyContract: string,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
+
+    /**
+     * Sets token's contract address. This token is used to deposit and withdraw on chain adapter's contract is deployed.
+     */
+    'setERC20(address)'(
+      _currencyContract: string,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
+
+    /**
      * Supports interfaces of AccessControl, ERC1155, and ERC1155 MetadataURI.
      */
     supportsInterface(
@@ -1224,22 +1185,6 @@ export interface Freeport extends BaseContract {
     ): Promise<ContractTransaction>;
 
     /**
-     * Change the ChainManager, which can deposit currency into any account. Only the current ChainManager is allowed to change the ChainManager.
-     */
-    updateChildChainManager(
-      newChildChainManagerProxy: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>;
-
-    /**
-     * Change the ChainManager, which can deposit currency into any account. Only the current ChainManager is allowed to change the ChainManager.
-     */
-    'updateChildChainManager(address)'(
-      newChildChainManagerProxy: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>;
-
-    /**
      * See {IERC1155MetadataURI-uri}. This implementation returns the same URI for *all* token types. It relies on the token type ID substitution mechanism https://eips.ethereum.org/EIPS/eip-1155#metadata[defined in the EIP]. Clients calling this function must replace the `\{id\}` substring with the actual token type ID.
      */
     uri(arg0: BigNumberish, overrides?: CallOverrides): Promise<[string]>;
@@ -1253,7 +1198,7 @@ export interface Freeport extends BaseContract {
     ): Promise<[string]>;
 
     /**
-     * Withdraw currency from a user account in this contract to Ethereum. This is implemented by moving tokens from the user account to the bridge account. Two events will be emitted: ERC20 Transfer for the relayers, and ERC1155 TransferSingle like all transfers.
+     * Withdraw currency from internal to ERC20
      */
     withdraw(
       amount: BigNumberish,
@@ -1261,7 +1206,7 @@ export interface Freeport extends BaseContract {
     ): Promise<ContractTransaction>;
 
     /**
-     * Withdraw currency from a user account in this contract to Ethereum. This is implemented by moving tokens from the user account to the bridge account. Two events will be emitted: ERC20 Transfer for the relayers, and ERC1155 TransferSingle like all transfers.
+     * Withdraw currency from internal to ERC20
      */
     'withdraw(uint256)'(
       amount: BigNumberish,
@@ -1284,24 +1229,14 @@ export interface Freeport extends BaseContract {
   'BYPASS_SENDER()'(overrides?: CallOverrides): Promise<string>;
 
   /**
-   * The token ID that represents the CERE currency for all payments in this contract.
+   * The token ID that represents the internal currency for all payments in this contract.
    */
   CURRENCY(overrides?: CallOverrides): Promise<BigNumber>;
 
   /**
-   * The token ID that represents the CERE currency for all payments in this contract.
+   * The token ID that represents the internal currency for all payments in this contract.
    */
   'CURRENCY()'(overrides?: CallOverrides): Promise<BigNumber>;
-
-  /**
-   * The global supply of CERE tokens on all chains. That is 10 billion tokens, with 10 decimals.
-   */
-  CURRENCY_SUPPLY(overrides?: CallOverrides): Promise<BigNumber>;
-
-  /**
-   * The global supply of CERE tokens on all chains. That is 10 billion tokens, with 10 decimals.
-   */
-  'CURRENCY_SUPPLY()'(overrides?: CallOverrides): Promise<BigNumber>;
 
   DEFAULT_ADMIN_ROLE(overrides?: CallOverrides): Promise<string>;
 
@@ -1396,16 +1331,6 @@ export interface Freeport extends BaseContract {
   ): Promise<ContractTransaction>;
 
   /**
-   * The address of the Polygon bridge contract that is allowed to deposit tokens.
-   */
-  childChainManagerProxy(overrides?: CallOverrides): Promise<string>;
-
-  /**
-   * The address of the Polygon bridge contract that is allowed to deposit tokens.
-   */
-  'childChainManagerProxy()'(overrides?: CallOverrides): Promise<string>;
-
-  /**
    * Configure the amounts and beneficiaries of royalties on primary and secondary transfers of this NFT. This configuration is available to the issuer of this NFT. A transfer is primary if it comes from the issuer of this NFT (normally the first sale after issuance). Otherwise, it is a secondary transfer. A royalty is defined in two parts (both optional): a cut of the sale price of an NFT, and a minimum royalty per transfer. For simple transfers not attached to a price, or a too low price, the minimum royalty is charged. The cuts are given in basis points (1% of 1%). The minimums are given in currency amounts. The configuration can be changed at any time by default. However, the issuer may commit to it for a period of time, effectively giving up his ability to modify the royalties. See the function lockRoyalties. There can be one beneficiary account for each primary and secondary royalties. To distribute revenues amongst several parties, use a Joint Account (see function createJointAccount).
    */
   configureRoyalties(
@@ -1452,30 +1377,28 @@ export interface Freeport extends BaseContract {
   ): Promise<ContractTransaction>;
 
   /**
-   * Return the total amount of currency available in the bridge, which can be deposited into this contract.
+   * The address of ERC-20 token's contract
    */
-  currencyInBridge(overrides?: CallOverrides): Promise<BigNumber>;
+  currencyContract(overrides?: CallOverrides): Promise<string>;
 
   /**
-   * Return the total amount of currency available in the bridge, which can be deposited into this contract.
+   * The address of ERC-20 token's contract
    */
-  'currencyInBridge()'(overrides?: CallOverrides): Promise<BigNumber>;
+  'currencyContract()'(overrides?: CallOverrides): Promise<string>;
 
   /**
-   * Deposit currency from Ethereum into a user account in this contract. This is implemented by moving tokens from the bridge account to the user account. Two events will be emitted: ERC20 Transfer for the relayers, and ERC1155 TransferSingle like all transfers. There is an extra encoding necessary for the amount. In JavaScript, add this: `web3.eth.abi.encodeParameter('uint256', amount)`
+   * Deposit currency from ERC20 into the internal currency. This requires payer to approve deposit.
    */
   deposit(
-    user: string,
-    depositData: BytesLike,
+    amount: BigNumberish,
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
   /**
-   * Deposit currency from Ethereum into a user account in this contract. This is implemented by moving tokens from the bridge account to the user account. Two events will be emitted: ERC20 Transfer for the relayers, and ERC1155 TransferSingle like all transfers. There is an extra encoding necessary for the amount. In JavaScript, add this: `web3.eth.abi.encodeParameter('uint256', amount)`
+   * Deposit currency from ERC20 into the internal currency. This requires payer to approve deposit.
    */
-  'deposit(address,bytes)'(
-    user: string,
-    depositData: BytesLike,
+  'deposit(uint256)'(
+    amount: BigNumberish,
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
@@ -1894,6 +1817,22 @@ export interface Freeport extends BaseContract {
   ): Promise<ContractTransaction>;
 
   /**
+   * Sets token's contract address. This token is used to deposit and withdraw on chain adapter's contract is deployed.
+   */
+  setERC20(
+    _currencyContract: string,
+    overrides?: Overrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
+
+  /**
+   * Sets token's contract address. This token is used to deposit and withdraw on chain adapter's contract is deployed.
+   */
+  'setERC20(address)'(
+    _currencyContract: string,
+    overrides?: Overrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
+
+  /**
    * Supports interfaces of AccessControl, ERC1155, and ERC1155 MetadataURI.
    */
   supportsInterface(
@@ -1934,22 +1873,6 @@ export interface Freeport extends BaseContract {
   ): Promise<ContractTransaction>;
 
   /**
-   * Change the ChainManager, which can deposit currency into any account. Only the current ChainManager is allowed to change the ChainManager.
-   */
-  updateChildChainManager(
-    newChildChainManagerProxy: string,
-    overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>;
-
-  /**
-   * Change the ChainManager, which can deposit currency into any account. Only the current ChainManager is allowed to change the ChainManager.
-   */
-  'updateChildChainManager(address)'(
-    newChildChainManagerProxy: string,
-    overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>;
-
-  /**
    * See {IERC1155MetadataURI-uri}. This implementation returns the same URI for *all* token types. It relies on the token type ID substitution mechanism https://eips.ethereum.org/EIPS/eip-1155#metadata[defined in the EIP]. Clients calling this function must replace the `\{id\}` substring with the actual token type ID.
    */
   uri(arg0: BigNumberish, overrides?: CallOverrides): Promise<string>;
@@ -1963,7 +1886,7 @@ export interface Freeport extends BaseContract {
   ): Promise<string>;
 
   /**
-   * Withdraw currency from a user account in this contract to Ethereum. This is implemented by moving tokens from the user account to the bridge account. Two events will be emitted: ERC20 Transfer for the relayers, and ERC1155 TransferSingle like all transfers.
+   * Withdraw currency from internal to ERC20
    */
   withdraw(
     amount: BigNumberish,
@@ -1971,7 +1894,7 @@ export interface Freeport extends BaseContract {
   ): Promise<ContractTransaction>;
 
   /**
-   * Withdraw currency from a user account in this contract to Ethereum. This is implemented by moving tokens from the user account to the bridge account. Two events will be emitted: ERC20 Transfer for the relayers, and ERC1155 TransferSingle like all transfers.
+   * Withdraw currency from internal to ERC20
    */
   'withdraw(uint256)'(
     amount: BigNumberish,
@@ -1994,24 +1917,14 @@ export interface Freeport extends BaseContract {
     'BYPASS_SENDER()'(overrides?: CallOverrides): Promise<string>;
 
     /**
-     * The token ID that represents the CERE currency for all payments in this contract.
+     * The token ID that represents the internal currency for all payments in this contract.
      */
     CURRENCY(overrides?: CallOverrides): Promise<BigNumber>;
 
     /**
-     * The token ID that represents the CERE currency for all payments in this contract.
+     * The token ID that represents the internal currency for all payments in this contract.
      */
     'CURRENCY()'(overrides?: CallOverrides): Promise<BigNumber>;
-
-    /**
-     * The global supply of CERE tokens on all chains. That is 10 billion tokens, with 10 decimals.
-     */
-    CURRENCY_SUPPLY(overrides?: CallOverrides): Promise<BigNumber>;
-
-    /**
-     * The global supply of CERE tokens on all chains. That is 10 billion tokens, with 10 decimals.
-     */
-    'CURRENCY_SUPPLY()'(overrides?: CallOverrides): Promise<BigNumber>;
 
     DEFAULT_ADMIN_ROLE(overrides?: CallOverrides): Promise<string>;
 
@@ -2106,16 +2019,6 @@ export interface Freeport extends BaseContract {
     ): Promise<BigNumber>;
 
     /**
-     * The address of the Polygon bridge contract that is allowed to deposit tokens.
-     */
-    childChainManagerProxy(overrides?: CallOverrides): Promise<string>;
-
-    /**
-     * The address of the Polygon bridge contract that is allowed to deposit tokens.
-     */
-    'childChainManagerProxy()'(overrides?: CallOverrides): Promise<string>;
-
-    /**
      * Configure the amounts and beneficiaries of royalties on primary and secondary transfers of this NFT. This configuration is available to the issuer of this NFT. A transfer is primary if it comes from the issuer of this NFT (normally the first sale after issuance). Otherwise, it is a secondary transfer. A royalty is defined in two parts (both optional): a cut of the sale price of an NFT, and a minimum royalty per transfer. For simple transfers not attached to a price, or a too low price, the minimum royalty is charged. The cuts are given in basis points (1% of 1%). The minimums are given in currency amounts. The configuration can be changed at any time by default. However, the issuer may commit to it for a period of time, effectively giving up his ability to modify the royalties. See the function lockRoyalties. There can be one beneficiary account for each primary and secondary royalties. To distribute revenues amongst several parties, use a Joint Account (see function createJointAccount).
      */
     configureRoyalties(
@@ -2162,30 +2065,25 @@ export interface Freeport extends BaseContract {
     ): Promise<string>;
 
     /**
-     * Return the total amount of currency available in the bridge, which can be deposited into this contract.
+     * The address of ERC-20 token's contract
      */
-    currencyInBridge(overrides?: CallOverrides): Promise<BigNumber>;
+    currencyContract(overrides?: CallOverrides): Promise<string>;
 
     /**
-     * Return the total amount of currency available in the bridge, which can be deposited into this contract.
+     * The address of ERC-20 token's contract
      */
-    'currencyInBridge()'(overrides?: CallOverrides): Promise<BigNumber>;
+    'currencyContract()'(overrides?: CallOverrides): Promise<string>;
 
     /**
-     * Deposit currency from Ethereum into a user account in this contract. This is implemented by moving tokens from the bridge account to the user account. Two events will be emitted: ERC20 Transfer for the relayers, and ERC1155 TransferSingle like all transfers. There is an extra encoding necessary for the amount. In JavaScript, add this: `web3.eth.abi.encodeParameter('uint256', amount)`
+     * Deposit currency from ERC20 into the internal currency. This requires payer to approve deposit.
      */
-    deposit(
-      user: string,
-      depositData: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<void>;
+    deposit(amount: BigNumberish, overrides?: CallOverrides): Promise<void>;
 
     /**
-     * Deposit currency from Ethereum into a user account in this contract. This is implemented by moving tokens from the bridge account to the user account. Two events will be emitted: ERC20 Transfer for the relayers, and ERC1155 TransferSingle like all transfers. There is an extra encoding necessary for the amount. In JavaScript, add this: `web3.eth.abi.encodeParameter('uint256', amount)`
+     * Deposit currency from ERC20 into the internal currency. This requires payer to approve deposit.
      */
-    'deposit(address,bytes)'(
-      user: string,
-      depositData: BytesLike,
+    'deposit(uint256)'(
+      amount: BigNumberish,
       overrides?: CallOverrides
     ): Promise<void>;
 
@@ -2604,6 +2502,22 @@ export interface Freeport extends BaseContract {
     ): Promise<void>;
 
     /**
+     * Sets token's contract address. This token is used to deposit and withdraw on chain adapter's contract is deployed.
+     */
+    setERC20(
+      _currencyContract: string,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    /**
+     * Sets token's contract address. This token is used to deposit and withdraw on chain adapter's contract is deployed.
+     */
+    'setERC20(address)'(
+      _currencyContract: string,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    /**
      * Supports interfaces of AccessControl, ERC1155, and ERC1155 MetadataURI.
      */
     supportsInterface(
@@ -2644,22 +2558,6 @@ export interface Freeport extends BaseContract {
     ): Promise<void>;
 
     /**
-     * Change the ChainManager, which can deposit currency into any account. Only the current ChainManager is allowed to change the ChainManager.
-     */
-    updateChildChainManager(
-      newChildChainManagerProxy: string,
-      overrides?: CallOverrides
-    ): Promise<void>;
-
-    /**
-     * Change the ChainManager, which can deposit currency into any account. Only the current ChainManager is allowed to change the ChainManager.
-     */
-    'updateChildChainManager(address)'(
-      newChildChainManagerProxy: string,
-      overrides?: CallOverrides
-    ): Promise<void>;
-
-    /**
      * See {IERC1155MetadataURI-uri}. This implementation returns the same URI for *all* token types. It relies on the token type ID substitution mechanism https://eips.ethereum.org/EIPS/eip-1155#metadata[defined in the EIP]. Clients calling this function must replace the `\{id\}` substring with the actual token type ID.
      */
     uri(arg0: BigNumberish, overrides?: CallOverrides): Promise<string>;
@@ -2673,12 +2571,12 @@ export interface Freeport extends BaseContract {
     ): Promise<string>;
 
     /**
-     * Withdraw currency from a user account in this contract to Ethereum. This is implemented by moving tokens from the user account to the bridge account. Two events will be emitted: ERC20 Transfer for the relayers, and ERC1155 TransferSingle like all transfers.
+     * Withdraw currency from internal to ERC20
      */
     withdraw(amount: BigNumberish, overrides?: CallOverrides): Promise<void>;
 
     /**
-     * Withdraw currency from a user account in this contract to Ethereum. This is implemented by moving tokens from the user account to the bridge account. Two events will be emitted: ERC20 Transfer for the relayers, and ERC1155 TransferSingle like all transfers.
+     * Withdraw currency from internal to ERC20
      */
     'withdraw(uint256)'(
       amount: BigNumberish,
@@ -2796,17 +2694,6 @@ export interface Freeport extends BaseContract {
       amount?: null
     ): TakeOfferEventFilter;
 
-    'Transfer(address,address,uint256)'(
-      from?: string | null,
-      to?: string | null,
-      value?: null
-    ): TransferEventFilter;
-    Transfer(
-      from?: string | null,
-      to?: string | null,
-      value?: null
-    ): TransferEventFilter;
-
     'TransferBatch(address,address,address,uint256[],uint256[])'(
       operator?: string | null,
       from?: string | null,
@@ -2860,24 +2747,14 @@ export interface Freeport extends BaseContract {
     'BYPASS_SENDER()'(overrides?: CallOverrides): Promise<BigNumber>;
 
     /**
-     * The token ID that represents the CERE currency for all payments in this contract.
+     * The token ID that represents the internal currency for all payments in this contract.
      */
     CURRENCY(overrides?: CallOverrides): Promise<BigNumber>;
 
     /**
-     * The token ID that represents the CERE currency for all payments in this contract.
+     * The token ID that represents the internal currency for all payments in this contract.
      */
     'CURRENCY()'(overrides?: CallOverrides): Promise<BigNumber>;
-
-    /**
-     * The global supply of CERE tokens on all chains. That is 10 billion tokens, with 10 decimals.
-     */
-    CURRENCY_SUPPLY(overrides?: CallOverrides): Promise<BigNumber>;
-
-    /**
-     * The global supply of CERE tokens on all chains. That is 10 billion tokens, with 10 decimals.
-     */
-    'CURRENCY_SUPPLY()'(overrides?: CallOverrides): Promise<BigNumber>;
 
     DEFAULT_ADMIN_ROLE(overrides?: CallOverrides): Promise<BigNumber>;
 
@@ -2972,16 +2849,6 @@ export interface Freeport extends BaseContract {
     ): Promise<BigNumber>;
 
     /**
-     * The address of the Polygon bridge contract that is allowed to deposit tokens.
-     */
-    childChainManagerProxy(overrides?: CallOverrides): Promise<BigNumber>;
-
-    /**
-     * The address of the Polygon bridge contract that is allowed to deposit tokens.
-     */
-    'childChainManagerProxy()'(overrides?: CallOverrides): Promise<BigNumber>;
-
-    /**
      * Configure the amounts and beneficiaries of royalties on primary and secondary transfers of this NFT. This configuration is available to the issuer of this NFT. A transfer is primary if it comes from the issuer of this NFT (normally the first sale after issuance). Otherwise, it is a secondary transfer. A royalty is defined in two parts (both optional): a cut of the sale price of an NFT, and a minimum royalty per transfer. For simple transfers not attached to a price, or a too low price, the minimum royalty is charged. The cuts are given in basis points (1% of 1%). The minimums are given in currency amounts. The configuration can be changed at any time by default. However, the issuer may commit to it for a period of time, effectively giving up his ability to modify the royalties. See the function lockRoyalties. There can be one beneficiary account for each primary and secondary royalties. To distribute revenues amongst several parties, use a Joint Account (see function createJointAccount).
      */
     configureRoyalties(
@@ -3028,30 +2895,28 @@ export interface Freeport extends BaseContract {
     ): Promise<BigNumber>;
 
     /**
-     * Return the total amount of currency available in the bridge, which can be deposited into this contract.
+     * The address of ERC-20 token's contract
      */
-    currencyInBridge(overrides?: CallOverrides): Promise<BigNumber>;
+    currencyContract(overrides?: CallOverrides): Promise<BigNumber>;
 
     /**
-     * Return the total amount of currency available in the bridge, which can be deposited into this contract.
+     * The address of ERC-20 token's contract
      */
-    'currencyInBridge()'(overrides?: CallOverrides): Promise<BigNumber>;
+    'currencyContract()'(overrides?: CallOverrides): Promise<BigNumber>;
 
     /**
-     * Deposit currency from Ethereum into a user account in this contract. This is implemented by moving tokens from the bridge account to the user account. Two events will be emitted: ERC20 Transfer for the relayers, and ERC1155 TransferSingle like all transfers. There is an extra encoding necessary for the amount. In JavaScript, add this: `web3.eth.abi.encodeParameter('uint256', amount)`
+     * Deposit currency from ERC20 into the internal currency. This requires payer to approve deposit.
      */
     deposit(
-      user: string,
-      depositData: BytesLike,
+      amount: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
     /**
-     * Deposit currency from Ethereum into a user account in this contract. This is implemented by moving tokens from the bridge account to the user account. Two events will be emitted: ERC20 Transfer for the relayers, and ERC1155 TransferSingle like all transfers. There is an extra encoding necessary for the amount. In JavaScript, add this: `web3.eth.abi.encodeParameter('uint256', amount)`
+     * Deposit currency from ERC20 into the internal currency. This requires payer to approve deposit.
      */
-    'deposit(address,bytes)'(
-      user: string,
-      depositData: BytesLike,
+    'deposit(uint256)'(
+      amount: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
@@ -3441,6 +3306,22 @@ export interface Freeport extends BaseContract {
     ): Promise<BigNumber>;
 
     /**
+     * Sets token's contract address. This token is used to deposit and withdraw on chain adapter's contract is deployed.
+     */
+    setERC20(
+      _currencyContract: string,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<BigNumber>;
+
+    /**
+     * Sets token's contract address. This token is used to deposit and withdraw on chain adapter's contract is deployed.
+     */
+    'setERC20(address)'(
+      _currencyContract: string,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<BigNumber>;
+
+    /**
      * Supports interfaces of AccessControl, ERC1155, and ERC1155 MetadataURI.
      */
     supportsInterface(
@@ -3481,22 +3362,6 @@ export interface Freeport extends BaseContract {
     ): Promise<BigNumber>;
 
     /**
-     * Change the ChainManager, which can deposit currency into any account. Only the current ChainManager is allowed to change the ChainManager.
-     */
-    updateChildChainManager(
-      newChildChainManagerProxy: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>;
-
-    /**
-     * Change the ChainManager, which can deposit currency into any account. Only the current ChainManager is allowed to change the ChainManager.
-     */
-    'updateChildChainManager(address)'(
-      newChildChainManagerProxy: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>;
-
-    /**
      * See {IERC1155MetadataURI-uri}. This implementation returns the same URI for *all* token types. It relies on the token type ID substitution mechanism https://eips.ethereum.org/EIPS/eip-1155#metadata[defined in the EIP]. Clients calling this function must replace the `\{id\}` substring with the actual token type ID.
      */
     uri(arg0: BigNumberish, overrides?: CallOverrides): Promise<BigNumber>;
@@ -3510,7 +3375,7 @@ export interface Freeport extends BaseContract {
     ): Promise<BigNumber>;
 
     /**
-     * Withdraw currency from a user account in this contract to Ethereum. This is implemented by moving tokens from the user account to the bridge account. Two events will be emitted: ERC20 Transfer for the relayers, and ERC1155 TransferSingle like all transfers.
+     * Withdraw currency from internal to ERC20
      */
     withdraw(
       amount: BigNumberish,
@@ -3518,7 +3383,7 @@ export interface Freeport extends BaseContract {
     ): Promise<BigNumber>;
 
     /**
-     * Withdraw currency from a user account in this contract to Ethereum. This is implemented by moving tokens from the user account to the bridge account. Two events will be emitted: ERC20 Transfer for the relayers, and ERC1155 TransferSingle like all transfers.
+     * Withdraw currency from internal to ERC20
      */
     'withdraw(uint256)'(
       amount: BigNumberish,
@@ -3542,26 +3407,14 @@ export interface Freeport extends BaseContract {
     'BYPASS_SENDER()'(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     /**
-     * The token ID that represents the CERE currency for all payments in this contract.
+     * The token ID that represents the internal currency for all payments in this contract.
      */
     CURRENCY(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     /**
-     * The token ID that represents the CERE currency for all payments in this contract.
+     * The token ID that represents the internal currency for all payments in this contract.
      */
     'CURRENCY()'(overrides?: CallOverrides): Promise<PopulatedTransaction>;
-
-    /**
-     * The global supply of CERE tokens on all chains. That is 10 billion tokens, with 10 decimals.
-     */
-    CURRENCY_SUPPLY(overrides?: CallOverrides): Promise<PopulatedTransaction>;
-
-    /**
-     * The global supply of CERE tokens on all chains. That is 10 billion tokens, with 10 decimals.
-     */
-    'CURRENCY_SUPPLY()'(
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
 
     DEFAULT_ADMIN_ROLE(
       overrides?: CallOverrides
@@ -3668,20 +3521,6 @@ export interface Freeport extends BaseContract {
     ): Promise<PopulatedTransaction>;
 
     /**
-     * The address of the Polygon bridge contract that is allowed to deposit tokens.
-     */
-    childChainManagerProxy(
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    /**
-     * The address of the Polygon bridge contract that is allowed to deposit tokens.
-     */
-    'childChainManagerProxy()'(
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    /**
      * Configure the amounts and beneficiaries of royalties on primary and secondary transfers of this NFT. This configuration is available to the issuer of this NFT. A transfer is primary if it comes from the issuer of this NFT (normally the first sale after issuance). Otherwise, it is a secondary transfer. A royalty is defined in two parts (both optional): a cut of the sale price of an NFT, and a minimum royalty per transfer. For simple transfers not attached to a price, or a too low price, the minimum royalty is charged. The cuts are given in basis points (1% of 1%). The minimums are given in currency amounts. The configuration can be changed at any time by default. However, the issuer may commit to it for a period of time, effectively giving up his ability to modify the royalties. See the function lockRoyalties. There can be one beneficiary account for each primary and secondary royalties. To distribute revenues amongst several parties, use a Joint Account (see function createJointAccount).
      */
     configureRoyalties(
@@ -3728,32 +3567,30 @@ export interface Freeport extends BaseContract {
     ): Promise<PopulatedTransaction>;
 
     /**
-     * Return the total amount of currency available in the bridge, which can be deposited into this contract.
+     * The address of ERC-20 token's contract
      */
-    currencyInBridge(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+    currencyContract(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     /**
-     * Return the total amount of currency available in the bridge, which can be deposited into this contract.
+     * The address of ERC-20 token's contract
      */
-    'currencyInBridge()'(
+    'currencyContract()'(
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
     /**
-     * Deposit currency from Ethereum into a user account in this contract. This is implemented by moving tokens from the bridge account to the user account. Two events will be emitted: ERC20 Transfer for the relayers, and ERC1155 TransferSingle like all transfers. There is an extra encoding necessary for the amount. In JavaScript, add this: `web3.eth.abi.encodeParameter('uint256', amount)`
+     * Deposit currency from ERC20 into the internal currency. This requires payer to approve deposit.
      */
     deposit(
-      user: string,
-      depositData: BytesLike,
+      amount: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 
     /**
-     * Deposit currency from Ethereum into a user account in this contract. This is implemented by moving tokens from the bridge account to the user account. Two events will be emitted: ERC20 Transfer for the relayers, and ERC1155 TransferSingle like all transfers. There is an extra encoding necessary for the amount. In JavaScript, add this: `web3.eth.abi.encodeParameter('uint256', amount)`
+     * Deposit currency from ERC20 into the internal currency. This requires payer to approve deposit.
      */
-    'deposit(address,bytes)'(
-      user: string,
-      depositData: BytesLike,
+    'deposit(uint256)'(
+      amount: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 
@@ -4146,6 +3983,22 @@ export interface Freeport extends BaseContract {
     ): Promise<PopulatedTransaction>;
 
     /**
+     * Sets token's contract address. This token is used to deposit and withdraw on chain adapter's contract is deployed.
+     */
+    setERC20(
+      _currencyContract: string,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
+
+    /**
+     * Sets token's contract address. This token is used to deposit and withdraw on chain adapter's contract is deployed.
+     */
+    'setERC20(address)'(
+      _currencyContract: string,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
+
+    /**
      * Supports interfaces of AccessControl, ERC1155, and ERC1155 MetadataURI.
      */
     supportsInterface(
@@ -4186,22 +4039,6 @@ export interface Freeport extends BaseContract {
     ): Promise<PopulatedTransaction>;
 
     /**
-     * Change the ChainManager, which can deposit currency into any account. Only the current ChainManager is allowed to change the ChainManager.
-     */
-    updateChildChainManager(
-      newChildChainManagerProxy: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>;
-
-    /**
-     * Change the ChainManager, which can deposit currency into any account. Only the current ChainManager is allowed to change the ChainManager.
-     */
-    'updateChildChainManager(address)'(
-      newChildChainManagerProxy: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>;
-
-    /**
      * See {IERC1155MetadataURI-uri}. This implementation returns the same URI for *all* token types. It relies on the token type ID substitution mechanism https://eips.ethereum.org/EIPS/eip-1155#metadata[defined in the EIP]. Clients calling this function must replace the `\{id\}` substring with the actual token type ID.
      */
     uri(
@@ -4218,7 +4055,7 @@ export interface Freeport extends BaseContract {
     ): Promise<PopulatedTransaction>;
 
     /**
-     * Withdraw currency from a user account in this contract to Ethereum. This is implemented by moving tokens from the user account to the bridge account. Two events will be emitted: ERC20 Transfer for the relayers, and ERC1155 TransferSingle like all transfers.
+     * Withdraw currency from internal to ERC20
      */
     withdraw(
       amount: BigNumberish,
@@ -4226,7 +4063,7 @@ export interface Freeport extends BaseContract {
     ): Promise<PopulatedTransaction>;
 
     /**
-     * Withdraw currency from a user account in this contract to Ethereum. This is implemented by moving tokens from the user account to the bridge account. Two events will be emitted: ERC20 Transfer for the relayers, and ERC1155 TransferSingle like all transfers.
+     * Withdraw currency from internal to ERC20
      */
     'withdraw(uint256)'(
       amount: BigNumberish,
