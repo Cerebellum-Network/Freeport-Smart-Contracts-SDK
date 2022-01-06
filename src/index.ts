@@ -3,14 +3,18 @@ import { providers, Wallet } from 'ethers';
 import type {
   FiatGateway,
   Freeport,
+  MinimalForwarder,
   NFTAttachment,
   SimpleAuction,
+  TestERC20 as ERC20,
 } from './abi-types';
 import {
   FiatGateway__factory,
   Freeport__factory,
+  MinimalForwarder__factory,
   NFTAttachment__factory,
   SimpleAuction__factory,
+  TestERC20__factory as ERC20__factory,
 } from './abi-types';
 import config from './config.json';
 
@@ -118,6 +122,32 @@ export const getNFTAttachmentAddress = async (
   });
 };
 
+export const getMinimalForwarderAddress = async (
+  provider: Provider,
+  deployment: Deployment = 'prod'
+): Promise<string> => {
+  const { chainId } = await provider.getNetwork();
+
+  return getContractAddress({
+    deployment,
+    chainId,
+    contractName: 'MinimalForwarder',
+  });
+};
+
+export const getERC20Address = async (
+  provider: Provider,
+  deployment: Deployment = 'prod'
+): Promise<string> => {
+  const { chainId } = await provider.getNetwork();
+
+  return getContractAddress({
+    deployment,
+    chainId,
+    contractName: 'ERC20',
+  });
+};
+
 export type CreateSignerConfig = {
   provider: Provider;
   mnemonic?: string;
@@ -189,4 +219,26 @@ export const createNFTAttachment = ({
   const signer = createSigner({ provider, mnemonic, privateKey });
 
   return NFTAttachment__factory.connect(contractAddress, signer);
+};
+
+export const createMinimalForwarder = ({
+  provider,
+  contractAddress,
+  mnemonic,
+  privateKey,
+}: CreateContractConfig): MinimalForwarder => {
+  const signer = createSigner({ provider, mnemonic, privateKey });
+
+  return MinimalForwarder__factory.connect(contractAddress, signer);
+};
+
+export const createERC20 = ({
+  provider,
+  contractAddress,
+  mnemonic,
+  privateKey,
+}: CreateContractConfig): ERC20 => {
+  const signer = createSigner({ provider, mnemonic, privateKey });
+
+  return ERC20__factory.connect(contractAddress, signer);
 };
