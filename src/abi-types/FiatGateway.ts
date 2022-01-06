@@ -27,11 +27,13 @@ export interface FiatGatewayInterface extends utils.Interface {
     'getRoleAdmin(bytes32)': FunctionFragment;
     'grantRole(bytes32,address)': FunctionFragment;
     'hasRole(bytes32,address)': FunctionFragment;
+    'onERC1155BatchReceived(address,address,uint256[],uint256[],bytes)': FunctionFragment;
+    'onERC1155Received(address,address,uint256,uint256,bytes)': FunctionFragment;
     'renounceRole(bytes32,address)': FunctionFragment;
     'revokeRole(bytes32,address)': FunctionFragment;
-    'supportsInterface(bytes4)': FunctionFragment;
     'totalCereUnitsSent()': FunctionFragment;
     'totalPenniesReceived()': FunctionFragment;
+    'supportsInterface(bytes4)': FunctionFragment;
     'setExchangeRate(uint256)': FunctionFragment;
     'getExchangeRate()': FunctionFragment;
     'withdraw()': FunctionFragment;
@@ -66,6 +68,14 @@ export interface FiatGatewayInterface extends utils.Interface {
     values: [BytesLike, string]
   ): string;
   encodeFunctionData(
+    functionFragment: 'onERC1155BatchReceived',
+    values: [string, string, BigNumberish[], BigNumberish[], BytesLike]
+  ): string;
+  encodeFunctionData(
+    functionFragment: 'onERC1155Received',
+    values: [string, string, BigNumberish, BigNumberish, BytesLike]
+  ): string;
+  encodeFunctionData(
     functionFragment: 'renounceRole',
     values: [BytesLike, string]
   ): string;
@@ -74,16 +84,16 @@ export interface FiatGatewayInterface extends utils.Interface {
     values: [BytesLike, string]
   ): string;
   encodeFunctionData(
-    functionFragment: 'supportsInterface',
-    values: [BytesLike]
-  ): string;
-  encodeFunctionData(
     functionFragment: 'totalCereUnitsSent',
     values?: undefined
   ): string;
   encodeFunctionData(
     functionFragment: 'totalPenniesReceived',
     values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: 'supportsInterface',
+    values: [BytesLike]
   ): string;
   encodeFunctionData(
     functionFragment: 'setExchangeRate',
@@ -131,20 +141,28 @@ export interface FiatGatewayInterface extends utils.Interface {
   decodeFunctionResult(functionFragment: 'grantRole', data: BytesLike): Result;
   decodeFunctionResult(functionFragment: 'hasRole', data: BytesLike): Result;
   decodeFunctionResult(
+    functionFragment: 'onERC1155BatchReceived',
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: 'onERC1155Received',
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
     functionFragment: 'renounceRole',
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: 'revokeRole', data: BytesLike): Result;
-  decodeFunctionResult(
-    functionFragment: 'supportsInterface',
-    data: BytesLike
-  ): Result;
   decodeFunctionResult(
     functionFragment: 'totalCereUnitsSent',
     data: BytesLike
   ): Result;
   decodeFunctionResult(
     functionFragment: 'totalPenniesReceived',
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: 'supportsInterface',
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -309,6 +327,42 @@ export interface FiatGateway extends BaseContract {
       overrides?: CallOverrides
     ): Promise<[boolean]>;
 
+    onERC1155BatchReceived(
+      arg0: string,
+      arg1: string,
+      arg2: BigNumberish[],
+      arg3: BigNumberish[],
+      arg4: BytesLike,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
+
+    'onERC1155BatchReceived(address,address,uint256[],uint256[],bytes)'(
+      arg0: string,
+      arg1: string,
+      arg2: BigNumberish[],
+      arg3: BigNumberish[],
+      arg4: BytesLike,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
+
+    onERC1155Received(
+      arg0: string,
+      arg1: string,
+      arg2: BigNumberish,
+      arg3: BigNumberish,
+      arg4: BytesLike,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
+
+    'onERC1155Received(address,address,uint256,uint256,bytes)'(
+      arg0: string,
+      arg1: string,
+      arg2: BigNumberish,
+      arg3: BigNumberish,
+      arg4: BytesLike,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
+
     /**
      * Revokes `role` from the calling account. Roles are often managed via {grantRole} and {revokeRole}: this function's purpose is to provide a mechanism for accounts to lose their privileges if they are compromised (such as when a trusted device is misplaced). If the calling account had been granted `role`, emits a {RoleRevoked} event. Requirements: - the caller must be `account`.
      */
@@ -346,22 +400,6 @@ export interface FiatGateway extends BaseContract {
     ): Promise<ContractTransaction>;
 
     /**
-     * See {IERC165-supportsInterface}.
-     */
-    supportsInterface(
-      interfaceId: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<[boolean]>;
-
-    /**
-     * See {IERC165-supportsInterface}.
-     */
-    'supportsInterface(bytes4)'(
-      interfaceId: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<[boolean]>;
-
-    /**
      * How many CERE Units were sold so far.
      */
     totalCereUnitsSent(overrides?: CallOverrides): Promise<[BigNumber]>;
@@ -380,6 +418,22 @@ export interface FiatGateway extends BaseContract {
      * How many USD cents were received so far, according to the payment service.
      */
     'totalPenniesReceived()'(overrides?: CallOverrides): Promise<[BigNumber]>;
+
+    /**
+     * Supports interfaces of AccessControl and ERC1155Receiver.
+     */
+    supportsInterface(
+      interfaceId: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<[boolean]>;
+
+    /**
+     * Supports interfaces of AccessControl and ERC1155Receiver.
+     */
+    'supportsInterface(bytes4)'(
+      interfaceId: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<[boolean]>;
 
     /**
      * Set the exchange rate between fiat (USD) and Freeport currency (CERE). The rate is given as number of CERE Units (with 10 decimals) per USD cent (1 penny). Only the rate service with the EXCHANGE_RATE_ORACLE role can change the rate.
@@ -543,6 +597,42 @@ export interface FiatGateway extends BaseContract {
     overrides?: CallOverrides
   ): Promise<boolean>;
 
+  onERC1155BatchReceived(
+    arg0: string,
+    arg1: string,
+    arg2: BigNumberish[],
+    arg3: BigNumberish[],
+    arg4: BytesLike,
+    overrides?: Overrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
+
+  'onERC1155BatchReceived(address,address,uint256[],uint256[],bytes)'(
+    arg0: string,
+    arg1: string,
+    arg2: BigNumberish[],
+    arg3: BigNumberish[],
+    arg4: BytesLike,
+    overrides?: Overrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
+
+  onERC1155Received(
+    arg0: string,
+    arg1: string,
+    arg2: BigNumberish,
+    arg3: BigNumberish,
+    arg4: BytesLike,
+    overrides?: Overrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
+
+  'onERC1155Received(address,address,uint256,uint256,bytes)'(
+    arg0: string,
+    arg1: string,
+    arg2: BigNumberish,
+    arg3: BigNumberish,
+    arg4: BytesLike,
+    overrides?: Overrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
+
   /**
    * Revokes `role` from the calling account. Roles are often managed via {grantRole} and {revokeRole}: this function's purpose is to provide a mechanism for accounts to lose their privileges if they are compromised (such as when a trusted device is misplaced). If the calling account had been granted `role`, emits a {RoleRevoked} event. Requirements: - the caller must be `account`.
    */
@@ -580,22 +670,6 @@ export interface FiatGateway extends BaseContract {
   ): Promise<ContractTransaction>;
 
   /**
-   * See {IERC165-supportsInterface}.
-   */
-  supportsInterface(
-    interfaceId: BytesLike,
-    overrides?: CallOverrides
-  ): Promise<boolean>;
-
-  /**
-   * See {IERC165-supportsInterface}.
-   */
-  'supportsInterface(bytes4)'(
-    interfaceId: BytesLike,
-    overrides?: CallOverrides
-  ): Promise<boolean>;
-
-  /**
    * How many CERE Units were sold so far.
    */
   totalCereUnitsSent(overrides?: CallOverrides): Promise<BigNumber>;
@@ -614,6 +688,22 @@ export interface FiatGateway extends BaseContract {
    * How many USD cents were received so far, according to the payment service.
    */
   'totalPenniesReceived()'(overrides?: CallOverrides): Promise<BigNumber>;
+
+  /**
+   * Supports interfaces of AccessControl and ERC1155Receiver.
+   */
+  supportsInterface(
+    interfaceId: BytesLike,
+    overrides?: CallOverrides
+  ): Promise<boolean>;
+
+  /**
+   * Supports interfaces of AccessControl and ERC1155Receiver.
+   */
+  'supportsInterface(bytes4)'(
+    interfaceId: BytesLike,
+    overrides?: CallOverrides
+  ): Promise<boolean>;
 
   /**
    * Set the exchange rate between fiat (USD) and Freeport currency (CERE). The rate is given as number of CERE Units (with 10 decimals) per USD cent (1 penny). Only the rate service with the EXCHANGE_RATE_ORACLE role can change the rate.
@@ -777,6 +867,42 @@ export interface FiatGateway extends BaseContract {
       overrides?: CallOverrides
     ): Promise<boolean>;
 
+    onERC1155BatchReceived(
+      arg0: string,
+      arg1: string,
+      arg2: BigNumberish[],
+      arg3: BigNumberish[],
+      arg4: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<string>;
+
+    'onERC1155BatchReceived(address,address,uint256[],uint256[],bytes)'(
+      arg0: string,
+      arg1: string,
+      arg2: BigNumberish[],
+      arg3: BigNumberish[],
+      arg4: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<string>;
+
+    onERC1155Received(
+      arg0: string,
+      arg1: string,
+      arg2: BigNumberish,
+      arg3: BigNumberish,
+      arg4: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<string>;
+
+    'onERC1155Received(address,address,uint256,uint256,bytes)'(
+      arg0: string,
+      arg1: string,
+      arg2: BigNumberish,
+      arg3: BigNumberish,
+      arg4: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<string>;
+
     /**
      * Revokes `role` from the calling account. Roles are often managed via {grantRole} and {revokeRole}: this function's purpose is to provide a mechanism for accounts to lose their privileges if they are compromised (such as when a trusted device is misplaced). If the calling account had been granted `role`, emits a {RoleRevoked} event. Requirements: - the caller must be `account`.
      */
@@ -814,22 +940,6 @@ export interface FiatGateway extends BaseContract {
     ): Promise<void>;
 
     /**
-     * See {IERC165-supportsInterface}.
-     */
-    supportsInterface(
-      interfaceId: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<boolean>;
-
-    /**
-     * See {IERC165-supportsInterface}.
-     */
-    'supportsInterface(bytes4)'(
-      interfaceId: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<boolean>;
-
-    /**
      * How many CERE Units were sold so far.
      */
     totalCereUnitsSent(overrides?: CallOverrides): Promise<BigNumber>;
@@ -848,6 +958,22 @@ export interface FiatGateway extends BaseContract {
      * How many USD cents were received so far, according to the payment service.
      */
     'totalPenniesReceived()'(overrides?: CallOverrides): Promise<BigNumber>;
+
+    /**
+     * Supports interfaces of AccessControl and ERC1155Receiver.
+     */
+    supportsInterface(
+      interfaceId: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<boolean>;
+
+    /**
+     * Supports interfaces of AccessControl and ERC1155Receiver.
+     */
+    'supportsInterface(bytes4)'(
+      interfaceId: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<boolean>;
 
     /**
      * Set the exchange rate between fiat (USD) and Freeport currency (CERE). The rate is given as number of CERE Units (with 10 decimals) per USD cent (1 penny). Only the rate service with the EXCHANGE_RATE_ORACLE role can change the rate.
@@ -1051,6 +1177,42 @@ export interface FiatGateway extends BaseContract {
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
+    onERC1155BatchReceived(
+      arg0: string,
+      arg1: string,
+      arg2: BigNumberish[],
+      arg3: BigNumberish[],
+      arg4: BytesLike,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<BigNumber>;
+
+    'onERC1155BatchReceived(address,address,uint256[],uint256[],bytes)'(
+      arg0: string,
+      arg1: string,
+      arg2: BigNumberish[],
+      arg3: BigNumberish[],
+      arg4: BytesLike,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<BigNumber>;
+
+    onERC1155Received(
+      arg0: string,
+      arg1: string,
+      arg2: BigNumberish,
+      arg3: BigNumberish,
+      arg4: BytesLike,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<BigNumber>;
+
+    'onERC1155Received(address,address,uint256,uint256,bytes)'(
+      arg0: string,
+      arg1: string,
+      arg2: BigNumberish,
+      arg3: BigNumberish,
+      arg4: BytesLike,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<BigNumber>;
+
     /**
      * Revokes `role` from the calling account. Roles are often managed via {grantRole} and {revokeRole}: this function's purpose is to provide a mechanism for accounts to lose their privileges if they are compromised (such as when a trusted device is misplaced). If the calling account had been granted `role`, emits a {RoleRevoked} event. Requirements: - the caller must be `account`.
      */
@@ -1088,22 +1250,6 @@ export interface FiatGateway extends BaseContract {
     ): Promise<BigNumber>;
 
     /**
-     * See {IERC165-supportsInterface}.
-     */
-    supportsInterface(
-      interfaceId: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
-    /**
-     * See {IERC165-supportsInterface}.
-     */
-    'supportsInterface(bytes4)'(
-      interfaceId: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
-    /**
      * How many CERE Units were sold so far.
      */
     totalCereUnitsSent(overrides?: CallOverrides): Promise<BigNumber>;
@@ -1122,6 +1268,22 @@ export interface FiatGateway extends BaseContract {
      * How many USD cents were received so far, according to the payment service.
      */
     'totalPenniesReceived()'(overrides?: CallOverrides): Promise<BigNumber>;
+
+    /**
+     * Supports interfaces of AccessControl and ERC1155Receiver.
+     */
+    supportsInterface(
+      interfaceId: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    /**
+     * Supports interfaces of AccessControl and ERC1155Receiver.
+     */
+    'supportsInterface(bytes4)'(
+      interfaceId: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
 
     /**
      * Set the exchange rate between fiat (USD) and Freeport currency (CERE). The rate is given as number of CERE Units (with 10 decimals) per USD cent (1 penny). Only the rate service with the EXCHANGE_RATE_ORACLE role can change the rate.
@@ -1299,6 +1461,42 @@ export interface FiatGateway extends BaseContract {
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
+    onERC1155BatchReceived(
+      arg0: string,
+      arg1: string,
+      arg2: BigNumberish[],
+      arg3: BigNumberish[],
+      arg4: BytesLike,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
+
+    'onERC1155BatchReceived(address,address,uint256[],uint256[],bytes)'(
+      arg0: string,
+      arg1: string,
+      arg2: BigNumberish[],
+      arg3: BigNumberish[],
+      arg4: BytesLike,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
+
+    onERC1155Received(
+      arg0: string,
+      arg1: string,
+      arg2: BigNumberish,
+      arg3: BigNumberish,
+      arg4: BytesLike,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
+
+    'onERC1155Received(address,address,uint256,uint256,bytes)'(
+      arg0: string,
+      arg1: string,
+      arg2: BigNumberish,
+      arg3: BigNumberish,
+      arg4: BytesLike,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
+
     /**
      * Revokes `role` from the calling account. Roles are often managed via {grantRole} and {revokeRole}: this function's purpose is to provide a mechanism for accounts to lose their privileges if they are compromised (such as when a trusted device is misplaced). If the calling account had been granted `role`, emits a {RoleRevoked} event. Requirements: - the caller must be `account`.
      */
@@ -1336,22 +1534,6 @@ export interface FiatGateway extends BaseContract {
     ): Promise<PopulatedTransaction>;
 
     /**
-     * See {IERC165-supportsInterface}.
-     */
-    supportsInterface(
-      interfaceId: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    /**
-     * See {IERC165-supportsInterface}.
-     */
-    'supportsInterface(bytes4)'(
-      interfaceId: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    /**
      * How many CERE Units were sold so far.
      */
     totalCereUnitsSent(
@@ -1376,6 +1558,22 @@ export interface FiatGateway extends BaseContract {
      * How many USD cents were received so far, according to the payment service.
      */
     'totalPenniesReceived()'(
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    /**
+     * Supports interfaces of AccessControl and ERC1155Receiver.
+     */
+    supportsInterface(
+      interfaceId: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    /**
+     * Supports interfaces of AccessControl and ERC1155Receiver.
+     */
+    'supportsInterface(bytes4)'(
+      interfaceId: BytesLike,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
