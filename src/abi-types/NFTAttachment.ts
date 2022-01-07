@@ -21,15 +21,18 @@ export interface NFTAttachmentInterface extends utils.Interface {
   functions: {
     'DEFAULT_ADMIN_ROLE()': FunctionFragment;
     'META_TX_FORWARDER()': FunctionFragment;
+    'freeport()': FunctionFragment;
     'getRoleAdmin(bytes32)': FunctionFragment;
     'grantRole(bytes32,address)': FunctionFragment;
     'hasRole(bytes32,address)': FunctionFragment;
     'isTrustedForwarder(address)': FunctionFragment;
-    'nftContract()': FunctionFragment;
     'renounceRole(bytes32,address)': FunctionFragment;
     'revokeRole(bytes32,address)': FunctionFragment;
     'supportsInterface(bytes4)': FunctionFragment;
-    'attachToNFT(uint256,bytes32)': FunctionFragment;
+    'minterAttachToNFT(uint256,bytes)': FunctionFragment;
+    'ownerAttachToNFT(uint256,bytes)': FunctionFragment;
+    'anonymAttachToNFT(uint256,bytes)': FunctionFragment;
+    '_minterFromNftId(uint256)': FunctionFragment;
   };
 
   encodeFunctionData(
@@ -40,6 +43,7 @@ export interface NFTAttachmentInterface extends utils.Interface {
     functionFragment: 'META_TX_FORWARDER',
     values?: undefined
   ): string;
+  encodeFunctionData(functionFragment: 'freeport', values?: undefined): string;
   encodeFunctionData(
     functionFragment: 'getRoleAdmin',
     values: [BytesLike]
@@ -57,10 +61,6 @@ export interface NFTAttachmentInterface extends utils.Interface {
     values: [string]
   ): string;
   encodeFunctionData(
-    functionFragment: 'nftContract',
-    values?: undefined
-  ): string;
-  encodeFunctionData(
     functionFragment: 'renounceRole',
     values: [BytesLike, string]
   ): string;
@@ -73,8 +73,20 @@ export interface NFTAttachmentInterface extends utils.Interface {
     values: [BytesLike]
   ): string;
   encodeFunctionData(
-    functionFragment: 'attachToNFT',
+    functionFragment: 'minterAttachToNFT',
     values: [BigNumberish, BytesLike]
+  ): string;
+  encodeFunctionData(
+    functionFragment: 'ownerAttachToNFT',
+    values: [BigNumberish, BytesLike]
+  ): string;
+  encodeFunctionData(
+    functionFragment: 'anonymAttachToNFT',
+    values: [BigNumberish, BytesLike]
+  ): string;
+  encodeFunctionData(
+    functionFragment: '_minterFromNftId',
+    values: [BigNumberish]
   ): string;
 
   decodeFunctionResult(
@@ -85,6 +97,7 @@ export interface NFTAttachmentInterface extends utils.Interface {
     functionFragment: 'META_TX_FORWARDER',
     data: BytesLike
   ): Result;
+  decodeFunctionResult(functionFragment: 'freeport', data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: 'getRoleAdmin',
     data: BytesLike
@@ -93,10 +106,6 @@ export interface NFTAttachmentInterface extends utils.Interface {
   decodeFunctionResult(functionFragment: 'hasRole', data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: 'isTrustedForwarder',
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: 'nftContract',
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -109,29 +118,62 @@ export interface NFTAttachmentInterface extends utils.Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(
-    functionFragment: 'attachToNFT',
+    functionFragment: 'minterAttachToNFT',
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: 'ownerAttachToNFT',
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: 'anonymAttachToNFT',
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: '_minterFromNftId',
     data: BytesLike
   ): Result;
 
   events: {
-    'AttachToNFT(address,uint256,bytes32)': EventFragment;
+    'AnonymAttachToNFT(address,uint256,bytes)': EventFragment;
+    'MinterAttachToNFT(address,uint256,bytes)': EventFragment;
+    'OwnerAttachToNFT(address,uint256,bytes)': EventFragment;
     'RoleAdminChanged(bytes32,bytes32,bytes32)': EventFragment;
     'RoleGranted(bytes32,address,address)': EventFragment;
     'RoleRevoked(bytes32,address,address)': EventFragment;
   };
 
-  getEvent(nameOrSignatureOrTopic: 'AttachToNFT'): EventFragment;
+  getEvent(nameOrSignatureOrTopic: 'AnonymAttachToNFT'): EventFragment;
+  getEvent(nameOrSignatureOrTopic: 'MinterAttachToNFT'): EventFragment;
+  getEvent(nameOrSignatureOrTopic: 'OwnerAttachToNFT'): EventFragment;
   getEvent(nameOrSignatureOrTopic: 'RoleAdminChanged'): EventFragment;
   getEvent(nameOrSignatureOrTopic: 'RoleGranted'): EventFragment;
   getEvent(nameOrSignatureOrTopic: 'RoleRevoked'): EventFragment;
 }
 
-export type AttachToNFTEvent = TypedEvent<
+export type AnonymAttachToNFTEvent = TypedEvent<
   [string, BigNumber, string],
-  { sender: string; nftId: BigNumber; cid: string }
+  { anonym: string; nftId: BigNumber; attachment: string }
 >;
 
-export type AttachToNFTEventFilter = TypedEventFilter<AttachToNFTEvent>;
+export type AnonymAttachToNFTEventFilter =
+  TypedEventFilter<AnonymAttachToNFTEvent>;
+
+export type MinterAttachToNFTEvent = TypedEvent<
+  [string, BigNumber, string],
+  { minter: string; nftId: BigNumber; attachment: string }
+>;
+
+export type MinterAttachToNFTEventFilter =
+  TypedEventFilter<MinterAttachToNFTEvent>;
+
+export type OwnerAttachToNFTEvent = TypedEvent<
+  [string, BigNumber, string],
+  { owner: string; nftId: BigNumber; attachment: string }
+>;
+
+export type OwnerAttachToNFTEventFilter =
+  TypedEventFilter<OwnerAttachToNFTEvent>;
 
 export type RoleAdminChangedEvent = TypedEvent<
   [string, string, string],
@@ -189,6 +231,16 @@ export interface NFTAttachment extends BaseContract {
     META_TX_FORWARDER(overrides?: CallOverrides): Promise<[string]>;
 
     'META_TX_FORWARDER()'(overrides?: CallOverrides): Promise<[string]>;
+
+    /**
+     * This attachment contract refers to the NFT contract in this variable.
+     */
+    freeport(overrides?: CallOverrides): Promise<[string]>;
+
+    /**
+     * This attachment contract refers to the NFT contract in this variable.
+     */
+    'freeport()'(overrides?: CallOverrides): Promise<[string]>;
 
     /**
      * Returns the admin role that controls `role`. See {grantRole} and {revokeRole}. To change a role's admin, use {_setRoleAdmin}.
@@ -250,16 +302,6 @@ export interface NFTAttachment extends BaseContract {
     ): Promise<[boolean]>;
 
     /**
-     * This attachment contract refers to the NFT contract in this variable. This is informative, there is no validation.
-     */
-    nftContract(overrides?: CallOverrides): Promise<[string]>;
-
-    /**
-     * This attachment contract refers to the NFT contract in this variable. This is informative, there is no validation.
-     */
-    'nftContract()'(overrides?: CallOverrides): Promise<[string]>;
-
-    /**
      * Revokes `role` from the calling account. Roles are often managed via {grantRole} and {revokeRole}: this function's purpose is to provide a mechanism for accounts to lose their privileges if they are compromised (such as when a trusted device is misplaced). If the calling account had been granted `role`, emits a {RoleRevoked} event. Requirements: - the caller must be `account`.
      */
     renounceRole(
@@ -312,22 +354,74 @@ export interface NFTAttachment extends BaseContract {
     ): Promise<[boolean]>;
 
     /**
-     * Attach an object identified by `cid` to the NFT type `nftId`. There is absolutely no validation. It is the responsibility of the reader of this event to decide who the sender is and what the object means.
+     * Attach data `attachment` to the NFT type `nftId`, as the minter of this NFT type. This only works for NFT IDs in the Freeport format.
      */
-    attachToNFT(
+    minterAttachToNFT(
       nftId: BigNumberish,
-      cid: BytesLike,
+      attachment: BytesLike,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
     /**
-     * Attach an object identified by `cid` to the NFT type `nftId`. There is absolutely no validation. It is the responsibility of the reader of this event to decide who the sender is and what the object means.
+     * Attach data `attachment` to the NFT type `nftId`, as the minter of this NFT type. This only works for NFT IDs in the Freeport format.
      */
-    'attachToNFT(uint256,bytes32)'(
+    'minterAttachToNFT(uint256,bytes)'(
       nftId: BigNumberish,
-      cid: BytesLike,
+      attachment: BytesLike,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
+
+    /**
+     * Attach data `attachment` to the NFT type `nftId`, as a current owner of an NFT of this type. This works for NFTs in the ERC-1155 or Freeport standards.
+     */
+    ownerAttachToNFT(
+      nftId: BigNumberish,
+      attachment: BytesLike,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
+
+    /**
+     * Attach data `attachment` to the NFT type `nftId`, as a current owner of an NFT of this type. This works for NFTs in the ERC-1155 or Freeport standards.
+     */
+    'ownerAttachToNFT(uint256,bytes)'(
+      nftId: BigNumberish,
+      attachment: BytesLike,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
+
+    /**
+     * Attach data `attachment` to the NFT type `nftId`, as any account.
+     */
+    anonymAttachToNFT(
+      nftId: BigNumberish,
+      attachment: BytesLike,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
+
+    /**
+     * Attach data `attachment` to the NFT type `nftId`, as any account.
+     */
+    'anonymAttachToNFT(uint256,bytes)'(
+      nftId: BigNumberish,
+      attachment: BytesLike,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
+
+    /**
+     * Parse an NFT ID into its issuer, its supply, and an arbitrary nonce. This does not imply that the NFTs exist. This is specific to Freeport NFTs. See `freeportParts/Issuance.sol`
+     */
+    _minterFromNftId(
+      id: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<[string] & { minter: string }>;
+
+    /**
+     * Parse an NFT ID into its issuer, its supply, and an arbitrary nonce. This does not imply that the NFTs exist. This is specific to Freeport NFTs. See `freeportParts/Issuance.sol`
+     */
+    '_minterFromNftId(uint256)'(
+      id: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<[string] & { minter: string }>;
   };
 
   DEFAULT_ADMIN_ROLE(overrides?: CallOverrides): Promise<string>;
@@ -337,6 +431,16 @@ export interface NFTAttachment extends BaseContract {
   META_TX_FORWARDER(overrides?: CallOverrides): Promise<string>;
 
   'META_TX_FORWARDER()'(overrides?: CallOverrides): Promise<string>;
+
+  /**
+   * This attachment contract refers to the NFT contract in this variable.
+   */
+  freeport(overrides?: CallOverrides): Promise<string>;
+
+  /**
+   * This attachment contract refers to the NFT contract in this variable.
+   */
+  'freeport()'(overrides?: CallOverrides): Promise<string>;
 
   /**
    * Returns the admin role that controls `role`. See {grantRole} and {revokeRole}. To change a role's admin, use {_setRoleAdmin}.
@@ -398,16 +502,6 @@ export interface NFTAttachment extends BaseContract {
   ): Promise<boolean>;
 
   /**
-   * This attachment contract refers to the NFT contract in this variable. This is informative, there is no validation.
-   */
-  nftContract(overrides?: CallOverrides): Promise<string>;
-
-  /**
-   * This attachment contract refers to the NFT contract in this variable. This is informative, there is no validation.
-   */
-  'nftContract()'(overrides?: CallOverrides): Promise<string>;
-
-  /**
    * Revokes `role` from the calling account. Roles are often managed via {grantRole} and {revokeRole}: this function's purpose is to provide a mechanism for accounts to lose their privileges if they are compromised (such as when a trusted device is misplaced). If the calling account had been granted `role`, emits a {RoleRevoked} event. Requirements: - the caller must be `account`.
    */
   renounceRole(
@@ -460,22 +554,74 @@ export interface NFTAttachment extends BaseContract {
   ): Promise<boolean>;
 
   /**
-   * Attach an object identified by `cid` to the NFT type `nftId`. There is absolutely no validation. It is the responsibility of the reader of this event to decide who the sender is and what the object means.
+   * Attach data `attachment` to the NFT type `nftId`, as the minter of this NFT type. This only works for NFT IDs in the Freeport format.
    */
-  attachToNFT(
+  minterAttachToNFT(
     nftId: BigNumberish,
-    cid: BytesLike,
+    attachment: BytesLike,
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
   /**
-   * Attach an object identified by `cid` to the NFT type `nftId`. There is absolutely no validation. It is the responsibility of the reader of this event to decide who the sender is and what the object means.
+   * Attach data `attachment` to the NFT type `nftId`, as the minter of this NFT type. This only works for NFT IDs in the Freeport format.
    */
-  'attachToNFT(uint256,bytes32)'(
+  'minterAttachToNFT(uint256,bytes)'(
     nftId: BigNumberish,
-    cid: BytesLike,
+    attachment: BytesLike,
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
+
+  /**
+   * Attach data `attachment` to the NFT type `nftId`, as a current owner of an NFT of this type. This works for NFTs in the ERC-1155 or Freeport standards.
+   */
+  ownerAttachToNFT(
+    nftId: BigNumberish,
+    attachment: BytesLike,
+    overrides?: Overrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
+
+  /**
+   * Attach data `attachment` to the NFT type `nftId`, as a current owner of an NFT of this type. This works for NFTs in the ERC-1155 or Freeport standards.
+   */
+  'ownerAttachToNFT(uint256,bytes)'(
+    nftId: BigNumberish,
+    attachment: BytesLike,
+    overrides?: Overrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
+
+  /**
+   * Attach data `attachment` to the NFT type `nftId`, as any account.
+   */
+  anonymAttachToNFT(
+    nftId: BigNumberish,
+    attachment: BytesLike,
+    overrides?: Overrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
+
+  /**
+   * Attach data `attachment` to the NFT type `nftId`, as any account.
+   */
+  'anonymAttachToNFT(uint256,bytes)'(
+    nftId: BigNumberish,
+    attachment: BytesLike,
+    overrides?: Overrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
+
+  /**
+   * Parse an NFT ID into its issuer, its supply, and an arbitrary nonce. This does not imply that the NFTs exist. This is specific to Freeport NFTs. See `freeportParts/Issuance.sol`
+   */
+  _minterFromNftId(
+    id: BigNumberish,
+    overrides?: CallOverrides
+  ): Promise<string>;
+
+  /**
+   * Parse an NFT ID into its issuer, its supply, and an arbitrary nonce. This does not imply that the NFTs exist. This is specific to Freeport NFTs. See `freeportParts/Issuance.sol`
+   */
+  '_minterFromNftId(uint256)'(
+    id: BigNumberish,
+    overrides?: CallOverrides
+  ): Promise<string>;
 
   callStatic: {
     DEFAULT_ADMIN_ROLE(overrides?: CallOverrides): Promise<string>;
@@ -485,6 +631,16 @@ export interface NFTAttachment extends BaseContract {
     META_TX_FORWARDER(overrides?: CallOverrides): Promise<string>;
 
     'META_TX_FORWARDER()'(overrides?: CallOverrides): Promise<string>;
+
+    /**
+     * This attachment contract refers to the NFT contract in this variable.
+     */
+    freeport(overrides?: CallOverrides): Promise<string>;
+
+    /**
+     * This attachment contract refers to the NFT contract in this variable.
+     */
+    'freeport()'(overrides?: CallOverrides): Promise<string>;
 
     /**
      * Returns the admin role that controls `role`. See {grantRole} and {revokeRole}. To change a role's admin, use {_setRoleAdmin}.
@@ -546,16 +702,6 @@ export interface NFTAttachment extends BaseContract {
     ): Promise<boolean>;
 
     /**
-     * This attachment contract refers to the NFT contract in this variable. This is informative, there is no validation.
-     */
-    nftContract(overrides?: CallOverrides): Promise<string>;
-
-    /**
-     * This attachment contract refers to the NFT contract in this variable. This is informative, there is no validation.
-     */
-    'nftContract()'(overrides?: CallOverrides): Promise<string>;
-
-    /**
      * Revokes `role` from the calling account. Roles are often managed via {grantRole} and {revokeRole}: this function's purpose is to provide a mechanism for accounts to lose their privileges if they are compromised (such as when a trusted device is misplaced). If the calling account had been granted `role`, emits a {RoleRevoked} event. Requirements: - the caller must be `account`.
      */
     renounceRole(
@@ -608,35 +754,109 @@ export interface NFTAttachment extends BaseContract {
     ): Promise<boolean>;
 
     /**
-     * Attach an object identified by `cid` to the NFT type `nftId`. There is absolutely no validation. It is the responsibility of the reader of this event to decide who the sender is and what the object means.
+     * Attach data `attachment` to the NFT type `nftId`, as the minter of this NFT type. This only works for NFT IDs in the Freeport format.
      */
-    attachToNFT(
+    minterAttachToNFT(
       nftId: BigNumberish,
-      cid: BytesLike,
+      attachment: BytesLike,
       overrides?: CallOverrides
     ): Promise<void>;
 
     /**
-     * Attach an object identified by `cid` to the NFT type `nftId`. There is absolutely no validation. It is the responsibility of the reader of this event to decide who the sender is and what the object means.
+     * Attach data `attachment` to the NFT type `nftId`, as the minter of this NFT type. This only works for NFT IDs in the Freeport format.
      */
-    'attachToNFT(uint256,bytes32)'(
+    'minterAttachToNFT(uint256,bytes)'(
       nftId: BigNumberish,
-      cid: BytesLike,
+      attachment: BytesLike,
       overrides?: CallOverrides
     ): Promise<void>;
+
+    /**
+     * Attach data `attachment` to the NFT type `nftId`, as a current owner of an NFT of this type. This works for NFTs in the ERC-1155 or Freeport standards.
+     */
+    ownerAttachToNFT(
+      nftId: BigNumberish,
+      attachment: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    /**
+     * Attach data `attachment` to the NFT type `nftId`, as a current owner of an NFT of this type. This works for NFTs in the ERC-1155 or Freeport standards.
+     */
+    'ownerAttachToNFT(uint256,bytes)'(
+      nftId: BigNumberish,
+      attachment: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    /**
+     * Attach data `attachment` to the NFT type `nftId`, as any account.
+     */
+    anonymAttachToNFT(
+      nftId: BigNumberish,
+      attachment: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    /**
+     * Attach data `attachment` to the NFT type `nftId`, as any account.
+     */
+    'anonymAttachToNFT(uint256,bytes)'(
+      nftId: BigNumberish,
+      attachment: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    /**
+     * Parse an NFT ID into its issuer, its supply, and an arbitrary nonce. This does not imply that the NFTs exist. This is specific to Freeport NFTs. See `freeportParts/Issuance.sol`
+     */
+    _minterFromNftId(
+      id: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<string>;
+
+    /**
+     * Parse an NFT ID into its issuer, its supply, and an arbitrary nonce. This does not imply that the NFTs exist. This is specific to Freeport NFTs. See `freeportParts/Issuance.sol`
+     */
+    '_minterFromNftId(uint256)'(
+      id: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<string>;
   };
 
   filters: {
-    'AttachToNFT(address,uint256,bytes32)'(
-      sender?: string | null,
+    'AnonymAttachToNFT(address,uint256,bytes)'(
+      anonym?: string | null,
       nftId?: BigNumberish | null,
-      cid?: null
-    ): AttachToNFTEventFilter;
-    AttachToNFT(
-      sender?: string | null,
+      attachment?: null
+    ): AnonymAttachToNFTEventFilter;
+    AnonymAttachToNFT(
+      anonym?: string | null,
       nftId?: BigNumberish | null,
-      cid?: null
-    ): AttachToNFTEventFilter;
+      attachment?: null
+    ): AnonymAttachToNFTEventFilter;
+
+    'MinterAttachToNFT(address,uint256,bytes)'(
+      minter?: string | null,
+      nftId?: BigNumberish | null,
+      attachment?: null
+    ): MinterAttachToNFTEventFilter;
+    MinterAttachToNFT(
+      minter?: string | null,
+      nftId?: BigNumberish | null,
+      attachment?: null
+    ): MinterAttachToNFTEventFilter;
+
+    'OwnerAttachToNFT(address,uint256,bytes)'(
+      owner?: string | null,
+      nftId?: BigNumberish | null,
+      attachment?: null
+    ): OwnerAttachToNFTEventFilter;
+    OwnerAttachToNFT(
+      owner?: string | null,
+      nftId?: BigNumberish | null,
+      attachment?: null
+    ): OwnerAttachToNFTEventFilter;
 
     'RoleAdminChanged(bytes32,bytes32,bytes32)'(
       role?: BytesLike | null,
@@ -682,6 +902,16 @@ export interface NFTAttachment extends BaseContract {
     'META_TX_FORWARDER()'(overrides?: CallOverrides): Promise<BigNumber>;
 
     /**
+     * This attachment contract refers to the NFT contract in this variable.
+     */
+    freeport(overrides?: CallOverrides): Promise<BigNumber>;
+
+    /**
+     * This attachment contract refers to the NFT contract in this variable.
+     */
+    'freeport()'(overrides?: CallOverrides): Promise<BigNumber>;
+
+    /**
      * Returns the admin role that controls `role`. See {grantRole} and {revokeRole}. To change a role's admin, use {_setRoleAdmin}.
      */
     getRoleAdmin(
@@ -744,16 +974,6 @@ export interface NFTAttachment extends BaseContract {
     ): Promise<BigNumber>;
 
     /**
-     * This attachment contract refers to the NFT contract in this variable. This is informative, there is no validation.
-     */
-    nftContract(overrides?: CallOverrides): Promise<BigNumber>;
-
-    /**
-     * This attachment contract refers to the NFT contract in this variable. This is informative, there is no validation.
-     */
-    'nftContract()'(overrides?: CallOverrides): Promise<BigNumber>;
-
-    /**
      * Revokes `role` from the calling account. Roles are often managed via {grantRole} and {revokeRole}: this function's purpose is to provide a mechanism for accounts to lose their privileges if they are compromised (such as when a trusted device is misplaced). If the calling account had been granted `role`, emits a {RoleRevoked} event. Requirements: - the caller must be `account`.
      */
     renounceRole(
@@ -806,21 +1026,73 @@ export interface NFTAttachment extends BaseContract {
     ): Promise<BigNumber>;
 
     /**
-     * Attach an object identified by `cid` to the NFT type `nftId`. There is absolutely no validation. It is the responsibility of the reader of this event to decide who the sender is and what the object means.
+     * Attach data `attachment` to the NFT type `nftId`, as the minter of this NFT type. This only works for NFT IDs in the Freeport format.
      */
-    attachToNFT(
+    minterAttachToNFT(
       nftId: BigNumberish,
-      cid: BytesLike,
+      attachment: BytesLike,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
     /**
-     * Attach an object identified by `cid` to the NFT type `nftId`. There is absolutely no validation. It is the responsibility of the reader of this event to decide who the sender is and what the object means.
+     * Attach data `attachment` to the NFT type `nftId`, as the minter of this NFT type. This only works for NFT IDs in the Freeport format.
      */
-    'attachToNFT(uint256,bytes32)'(
+    'minterAttachToNFT(uint256,bytes)'(
       nftId: BigNumberish,
-      cid: BytesLike,
+      attachment: BytesLike,
       overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<BigNumber>;
+
+    /**
+     * Attach data `attachment` to the NFT type `nftId`, as a current owner of an NFT of this type. This works for NFTs in the ERC-1155 or Freeport standards.
+     */
+    ownerAttachToNFT(
+      nftId: BigNumberish,
+      attachment: BytesLike,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<BigNumber>;
+
+    /**
+     * Attach data `attachment` to the NFT type `nftId`, as a current owner of an NFT of this type. This works for NFTs in the ERC-1155 or Freeport standards.
+     */
+    'ownerAttachToNFT(uint256,bytes)'(
+      nftId: BigNumberish,
+      attachment: BytesLike,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<BigNumber>;
+
+    /**
+     * Attach data `attachment` to the NFT type `nftId`, as any account.
+     */
+    anonymAttachToNFT(
+      nftId: BigNumberish,
+      attachment: BytesLike,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<BigNumber>;
+
+    /**
+     * Attach data `attachment` to the NFT type `nftId`, as any account.
+     */
+    'anonymAttachToNFT(uint256,bytes)'(
+      nftId: BigNumberish,
+      attachment: BytesLike,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<BigNumber>;
+
+    /**
+     * Parse an NFT ID into its issuer, its supply, and an arbitrary nonce. This does not imply that the NFTs exist. This is specific to Freeport NFTs. See `freeportParts/Issuance.sol`
+     */
+    _minterFromNftId(
+      id: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    /**
+     * Parse an NFT ID into its issuer, its supply, and an arbitrary nonce. This does not imply that the NFTs exist. This is specific to Freeport NFTs. See `freeportParts/Issuance.sol`
+     */
+    '_minterFromNftId(uint256)'(
+      id: BigNumberish,
+      overrides?: CallOverrides
     ): Promise<BigNumber>;
   };
 
@@ -840,6 +1112,16 @@ export interface NFTAttachment extends BaseContract {
     ): Promise<PopulatedTransaction>;
 
     /**
+     * This attachment contract refers to the NFT contract in this variable.
+     */
+    freeport(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    /**
+     * This attachment contract refers to the NFT contract in this variable.
+     */
+    'freeport()'(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    /**
      * Returns the admin role that controls `role`. See {grantRole} and {revokeRole}. To change a role's admin, use {_setRoleAdmin}.
      */
     getRoleAdmin(
@@ -902,16 +1184,6 @@ export interface NFTAttachment extends BaseContract {
     ): Promise<PopulatedTransaction>;
 
     /**
-     * This attachment contract refers to the NFT contract in this variable. This is informative, there is no validation.
-     */
-    nftContract(overrides?: CallOverrides): Promise<PopulatedTransaction>;
-
-    /**
-     * This attachment contract refers to the NFT contract in this variable. This is informative, there is no validation.
-     */
-    'nftContract()'(overrides?: CallOverrides): Promise<PopulatedTransaction>;
-
-    /**
      * Revokes `role` from the calling account. Roles are often managed via {grantRole} and {revokeRole}: this function's purpose is to provide a mechanism for accounts to lose their privileges if they are compromised (such as when a trusted device is misplaced). If the calling account had been granted `role`, emits a {RoleRevoked} event. Requirements: - the caller must be `account`.
      */
     renounceRole(
@@ -964,21 +1236,73 @@ export interface NFTAttachment extends BaseContract {
     ): Promise<PopulatedTransaction>;
 
     /**
-     * Attach an object identified by `cid` to the NFT type `nftId`. There is absolutely no validation. It is the responsibility of the reader of this event to decide who the sender is and what the object means.
+     * Attach data `attachment` to the NFT type `nftId`, as the minter of this NFT type. This only works for NFT IDs in the Freeport format.
      */
-    attachToNFT(
+    minterAttachToNFT(
       nftId: BigNumberish,
-      cid: BytesLike,
+      attachment: BytesLike,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 
     /**
-     * Attach an object identified by `cid` to the NFT type `nftId`. There is absolutely no validation. It is the responsibility of the reader of this event to decide who the sender is and what the object means.
+     * Attach data `attachment` to the NFT type `nftId`, as the minter of this NFT type. This only works for NFT IDs in the Freeport format.
      */
-    'attachToNFT(uint256,bytes32)'(
+    'minterAttachToNFT(uint256,bytes)'(
       nftId: BigNumberish,
-      cid: BytesLike,
+      attachment: BytesLike,
       overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
+
+    /**
+     * Attach data `attachment` to the NFT type `nftId`, as a current owner of an NFT of this type. This works for NFTs in the ERC-1155 or Freeport standards.
+     */
+    ownerAttachToNFT(
+      nftId: BigNumberish,
+      attachment: BytesLike,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
+
+    /**
+     * Attach data `attachment` to the NFT type `nftId`, as a current owner of an NFT of this type. This works for NFTs in the ERC-1155 or Freeport standards.
+     */
+    'ownerAttachToNFT(uint256,bytes)'(
+      nftId: BigNumberish,
+      attachment: BytesLike,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
+
+    /**
+     * Attach data `attachment` to the NFT type `nftId`, as any account.
+     */
+    anonymAttachToNFT(
+      nftId: BigNumberish,
+      attachment: BytesLike,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
+
+    /**
+     * Attach data `attachment` to the NFT type `nftId`, as any account.
+     */
+    'anonymAttachToNFT(uint256,bytes)'(
+      nftId: BigNumberish,
+      attachment: BytesLike,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
+
+    /**
+     * Parse an NFT ID into its issuer, its supply, and an arbitrary nonce. This does not imply that the NFTs exist. This is specific to Freeport NFTs. See `freeportParts/Issuance.sol`
+     */
+    _minterFromNftId(
+      id: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    /**
+     * Parse an NFT ID into its issuer, its supply, and an arbitrary nonce. This does not imply that the NFTs exist. This is specific to Freeport NFTs. See `freeportParts/Issuance.sol`
+     */
+    '_minterFromNftId(uint256)'(
+      id: BigNumberish,
+      overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
   };
 }
