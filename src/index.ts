@@ -37,9 +37,42 @@ export type Provider = providers.Web3Provider | providers.JsonRpcProvider;
 export const importProvider = (): providers.Web3Provider =>
   new providers.Web3Provider(window.ethereum);
 
-export const createProvider = (
-  providerUrl: string
-): providers.JsonRpcProvider => new providers.JsonRpcProvider(providerUrl);
+export const createProvider = async (
+  providerUrl: string,
+  options: {BICONOMY_API_KEY: string},
+): Promise<providers.JsonRpcProvider> => {
+  let provider = new providers.JsonRpcProvider(providerUrl);
+  if(BICONOMY_API_KEY) {
+    provider = await enableBiconomy(provider);
+  }
+  return provider
+}
+
+const {Biconomy} = require("@biconomy/mexa");
+
+const BICONOMY_API_KEY = process.env.BICONOMY_API_KEY;
+
+const waitOnBiconomy = (biconomy) => new Promise((resolve, reject) => {
+    biconomy.onEvent(biconomy.READY, resolve).onEvent(biconomy.ERROR, reject);
+});
+
+export const enableBiconomy = async (ethersProvider) => {
+
+  // Pass connected wallet provider under walletProvider field
+  let biconomyProvider = new Biconomy(ethersProvider,
+      {
+          walletProvider: ethersProvider,
+          apiKey: BICONOMY_API_KEY,
+          debug: true
+      });
+
+  await waitOnBiconomy(biconomyProvider);
+
+  biconomyProvider = new ethers.providers.Web3Provider(biconomyProvider);
+
+  return biconomyProvider;
+}
+
 
 export type GetContractAddressConfig = {
   deployment?: Deployment;
