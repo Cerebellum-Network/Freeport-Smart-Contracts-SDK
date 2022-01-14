@@ -18,6 +18,8 @@ import {
 } from './abi-types';
 import config from './config.json';
 
+const Biconomy = require('@biconomy/mexa');
+
 export * from './abi-types';
 
 declare global {
@@ -33,13 +35,42 @@ export type ContractName = keyof Config[Deployment][ChainId];
 
 export type Signer = providers.JsonRpcSigner;
 export type Provider = providers.Web3Provider | providers.JsonRpcProvider;
-
 export const importProvider = (): providers.Web3Provider =>
   new providers.Web3Provider(window.ethereum);
 
-export const createProvider = (
-  providerUrl: string
-): providers.JsonRpcProvider => new providers.JsonRpcProvider(providerUrl);
+const waitOnBiconomy = async (biconomy) =>
+  new Promise((resolve, reject) => {
+    biconomy.onEvent(biconomy.READY, resolve).onEvent(biconomy.ERROR, reject);
+  });
+
+export const enableBiconomy = async (
+  ethersProvider: providers.JsonRpcProvider,
+  biconomyApiKey: string,
+  debug: boolean
+) => {
+  const biconomyProvider = new Biconomy(ethersProvider, {
+    walletProvider: ethersProvider,
+    debug,
+    apiKey: biconomyApiKey,
+  });
+
+  await waitOnBiconomy(biconomyProvider);
+  return new providers.Web3Provider(biconomyProvider);
+};
+
+export const createProvider = async (
+  providerUrl: string,
+  debug = false,
+  biconomyApiKey?: string
+): Promise<providers.JsonRpcProvider> => {
+  let provider = new providers.JsonRpcProvider(providerUrl);
+
+  if (biconomyApiKey) {
+    provider = await enableBiconomy(provider, biconomyApiKey, debug);
+  }
+
+  return provider;
+};
 
 export type GetContractAddressConfig = {
   deployment?: Deployment;
