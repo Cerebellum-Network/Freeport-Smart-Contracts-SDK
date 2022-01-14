@@ -20,6 +20,10 @@ const config = {
     '@typescript-eslint/no-unsafe-assignment': 'warn',
     '@typescript-eslint/no-unsafe-return': 'warn',
     '@typescript-eslint/no-unsafe-member-access': 'warn',
+    '@typescript-eslint/no-require-imports': 'warn',
+    '@typescript-eslint/no-var-requires': 'warn',
+    '@typescript-eslint/no-unsafe-argument': 'warn',
+    'unicorn/prefer-module': 'off',
   },
 };
 
