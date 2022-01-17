@@ -49,7 +49,6 @@ export const enableBiconomy = async (
   debug: boolean
 ) => {
   const biconomyProvider = new Biconomy(ethersProvider, {
-    walletProvider: ethersProvider,
     debug,
     apiKey: biconomyApiKey,
   });
@@ -59,11 +58,10 @@ export const enableBiconomy = async (
 };
 
 export const createProvider = async (
-  providerUrl: string,
   debug = false,
   biconomyApiKey?: string
 ): Promise<providers.JsonRpcProvider> => {
-  let provider = new providers.JsonRpcProvider(providerUrl);
+  let provider = importProvider();
 
   if (biconomyApiKey) {
     provider = await enableBiconomy(provider, biconomyApiKey, debug);
