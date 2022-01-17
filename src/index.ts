@@ -60,7 +60,7 @@ export const enableBiconomy = async (
 export const createProvider = async (
   debug = false,
   biconomyApiKey?: string
-): Promise<providers.JsonRpcProvider> => {
+): Promise<providers.Web3Provider> => {
   let provider = importProvider();
 
   if (biconomyApiKey) {
