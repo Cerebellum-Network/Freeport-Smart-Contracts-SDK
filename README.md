@@ -92,6 +92,7 @@ To do a one-off build, use `yarn build`.
 To run tests, use `yarn test`.
 
 - `yarn qa` - run all code quality tools
+- `yarn test` - run tests with Jest
 - `yarn fix` - fix linting errors and formatting
 - `yarn lint` - run ESLint only
 - `yarn format` - format files with prettier
