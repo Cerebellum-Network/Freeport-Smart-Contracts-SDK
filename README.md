@@ -89,7 +89,8 @@ a rebuild to `/dist`, use `yarn start`.
 
 To do a one-off build, use `yarn build`.
 
-To run tests, use `yarn test`.
+To run tests, use a shared (unsafe) test account with `cp .env.dev .env`, or use
+your own `.env`.
 
 - `yarn qa` - run all code quality tools
 - `yarn test` - run tests with Jest

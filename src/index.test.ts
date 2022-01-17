@@ -1,3 +1,5 @@
+import 'dotenv/config';
+
 import {
   createFreeport,
   createProvider,
@@ -8,20 +10,31 @@ import {
 
 const TESTNET_URL = 'https://rpc-mumbai.maticvigil.com';
 
+jest.setTimeout(30e3);
+
 test('instantiate a provider and a contract', async () => {
   const deployment = 'dev' as Deployment;
-  const privateKey =
-    '0x6be677bd5f9aa0bd9f7b0a7bfc82232b9d6e766f9b1b9d731b2fc1e13806725e';
+  const mnemonic = process.env.TESTNET_MNEMONIC;
 
   const provider = createProvider(TESTNET_URL);
   const contractAddress = await getFreeportAddress(provider, deployment);
   const freeport: Freeport = createFreeport({
     provider,
     contractAddress,
-    privateKey,
+    mnemonic,
   });
 
   const currencyBN = await freeport.CURRENCY();
   const currency = currencyBN.toNumber();
   expect(currency).toBe(0);
+
+  const tx = await freeport.issue(10, '0x');
+  const receipt = await tx.wait();
+  const event = receipt.events![0];
+
+  expect(event).toBeTruthy();
+  expect(event.eventSignature).toBe(
+    'TransferSingle(address,address,address,uint256,uint256)'
+  );
+  expect(event.args!.from).toBe('0x0000000000000000000000000000000000000000');
 });
