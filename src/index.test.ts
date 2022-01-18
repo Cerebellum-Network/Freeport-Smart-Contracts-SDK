@@ -66,6 +66,9 @@ test('instantiate a provider and a contract with Biconomy', async () => {
     biconomyApiKey,
   });
 
+  const senderAddress = await signer.getAddress();
+  console.log('senderAddress', senderAddress);
+
   const contractAddress = await getFreeportAddress(provider, deployment);
 
   const freeport = Freeport__factory.connect(contractAddress, signer);
@@ -74,7 +77,7 @@ test('instantiate a provider and a contract with Biconomy', async () => {
   const currency = currencyBN.toNumber();
   expect(currency).toBe(0);
 
-  const tx = await freeport.issue(10, '0x');
+  const tx = await freeport.issue(10, '0x', { gasLimit: 1e6 });
   const receipt = await tx.wait();
   const event = receipt.events![0];
 

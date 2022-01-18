@@ -18,7 +18,6 @@ import {
 } from './abi-types';
 import config from './config.json';
 
-//const Biconomy = require('@biconomy/mexa');
 import { Biconomy } from '@biconomy/mexa';
 const Web3 = require('web3');
 import HDWalletProvider from '@truffle/hdwallet-provider';
@@ -57,10 +56,10 @@ export const enableBiconomy = async (
   biconomyApiKey: string,
   debug: boolean
 ) => {
-  const biconomyProvider = new Biconomy(ethersProvider, {
+  const biconomyProvider = new Biconomy(walletProvider, {
     debug,
     apiKey: biconomyApiKey,
-    walletProvider,
+    //walletProvider,
   });
 
   await waitOnBiconomy(biconomyProvider);
