@@ -23,6 +23,7 @@ const config = {
     '@typescript-eslint/no-require-imports': 'warn',
     '@typescript-eslint/no-var-requires': 'warn',
     '@typescript-eslint/no-unsafe-argument': 'warn',
+    '@typescript-eslint/no-unused-vars': 'warn',
     'unicorn/prefer-module': 'off',
   },
 };

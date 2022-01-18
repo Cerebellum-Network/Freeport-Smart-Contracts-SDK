@@ -1,5 +1,5 @@
 import { providers, Wallet, Signer } from 'ethers';
-
+const Web3 = require('web3');
 import type {
   FiatGateway,
   Freeport,
@@ -18,9 +18,7 @@ import {
 } from './abi-types';
 import config from './config.json';
 
-//const Biconomy = require('@biconomy/mexa');
 import { Biconomy } from '@biconomy/mexa';
-const Web3 = require('web3');
 import HDWalletProvider from '@truffle/hdwallet-provider';
 
 export * from './abi-types';
@@ -36,7 +34,7 @@ export type Deployment = keyof Config;
 type ChainId = keyof Config[Deployment];
 export type ContractName = keyof Config[Deployment][ChainId];
 
-export { Signer };
+export { Signer } from 'ethers';
 export type Provider = providers.JsonRpcProvider;
 
 export const importProvider = (): providers.Web3Provider =>
@@ -52,15 +50,13 @@ const waitOnBiconomy = async (biconomy) =>
   });
 
 export const enableBiconomy = async (
-  ethersProvider: providers.JsonRpcProvider,
   walletProvider: any,
   biconomyApiKey: string,
   debug: boolean
 ) => {
-  const biconomyProvider = new Biconomy(ethersProvider, {
+  const biconomyProvider = new Biconomy(walletProvider, {
     debug,
     apiKey: biconomyApiKey,
-    walletProvider,
   });
 
   await waitOnBiconomy(biconomyProvider);
@@ -72,6 +68,28 @@ export type CreateProviderConfig = {
   mnemonic?: string;
   privateKey?: string;
   biconomyApiKey?: string;
+};
+
+export type CreateSignerConfig = {
+  provider: Provider;
+  mnemonic?: string;
+  privateKey?: string;
+};
+
+export const createSigner = ({
+  provider,
+  mnemonic,
+  privateKey,
+}: CreateSignerConfig): Wallet | Signer => {
+  if (mnemonic) {
+    return Wallet.fromMnemonic(mnemonic).connect(provider);
+  }
+
+  if (privateKey) {
+    return new Wallet(privateKey, provider);
+  }
+
+  return provider.getSigner();
 };
 
 export type CreateProviderReturn = {
@@ -89,23 +107,22 @@ export const createProviderSigner = async ({
   let signer = createSigner({ provider, mnemonic, privateKey });
 
   if (biconomyApiKey) {
-    let providerOrUrl = rpcUrl;
-    let walletOptions = mnemonic
+    const providerOrUrl = rpcUrl;
+    const walletOptions = mnemonic
       ? {
           providerOrUrl,
           mnemonic: { phrase: mnemonic },
         }
       : {
           providerOrUrl,
-          privateKeys: [privateKey || ''],
+          privateKeys: [privateKey ?? ''],
         };
 
-    let walletProvider = new HDWalletProvider(walletOptions);
+    const walletProvider = new HDWalletProvider(walletOptions);
 
     const debug = false;
 
     provider = await enableBiconomy(
-      provider, // ethers
       walletProvider, // HDWallet
       biconomyApiKey,
       debug
@@ -223,28 +240,6 @@ export const getERC20Address = async (
   });
 };
 
-export type CreateSignerConfig = {
-  provider: Provider;
-  mnemonic?: string;
-  privateKey?: string;
-};
-
-export const createSigner = ({
-  provider,
-  mnemonic,
-  privateKey,
-}: CreateSignerConfig): Wallet | Signer => {
-  if (mnemonic) {
-    return Wallet.fromMnemonic(mnemonic).connect(provider);
-  }
-
-  if (privateKey) {
-    return new Wallet(privateKey, provider);
-  }
-
-  return provider.getSigner();
-};
-
 export type CreateContractConfig = {
   signer: Signer;
   contractAddress: string;
@@ -256,59 +251,38 @@ export const createFreeport = ({
 }: CreateContractConfig): Freeport => {
   return Freeport__factory.connect(contractAddress, signer);
 };
-/*
-export const createFiatGateway = ({
-  provider,
-  contractAddress,
-  mnemonic,
-  privateKey,
-}: CreateContractConfig): FiatGateway => {
-  const signer = createSigner({ provider, mnemonic, privateKey });
 
+export const createFiatGateway = ({
+  signer,
+  contractAddress,
+}: CreateContractConfig): FiatGateway => {
   return FiatGateway__factory.connect(contractAddress, signer);
 };
 
 export const createSimpleAuction = ({
-  provider,
+  signer,
   contractAddress,
-  mnemonic,
-  privateKey,
 }: CreateContractConfig): SimpleAuction => {
-  const signer = createSigner({ provider, mnemonic, privateKey });
-
   return SimpleAuction__factory.connect(contractAddress, signer);
 };
 
 export const createNFTAttachment = ({
-  provider,
+  signer,
   contractAddress,
-  mnemonic,
-  privateKey,
 }: CreateContractConfig): NFTAttachment => {
-  const signer = createSigner({ provider, mnemonic, privateKey });
-
   return NFTAttachment__factory.connect(contractAddress, signer);
 };
 
 export const createMinimalForwarder = ({
-  provider,
+  signer,
   contractAddress,
-  mnemonic,
-  privateKey,
 }: CreateContractConfig): MinimalForwarder => {
-  const signer = createSigner({ provider, mnemonic, privateKey });
-
   return MinimalForwarder__factory.connect(contractAddress, signer);
 };
 
 export const createERC20 = ({
-  provider,
+  signer,
   contractAddress,
-  mnemonic,
-  privateKey,
 }: CreateContractConfig): ERC20 => {
-  const signer = createSigner({ provider, mnemonic, privateKey });
-
   return ERC20__factory.connect(contractAddress, signer);
 };
-*/
