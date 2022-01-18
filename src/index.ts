@@ -1,4 +1,4 @@
-import { providers, Wallet } from 'ethers';
+import { providers, Wallet, Signer } from 'ethers';
 
 import type {
   FiatGateway,
@@ -18,7 +18,10 @@ import {
 } from './abi-types';
 import config from './config.json';
 
-const Biconomy = require('@biconomy/mexa');
+//const Biconomy = require('@biconomy/mexa');
+import { Biconomy } from '@biconomy/mexa';
+const Web3 = require('web3');
+import HDWalletProvider from '@truffle/hdwallet-provider';
 
 export * from './abi-types';
 
@@ -33,10 +36,15 @@ export type Deployment = keyof Config;
 type ChainId = keyof Config[Deployment];
 export type ContractName = keyof Config[Deployment][ChainId];
 
-export type Signer = providers.JsonRpcSigner;
-export type Provider = providers.Web3Provider | providers.JsonRpcProvider;
+export { Signer };
+export type Provider = providers.JsonRpcProvider;
+
 export const importProvider = (): providers.Web3Provider =>
   new providers.Web3Provider(window.ethereum);
+
+export const createProvider = (
+  providerUrl: string
+): providers.JsonRpcProvider => new providers.JsonRpcProvider(providerUrl);
 
 const waitOnBiconomy = async (biconomy) =>
   new Promise((resolve, reject) => {
@@ -45,29 +53,67 @@ const waitOnBiconomy = async (biconomy) =>
 
 export const enableBiconomy = async (
   ethersProvider: providers.JsonRpcProvider,
+  walletProvider: any,
   biconomyApiKey: string,
   debug: boolean
 ) => {
   const biconomyProvider = new Biconomy(ethersProvider, {
     debug,
     apiKey: biconomyApiKey,
+    walletProvider,
   });
 
   await waitOnBiconomy(biconomyProvider);
   return new providers.Web3Provider(biconomyProvider);
 };
 
-export const createProvider = async (
-  debug = false,
-  biconomyApiKey?: string
-): Promise<providers.JsonRpcProvider> => {
-  let provider = importProvider();
+export type CreateProviderConfig = {
+  rpcUrl: string;
+  mnemonic?: string;
+  privateKey?: string;
+  biconomyApiKey?: string;
+};
+
+export type CreateProviderReturn = {
+  provider: Provider;
+  signer: Signer;
+};
+
+export const createProviderSigner = async ({
+  rpcUrl,
+  mnemonic,
+  privateKey,
+  biconomyApiKey,
+}: CreateProviderConfig): Promise<CreateProviderReturn> => {
+  let provider = new providers.JsonRpcProvider(rpcUrl);
+  let signer = createSigner({ provider, mnemonic, privateKey });
 
   if (biconomyApiKey) {
-    provider = await enableBiconomy(provider, biconomyApiKey, debug);
+    let providerOrUrl = rpcUrl;
+    let walletOptions = mnemonic
+      ? {
+          providerOrUrl,
+          mnemonic: { phrase: mnemonic },
+        }
+      : {
+          providerOrUrl,
+          privateKeys: [privateKey || ''],
+        };
+
+    let walletProvider = new HDWalletProvider(walletOptions);
+
+    const debug = false;
+
+    provider = await enableBiconomy(
+      provider, // ethers
+      walletProvider, // HDWallet
+      biconomyApiKey,
+      debug
+    );
+    signer = provider.getSigner();
   }
 
-  return provider;
+  return { provider, signer };
 };
 
 export type GetContractAddressConfig = {
@@ -200,23 +246,17 @@ export const createSigner = ({
 };
 
 export type CreateContractConfig = {
-  provider: Provider;
+  signer: Signer;
   contractAddress: string;
-  mnemonic?: string;
-  privateKey?: string;
 };
 
 export const createFreeport = ({
-  provider,
+  signer,
   contractAddress,
-  mnemonic,
-  privateKey,
 }: CreateContractConfig): Freeport => {
-  const signer = createSigner({ provider, mnemonic, privateKey });
-
   return Freeport__factory.connect(contractAddress, signer);
 };
-
+/*
 export const createFiatGateway = ({
   provider,
   contractAddress,
@@ -271,3 +311,4 @@ export const createERC20 = ({
 
   return ERC20__factory.connect(contractAddress, signer);
 };
+*/
