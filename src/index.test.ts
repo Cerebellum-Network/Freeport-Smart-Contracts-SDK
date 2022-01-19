@@ -1,7 +1,11 @@
 import 'dotenv/config';
 
-import { Freeport__factory } from './abi-types';
-import { createProviderSigner, Deployment, getFreeportAddress } from './index';
+import {
+  createFreeport,
+  createProviderSigner,
+  Deployment,
+  getFreeportAddress,
+} from './index';
 
 const TESTNET_URL = 'https://rpc-mumbai.maticvigil.com';
 
@@ -22,7 +26,7 @@ testIfMnemonic('instantiate a provider and a contract', async () => {
 
   const contractAddress = await getFreeportAddress(provider, deployment);
 
-  const freeport = Freeport__factory.connect(contractAddress, signer);
+  const freeport = createFreeport({ signer, contractAddress });
 
   const currencyBN = await freeport.CURRENCY();
   const currency = currencyBN.toNumber();
@@ -41,7 +45,7 @@ testIfMnemonic('instantiate a provider and a contract', async () => {
   stop();
 });
 
-const testIfBiconomy = biconomyApiKey ? test : test.skip;
+const testIfBiconomy = biconomyApiKey && mnemonic ? test : test.skip;
 
 testIfBiconomy(
   'instantiate a provider and a contract with Biconomy',
@@ -49,13 +53,12 @@ testIfBiconomy(
     const { provider, signer, stop } = await createProviderSigner({
       rpcUrl: TESTNET_URL,
       mnemonic,
-      // privateKey,
       biconomyApiKey,
     });
 
     const contractAddress = await getFreeportAddress(provider, deployment);
 
-    const freeport = Freeport__factory.connect(contractAddress, signer);
+    const freeport = createFreeport({ signer, contractAddress });
 
     const currencyBN = await freeport.CURRENCY();
     const currency = currencyBN.toNumber();
