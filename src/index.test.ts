@@ -1,23 +1,8 @@
 import 'dotenv/config';
 
-import {
-  createFreeport,
-  createProvider,
-  createSigner,
-  createProviderSigner,
-  Deployment,
-  Freeport,
-  getFreeportAddress,
-} from './index';
+import { createProviderSigner, Deployment, getFreeportAddress } from './index';
 
-import {
-  FiatGateway__factory,
-  Freeport__factory,
-  MinimalForwarder__factory,
-  NFTAttachment__factory,
-  SimpleAuction__factory,
-  TestERC20__factory as ERC20__factory,
-} from './abi-types';
+import { Freeport__factory } from './abi-types';
 
 const TESTNET_URL = 'https://rpc-mumbai.maticvigil.com';
 
@@ -25,7 +10,6 @@ jest.setTimeout(30e3);
 
 const deployment = 'dev' as Deployment;
 const mnemonic = process.env.TESTNET_MNEMONIC;
-const privateKey = process.env.TESTNET_PRIVATE_KEY;
 
 test('instantiate a provider and a contract', async () => {
   const biconomyApiKey = ''; //process.env.BICONOMY_API_KEY;
@@ -33,7 +17,6 @@ test('instantiate a provider and a contract', async () => {
   const { provider, signer } = await createProviderSigner({
     rpcUrl: TESTNET_URL,
     mnemonic,
-    //privateKey,
     biconomyApiKey,
   });
 
