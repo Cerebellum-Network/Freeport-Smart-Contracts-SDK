@@ -10,14 +10,13 @@ jest.setTimeout(30e3);
 
 const deployment = 'dev' as Deployment;
 const mnemonic = process.env.TESTNET_MNEMONIC;
+const biconomyApiKey = process.env.BICONOMY_API_KEY;
 
 test('instantiate a provider and a contract', async () => {
-  const biconomyApiKey = ''; //process.env.BICONOMY_API_KEY;
-
-  const { provider, signer } = await createProviderSigner({
+  const { provider, signer, stop } = await createProviderSigner({
     rpcUrl: TESTNET_URL,
     mnemonic,
-    biconomyApiKey,
+    biconomyApiKey: undefined, // env var not set
   });
 
   const contractAddress = await getFreeportAddress(provider, deployment);
@@ -37,36 +36,40 @@ test('instantiate a provider and a contract', async () => {
     'TransferSingle(address,address,address,uint256,uint256)'
   );
   expect(event.args!.from).toBe('0x0000000000000000000000000000000000000000');
+
+  stop();
 });
 
-test('instantiate a provider and a contract with Biconomy', async () => {
-  const biconomyApiKey = process.env.BICONOMY_API_KEY;
+const testIfBiconomy = biconomyApiKey ? test : test.skip;
 
-  const { provider, signer } = await createProviderSigner({
-    rpcUrl: TESTNET_URL,
-    mnemonic,
-    //privateKey,
-    biconomyApiKey,
-  });
+testIfBiconomy(
+  'instantiate a provider and a contract with Biconomy',
+  async () => {
+    const { provider, signer, stop } = await createProviderSigner({
+      rpcUrl: TESTNET_URL,
+      mnemonic,
+      //privateKey,
+      biconomyApiKey,
+    });
 
-  const senderAddress = await signer.getAddress();
-  console.log('senderAddress', senderAddress);
+    const contractAddress = await getFreeportAddress(provider, deployment);
 
-  const contractAddress = await getFreeportAddress(provider, deployment);
+    const freeport = Freeport__factory.connect(contractAddress, signer);
 
-  const freeport = Freeport__factory.connect(contractAddress, signer);
+    const currencyBN = await freeport.CURRENCY();
+    const currency = currencyBN.toNumber();
+    expect(currency).toBe(0);
 
-  const currencyBN = await freeport.CURRENCY();
-  const currency = currencyBN.toNumber();
-  expect(currency).toBe(0);
+    const tx = await freeport.issue(10, '0x', { gasLimit: 1e6 });
+    const receipt = await tx.wait();
+    const event = receipt.events![0];
 
-  const tx = await freeport.issue(10, '0x', { gasLimit: 1e6 });
-  const receipt = await tx.wait();
-  const event = receipt.events![0];
+    expect(event).toBeTruthy();
+    expect(event.eventSignature).toBe(
+      'TransferSingle(address,address,address,uint256,uint256)'
+    );
+    expect(event.args!.from).toBe('0x0000000000000000000000000000000000000000');
 
-  expect(event).toBeTruthy();
-  expect(event.eventSignature).toBe(
-    'TransferSingle(address,address,address,uint256,uint256)'
-  );
-  expect(event.args!.from).toBe('0x0000000000000000000000000000000000000000');
-});
+    stop();
+  }
+);

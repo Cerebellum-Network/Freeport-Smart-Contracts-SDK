@@ -1,5 +1,5 @@
 import { providers, Wallet, Signer } from 'ethers';
-const Web3 = require('web3');
+
 import type {
   FiatGateway,
   Freeport,
@@ -63,13 +63,6 @@ export const enableBiconomy = async (
   return new providers.Web3Provider(biconomyProvider);
 };
 
-export type CreateProviderConfig = {
-  rpcUrl: string;
-  mnemonic?: string;
-  privateKey?: string;
-  biconomyApiKey?: string;
-};
-
 export type CreateSignerConfig = {
   provider: Provider;
   mnemonic?: string;
@@ -92,9 +85,18 @@ export const createSigner = ({
   return provider.getSigner();
 };
 
+export type CreateProviderConfig = {
+  rpcUrl: string;
+  mnemonic?: string;
+  privateKey?: string;
+  biconomyApiKey?: string;
+  biconomyDebug?: boolean;
+};
+
 export type CreateProviderReturn = {
   provider: Provider;
   signer: Signer;
+  stop: () => void;
 };
 
 export const createProviderSigner = async ({
@@ -102,11 +104,10 @@ export const createProviderSigner = async ({
   mnemonic,
   privateKey,
   biconomyApiKey,
+  biconomyDebug,
 }: CreateProviderConfig): Promise<CreateProviderReturn> => {
-  let provider = new providers.JsonRpcProvider(rpcUrl);
-  let signer = createSigner({ provider, mnemonic, privateKey });
-
   if (biconomyApiKey) {
+    // Mode with Biconomy, HDWallet, and the default RPC provider of HDWallet.
     const providerOrUrl = rpcUrl;
     const walletOptions = mnemonic
       ? {
@@ -120,17 +121,24 @@ export const createProviderSigner = async ({
 
     const walletProvider = new HDWalletProvider(walletOptions);
 
-    const debug = false;
+    const stop = () => {
+      walletProvider.engine.stop();
+    };
 
-    provider = await enableBiconomy(
+    const provider = await enableBiconomy(
       walletProvider, // HDWallet
       biconomyApiKey,
-      debug
+      !!biconomyDebug
     );
-    signer = provider.getSigner();
+    const signer = provider.getSigner();
+    return { provider, signer, stop };
+  } else {
+    // Mode with ethers.
+    const provider = new providers.JsonRpcProvider(rpcUrl);
+    const signer = createSigner({ provider, mnemonic, privateKey });
+    const stop = () => {};
+    return { provider, signer, stop };
   }
-
-  return { provider, signer };
 };
 
 export type GetContractAddressConfig = {
