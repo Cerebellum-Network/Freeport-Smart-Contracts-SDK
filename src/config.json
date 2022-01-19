@@ -26,7 +26,7 @@
       "SimpleAuction": "0xd26d11faceA9798B3be6C8a42803eb31204DA790",
       "NFTAttachment": "0x5E376313fddBE3010F5d9fbC446C63d803590445",
       "MinimalForwarder": "0x5e43bA1666B13C346E2ECdeD9dcDaaf02fbb0B22",
-      "ERC20": null
+      "ERC20": "0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174"
     }
   }
 }
