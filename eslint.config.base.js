@@ -87,6 +87,7 @@ const config = {
     ],
     'import/prefer-default-export': 'off',
     'import/no-default-export': 'error',
+    'jest/no-standalone-expect': 'off',
     'no-plusplus': ['error', { allowForLoopAfterthoughts: true }],
     'no-restricted-syntax': [
       'error',
