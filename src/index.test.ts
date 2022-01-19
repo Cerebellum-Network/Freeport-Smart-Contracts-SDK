@@ -12,7 +12,9 @@ const deployment = 'dev' as Deployment;
 const mnemonic = process.env.TESTNET_MNEMONIC;
 const biconomyApiKey = process.env.BICONOMY_API_KEY;
 
-test('instantiate a provider and a contract', async () => {
+const testIfMnemonic = mnemonic ? test : test.skip;
+
+testIfMnemonic('instantiate a provider and a contract', async () => {
   const { provider, signer, stop } = await createProviderSigner({
     rpcUrl: TESTNET_URL,
     mnemonic,
