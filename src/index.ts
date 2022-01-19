@@ -1,4 +1,6 @@
-import { providers, Wallet, Signer } from 'ethers';
+import { Biconomy } from '@biconomy/mexa';
+import HDWalletProvider from '@truffle/hdwallet-provider';
+import { providers, Signer, Wallet } from 'ethers';
 
 import type {
   FiatGateway,
@@ -17,9 +19,6 @@ import {
   TestERC20__factory as ERC20__factory,
 } from './abi-types';
 import config from './config.json';
-
-import { Biconomy } from '@biconomy/mexa';
-import HDWalletProvider from '@truffle/hdwallet-provider';
 
 export * from './abi-types';
 
@@ -99,6 +98,8 @@ export type CreateProviderReturn = {
   stop: () => void;
 };
 
+const noop = () => {};
+
 export const createProviderSigner = async ({
   rpcUrl,
   mnemonic,
@@ -132,13 +133,13 @@ export const createProviderSigner = async ({
     );
     const signer = provider.getSigner();
     return { provider, signer, stop };
-  } else {
-    // Mode with ethers.
-    const provider = new providers.JsonRpcProvider(rpcUrl);
-    const signer = createSigner({ provider, mnemonic, privateKey });
-    const stop = () => {};
-    return { provider, signer, stop };
   }
+
+  // Mode with ethers.
+  const provider = new providers.JsonRpcProvider(rpcUrl);
+  const signer = createSigner({ provider, mnemonic, privateKey });
+
+  return { provider, signer, stop: noop };
 };
 
 export type GetContractAddressConfig = {
@@ -256,41 +257,35 @@ export type CreateContractConfig = {
 export const createFreeport = ({
   signer,
   contractAddress,
-}: CreateContractConfig): Freeport => {
-  return Freeport__factory.connect(contractAddress, signer);
-};
+}: CreateContractConfig): Freeport =>
+  Freeport__factory.connect(contractAddress, signer);
 
 export const createFiatGateway = ({
   signer,
   contractAddress,
-}: CreateContractConfig): FiatGateway => {
-  return FiatGateway__factory.connect(contractAddress, signer);
-};
+}: CreateContractConfig): FiatGateway =>
+  FiatGateway__factory.connect(contractAddress, signer);
 
 export const createSimpleAuction = ({
   signer,
   contractAddress,
-}: CreateContractConfig): SimpleAuction => {
-  return SimpleAuction__factory.connect(contractAddress, signer);
-};
+}: CreateContractConfig): SimpleAuction =>
+  SimpleAuction__factory.connect(contractAddress, signer);
 
 export const createNFTAttachment = ({
   signer,
   contractAddress,
-}: CreateContractConfig): NFTAttachment => {
-  return NFTAttachment__factory.connect(contractAddress, signer);
-};
+}: CreateContractConfig): NFTAttachment =>
+  NFTAttachment__factory.connect(contractAddress, signer);
 
 export const createMinimalForwarder = ({
   signer,
   contractAddress,
-}: CreateContractConfig): MinimalForwarder => {
-  return MinimalForwarder__factory.connect(contractAddress, signer);
-};
+}: CreateContractConfig): MinimalForwarder =>
+  MinimalForwarder__factory.connect(contractAddress, signer);
 
 export const createERC20 = ({
   signer,
   contractAddress,
-}: CreateContractConfig): ERC20 => {
-  return ERC20__factory.connect(contractAddress, signer);
-};
+}: CreateContractConfig): ERC20 =>
+  ERC20__factory.connect(contractAddress, signer);

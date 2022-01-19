@@ -90,8 +90,11 @@ a rebuild to `/dist`, use `yarn start`.
 To do a one-off build, use `yarn build`.
 
 To run tests:
-1. Generate a mnemonic (e.g. with Metamask), and get some TEST MATIC on it (e.g., from the [faucet](https://faucet.polygon.technology/)).
-2. Get an API key of a Biconomy account configured with the Freeport dev deployment.
+
+1. Generate a mnemonic (e.g. with Metamask), and get some TEST MATIC on it
+   (e.g., from the [faucet](https://faucet.polygon.technology/)).
+2. Get an API key of a Biconomy account configured with the Freeport dev
+   deployment.
 3. Create a `.env` file based on `.env.example`.
 
 - `yarn qa` - run all code quality tools

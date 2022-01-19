@@ -1,8 +1,7 @@
 import 'dotenv/config';
 
-import { createProviderSigner, Deployment, getFreeportAddress } from './index';
-
 import { Freeport__factory } from './abi-types';
+import { createProviderSigner, Deployment, getFreeportAddress } from './index';
 
 const TESTNET_URL = 'https://rpc-mumbai.maticvigil.com';
 
@@ -50,7 +49,7 @@ testIfBiconomy(
     const { provider, signer, stop } = await createProviderSigner({
       rpcUrl: TESTNET_URL,
       mnemonic,
-      //privateKey,
+      // privateKey,
       biconomyApiKey,
     });
 
