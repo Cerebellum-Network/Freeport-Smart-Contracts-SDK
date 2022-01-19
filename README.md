@@ -1,5 +1,17 @@
 ## Freeport SDK
 
+### Releases
+
+#### v6.1.0 - USDC
+
+- Add the USDC contract address on mainnet.
+
+#### v6.0.0 - Biconomy
+
+- Add support for Biconomy for gasless transactions.
+- Changes to the API: first create the signer, then the contracts.
+- Add first tests.
+
 ### Installation
 
 Freeport SDK uses [ethers](https://github.com/ethers-io/ethers.js/) library
