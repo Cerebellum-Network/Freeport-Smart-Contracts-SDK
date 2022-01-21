@@ -171,6 +171,19 @@ export const getContractAddress = ({
   );
 };
 
+export type TokenConfig = {
+  symbol: string
+  decimals: number
+}
+
+export const getTokenConfig = (env: string = 'dev'): TokenConfig => {
+  const { Token } = config[env];
+  if (!Token) {
+    throw new Error(`Cannot find Token configuration for env: ${env}`)
+  }
+  return Token
+}
+
 export const getFreeportAddress = async (
   provider: Provider,
   deployment: Deployment = 'prod'
