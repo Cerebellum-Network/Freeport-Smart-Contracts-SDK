@@ -30,7 +30,7 @@ declare global {
 
 type Config = typeof config;
 export type Deployment = keyof Config;
-type ChainId = keyof Config[Deployment];
+type ChainId = keyof Omit<Config[Deployment], 'Token'>;
 export type ContractName = keyof Config[Deployment][ChainId];
 
 export { Signer } from 'ethers';
@@ -172,17 +172,17 @@ export const getContractAddress = ({
 };
 
 export type TokenConfig = {
-  symbol: string
-  decimals: number
-}
+  symbol: string;
+  decimals: number;
+};
 
 export const getTokenConfig = (env: string = 'dev'): TokenConfig => {
   const { Token } = config[env];
   if (!Token) {
-    throw new Error(`Cannot find Token configuration for env: ${env}`)
+    throw new Error(`Cannot find Token configuration for env: ${env}`);
   }
-  return Token
-}
+  return Token;
+};
 
 export const getFreeportAddress = async (
   provider: Provider,
