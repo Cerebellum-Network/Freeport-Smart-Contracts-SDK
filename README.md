@@ -2,6 +2,14 @@
 
 ### Releases
 
+#### v6.3.0 - Auction with Biconomy
+
+- [BREAKING] Use the correct SimpleAuction contract.
+
+#### v6.2.0 - Token configuration
+
+- Added Token name and decimals configuration.
+
 #### v6.1.0 - USDC
 
 - Add the USDC contract address on mainnet.
