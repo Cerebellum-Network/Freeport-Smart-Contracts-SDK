@@ -176,11 +176,12 @@ export type TokenConfig = {
   decimals: number;
 };
 
-export const getTokenConfig = (env: string = 'dev'): TokenConfig => {
+export const getTokenConfig = (env = 'dev'): TokenConfig => {
   const { Token } = config[env];
   if (!Token) {
     throw new Error(`Cannot find Token configuration for env: ${env}`);
   }
+
   return Token;
 };
 
