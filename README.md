@@ -2,6 +2,11 @@
 
 ### Releases
 
+#### v7.0.0 - Upgradeable contracts
+
+- support for upgradeable contracts
+- contract deployment of 2022-01-28 / commit bfb19163
+
 #### v6.3.0 - Auction with Biconomy
 
 - [BREAKING] Use the correct SimpleAuction contract.
