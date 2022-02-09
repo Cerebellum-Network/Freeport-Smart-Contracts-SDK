@@ -84,6 +84,11 @@ export const createSigner = ({
   return provider.getSigner();
 };
 
+export type BidSignature = {
+  buyer: string;
+  nftId: string;
+};
+
 export type CreateProviderConfig = {
   rpcUrl: string;
   mnemonic?: string;

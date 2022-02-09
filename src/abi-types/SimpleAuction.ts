@@ -9,6 +9,7 @@ import {
   CallOverrides,
   ContractTransaction,
   Overrides,
+  PayableOverrides,
   PopulatedTransaction,
   Signer,
   utils,
@@ -19,6 +20,7 @@ import { TypedEventFilter, TypedEvent, TypedListener, OnEvent } from './common';
 
 export interface SimpleAuctionInterface extends utils.Interface {
   functions: {
+    'BUY_AUTHORIZER_ROLE()': FunctionFragment;
     'CURRENCY()': FunctionFragment;
     'DEFAULT_ADMIN_ROLE()': FunctionFragment;
     'META_TX_FORWARDER()': FunctionFragment;
@@ -32,12 +34,20 @@ export interface SimpleAuctionInterface extends utils.Interface {
     'renounceRole(bytes32,address)': FunctionFragment;
     'revokeRole(bytes32,address)': FunctionFragment;
     'sellerNftBids(address,uint256)': FunctionFragment;
+    'upgradeTo(address)': FunctionFragment;
+    'upgradeToAndCall(address,bytes)': FunctionFragment;
     'supportsInterface(bytes4)': FunctionFragment;
+    'initialize(address)': FunctionFragment;
+    'initialize_v2_0_0()': FunctionFragment;
     'startAuction(uint256,uint256,uint256)': FunctionFragment;
-    'bidOnAuction(address,uint256,uint256)': FunctionFragment;
+    'bidOnAuction(address,uint256,uint256,bytes)': FunctionFragment;
     'settleAuction(address,uint256)': FunctionFragment;
   };
 
+  encodeFunctionData(
+    functionFragment: 'BUY_AUTHORIZER_ROLE',
+    values?: undefined
+  ): string;
   encodeFunctionData(functionFragment: 'CURRENCY', values?: undefined): string;
   encodeFunctionData(
     functionFragment: 'DEFAULT_ADMIN_ROLE',
@@ -84,9 +94,19 @@ export interface SimpleAuctionInterface extends utils.Interface {
     functionFragment: 'sellerNftBids',
     values: [string, BigNumberish]
   ): string;
+  encodeFunctionData(functionFragment: 'upgradeTo', values: [string]): string;
+  encodeFunctionData(
+    functionFragment: 'upgradeToAndCall',
+    values: [string, BytesLike]
+  ): string;
   encodeFunctionData(
     functionFragment: 'supportsInterface',
     values: [BytesLike]
+  ): string;
+  encodeFunctionData(functionFragment: 'initialize', values: [string]): string;
+  encodeFunctionData(
+    functionFragment: 'initialize_v2_0_0',
+    values?: undefined
   ): string;
   encodeFunctionData(
     functionFragment: 'startAuction',
@@ -94,13 +114,17 @@ export interface SimpleAuctionInterface extends utils.Interface {
   ): string;
   encodeFunctionData(
     functionFragment: 'bidOnAuction',
-    values: [string, BigNumberish, BigNumberish]
+    values: [string, BigNumberish, BigNumberish, BytesLike]
   ): string;
   encodeFunctionData(
     functionFragment: 'settleAuction',
     values: [string, BigNumberish]
   ): string;
 
+  decodeFunctionResult(
+    functionFragment: 'BUY_AUTHORIZER_ROLE',
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(functionFragment: 'CURRENCY', data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: 'DEFAULT_ADMIN_ROLE',
@@ -138,8 +162,18 @@ export interface SimpleAuctionInterface extends utils.Interface {
     functionFragment: 'sellerNftBids',
     data: BytesLike
   ): Result;
+  decodeFunctionResult(functionFragment: 'upgradeTo', data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: 'upgradeToAndCall',
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(
     functionFragment: 'supportsInterface',
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(functionFragment: 'initialize', data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: 'initialize_v2_0_0',
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -156,21 +190,38 @@ export interface SimpleAuctionInterface extends utils.Interface {
   ): Result;
 
   events: {
+    'AdminChanged(address,address)': EventFragment;
+    'BeaconUpgraded(address)': EventFragment;
     'BidOnAuction(address,uint256,uint256,uint256,address)': EventFragment;
     'RoleAdminChanged(bytes32,bytes32,bytes32)': EventFragment;
     'RoleGranted(bytes32,address,address)': EventFragment;
     'RoleRevoked(bytes32,address,address)': EventFragment;
     'SettleAuction(address,uint256,uint256,address)': EventFragment;
     'StartAuction(address,uint256,uint256,uint256)': EventFragment;
+    'Upgraded(address)': EventFragment;
   };
 
+  getEvent(nameOrSignatureOrTopic: 'AdminChanged'): EventFragment;
+  getEvent(nameOrSignatureOrTopic: 'BeaconUpgraded'): EventFragment;
   getEvent(nameOrSignatureOrTopic: 'BidOnAuction'): EventFragment;
   getEvent(nameOrSignatureOrTopic: 'RoleAdminChanged'): EventFragment;
   getEvent(nameOrSignatureOrTopic: 'RoleGranted'): EventFragment;
   getEvent(nameOrSignatureOrTopic: 'RoleRevoked'): EventFragment;
   getEvent(nameOrSignatureOrTopic: 'SettleAuction'): EventFragment;
   getEvent(nameOrSignatureOrTopic: 'StartAuction'): EventFragment;
+  getEvent(nameOrSignatureOrTopic: 'Upgraded'): EventFragment;
 }
+
+export type AdminChangedEvent = TypedEvent<
+  [string, string],
+  { previousAdmin: string; newAdmin: string }
+>;
+
+export type AdminChangedEventFilter = TypedEventFilter<AdminChangedEvent>;
+
+export type BeaconUpgradedEvent = TypedEvent<[string], { beacon: string }>;
+
+export type BeaconUpgradedEventFilter = TypedEventFilter<BeaconUpgradedEvent>;
 
 export type BidOnAuctionEvent = TypedEvent<
   [string, BigNumber, BigNumber, BigNumber, string],
@@ -226,6 +277,10 @@ export type StartAuctionEvent = TypedEvent<
 
 export type StartAuctionEventFilter = TypedEventFilter<StartAuctionEvent>;
 
+export type UpgradedEvent = TypedEvent<[string], { implementation: string }>;
+
+export type UpgradedEventFilter = TypedEventFilter<UpgradedEvent>;
+
 export interface SimpleAuction extends BaseContract {
   connect(signerOrProvider: Signer | Provider | string): this;
   attach(addressOrName: string): this;
@@ -253,6 +308,10 @@ export interface SimpleAuction extends BaseContract {
   removeListener: OnEvent<this>;
 
   functions: {
+    BUY_AUTHORIZER_ROLE(overrides?: CallOverrides): Promise<[string]>;
+
+    'BUY_AUTHORIZER_ROLE()'(overrides?: CallOverrides): Promise<[string]>;
+
     /**
      * The token ID that represents the CERE currency for all payments in this contract.
      */
@@ -436,6 +495,28 @@ export interface SimpleAuction extends BaseContract {
       }
     >;
 
+    upgradeTo(
+      newImplementation: string,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
+
+    'upgradeTo(address)'(
+      newImplementation: string,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
+
+    upgradeToAndCall(
+      newImplementation: string,
+      data: BytesLike,
+      overrides?: PayableOverrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
+
+    'upgradeToAndCall(address,bytes)'(
+      newImplementation: string,
+      data: BytesLike,
+      overrides?: PayableOverrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
+
     /**
      * Supports interfaces of AccessControl and ERC1155Receiver.
      */
@@ -451,6 +532,36 @@ export interface SimpleAuction extends BaseContract {
       interfaceId: BytesLike,
       overrides?: CallOverrides
     ): Promise<[boolean]>;
+
+    /**
+     * Initialize this contract and its dependencies.
+     */
+    initialize(
+      _freeport: string,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
+
+    /**
+     * Initialize this contract and its dependencies.
+     */
+    'initialize(address)'(
+      _freeport: string,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
+
+    /**
+     * Initialize this contract after version 2.0.0. Allow deposit of USDC into Freeport.
+     */
+    initialize_v2_0_0(
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
+
+    /**
+     * Initialize this contract after version 2.0.0. Allow deposit of USDC into Freeport.
+     */
+    'initialize_v2_0_0()'(
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
 
     startAuction(
       nftId: BigNumberish,
@@ -470,13 +581,15 @@ export interface SimpleAuction extends BaseContract {
       seller: string,
       nftId: BigNumberish,
       price: BigNumberish,
+      signature: BytesLike,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
-    'bidOnAuction(address,uint256,uint256)'(
+    'bidOnAuction(address,uint256,uint256,bytes)'(
       seller: string,
       nftId: BigNumberish,
       price: BigNumberish,
+      signature: BytesLike,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
@@ -492,6 +605,10 @@ export interface SimpleAuction extends BaseContract {
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
   };
+
+  BUY_AUTHORIZER_ROLE(overrides?: CallOverrides): Promise<string>;
+
+  'BUY_AUTHORIZER_ROLE()'(overrides?: CallOverrides): Promise<string>;
 
   /**
    * The token ID that represents the CERE currency for all payments in this contract.
@@ -676,6 +793,28 @@ export interface SimpleAuction extends BaseContract {
     }
   >;
 
+  upgradeTo(
+    newImplementation: string,
+    overrides?: Overrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
+
+  'upgradeTo(address)'(
+    newImplementation: string,
+    overrides?: Overrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
+
+  upgradeToAndCall(
+    newImplementation: string,
+    data: BytesLike,
+    overrides?: PayableOverrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
+
+  'upgradeToAndCall(address,bytes)'(
+    newImplementation: string,
+    data: BytesLike,
+    overrides?: PayableOverrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
+
   /**
    * Supports interfaces of AccessControl and ERC1155Receiver.
    */
@@ -691,6 +830,36 @@ export interface SimpleAuction extends BaseContract {
     interfaceId: BytesLike,
     overrides?: CallOverrides
   ): Promise<boolean>;
+
+  /**
+   * Initialize this contract and its dependencies.
+   */
+  initialize(
+    _freeport: string,
+    overrides?: Overrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
+
+  /**
+   * Initialize this contract and its dependencies.
+   */
+  'initialize(address)'(
+    _freeport: string,
+    overrides?: Overrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
+
+  /**
+   * Initialize this contract after version 2.0.0. Allow deposit of USDC into Freeport.
+   */
+  initialize_v2_0_0(
+    overrides?: Overrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
+
+  /**
+   * Initialize this contract after version 2.0.0. Allow deposit of USDC into Freeport.
+   */
+  'initialize_v2_0_0()'(
+    overrides?: Overrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
 
   startAuction(
     nftId: BigNumberish,
@@ -710,13 +879,15 @@ export interface SimpleAuction extends BaseContract {
     seller: string,
     nftId: BigNumberish,
     price: BigNumberish,
+    signature: BytesLike,
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
-  'bidOnAuction(address,uint256,uint256)'(
+  'bidOnAuction(address,uint256,uint256,bytes)'(
     seller: string,
     nftId: BigNumberish,
     price: BigNumberish,
+    signature: BytesLike,
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
@@ -733,6 +904,10 @@ export interface SimpleAuction extends BaseContract {
   ): Promise<ContractTransaction>;
 
   callStatic: {
+    BUY_AUTHORIZER_ROLE(overrides?: CallOverrides): Promise<string>;
+
+    'BUY_AUTHORIZER_ROLE()'(overrides?: CallOverrides): Promise<string>;
+
     /**
      * The token ID that represents the CERE currency for all payments in this contract.
      */
@@ -916,6 +1091,28 @@ export interface SimpleAuction extends BaseContract {
       }
     >;
 
+    upgradeTo(
+      newImplementation: string,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    'upgradeTo(address)'(
+      newImplementation: string,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    upgradeToAndCall(
+      newImplementation: string,
+      data: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    'upgradeToAndCall(address,bytes)'(
+      newImplementation: string,
+      data: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
     /**
      * Supports interfaces of AccessControl and ERC1155Receiver.
      */
@@ -931,6 +1128,29 @@ export interface SimpleAuction extends BaseContract {
       interfaceId: BytesLike,
       overrides?: CallOverrides
     ): Promise<boolean>;
+
+    /**
+     * Initialize this contract and its dependencies.
+     */
+    initialize(_freeport: string, overrides?: CallOverrides): Promise<void>;
+
+    /**
+     * Initialize this contract and its dependencies.
+     */
+    'initialize(address)'(
+      _freeport: string,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    /**
+     * Initialize this contract after version 2.0.0. Allow deposit of USDC into Freeport.
+     */
+    initialize_v2_0_0(overrides?: CallOverrides): Promise<void>;
+
+    /**
+     * Initialize this contract after version 2.0.0. Allow deposit of USDC into Freeport.
+     */
+    'initialize_v2_0_0()'(overrides?: CallOverrides): Promise<void>;
 
     startAuction(
       nftId: BigNumberish,
@@ -950,13 +1170,15 @@ export interface SimpleAuction extends BaseContract {
       seller: string,
       nftId: BigNumberish,
       price: BigNumberish,
+      signature: BytesLike,
       overrides?: CallOverrides
     ): Promise<void>;
 
-    'bidOnAuction(address,uint256,uint256)'(
+    'bidOnAuction(address,uint256,uint256,bytes)'(
       seller: string,
       nftId: BigNumberish,
       price: BigNumberish,
+      signature: BytesLike,
       overrides?: CallOverrides
     ): Promise<void>;
 
@@ -974,6 +1196,20 @@ export interface SimpleAuction extends BaseContract {
   };
 
   filters: {
+    'AdminChanged(address,address)'(
+      previousAdmin?: null,
+      newAdmin?: null
+    ): AdminChangedEventFilter;
+    AdminChanged(
+      previousAdmin?: null,
+      newAdmin?: null
+    ): AdminChangedEventFilter;
+
+    'BeaconUpgraded(address)'(
+      beacon?: string | null
+    ): BeaconUpgradedEventFilter;
+    BeaconUpgraded(beacon?: string | null): BeaconUpgradedEventFilter;
+
     'BidOnAuction(address,uint256,uint256,uint256,address)'(
       seller?: string | null,
       nftId?: BigNumberish | null,
@@ -1047,9 +1283,16 @@ export interface SimpleAuction extends BaseContract {
       price?: null,
       closeTimeSec?: null
     ): StartAuctionEventFilter;
+
+    'Upgraded(address)'(implementation?: string | null): UpgradedEventFilter;
+    Upgraded(implementation?: string | null): UpgradedEventFilter;
   };
 
   estimateGas: {
+    BUY_AUTHORIZER_ROLE(overrides?: CallOverrides): Promise<BigNumber>;
+
+    'BUY_AUTHORIZER_ROLE()'(overrides?: CallOverrides): Promise<BigNumber>;
+
     /**
      * The token ID that represents the CERE currency for all payments in this contract.
      */
@@ -1224,6 +1467,28 @@ export interface SimpleAuction extends BaseContract {
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
+    upgradeTo(
+      newImplementation: string,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<BigNumber>;
+
+    'upgradeTo(address)'(
+      newImplementation: string,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<BigNumber>;
+
+    upgradeToAndCall(
+      newImplementation: string,
+      data: BytesLike,
+      overrides?: PayableOverrides & { from?: string | Promise<string> }
+    ): Promise<BigNumber>;
+
+    'upgradeToAndCall(address,bytes)'(
+      newImplementation: string,
+      data: BytesLike,
+      overrides?: PayableOverrides & { from?: string | Promise<string> }
+    ): Promise<BigNumber>;
+
     /**
      * Supports interfaces of AccessControl and ERC1155Receiver.
      */
@@ -1238,6 +1503,36 @@ export interface SimpleAuction extends BaseContract {
     'supportsInterface(bytes4)'(
       interfaceId: BytesLike,
       overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    /**
+     * Initialize this contract and its dependencies.
+     */
+    initialize(
+      _freeport: string,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<BigNumber>;
+
+    /**
+     * Initialize this contract and its dependencies.
+     */
+    'initialize(address)'(
+      _freeport: string,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<BigNumber>;
+
+    /**
+     * Initialize this contract after version 2.0.0. Allow deposit of USDC into Freeport.
+     */
+    initialize_v2_0_0(
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<BigNumber>;
+
+    /**
+     * Initialize this contract after version 2.0.0. Allow deposit of USDC into Freeport.
+     */
+    'initialize_v2_0_0()'(
+      overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
     startAuction(
@@ -1258,13 +1553,15 @@ export interface SimpleAuction extends BaseContract {
       seller: string,
       nftId: BigNumberish,
       price: BigNumberish,
+      signature: BytesLike,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
-    'bidOnAuction(address,uint256,uint256)'(
+    'bidOnAuction(address,uint256,uint256,bytes)'(
       seller: string,
       nftId: BigNumberish,
       price: BigNumberish,
+      signature: BytesLike,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
@@ -1282,6 +1579,14 @@ export interface SimpleAuction extends BaseContract {
   };
 
   populateTransaction: {
+    BUY_AUTHORIZER_ROLE(
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    'BUY_AUTHORIZER_ROLE()'(
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
     /**
      * The token ID that represents the CERE currency for all payments in this contract.
      */
@@ -1462,6 +1767,28 @@ export interface SimpleAuction extends BaseContract {
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
+    upgradeTo(
+      newImplementation: string,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
+
+    'upgradeTo(address)'(
+      newImplementation: string,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
+
+    upgradeToAndCall(
+      newImplementation: string,
+      data: BytesLike,
+      overrides?: PayableOverrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
+
+    'upgradeToAndCall(address,bytes)'(
+      newImplementation: string,
+      data: BytesLike,
+      overrides?: PayableOverrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
+
     /**
      * Supports interfaces of AccessControl and ERC1155Receiver.
      */
@@ -1476,6 +1803,36 @@ export interface SimpleAuction extends BaseContract {
     'supportsInterface(bytes4)'(
       interfaceId: BytesLike,
       overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    /**
+     * Initialize this contract and its dependencies.
+     */
+    initialize(
+      _freeport: string,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
+
+    /**
+     * Initialize this contract and its dependencies.
+     */
+    'initialize(address)'(
+      _freeport: string,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
+
+    /**
+     * Initialize this contract after version 2.0.0. Allow deposit of USDC into Freeport.
+     */
+    initialize_v2_0_0(
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
+
+    /**
+     * Initialize this contract after version 2.0.0. Allow deposit of USDC into Freeport.
+     */
+    'initialize_v2_0_0()'(
+      overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 
     startAuction(
@@ -1496,13 +1853,15 @@ export interface SimpleAuction extends BaseContract {
       seller: string,
       nftId: BigNumberish,
       price: BigNumberish,
+      signature: BytesLike,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 
-    'bidOnAuction(address,uint256,uint256)'(
+    'bidOnAuction(address,uint256,uint256,bytes)'(
       seller: string,
       nftId: BigNumberish,
       price: BigNumberish,
+      signature: BytesLike,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 
