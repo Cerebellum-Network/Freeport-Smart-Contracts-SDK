@@ -1,12 +1,12 @@
 {
   "dev": {
     "80001": {
-      "Freeport": "0x702BA959B5542B2Bf88a1C5924F73Ed97482c64B",
-      "FiatGateway": "0x106Bf3D61952faE9279B08bdcB2e548316E0C1Ae",
-      "SimpleAuction": "0xCEAc6c102bEcE4ed2E5ede9df096F7175BB8CbaD",
-      "NFTAttachment": "0x39B27a0bc81C1366E2b05E02642Ef343a4f9223a",
+      "Freeport": "0xD6e5Ce841f2C044b552DF862Dfb1D936070FC5c6",
+      "FiatGateway": "0x6546CB4776cF16f565c7D0E38c7ef85534eAE689",
+      "SimpleAuction": "0x7e4FCB28B5794dBf729E860f0abe97C3412E62e4",
+      "NFTAttachment": "0x8001f8229E67Ed35A04fE2A6cA92D28feCD2D85b",
       "MinimalForwarder": "0x2d7FCbBfe773c5E7C7fccbA8434386048267c16D",
-      "ERC20": "0x4e5a86E128f8Fb652169f6652e2Cd17aAe409e96"
+      "ERC20": "0x2C390FAB1c3568F783aDEb31F88E1c207ca1E721"
     },
     "Token": {
       "symbol": "USDC",
