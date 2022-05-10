@@ -1,10 +1,14 @@
 import 'dotenv/config';
 
+import config from './config.json';
+import configLiveone from './config.liveone.json';
 import {
+  ApplicationEnum,
   createFreeport,
   createProviderSigner,
   createSimpleAuction,
   Deployment,
+  getContractAddress,
   getFreeportAddress,
   getSimpleAuctionAddress,
 } from './index';
@@ -107,3 +111,22 @@ testIfBiconomy(
     stop();
   }
 );
+
+test('Application parameter should use different config', () => {
+  const contractAddress = getContractAddress({
+    chainId: 80_001,
+    contractName: 'Freeport',
+    deployment: 'dev',
+  });
+
+  expect(contractAddress).toEqual(config.dev['80001'].Freeport);
+
+  const liveOneContractAddress = getContractAddress({
+    chainId: 80_001,
+    contractName: 'Freeport',
+    deployment: 'dev',
+    application: ApplicationEnum.LIVEONE,
+  });
+
+  expect(liveOneContractAddress).toEqual(configLiveone.dev['80001'].Freeport);
+});
