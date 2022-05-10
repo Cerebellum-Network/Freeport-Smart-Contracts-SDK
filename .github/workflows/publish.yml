@@ -1,0 +1,41 @@
+name: Publish
+on:
+  workflow_dispatch:
+    inputs:
+      updateType:
+        type: choice
+        description: Type of update
+        options:
+          - major
+          - minor
+          - patch
+
+env:
+  NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+jobs:
+  build:
+    name: Publish
+
+    runs-on: cere-network-large-workers
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v2
+
+      - name: Use Node 14.x
+        uses: actions/setup-node@v1
+        with:
+          node-version: 14.x
+
+      - name: Install Yarn
+        run: npm install -g yarn
+
+      - name: Install deps and build (with cache)
+        uses: bahmutov/npm-install@v1
+
+      - name: Publish package
+        run: |
+          git config --global user.email "devops@cere.io"
+          git config --global user.name "devops-cere"
+          yarn deploy ${{ github.event.inputs.updateType }}
