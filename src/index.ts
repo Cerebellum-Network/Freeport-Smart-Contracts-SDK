@@ -19,6 +19,7 @@ import {
   TestERC20__factory as ERC20__factory,
 } from './abi-types';
 import config from './config.json';
+import configLiveOne from './config.liveone.json';
 
 export * from './abi-types';
 
@@ -26,6 +27,11 @@ declare global {
   interface Window {
     ethereum: ConstructorParameters<typeof providers.Web3Provider>[0];
   }
+}
+
+export enum ApplicationEnum {
+  DAVINCI = 'DAVINCI',
+  LIVEONE = 'LIVEONE',
 }
 
 type Config = typeof config;
@@ -146,14 +152,31 @@ export type GetContractAddressConfig = {
   deployment?: Deployment;
   chainId: number;
   contractName: ContractName;
+  application?: ApplicationEnum;
+};
+
+const getNetworks = (
+  application: ApplicationEnum,
+  deployment: Deployment
+): Record<ChainId, ContractName> => {
+  if (application === ApplicationEnum.DAVINCI) {
+    return config[deployment];
+  }
+
+  if (application === ApplicationEnum.LIVEONE) {
+    return configLiveOne[deployment];
+  }
+
+  throw new Error('Unknown application');
 };
 
 export const getContractAddress = ({
   deployment = 'prod',
   chainId,
   contractName,
+  application = ApplicationEnum.DAVINCI,
 }: GetContractAddressConfig): string => {
-  const networks = config[deployment];
+  const networks = getNetworks(application, deployment);
 
   if (networks && chainId in networks) {
     const contracts = networks[String(chainId) as ChainId];
@@ -187,7 +210,8 @@ export const getTokenConfig = (env = 'dev'): TokenConfig => {
 
 export const getFreeportAddress = async (
   provider: Provider,
-  deployment: Deployment = 'prod'
+  deployment: Deployment = 'prod',
+  application: ApplicationEnum = ApplicationEnum.DAVINCI
 ): Promise<string> => {
   const { chainId } = await provider.getNetwork();
 
@@ -195,12 +219,14 @@ export const getFreeportAddress = async (
     deployment,
     chainId,
     contractName: 'Freeport',
+    application,
   });
 };
 
 export const getFiatGatewayAddress = async (
   provider: Provider,
-  deployment: Deployment = 'prod'
+  deployment: Deployment = 'prod',
+  application: ApplicationEnum = ApplicationEnum.DAVINCI
 ): Promise<string> => {
   const { chainId } = await provider.getNetwork();
 
@@ -208,12 +234,14 @@ export const getFiatGatewayAddress = async (
     deployment,
     chainId,
     contractName: 'FiatGateway',
+    application,
   });
 };
 
 export const getSimpleAuctionAddress = async (
   provider: Provider,
-  deployment: Deployment = 'prod'
+  deployment: Deployment = 'prod',
+  application: ApplicationEnum = ApplicationEnum.DAVINCI
 ): Promise<string> => {
   const { chainId } = await provider.getNetwork();
 
@@ -221,12 +249,14 @@ export const getSimpleAuctionAddress = async (
     deployment,
     chainId,
     contractName: 'SimpleAuction',
+    application,
   });
 };
 
 export const getNFTAttachmentAddress = async (
   provider: Provider,
-  deployment: Deployment = 'prod'
+  deployment: Deployment = 'prod',
+  application: ApplicationEnum = ApplicationEnum.DAVINCI
 ): Promise<string> => {
   const { chainId } = await provider.getNetwork();
 
@@ -234,12 +264,14 @@ export const getNFTAttachmentAddress = async (
     deployment,
     chainId,
     contractName: 'NFTAttachment',
+    application,
   });
 };
 
 export const getMinimalForwarderAddress = async (
   provider: Provider,
-  deployment: Deployment = 'prod'
+  deployment: Deployment = 'prod',
+  application: ApplicationEnum = ApplicationEnum.DAVINCI
 ): Promise<string> => {
   const { chainId } = await provider.getNetwork();
 
@@ -247,12 +279,14 @@ export const getMinimalForwarderAddress = async (
     deployment,
     chainId,
     contractName: 'MinimalForwarder',
+    application,
   });
 };
 
 export const getERC20Address = async (
   provider: Provider,
-  deployment: Deployment = 'prod'
+  deployment: Deployment = 'prod',
+  application: ApplicationEnum = ApplicationEnum.DAVINCI
 ): Promise<string> => {
   const { chainId } = await provider.getNetwork();
 
@@ -260,6 +294,7 @@ export const getERC20Address = async (
     deployment,
     chainId,
     contractName: 'ERC20',
+    application,
   });
 };
 
