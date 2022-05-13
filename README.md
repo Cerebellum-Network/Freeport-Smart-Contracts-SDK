@@ -2,6 +2,10 @@
 
 ### Releases
 
+#### v7.1.0
+
+- Added LiveOne config
+
 #### v7.0.0 - Upgradeable contracts
 
 - support for upgradeable contracts
