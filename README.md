@@ -2,6 +2,10 @@
 
 ### Releases
 
+#### vNext
+
+- Fixed publish to NPM script
+
 #### v7.1.0
 
 - Added LiveOne config
