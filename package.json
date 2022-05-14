@@ -42,7 +42,8 @@
     "analyze": "size-limit --why",
     "typechain": "typechain --target=ethers-v5 --out-dir src/abi-types --always-generate-overloads src/artifacts/*.json",
     "update-types": "yarn typechain && yarn format",
-    "deploy": "yarn update-types && yarn build && np"
+    "deploy": "yarn update-types && yarn build && np",
+    "publish:npm": "npm publish --access public"
   },
   "peerDependencies": {
     "ethers": "^5.5.2"
