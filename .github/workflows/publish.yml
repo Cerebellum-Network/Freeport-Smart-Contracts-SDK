@@ -14,17 +14,21 @@ jobs:
       - name: Get Node.js version
         id: nvm
         run: echo ::set-output name=NODE_VERSION::$(cat .nvmrc)
+
       - name: Setup Node.js
         uses: actions/setup-node@v2
         with:
           node-version: ${{ steps.nvm.outputs.NODE_VERSION }}
           registry-url: https://registry.npmjs.org/
+
       - name: Install Yarn
         run: npm install -g yarn
-      - name: Install deps and build (with cache)
+
+      - name: Install deps (with cache)
         uses: bahmutov/npm-install@v1
         env:
           NPM_TOKEN: ${{secrets.NPM_TOKEN_READ}}
+
       - name: Publish package
         env:
           NPM_TOKEN: ${{secrets.NPM_TOKEN_PUBLISH}}
