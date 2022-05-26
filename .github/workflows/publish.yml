@@ -1,41 +1,35 @@
-name: Publish
-on:
-  workflow_dispatch:
-    inputs:
-      updateType:
-        type: choice
-        description: Type of update
-        options:
-          - major
-          - minor
-          - patch
+name: Publish package
 
-env:
-  NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+on:
+  push:
+    branches:
+      - 'master'
+      - 'feature/publish-to-npm'
 
 jobs:
-  build:
-    name: Publish
-
-    runs-on: cere-network-large-workers
-
+  publish_npm:
+    runs-on: [self-hosted, cere-network-large-workers]
     steps:
-      - name: Checkout repo
-        uses: actions/checkout@v2
+      - uses: actions/checkout@v2
+      - name: Get Node.js version
+        id: nvm
+        run: echo ::set-output name=NODE_VERSION::$(cat .nvmrc)
 
-      - name: Use Node 14.x
-        uses: actions/setup-node@v1
+      - name: Setup Node.js
+        uses: actions/setup-node@v2
         with:
-          node-version: 14.x
+          node-version: ${{ steps.nvm.outputs.NODE_VERSION }}
+          registry-url: https://registry.npmjs.org/
 
       - name: Install Yarn
         run: npm install -g yarn
 
-      - name: Install deps and build (with cache)
+      - name: Install deps (with cache)
         uses: bahmutov/npm-install@v1
+        env:
+          NPM_TOKEN: ${{secrets.NPM_TOKEN_READ}}
 
       - name: Publish package
-        run: |
-          git config --global user.email "devops@cere.io"
-          git config --global user.name "devops-cere"
-          yarn deploy ${{ github.event.inputs.updateType }}
+        env:
+          NPM_TOKEN: ${{secrets.NPM_TOKEN_PUBLISH}}
+        run: npm run publish:npm

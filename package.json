@@ -1,5 +1,5 @@
 {
-  "version": "7.2.0",
+  "version": "7.2.1",
   "name": "@cere/freeport-sdk",
   "license": "Apache-2.0",
   "main": "dist/index.js",
@@ -42,7 +42,8 @@
     "analyze": "size-limit --why",
     "typechain": "typechain --target=ethers-v5 --out-dir src/abi-types --always-generate-overloads src/artifacts/*.json",
     "update-types": "yarn typechain && yarn format",
-    "deploy": "yarn update-types && yarn build && np"
+    "deploy": "yarn update-types && yarn build && np",
+    "publish:npm": "npm run build & npm publish --access public"
   },
   "peerDependencies": {
     "ethers": "^5.5.2"
