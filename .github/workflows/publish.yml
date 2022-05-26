@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - 'master'
-      - 'feature/publish-to-npm'
 
 jobs:
   publish_npm:
