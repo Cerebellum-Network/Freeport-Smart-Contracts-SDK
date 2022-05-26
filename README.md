@@ -6,6 +6,10 @@
 
 - Fixed publish to NPM script
 
+#### v7.2.0
+
+- Added LiveOne config for STAGE/PROD
+
 #### v7.1.0
 
 - Added LiveOne config
