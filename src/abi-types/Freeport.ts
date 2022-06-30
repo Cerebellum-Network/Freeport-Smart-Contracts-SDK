@@ -9,6 +9,7 @@ import {
   CallOverrides,
   ContractTransaction,
   Overrides,
+  PayableOverrides,
   PopulatedTransaction,
   Signer,
   utils,
@@ -57,10 +58,15 @@ export interface FreeportInterface extends utils.Interface {
     'safeTransferFrom(address,address,uint256,uint256,bytes)': FunctionFragment;
     'setApprovalForAll(address,bool)': FunctionFragment;
     'setERC20(address)': FunctionFragment;
+    'setURI(string)': FunctionFragment;
     'supportsInterface(bytes4)': FunctionFragment;
     'takeOffer(address,address,uint256,uint256,uint256)': FunctionFragment;
+    'transferFrom(address,address,uint256,uint256)': FunctionFragment;
+    'upgradeTo(address)': FunctionFragment;
+    'upgradeToAndCall(address,bytes)': FunctionFragment;
     'uri(uint256)': FunctionFragment;
     'withdraw(uint256)': FunctionFragment;
+    'initialize()': FunctionFragment;
   };
 
   encodeFunctionData(
@@ -217,6 +223,7 @@ export interface FreeportInterface extends utils.Interface {
     values: [string, boolean]
   ): string;
   encodeFunctionData(functionFragment: 'setERC20', values: [string]): string;
+  encodeFunctionData(functionFragment: 'setURI', values: [string]): string;
   encodeFunctionData(
     functionFragment: 'supportsInterface',
     values: [BytesLike]
@@ -225,10 +232,23 @@ export interface FreeportInterface extends utils.Interface {
     functionFragment: 'takeOffer',
     values: [string, string, BigNumberish, BigNumberish, BigNumberish]
   ): string;
+  encodeFunctionData(
+    functionFragment: 'transferFrom',
+    values: [string, string, BigNumberish, BigNumberish]
+  ): string;
+  encodeFunctionData(functionFragment: 'upgradeTo', values: [string]): string;
+  encodeFunctionData(
+    functionFragment: 'upgradeToAndCall',
+    values: [string, BytesLike]
+  ): string;
   encodeFunctionData(functionFragment: 'uri', values: [BigNumberish]): string;
   encodeFunctionData(
     functionFragment: 'withdraw',
     values: [BigNumberish]
+  ): string;
+  encodeFunctionData(
+    functionFragment: 'initialize',
+    values?: undefined
   ): string;
 
   decodeFunctionResult(
@@ -347,16 +367,29 @@ export interface FreeportInterface extends utils.Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: 'setERC20', data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'setURI', data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: 'supportsInterface',
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: 'takeOffer', data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: 'transferFrom',
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(functionFragment: 'upgradeTo', data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: 'upgradeToAndCall',
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(functionFragment: 'uri', data: BytesLike): Result;
   decodeFunctionResult(functionFragment: 'withdraw', data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'initialize', data: BytesLike): Result;
 
   events: {
+    'AdminChanged(address,address)': EventFragment;
     'ApprovalForAll(address,address,bool)': EventFragment;
+    'BeaconUpgraded(address)': EventFragment;
     'JointAccountShareCreated(address,address,uint256)': EventFragment;
     'MakeOffer(address,uint256,uint256)': EventFragment;
     'RoleAdminChanged(bytes32,bytes32,bytes32)': EventFragment;
@@ -368,9 +401,12 @@ export interface FreeportInterface extends utils.Interface {
     'TransferBatch(address,address,address,uint256[],uint256[])': EventFragment;
     'TransferSingle(address,address,address,uint256,uint256)': EventFragment;
     'URI(string,uint256)': EventFragment;
+    'Upgraded(address)': EventFragment;
   };
 
+  getEvent(nameOrSignatureOrTopic: 'AdminChanged'): EventFragment;
   getEvent(nameOrSignatureOrTopic: 'ApprovalForAll'): EventFragment;
+  getEvent(nameOrSignatureOrTopic: 'BeaconUpgraded'): EventFragment;
   getEvent(nameOrSignatureOrTopic: 'JointAccountShareCreated'): EventFragment;
   getEvent(nameOrSignatureOrTopic: 'MakeOffer'): EventFragment;
   getEvent(nameOrSignatureOrTopic: 'RoleAdminChanged'): EventFragment;
@@ -382,7 +418,15 @@ export interface FreeportInterface extends utils.Interface {
   getEvent(nameOrSignatureOrTopic: 'TransferBatch'): EventFragment;
   getEvent(nameOrSignatureOrTopic: 'TransferSingle'): EventFragment;
   getEvent(nameOrSignatureOrTopic: 'URI'): EventFragment;
+  getEvent(nameOrSignatureOrTopic: 'Upgraded'): EventFragment;
 }
+
+export type AdminChangedEvent = TypedEvent<
+  [string, string],
+  { previousAdmin: string; newAdmin: string }
+>;
+
+export type AdminChangedEventFilter = TypedEventFilter<AdminChangedEvent>;
 
 export type ApprovalForAllEvent = TypedEvent<
   [string, string, boolean],
@@ -390,6 +434,10 @@ export type ApprovalForAllEvent = TypedEvent<
 >;
 
 export type ApprovalForAllEventFilter = TypedEventFilter<ApprovalForAllEvent>;
+
+export type BeaconUpgradedEvent = TypedEvent<[string], { beacon: string }>;
+
+export type BeaconUpgradedEventFilter = TypedEventFilter<BeaconUpgradedEvent>;
 
 export type JointAccountShareCreatedEvent = TypedEvent<
   [string, string, BigNumber],
@@ -496,6 +544,10 @@ export type URIEvent = TypedEvent<
 >;
 
 export type URIEventFilter = TypedEventFilter<URIEvent>;
+
+export type UpgradedEvent = TypedEvent<[string], { implementation: string }>;
+
+export type UpgradedEventFilter = TypedEventFilter<UpgradedEvent>;
 
 export interface Freeport extends BaseContract {
   connect(signerOrProvider: Signer | Provider | string): this;
@@ -1144,6 +1196,16 @@ export interface Freeport extends BaseContract {
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
+    setURI(
+      newuri: string,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
+
+    'setURI(string)'(
+      newuri: string,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
+
     /**
      * Supports interfaces of AccessControl, ERC1155, and ERC1155 MetadataURI.
      */
@@ -1161,7 +1223,7 @@ export interface Freeport extends BaseContract {
     ): Promise<[boolean]>;
 
     /**
-     * Accept an offer, paying the price per unit for an amount of NFTs. The offer must have been created beforehand by makeOffer. The same authorization as safeTransferFrom apply to the buyer (sender or approved operator). The parameter expectedPriceOrZero can be used to validate the price that the buyer expects to pay. This prevents a race condition with makeOffer or setExchangeRate. Pass 0 to disable this validation and accept any current price.
+     * Accept an offer, paying the price per unit for an amount of NFTs. The offer must have been created beforehand by makeOffer. The sender pays ERC20. The sender is not necessarily the same as buyer, see FiatGateway. The seller receives internal currency (equivalent to the ERC20 payment, see the function withdraw). The buyer receives the NFT. The parameter expectedPriceOrZero can be used to validate the price that the buyer expects to pay. This prevents a race condition with makeOffer or setExchangeRate. Pass 0 to disable this validation and accept any current price.
      */
     takeOffer(
       buyer: string,
@@ -1173,7 +1235,7 @@ export interface Freeport extends BaseContract {
     ): Promise<ContractTransaction>;
 
     /**
-     * Accept an offer, paying the price per unit for an amount of NFTs. The offer must have been created beforehand by makeOffer. The same authorization as safeTransferFrom apply to the buyer (sender or approved operator). The parameter expectedPriceOrZero can be used to validate the price that the buyer expects to pay. This prevents a race condition with makeOffer or setExchangeRate. Pass 0 to disable this validation and accept any current price.
+     * Accept an offer, paying the price per unit for an amount of NFTs. The offer must have been created beforehand by makeOffer. The sender pays ERC20. The sender is not necessarily the same as buyer, see FiatGateway. The seller receives internal currency (equivalent to the ERC20 payment, see the function withdraw). The buyer receives the NFT. The parameter expectedPriceOrZero can be used to validate the price that the buyer expects to pay. This prevents a race condition with makeOffer or setExchangeRate. Pass 0 to disable this validation and accept any current price.
      */
     'takeOffer(address,address,uint256,uint256,uint256)'(
       buyer: string,
@@ -1182,6 +1244,50 @@ export interface Freeport extends BaseContract {
       expectedPriceOrZero: BigNumberish,
       amount: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
+
+    /**
+     * transferFrom performs a simple transfer, without calling the hooks  (no _beforeTokenTransfer and no onERC1155Received).
+     */
+    transferFrom(
+      from: string,
+      to: string,
+      id: BigNumberish,
+      amount: BigNumberish,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
+
+    /**
+     * transferFrom performs a simple transfer, without calling the hooks  (no _beforeTokenTransfer and no onERC1155Received).
+     */
+    'transferFrom(address,address,uint256,uint256)'(
+      from: string,
+      to: string,
+      id: BigNumberish,
+      amount: BigNumberish,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
+
+    upgradeTo(
+      newImplementation: string,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
+
+    'upgradeTo(address)'(
+      newImplementation: string,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
+
+    upgradeToAndCall(
+      newImplementation: string,
+      data: BytesLike,
+      overrides?: PayableOverrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
+
+    'upgradeToAndCall(address,bytes)'(
+      newImplementation: string,
+      data: BytesLike,
+      overrides?: PayableOverrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
     /**
@@ -1210,6 +1316,20 @@ export interface Freeport extends BaseContract {
      */
     'withdraw(uint256)'(
       amount: BigNumberish,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
+
+    /**
+     * Initialize this contract and its dependencies.
+     */
+    initialize(
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
+
+    /**
+     * Initialize this contract and its dependencies.
+     */
+    'initialize()'(
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
   };
@@ -1832,6 +1952,16 @@ export interface Freeport extends BaseContract {
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
+  setURI(
+    newuri: string,
+    overrides?: Overrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
+
+  'setURI(string)'(
+    newuri: string,
+    overrides?: Overrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
+
   /**
    * Supports interfaces of AccessControl, ERC1155, and ERC1155 MetadataURI.
    */
@@ -1849,7 +1979,7 @@ export interface Freeport extends BaseContract {
   ): Promise<boolean>;
 
   /**
-   * Accept an offer, paying the price per unit for an amount of NFTs. The offer must have been created beforehand by makeOffer. The same authorization as safeTransferFrom apply to the buyer (sender or approved operator). The parameter expectedPriceOrZero can be used to validate the price that the buyer expects to pay. This prevents a race condition with makeOffer or setExchangeRate. Pass 0 to disable this validation and accept any current price.
+   * Accept an offer, paying the price per unit for an amount of NFTs. The offer must have been created beforehand by makeOffer. The sender pays ERC20. The sender is not necessarily the same as buyer, see FiatGateway. The seller receives internal currency (equivalent to the ERC20 payment, see the function withdraw). The buyer receives the NFT. The parameter expectedPriceOrZero can be used to validate the price that the buyer expects to pay. This prevents a race condition with makeOffer or setExchangeRate. Pass 0 to disable this validation and accept any current price.
    */
   takeOffer(
     buyer: string,
@@ -1861,7 +1991,7 @@ export interface Freeport extends BaseContract {
   ): Promise<ContractTransaction>;
 
   /**
-   * Accept an offer, paying the price per unit for an amount of NFTs. The offer must have been created beforehand by makeOffer. The same authorization as safeTransferFrom apply to the buyer (sender or approved operator). The parameter expectedPriceOrZero can be used to validate the price that the buyer expects to pay. This prevents a race condition with makeOffer or setExchangeRate. Pass 0 to disable this validation and accept any current price.
+   * Accept an offer, paying the price per unit for an amount of NFTs. The offer must have been created beforehand by makeOffer. The sender pays ERC20. The sender is not necessarily the same as buyer, see FiatGateway. The seller receives internal currency (equivalent to the ERC20 payment, see the function withdraw). The buyer receives the NFT. The parameter expectedPriceOrZero can be used to validate the price that the buyer expects to pay. This prevents a race condition with makeOffer or setExchangeRate. Pass 0 to disable this validation and accept any current price.
    */
   'takeOffer(address,address,uint256,uint256,uint256)'(
     buyer: string,
@@ -1870,6 +2000,50 @@ export interface Freeport extends BaseContract {
     expectedPriceOrZero: BigNumberish,
     amount: BigNumberish,
     overrides?: Overrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
+
+  /**
+   * transferFrom performs a simple transfer, without calling the hooks  (no _beforeTokenTransfer and no onERC1155Received).
+   */
+  transferFrom(
+    from: string,
+    to: string,
+    id: BigNumberish,
+    amount: BigNumberish,
+    overrides?: Overrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
+
+  /**
+   * transferFrom performs a simple transfer, without calling the hooks  (no _beforeTokenTransfer and no onERC1155Received).
+   */
+  'transferFrom(address,address,uint256,uint256)'(
+    from: string,
+    to: string,
+    id: BigNumberish,
+    amount: BigNumberish,
+    overrides?: Overrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
+
+  upgradeTo(
+    newImplementation: string,
+    overrides?: Overrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
+
+  'upgradeTo(address)'(
+    newImplementation: string,
+    overrides?: Overrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
+
+  upgradeToAndCall(
+    newImplementation: string,
+    data: BytesLike,
+    overrides?: PayableOverrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
+
+  'upgradeToAndCall(address,bytes)'(
+    newImplementation: string,
+    data: BytesLike,
+    overrides?: PayableOverrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
   /**
@@ -1898,6 +2072,20 @@ export interface Freeport extends BaseContract {
    */
   'withdraw(uint256)'(
     amount: BigNumberish,
+    overrides?: Overrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
+
+  /**
+   * Initialize this contract and its dependencies.
+   */
+  initialize(
+    overrides?: Overrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
+
+  /**
+   * Initialize this contract and its dependencies.
+   */
+  'initialize()'(
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
@@ -2517,6 +2705,10 @@ export interface Freeport extends BaseContract {
       overrides?: CallOverrides
     ): Promise<void>;
 
+    setURI(newuri: string, overrides?: CallOverrides): Promise<void>;
+
+    'setURI(string)'(newuri: string, overrides?: CallOverrides): Promise<void>;
+
     /**
      * Supports interfaces of AccessControl, ERC1155, and ERC1155 MetadataURI.
      */
@@ -2534,7 +2726,7 @@ export interface Freeport extends BaseContract {
     ): Promise<boolean>;
 
     /**
-     * Accept an offer, paying the price per unit for an amount of NFTs. The offer must have been created beforehand by makeOffer. The same authorization as safeTransferFrom apply to the buyer (sender or approved operator). The parameter expectedPriceOrZero can be used to validate the price that the buyer expects to pay. This prevents a race condition with makeOffer or setExchangeRate. Pass 0 to disable this validation and accept any current price.
+     * Accept an offer, paying the price per unit for an amount of NFTs. The offer must have been created beforehand by makeOffer. The sender pays ERC20. The sender is not necessarily the same as buyer, see FiatGateway. The seller receives internal currency (equivalent to the ERC20 payment, see the function withdraw). The buyer receives the NFT. The parameter expectedPriceOrZero can be used to validate the price that the buyer expects to pay. This prevents a race condition with makeOffer or setExchangeRate. Pass 0 to disable this validation and accept any current price.
      */
     takeOffer(
       buyer: string,
@@ -2546,7 +2738,7 @@ export interface Freeport extends BaseContract {
     ): Promise<void>;
 
     /**
-     * Accept an offer, paying the price per unit for an amount of NFTs. The offer must have been created beforehand by makeOffer. The same authorization as safeTransferFrom apply to the buyer (sender or approved operator). The parameter expectedPriceOrZero can be used to validate the price that the buyer expects to pay. This prevents a race condition with makeOffer or setExchangeRate. Pass 0 to disable this validation and accept any current price.
+     * Accept an offer, paying the price per unit for an amount of NFTs. The offer must have been created beforehand by makeOffer. The sender pays ERC20. The sender is not necessarily the same as buyer, see FiatGateway. The seller receives internal currency (equivalent to the ERC20 payment, see the function withdraw). The buyer receives the NFT. The parameter expectedPriceOrZero can be used to validate the price that the buyer expects to pay. This prevents a race condition with makeOffer or setExchangeRate. Pass 0 to disable this validation and accept any current price.
      */
     'takeOffer(address,address,uint256,uint256,uint256)'(
       buyer: string,
@@ -2554,6 +2746,50 @@ export interface Freeport extends BaseContract {
       nftId: BigNumberish,
       expectedPriceOrZero: BigNumberish,
       amount: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    /**
+     * transferFrom performs a simple transfer, without calling the hooks  (no _beforeTokenTransfer and no onERC1155Received).
+     */
+    transferFrom(
+      from: string,
+      to: string,
+      id: BigNumberish,
+      amount: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    /**
+     * transferFrom performs a simple transfer, without calling the hooks  (no _beforeTokenTransfer and no onERC1155Received).
+     */
+    'transferFrom(address,address,uint256,uint256)'(
+      from: string,
+      to: string,
+      id: BigNumberish,
+      amount: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    upgradeTo(
+      newImplementation: string,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    'upgradeTo(address)'(
+      newImplementation: string,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    upgradeToAndCall(
+      newImplementation: string,
+      data: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    'upgradeToAndCall(address,bytes)'(
+      newImplementation: string,
+      data: BytesLike,
       overrides?: CallOverrides
     ): Promise<void>;
 
@@ -2582,9 +2818,28 @@ export interface Freeport extends BaseContract {
       amount: BigNumberish,
       overrides?: CallOverrides
     ): Promise<void>;
+
+    /**
+     * Initialize this contract and its dependencies.
+     */
+    initialize(overrides?: CallOverrides): Promise<void>;
+
+    /**
+     * Initialize this contract and its dependencies.
+     */
+    'initialize()'(overrides?: CallOverrides): Promise<void>;
   };
 
   filters: {
+    'AdminChanged(address,address)'(
+      previousAdmin?: null,
+      newAdmin?: null
+    ): AdminChangedEventFilter;
+    AdminChanged(
+      previousAdmin?: null,
+      newAdmin?: null
+    ): AdminChangedEventFilter;
+
     'ApprovalForAll(address,address,bool)'(
       account?: string | null,
       operator?: string | null,
@@ -2595,6 +2850,11 @@ export interface Freeport extends BaseContract {
       operator?: string | null,
       approved?: null
     ): ApprovalForAllEventFilter;
+
+    'BeaconUpgraded(address)'(
+      beacon?: string | null
+    ): BeaconUpgradedEventFilter;
+    BeaconUpgraded(beacon?: string | null): BeaconUpgradedEventFilter;
 
     'JointAccountShareCreated(address,address,uint256)'(
       account?: string | null,
@@ -2729,6 +2989,9 @@ export interface Freeport extends BaseContract {
       id?: BigNumberish | null
     ): URIEventFilter;
     URI(value?: null, id?: BigNumberish | null): URIEventFilter;
+
+    'Upgraded(address)'(implementation?: string | null): UpgradedEventFilter;
+    Upgraded(implementation?: string | null): UpgradedEventFilter;
   };
 
   estimateGas: {
@@ -3321,6 +3584,16 @@ export interface Freeport extends BaseContract {
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
+    setURI(
+      newuri: string,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<BigNumber>;
+
+    'setURI(string)'(
+      newuri: string,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<BigNumber>;
+
     /**
      * Supports interfaces of AccessControl, ERC1155, and ERC1155 MetadataURI.
      */
@@ -3338,7 +3611,7 @@ export interface Freeport extends BaseContract {
     ): Promise<BigNumber>;
 
     /**
-     * Accept an offer, paying the price per unit for an amount of NFTs. The offer must have been created beforehand by makeOffer. The same authorization as safeTransferFrom apply to the buyer (sender or approved operator). The parameter expectedPriceOrZero can be used to validate the price that the buyer expects to pay. This prevents a race condition with makeOffer or setExchangeRate. Pass 0 to disable this validation and accept any current price.
+     * Accept an offer, paying the price per unit for an amount of NFTs. The offer must have been created beforehand by makeOffer. The sender pays ERC20. The sender is not necessarily the same as buyer, see FiatGateway. The seller receives internal currency (equivalent to the ERC20 payment, see the function withdraw). The buyer receives the NFT. The parameter expectedPriceOrZero can be used to validate the price that the buyer expects to pay. This prevents a race condition with makeOffer or setExchangeRate. Pass 0 to disable this validation and accept any current price.
      */
     takeOffer(
       buyer: string,
@@ -3350,7 +3623,7 @@ export interface Freeport extends BaseContract {
     ): Promise<BigNumber>;
 
     /**
-     * Accept an offer, paying the price per unit for an amount of NFTs. The offer must have been created beforehand by makeOffer. The same authorization as safeTransferFrom apply to the buyer (sender or approved operator). The parameter expectedPriceOrZero can be used to validate the price that the buyer expects to pay. This prevents a race condition with makeOffer or setExchangeRate. Pass 0 to disable this validation and accept any current price.
+     * Accept an offer, paying the price per unit for an amount of NFTs. The offer must have been created beforehand by makeOffer. The sender pays ERC20. The sender is not necessarily the same as buyer, see FiatGateway. The seller receives internal currency (equivalent to the ERC20 payment, see the function withdraw). The buyer receives the NFT. The parameter expectedPriceOrZero can be used to validate the price that the buyer expects to pay. This prevents a race condition with makeOffer or setExchangeRate. Pass 0 to disable this validation and accept any current price.
      */
     'takeOffer(address,address,uint256,uint256,uint256)'(
       buyer: string,
@@ -3359,6 +3632,50 @@ export interface Freeport extends BaseContract {
       expectedPriceOrZero: BigNumberish,
       amount: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<BigNumber>;
+
+    /**
+     * transferFrom performs a simple transfer, without calling the hooks  (no _beforeTokenTransfer and no onERC1155Received).
+     */
+    transferFrom(
+      from: string,
+      to: string,
+      id: BigNumberish,
+      amount: BigNumberish,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<BigNumber>;
+
+    /**
+     * transferFrom performs a simple transfer, without calling the hooks  (no _beforeTokenTransfer and no onERC1155Received).
+     */
+    'transferFrom(address,address,uint256,uint256)'(
+      from: string,
+      to: string,
+      id: BigNumberish,
+      amount: BigNumberish,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<BigNumber>;
+
+    upgradeTo(
+      newImplementation: string,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<BigNumber>;
+
+    'upgradeTo(address)'(
+      newImplementation: string,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<BigNumber>;
+
+    upgradeToAndCall(
+      newImplementation: string,
+      data: BytesLike,
+      overrides?: PayableOverrides & { from?: string | Promise<string> }
+    ): Promise<BigNumber>;
+
+    'upgradeToAndCall(address,bytes)'(
+      newImplementation: string,
+      data: BytesLike,
+      overrides?: PayableOverrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
     /**
@@ -3387,6 +3704,20 @@ export interface Freeport extends BaseContract {
      */
     'withdraw(uint256)'(
       amount: BigNumberish,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<BigNumber>;
+
+    /**
+     * Initialize this contract and its dependencies.
+     */
+    initialize(
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<BigNumber>;
+
+    /**
+     * Initialize this contract and its dependencies.
+     */
+    'initialize()'(
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
   };
@@ -3998,6 +4329,16 @@ export interface Freeport extends BaseContract {
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 
+    setURI(
+      newuri: string,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
+
+    'setURI(string)'(
+      newuri: string,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
+
     /**
      * Supports interfaces of AccessControl, ERC1155, and ERC1155 MetadataURI.
      */
@@ -4015,7 +4356,7 @@ export interface Freeport extends BaseContract {
     ): Promise<PopulatedTransaction>;
 
     /**
-     * Accept an offer, paying the price per unit for an amount of NFTs. The offer must have been created beforehand by makeOffer. The same authorization as safeTransferFrom apply to the buyer (sender or approved operator). The parameter expectedPriceOrZero can be used to validate the price that the buyer expects to pay. This prevents a race condition with makeOffer or setExchangeRate. Pass 0 to disable this validation and accept any current price.
+     * Accept an offer, paying the price per unit for an amount of NFTs. The offer must have been created beforehand by makeOffer. The sender pays ERC20. The sender is not necessarily the same as buyer, see FiatGateway. The seller receives internal currency (equivalent to the ERC20 payment, see the function withdraw). The buyer receives the NFT. The parameter expectedPriceOrZero can be used to validate the price that the buyer expects to pay. This prevents a race condition with makeOffer or setExchangeRate. Pass 0 to disable this validation and accept any current price.
      */
     takeOffer(
       buyer: string,
@@ -4027,7 +4368,7 @@ export interface Freeport extends BaseContract {
     ): Promise<PopulatedTransaction>;
 
     /**
-     * Accept an offer, paying the price per unit for an amount of NFTs. The offer must have been created beforehand by makeOffer. The same authorization as safeTransferFrom apply to the buyer (sender or approved operator). The parameter expectedPriceOrZero can be used to validate the price that the buyer expects to pay. This prevents a race condition with makeOffer or setExchangeRate. Pass 0 to disable this validation and accept any current price.
+     * Accept an offer, paying the price per unit for an amount of NFTs. The offer must have been created beforehand by makeOffer. The sender pays ERC20. The sender is not necessarily the same as buyer, see FiatGateway. The seller receives internal currency (equivalent to the ERC20 payment, see the function withdraw). The buyer receives the NFT. The parameter expectedPriceOrZero can be used to validate the price that the buyer expects to pay. This prevents a race condition with makeOffer or setExchangeRate. Pass 0 to disable this validation and accept any current price.
      */
     'takeOffer(address,address,uint256,uint256,uint256)'(
       buyer: string,
@@ -4036,6 +4377,50 @@ export interface Freeport extends BaseContract {
       expectedPriceOrZero: BigNumberish,
       amount: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
+
+    /**
+     * transferFrom performs a simple transfer, without calling the hooks  (no _beforeTokenTransfer and no onERC1155Received).
+     */
+    transferFrom(
+      from: string,
+      to: string,
+      id: BigNumberish,
+      amount: BigNumberish,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
+
+    /**
+     * transferFrom performs a simple transfer, without calling the hooks  (no _beforeTokenTransfer and no onERC1155Received).
+     */
+    'transferFrom(address,address,uint256,uint256)'(
+      from: string,
+      to: string,
+      id: BigNumberish,
+      amount: BigNumberish,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
+
+    upgradeTo(
+      newImplementation: string,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
+
+    'upgradeTo(address)'(
+      newImplementation: string,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
+
+    upgradeToAndCall(
+      newImplementation: string,
+      data: BytesLike,
+      overrides?: PayableOverrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
+
+    'upgradeToAndCall(address,bytes)'(
+      newImplementation: string,
+      data: BytesLike,
+      overrides?: PayableOverrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 
     /**
@@ -4067,6 +4452,20 @@ export interface Freeport extends BaseContract {
      */
     'withdraw(uint256)'(
       amount: BigNumberish,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
+
+    /**
+     * Initialize this contract and its dependencies.
+     */
+    initialize(
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
+
+    /**
+     * Initialize this contract and its dependencies.
+     */
+    'initialize()'(
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
   };

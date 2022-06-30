@@ -4,10 +4,12 @@ import config from './config.json';
 import configLiveone from './config.liveone.json';
 import {
   ApplicationEnum,
+  createCollectionFactory,
   createFreeport,
   createProviderSigner,
   createSimpleAuction,
   Deployment,
+  getCollectionFactoryAddress,
   getContractAddress,
   getFreeportAddress,
   getSimpleAuctionAddress,
@@ -88,6 +90,16 @@ testIfBiconomy(
       contractAddress: auctionAddress,
     });
 
+    // FIXME: add collection factory
+    // const collectionFactoryAddress = await getCollectionFactoryAddress(
+    //   provider,
+    //   deployment
+    // );
+    // const collectionFactory = createCollectionFactory({
+    //   signer,
+    //   contractAddress: collectionFactoryAddress,
+    // });
+    //
     const currencyBN = await freeport.CURRENCY();
     const currency = currencyBN.toNumber();
     expect(currency).toBe(0);

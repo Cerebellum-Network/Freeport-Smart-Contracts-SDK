@@ -9,6 +9,7 @@ import {
   CallOverrides,
   ContractTransaction,
   Overrides,
+  PayableOverrides,
   PopulatedTransaction,
   Signer,
   utils,
@@ -29,6 +30,9 @@ export interface NFTAttachmentInterface extends utils.Interface {
     'renounceRole(bytes32,address)': FunctionFragment;
     'revokeRole(bytes32,address)': FunctionFragment;
     'supportsInterface(bytes4)': FunctionFragment;
+    'upgradeTo(address)': FunctionFragment;
+    'upgradeToAndCall(address,bytes)': FunctionFragment;
+    'initialize(address)': FunctionFragment;
     'minterAttachToNFT(uint256,bytes)': FunctionFragment;
     'ownerAttachToNFT(uint256,bytes)': FunctionFragment;
     'anonymAttachToNFT(uint256,bytes)': FunctionFragment;
@@ -72,6 +76,12 @@ export interface NFTAttachmentInterface extends utils.Interface {
     functionFragment: 'supportsInterface',
     values: [BytesLike]
   ): string;
+  encodeFunctionData(functionFragment: 'upgradeTo', values: [string]): string;
+  encodeFunctionData(
+    functionFragment: 'upgradeToAndCall',
+    values: [string, BytesLike]
+  ): string;
+  encodeFunctionData(functionFragment: 'initialize', values: [string]): string;
   encodeFunctionData(
     functionFragment: 'minterAttachToNFT',
     values: [BigNumberish, BytesLike]
@@ -117,6 +127,12 @@ export interface NFTAttachmentInterface extends utils.Interface {
     functionFragment: 'supportsInterface',
     data: BytesLike
   ): Result;
+  decodeFunctionResult(functionFragment: 'upgradeTo', data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: 'upgradeToAndCall',
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(functionFragment: 'initialize', data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: 'minterAttachToNFT',
     data: BytesLike
@@ -135,21 +151,34 @@ export interface NFTAttachmentInterface extends utils.Interface {
   ): Result;
 
   events: {
+    'AdminChanged(address,address)': EventFragment;
     'AnonymAttachToNFT(address,uint256,bytes)': EventFragment;
+    'BeaconUpgraded(address)': EventFragment;
     'MinterAttachToNFT(address,uint256,bytes)': EventFragment;
     'OwnerAttachToNFT(address,uint256,bytes)': EventFragment;
     'RoleAdminChanged(bytes32,bytes32,bytes32)': EventFragment;
     'RoleGranted(bytes32,address,address)': EventFragment;
     'RoleRevoked(bytes32,address,address)': EventFragment;
+    'Upgraded(address)': EventFragment;
   };
 
+  getEvent(nameOrSignatureOrTopic: 'AdminChanged'): EventFragment;
   getEvent(nameOrSignatureOrTopic: 'AnonymAttachToNFT'): EventFragment;
+  getEvent(nameOrSignatureOrTopic: 'BeaconUpgraded'): EventFragment;
   getEvent(nameOrSignatureOrTopic: 'MinterAttachToNFT'): EventFragment;
   getEvent(nameOrSignatureOrTopic: 'OwnerAttachToNFT'): EventFragment;
   getEvent(nameOrSignatureOrTopic: 'RoleAdminChanged'): EventFragment;
   getEvent(nameOrSignatureOrTopic: 'RoleGranted'): EventFragment;
   getEvent(nameOrSignatureOrTopic: 'RoleRevoked'): EventFragment;
+  getEvent(nameOrSignatureOrTopic: 'Upgraded'): EventFragment;
 }
+
+export type AdminChangedEvent = TypedEvent<
+  [string, string],
+  { previousAdmin: string; newAdmin: string }
+>;
+
+export type AdminChangedEventFilter = TypedEventFilter<AdminChangedEvent>;
 
 export type AnonymAttachToNFTEvent = TypedEvent<
   [string, BigNumber, string],
@@ -158,6 +187,10 @@ export type AnonymAttachToNFTEvent = TypedEvent<
 
 export type AnonymAttachToNFTEventFilter =
   TypedEventFilter<AnonymAttachToNFTEvent>;
+
+export type BeaconUpgradedEvent = TypedEvent<[string], { beacon: string }>;
+
+export type BeaconUpgradedEventFilter = TypedEventFilter<BeaconUpgradedEvent>;
 
 export type MinterAttachToNFTEvent = TypedEvent<
   [string, BigNumber, string],
@@ -196,6 +229,10 @@ export type RoleRevokedEvent = TypedEvent<
 >;
 
 export type RoleRevokedEventFilter = TypedEventFilter<RoleRevokedEvent>;
+
+export type UpgradedEvent = TypedEvent<[string], { implementation: string }>;
+
+export type UpgradedEventFilter = TypedEventFilter<UpgradedEvent>;
 
 export interface NFTAttachment extends BaseContract {
   connect(signerOrProvider: Signer | Provider | string): this;
@@ -352,6 +389,44 @@ export interface NFTAttachment extends BaseContract {
       interfaceId: BytesLike,
       overrides?: CallOverrides
     ): Promise<[boolean]>;
+
+    upgradeTo(
+      newImplementation: string,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
+
+    'upgradeTo(address)'(
+      newImplementation: string,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
+
+    upgradeToAndCall(
+      newImplementation: string,
+      data: BytesLike,
+      overrides?: PayableOverrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
+
+    'upgradeToAndCall(address,bytes)'(
+      newImplementation: string,
+      data: BytesLike,
+      overrides?: PayableOverrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
+
+    /**
+     * Set which NFT contract to refer to. The event `MinterAttachToNFT` is only supported for Freeport-compatible NFTs. The event `OwnerAttachToNFT` is supported for ERC-1155 NFTs, including Freeport.
+     */
+    initialize(
+      _freeport: string,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
+
+    /**
+     * Set which NFT contract to refer to. The event `MinterAttachToNFT` is only supported for Freeport-compatible NFTs. The event `OwnerAttachToNFT` is supported for ERC-1155 NFTs, including Freeport.
+     */
+    'initialize(address)'(
+      _freeport: string,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
 
     /**
      * Attach data `attachment` to the NFT type `nftId`, as the minter of this NFT type. This only works for NFT IDs in the Freeport format.
@@ -553,6 +628,44 @@ export interface NFTAttachment extends BaseContract {
     overrides?: CallOverrides
   ): Promise<boolean>;
 
+  upgradeTo(
+    newImplementation: string,
+    overrides?: Overrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
+
+  'upgradeTo(address)'(
+    newImplementation: string,
+    overrides?: Overrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
+
+  upgradeToAndCall(
+    newImplementation: string,
+    data: BytesLike,
+    overrides?: PayableOverrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
+
+  'upgradeToAndCall(address,bytes)'(
+    newImplementation: string,
+    data: BytesLike,
+    overrides?: PayableOverrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
+
+  /**
+   * Set which NFT contract to refer to. The event `MinterAttachToNFT` is only supported for Freeport-compatible NFTs. The event `OwnerAttachToNFT` is supported for ERC-1155 NFTs, including Freeport.
+   */
+  initialize(
+    _freeport: string,
+    overrides?: Overrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
+
+  /**
+   * Set which NFT contract to refer to. The event `MinterAttachToNFT` is only supported for Freeport-compatible NFTs. The event `OwnerAttachToNFT` is supported for ERC-1155 NFTs, including Freeport.
+   */
+  'initialize(address)'(
+    _freeport: string,
+    overrides?: Overrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
+
   /**
    * Attach data `attachment` to the NFT type `nftId`, as the minter of this NFT type. This only works for NFT IDs in the Freeport format.
    */
@@ -753,6 +866,41 @@ export interface NFTAttachment extends BaseContract {
       overrides?: CallOverrides
     ): Promise<boolean>;
 
+    upgradeTo(
+      newImplementation: string,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    'upgradeTo(address)'(
+      newImplementation: string,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    upgradeToAndCall(
+      newImplementation: string,
+      data: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    'upgradeToAndCall(address,bytes)'(
+      newImplementation: string,
+      data: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    /**
+     * Set which NFT contract to refer to. The event `MinterAttachToNFT` is only supported for Freeport-compatible NFTs. The event `OwnerAttachToNFT` is supported for ERC-1155 NFTs, including Freeport.
+     */
+    initialize(_freeport: string, overrides?: CallOverrides): Promise<void>;
+
+    /**
+     * Set which NFT contract to refer to. The event `MinterAttachToNFT` is only supported for Freeport-compatible NFTs. The event `OwnerAttachToNFT` is supported for ERC-1155 NFTs, including Freeport.
+     */
+    'initialize(address)'(
+      _freeport: string,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
     /**
      * Attach data `attachment` to the NFT type `nftId`, as the minter of this NFT type. This only works for NFT IDs in the Freeport format.
      */
@@ -825,6 +973,15 @@ export interface NFTAttachment extends BaseContract {
   };
 
   filters: {
+    'AdminChanged(address,address)'(
+      previousAdmin?: null,
+      newAdmin?: null
+    ): AdminChangedEventFilter;
+    AdminChanged(
+      previousAdmin?: null,
+      newAdmin?: null
+    ): AdminChangedEventFilter;
+
     'AnonymAttachToNFT(address,uint256,bytes)'(
       anonym?: string | null,
       nftId?: BigNumberish | null,
@@ -835,6 +992,11 @@ export interface NFTAttachment extends BaseContract {
       nftId?: BigNumberish | null,
       attachment?: null
     ): AnonymAttachToNFTEventFilter;
+
+    'BeaconUpgraded(address)'(
+      beacon?: string | null
+    ): BeaconUpgradedEventFilter;
+    BeaconUpgraded(beacon?: string | null): BeaconUpgradedEventFilter;
 
     'MinterAttachToNFT(address,uint256,bytes)'(
       minter?: string | null,
@@ -890,6 +1052,9 @@ export interface NFTAttachment extends BaseContract {
       account?: string | null,
       sender?: string | null
     ): RoleRevokedEventFilter;
+
+    'Upgraded(address)'(implementation?: string | null): UpgradedEventFilter;
+    Upgraded(implementation?: string | null): UpgradedEventFilter;
   };
 
   estimateGas: {
@@ -1023,6 +1188,44 @@ export interface NFTAttachment extends BaseContract {
     'supportsInterface(bytes4)'(
       interfaceId: BytesLike,
       overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    upgradeTo(
+      newImplementation: string,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<BigNumber>;
+
+    'upgradeTo(address)'(
+      newImplementation: string,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<BigNumber>;
+
+    upgradeToAndCall(
+      newImplementation: string,
+      data: BytesLike,
+      overrides?: PayableOverrides & { from?: string | Promise<string> }
+    ): Promise<BigNumber>;
+
+    'upgradeToAndCall(address,bytes)'(
+      newImplementation: string,
+      data: BytesLike,
+      overrides?: PayableOverrides & { from?: string | Promise<string> }
+    ): Promise<BigNumber>;
+
+    /**
+     * Set which NFT contract to refer to. The event `MinterAttachToNFT` is only supported for Freeport-compatible NFTs. The event `OwnerAttachToNFT` is supported for ERC-1155 NFTs, including Freeport.
+     */
+    initialize(
+      _freeport: string,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<BigNumber>;
+
+    /**
+     * Set which NFT contract to refer to. The event `MinterAttachToNFT` is only supported for Freeport-compatible NFTs. The event `OwnerAttachToNFT` is supported for ERC-1155 NFTs, including Freeport.
+     */
+    'initialize(address)'(
+      _freeport: string,
+      overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
     /**
@@ -1233,6 +1436,44 @@ export interface NFTAttachment extends BaseContract {
     'supportsInterface(bytes4)'(
       interfaceId: BytesLike,
       overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    upgradeTo(
+      newImplementation: string,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
+
+    'upgradeTo(address)'(
+      newImplementation: string,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
+
+    upgradeToAndCall(
+      newImplementation: string,
+      data: BytesLike,
+      overrides?: PayableOverrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
+
+    'upgradeToAndCall(address,bytes)'(
+      newImplementation: string,
+      data: BytesLike,
+      overrides?: PayableOverrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
+
+    /**
+     * Set which NFT contract to refer to. The event `MinterAttachToNFT` is only supported for Freeport-compatible NFTs. The event `OwnerAttachToNFT` is supported for ERC-1155 NFTs, including Freeport.
+     */
+    initialize(
+      _freeport: string,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
+
+    /**
+     * Set which NFT contract to refer to. The event `MinterAttachToNFT` is only supported for Freeport-compatible NFTs. The event `OwnerAttachToNFT` is supported for ERC-1155 NFTs, including Freeport.
+     */
+    'initialize(address)'(
+      _freeport: string,
+      overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 
     /**
