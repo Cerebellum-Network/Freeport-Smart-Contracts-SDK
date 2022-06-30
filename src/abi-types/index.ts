@@ -2,6 +2,8 @@
 /* tslint:disable */
 /* eslint-disable */
 export type { BypassForwarder } from './BypassForwarder';
+export type { Collection } from './Collection';
+export type { CollectionFactory } from './CollectionFactory';
 export type { FiatGateway } from './FiatGateway';
 export type { Freeport } from './Freeport';
 export type { MinimalForwarder } from './MinimalForwarder';
@@ -10,6 +12,8 @@ export type { SimpleAuction } from './SimpleAuction';
 export type { TestERC20 } from './TestERC20';
 
 export { BypassForwarder__factory } from './factories/BypassForwarder__factory';
+export { Collection__factory } from './factories/Collection__factory';
+export { CollectionFactory__factory } from './factories/CollectionFactory__factory';
 export { FiatGateway__factory } from './factories/FiatGateway__factory';
 export { Freeport__factory } from './factories/Freeport__factory';
 export { MinimalForwarder__factory } from './factories/MinimalForwarder__factory';

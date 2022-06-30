@@ -3,6 +3,7 @@ import HDWalletProvider from '@truffle/hdwallet-provider';
 import { providers, Signer, Wallet } from 'ethers';
 
 import type {
+  CollectionFactory,
   FiatGateway,
   Freeport,
   MinimalForwarder,
@@ -11,6 +12,7 @@ import type {
   TestERC20 as ERC20,
 } from './abi-types';
 import {
+  CollectionFactory__factory,
   FiatGateway__factory,
   Freeport__factory,
   MinimalForwarder__factory,
@@ -298,6 +300,21 @@ export const getERC20Address = async (
   });
 };
 
+export const getCollectionFactoryAddress = async (
+  provider: Provider,
+  deployment: Deployment = 'prod',
+  application: ApplicationEnum = ApplicationEnum.DAVINCI
+): Promise<string> => {
+  const { chainId } = await provider.getNetwork();
+
+  return getContractAddress({
+    deployment,
+    chainId,
+    contractName: 'CollectionFactory',
+    application,
+  });
+};
+
 export type CreateContractConfig = {
   signer: Signer;
   contractAddress: string;
@@ -338,3 +355,9 @@ export const createERC20 = ({
   contractAddress,
 }: CreateContractConfig): ERC20 =>
   ERC20__factory.connect(contractAddress, signer);
+
+export const createCollectionFactory = ({
+  signer,
+  contractAddress,
+}: CreateContractConfig): CollectionFactory =>
+  CollectionFactory__factory.connect(contractAddress, signer);
