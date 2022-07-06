@@ -3,6 +3,7 @@ import HDWalletProvider from '@truffle/hdwallet-provider';
 import { providers, Signer, Wallet } from 'ethers';
 
 import type {
+  Collection,
   CollectionFactory,
   FiatGateway,
   Freeport,
@@ -12,6 +13,7 @@ import type {
   TestERC20 as ERC20,
 } from './abi-types';
 import {
+  Collection__factory,
   CollectionFactory__factory,
   FiatGateway__factory,
   Freeport__factory,
@@ -361,3 +363,9 @@ export const createCollectionFactory = ({
   contractAddress,
 }: CreateContractConfig): CollectionFactory =>
   CollectionFactory__factory.connect(contractAddress, signer);
+
+export const createCollection = ({
+  signer,
+  contractAddress,
+}: CreateContractConfig): Collection =>
+  Collection__factory.connect(contractAddress, signer);
