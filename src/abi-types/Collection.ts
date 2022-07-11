@@ -51,9 +51,8 @@ export interface CollectionInterface extends utils.Interface {
     'setupRoyaltyConfiguration(address,uint256,uint256,address,uint256,uint256)': FunctionFragment;
     'getRoyalties()': FunctionFragment;
     'getRoyaltiesForBeneficiary(address)': FunctionFragment;
-    'minterAttachToNFT(uint32,bytes)': FunctionFragment;
-    'ownerAttachToNFT(uint32,bytes)': FunctionFragment;
-    'anonymAttachToNFT(uint32,bytes)': FunctionFragment;
+    'minterAttachToNFT(uint256,bytes)': FunctionFragment;
+    'anonymAttachToNFT(uint256,bytes)': FunctionFragment;
     'getGlobalNftId(uint32)': FunctionFragment;
   };
 
@@ -175,10 +174,6 @@ export interface CollectionInterface extends utils.Interface {
     values: [BigNumberish, BytesLike]
   ): string;
   encodeFunctionData(
-    functionFragment: 'ownerAttachToNFT',
-    values: [BigNumberish, BytesLike]
-  ): string;
-  encodeFunctionData(
     functionFragment: 'anonymAttachToNFT',
     values: [BigNumberish, BytesLike]
   ): string;
@@ -277,10 +272,6 @@ export interface CollectionInterface extends utils.Interface {
   ): Result;
   decodeFunctionResult(
     functionFragment: 'minterAttachToNFT',
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: 'ownerAttachToNFT',
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -891,7 +882,7 @@ export interface Collection extends BaseContract {
      * Attach data `attachment` to the collection NFT with specific inner NFT id, as the minter of this NFT type. This only works for NFT IDs in the Freeport format.
      */
     minterAttachToNFT(
-      innerNftId: BigNumberish,
+      nftId: BigNumberish,
       attachment: BytesLike,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
@@ -899,26 +890,8 @@ export interface Collection extends BaseContract {
     /**
      * Attach data `attachment` to the collection NFT with specific inner NFT id, as the minter of this NFT type. This only works for NFT IDs in the Freeport format.
      */
-    'minterAttachToNFT(uint32,bytes)'(
-      innerNftId: BigNumberish,
-      attachment: BytesLike,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>;
-
-    /**
-     * Attach data `attachment` to the collection NFT with specific inner NFT id, as a current owner of an NFT of this type. This works for NFTs in the ERC-1155 or Freeport standards.
-     */
-    ownerAttachToNFT(
-      innerNftId: BigNumberish,
-      attachment: BytesLike,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>;
-
-    /**
-     * Attach data `attachment` to the collection NFT with specific inner NFT id, as a current owner of an NFT of this type. This works for NFTs in the ERC-1155 or Freeport standards.
-     */
-    'ownerAttachToNFT(uint32,bytes)'(
-      innerNftId: BigNumberish,
+    'minterAttachToNFT(uint256,bytes)'(
+      nftId: BigNumberish,
       attachment: BytesLike,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
@@ -927,7 +900,7 @@ export interface Collection extends BaseContract {
      * Attach data `attachment` to the collection NFT with specific inner NFT id.
      */
     anonymAttachToNFT(
-      innerNftId: BigNumberish,
+      nftId: BigNumberish,
       attachment: BytesLike,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
@@ -935,8 +908,8 @@ export interface Collection extends BaseContract {
     /**
      * Attach data `attachment` to the collection NFT with specific inner NFT id.
      */
-    'anonymAttachToNFT(uint32,bytes)'(
-      innerNftId: BigNumberish,
+    'anonymAttachToNFT(uint256,bytes)'(
+      nftId: BigNumberish,
       attachment: BytesLike,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
@@ -1428,7 +1401,7 @@ export interface Collection extends BaseContract {
    * Attach data `attachment` to the collection NFT with specific inner NFT id, as the minter of this NFT type. This only works for NFT IDs in the Freeport format.
    */
   minterAttachToNFT(
-    innerNftId: BigNumberish,
+    nftId: BigNumberish,
     attachment: BytesLike,
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
@@ -1436,26 +1409,8 @@ export interface Collection extends BaseContract {
   /**
    * Attach data `attachment` to the collection NFT with specific inner NFT id, as the minter of this NFT type. This only works for NFT IDs in the Freeport format.
    */
-  'minterAttachToNFT(uint32,bytes)'(
-    innerNftId: BigNumberish,
-    attachment: BytesLike,
-    overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>;
-
-  /**
-   * Attach data `attachment` to the collection NFT with specific inner NFT id, as a current owner of an NFT of this type. This works for NFTs in the ERC-1155 or Freeport standards.
-   */
-  ownerAttachToNFT(
-    innerNftId: BigNumberish,
-    attachment: BytesLike,
-    overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>;
-
-  /**
-   * Attach data `attachment` to the collection NFT with specific inner NFT id, as a current owner of an NFT of this type. This works for NFTs in the ERC-1155 or Freeport standards.
-   */
-  'ownerAttachToNFT(uint32,bytes)'(
-    innerNftId: BigNumberish,
+  'minterAttachToNFT(uint256,bytes)'(
+    nftId: BigNumberish,
     attachment: BytesLike,
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
@@ -1464,7 +1419,7 @@ export interface Collection extends BaseContract {
    * Attach data `attachment` to the collection NFT with specific inner NFT id.
    */
   anonymAttachToNFT(
-    innerNftId: BigNumberish,
+    nftId: BigNumberish,
     attachment: BytesLike,
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
@@ -1472,8 +1427,8 @@ export interface Collection extends BaseContract {
   /**
    * Attach data `attachment` to the collection NFT with specific inner NFT id.
    */
-  'anonymAttachToNFT(uint32,bytes)'(
-    innerNftId: BigNumberish,
+  'anonymAttachToNFT(uint256,bytes)'(
+    nftId: BigNumberish,
     attachment: BytesLike,
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
@@ -1959,7 +1914,7 @@ export interface Collection extends BaseContract {
      * Attach data `attachment` to the collection NFT with specific inner NFT id, as the minter of this NFT type. This only works for NFT IDs in the Freeport format.
      */
     minterAttachToNFT(
-      innerNftId: BigNumberish,
+      nftId: BigNumberish,
       attachment: BytesLike,
       overrides?: CallOverrides
     ): Promise<void>;
@@ -1967,26 +1922,8 @@ export interface Collection extends BaseContract {
     /**
      * Attach data `attachment` to the collection NFT with specific inner NFT id, as the minter of this NFT type. This only works for NFT IDs in the Freeport format.
      */
-    'minterAttachToNFT(uint32,bytes)'(
-      innerNftId: BigNumberish,
-      attachment: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<void>;
-
-    /**
-     * Attach data `attachment` to the collection NFT with specific inner NFT id, as a current owner of an NFT of this type. This works for NFTs in the ERC-1155 or Freeport standards.
-     */
-    ownerAttachToNFT(
-      innerNftId: BigNumberish,
-      attachment: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<void>;
-
-    /**
-     * Attach data `attachment` to the collection NFT with specific inner NFT id, as a current owner of an NFT of this type. This works for NFTs in the ERC-1155 or Freeport standards.
-     */
-    'ownerAttachToNFT(uint32,bytes)'(
-      innerNftId: BigNumberish,
+    'minterAttachToNFT(uint256,bytes)'(
+      nftId: BigNumberish,
       attachment: BytesLike,
       overrides?: CallOverrides
     ): Promise<void>;
@@ -1995,7 +1932,7 @@ export interface Collection extends BaseContract {
      * Attach data `attachment` to the collection NFT with specific inner NFT id.
      */
     anonymAttachToNFT(
-      innerNftId: BigNumberish,
+      nftId: BigNumberish,
       attachment: BytesLike,
       overrides?: CallOverrides
     ): Promise<void>;
@@ -2003,8 +1940,8 @@ export interface Collection extends BaseContract {
     /**
      * Attach data `attachment` to the collection NFT with specific inner NFT id.
      */
-    'anonymAttachToNFT(uint32,bytes)'(
-      innerNftId: BigNumberish,
+    'anonymAttachToNFT(uint256,bytes)'(
+      nftId: BigNumberish,
       attachment: BytesLike,
       overrides?: CallOverrides
     ): Promise<void>;
@@ -2567,7 +2504,7 @@ export interface Collection extends BaseContract {
      * Attach data `attachment` to the collection NFT with specific inner NFT id, as the minter of this NFT type. This only works for NFT IDs in the Freeport format.
      */
     minterAttachToNFT(
-      innerNftId: BigNumberish,
+      nftId: BigNumberish,
       attachment: BytesLike,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
@@ -2575,26 +2512,8 @@ export interface Collection extends BaseContract {
     /**
      * Attach data `attachment` to the collection NFT with specific inner NFT id, as the minter of this NFT type. This only works for NFT IDs in the Freeport format.
      */
-    'minterAttachToNFT(uint32,bytes)'(
-      innerNftId: BigNumberish,
-      attachment: BytesLike,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>;
-
-    /**
-     * Attach data `attachment` to the collection NFT with specific inner NFT id, as a current owner of an NFT of this type. This works for NFTs in the ERC-1155 or Freeport standards.
-     */
-    ownerAttachToNFT(
-      innerNftId: BigNumberish,
-      attachment: BytesLike,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>;
-
-    /**
-     * Attach data `attachment` to the collection NFT with specific inner NFT id, as a current owner of an NFT of this type. This works for NFTs in the ERC-1155 or Freeport standards.
-     */
-    'ownerAttachToNFT(uint32,bytes)'(
-      innerNftId: BigNumberish,
+    'minterAttachToNFT(uint256,bytes)'(
+      nftId: BigNumberish,
       attachment: BytesLike,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
@@ -2603,7 +2522,7 @@ export interface Collection extends BaseContract {
      * Attach data `attachment` to the collection NFT with specific inner NFT id.
      */
     anonymAttachToNFT(
-      innerNftId: BigNumberish,
+      nftId: BigNumberish,
       attachment: BytesLike,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
@@ -2611,8 +2530,8 @@ export interface Collection extends BaseContract {
     /**
      * Attach data `attachment` to the collection NFT with specific inner NFT id.
      */
-    'anonymAttachToNFT(uint32,bytes)'(
-      innerNftId: BigNumberish,
+    'anonymAttachToNFT(uint256,bytes)'(
+      nftId: BigNumberish,
       attachment: BytesLike,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
@@ -3089,7 +3008,7 @@ export interface Collection extends BaseContract {
      * Attach data `attachment` to the collection NFT with specific inner NFT id, as the minter of this NFT type. This only works for NFT IDs in the Freeport format.
      */
     minterAttachToNFT(
-      innerNftId: BigNumberish,
+      nftId: BigNumberish,
       attachment: BytesLike,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
@@ -3097,26 +3016,8 @@ export interface Collection extends BaseContract {
     /**
      * Attach data `attachment` to the collection NFT with specific inner NFT id, as the minter of this NFT type. This only works for NFT IDs in the Freeport format.
      */
-    'minterAttachToNFT(uint32,bytes)'(
-      innerNftId: BigNumberish,
-      attachment: BytesLike,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>;
-
-    /**
-     * Attach data `attachment` to the collection NFT with specific inner NFT id, as a current owner of an NFT of this type. This works for NFTs in the ERC-1155 or Freeport standards.
-     */
-    ownerAttachToNFT(
-      innerNftId: BigNumberish,
-      attachment: BytesLike,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>;
-
-    /**
-     * Attach data `attachment` to the collection NFT with specific inner NFT id, as a current owner of an NFT of this type. This works for NFTs in the ERC-1155 or Freeport standards.
-     */
-    'ownerAttachToNFT(uint32,bytes)'(
-      innerNftId: BigNumberish,
+    'minterAttachToNFT(uint256,bytes)'(
+      nftId: BigNumberish,
       attachment: BytesLike,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
@@ -3125,7 +3026,7 @@ export interface Collection extends BaseContract {
      * Attach data `attachment` to the collection NFT with specific inner NFT id.
      */
     anonymAttachToNFT(
-      innerNftId: BigNumberish,
+      nftId: BigNumberish,
       attachment: BytesLike,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
@@ -3133,8 +3034,8 @@ export interface Collection extends BaseContract {
     /**
      * Attach data `attachment` to the collection NFT with specific inner NFT id.
      */
-    'anonymAttachToNFT(uint32,bytes)'(
-      innerNftId: BigNumberish,
+    'anonymAttachToNFT(uint256,bytes)'(
+      nftId: BigNumberish,
       attachment: BytesLike,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
