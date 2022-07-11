@@ -1,4 +1,5 @@
 import 'dotenv/config';
+import { providers } from 'ethers';
 
 import config from './config.json';
 import configLiveone from './config.liveone.json';
@@ -11,6 +12,9 @@ import {
   getContractAddress,
   getFreeportAddress,
   getSimpleAuctionAddress,
+  approveWithAuthorization,
+  getUSDCAddress,
+  createUSDC,
 } from './index';
 
 const TESTNET_URL = 'https://rpc-mumbai.maticvigil.com';
@@ -111,6 +115,36 @@ testIfBiconomy(
     stop();
   }
 );
+
+testIfBiconomy('approve USDC with Biconomy', async () => {
+  const { provider, signer, stop } = await createProviderSigner({
+    rpcUrl: TESTNET_URL,
+    mnemonic: MNEMONIC_WITHOUT_MATIC,
+    biconomyApiKey,
+    biconomyDebug: false,
+  });
+  const owner = await signer.getAddress();
+
+  const usdcAddress = await getUSDCAddress(provider, deployment);
+  const usdcContract = createUSDC({ signer, contractAddress: usdcAddress });
+
+  const auctionAddress = await getSimpleAuctionAddress(provider, deployment);
+  const auctionContract = createSimpleAuction({
+    signer,
+    contractAddress: auctionAddress,
+  });
+
+  let value = 9;
+  await approveWithAuthorization(
+    provider,
+    usdcContract,
+    owner,
+    auctionContract.address,
+    value
+  );
+
+  stop();
+});
 
 test('Application parameter should use different config', () => {
   const contractAddress = getContractAddress({
