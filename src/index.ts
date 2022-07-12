@@ -23,9 +23,9 @@ import {
 import config from './config.json';
 import configLiveOne from './config.liveone.json';
 
+export type { UChildERC20 as USDC } from './abi-types';
 export * from './abi-types';
 export * from './metatx';
-export type { UChildERC20 as USDC } from './abi-types';
 
 declare global {
   interface Window {

@@ -7,13 +7,13 @@ import {
   createFreeport,
   createProviderSigner,
   createSimpleAuction,
+  createUSDC,
   Deployment,
   getContractAddress,
   getFreeportAddress,
   getSimpleAuctionAddress,
-  increaseAllowanceWithAuthorization,
   getUSDCAddress,
-  createUSDC,
+  increaseAllowanceWithAuthorization,
 } from './index';
 
 const TESTNET_URL = 'https://rpc-mumbai.maticvigil.com';
@@ -131,8 +131,8 @@ testIfBiconomy('approve USDC with Biconomy', async () => {
 
   const allowanceBefore = await usdcContract.allowance(owner, auctionAddress);
 
-  let value = 9;
-  let tx = await increaseAllowanceWithAuthorization(
+  const value = 9;
+  const tx = await increaseAllowanceWithAuthorization(
     provider,
     usdcContract,
     owner,
