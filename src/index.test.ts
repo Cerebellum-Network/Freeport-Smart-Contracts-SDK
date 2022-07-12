@@ -1,5 +1,4 @@
 import 'dotenv/config';
-import { providers } from 'ethers';
 
 import config from './config.json';
 import configLiveone from './config.liveone.json';
@@ -12,7 +11,7 @@ import {
   getContractAddress,
   getFreeportAddress,
   getSimpleAuctionAddress,
-  approveWithAuthorization,
+  increaseAllowanceWithAuthorization,
   getUSDCAddress,
   createUSDC,
 } from './index';
@@ -129,19 +128,21 @@ testIfBiconomy('approve USDC with Biconomy', async () => {
   const usdcContract = createUSDC({ signer, contractAddress: usdcAddress });
 
   const auctionAddress = await getSimpleAuctionAddress(provider, deployment);
-  const auctionContract = createSimpleAuction({
-    signer,
-    contractAddress: auctionAddress,
-  });
+
+  const allowanceBefore = await usdcContract.allowance(owner, auctionAddress);
 
   let value = 9;
-  await approveWithAuthorization(
+  let tx = await increaseAllowanceWithAuthorization(
     provider,
     usdcContract,
     owner,
-    auctionContract.address,
+    auctionAddress,
     value
   );
+  await tx.wait();
+
+  const allowanceAfter = await usdcContract.allowance(owner, auctionAddress);
+  expect(allowanceAfter.gt(allowanceBefore)).toBe(true);
 
   stop();
 });
