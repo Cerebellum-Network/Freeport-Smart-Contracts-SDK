@@ -9,7 +9,7 @@ import type {
   NFTAttachment,
   SimpleAuction,
   TestERC20 as ERC20,
-  UChildERC20 as USDC,
+  USDC,
 } from './abi-types';
 import {
   FiatGateway__factory,
@@ -18,12 +18,11 @@ import {
   NFTAttachment__factory,
   SimpleAuction__factory,
   TestERC20__factory as ERC20__factory,
-  UChildERC20__factory as USDC__factory,
+  USDC__factory,
 } from './abi-types';
 import config from './config.json';
 import configLiveOne from './config.liveone.json';
 
-export type { UChildERC20 as USDC } from './abi-types';
 export * from './abi-types';
 export * from './metatx';
 

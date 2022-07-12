@@ -1,6 +1,6 @@
 import { BigNumberish, ContractTransaction, ethers, providers } from 'ethers';
 
-import type { UChildERC20 as USDC } from './abi-types';
+import type { USDC } from './abi-types';
 
 const domainType = [
   { name: 'name', type: 'string' },
