@@ -101,7 +101,7 @@
   },
   "dependencies": {
     "@biconomy/mexa": "^2.0.25",
-    "@truffle/hdwallet-provider": "^2.0.0",
+    "@truffle/hdwallet-provider": "^2.0.10",
     "web3": "^1.7.0"
   }
 }
