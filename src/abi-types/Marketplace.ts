@@ -18,50 +18,42 @@ import { FunctionFragment, Result, EventFragment } from '@ethersproject/abi';
 import { Listener, Provider } from '@ethersproject/providers';
 import { TypedEventFilter, TypedEvent, TypedListener, OnEvent } from './common';
 
-export interface CollectionInterface extends utils.Interface {
+export interface MarketplaceInterface extends utils.Interface {
   functions: {
-    'COLLECTION_MANAGER_ROLE()': FunctionFragment;
+    'CURRENCY()': FunctionFragment;
     'DEFAULT_ADMIN_ROLE()': FunctionFragment;
     'META_TX_FORWARDER()': FunctionFragment;
-    'TRANSFER_OPERATOR()': FunctionFragment;
-    'anonymAttachToNFT(uint256,bytes)': FunctionFragment;
     'balanceOf(address,uint256)': FunctionFragment;
     'balanceOfBatch(address[],uint256[])': FunctionFragment;
-    'contractURI()': FunctionFragment;
+    'currencyContract()': FunctionFragment;
+    'deposit(uint256)': FunctionFragment;
     'freeport()': FunctionFragment;
     'getGlobalNftId(uint32)': FunctionFragment;
     'getRoleAdmin(bytes32)': FunctionFragment;
-    'getRoyalties()': FunctionFragment;
-    'getRoyaltiesForBeneficiary(address)': FunctionFragment;
     'grantRole(bytes32,address)': FunctionFragment;
     'hasRole(bytes32,address)': FunctionFragment;
-    'idCounter()': FunctionFragment;
+    'isApprovedForAll(address,address)': FunctionFragment;
     'isTrustedForwarder(address)': FunctionFragment;
-    'issue(uint64,bytes)': FunctionFragment;
-    'issueOnBehalfOf(address,uint64,bytes)': FunctionFragment;
-    'minterAttachToNFT(uint256,bytes)': FunctionFragment;
-    'name()': FunctionFragment;
-    'nftAttachment()': FunctionFragment;
     'renounceRole(bytes32,address)': FunctionFragment;
     'revokeRole(bytes32,address)': FunctionFragment;
     'safeBatchTransferFrom(address,address,uint256[],uint256[],bytes)': FunctionFragment;
     'safeTransferFrom(address,address,uint256,uint256,bytes)': FunctionFragment;
     'setApprovalForAll(address,bool)': FunctionFragment;
+    'setERC20(address)': FunctionFragment;
     'setURI(string)': FunctionFragment;
-    'setupRoyaltyConfiguration(address,uint256,uint256,address,uint256,uint256)': FunctionFragment;
+    'supportsInterface(bytes4)': FunctionFragment;
     'transferFrom(address,address,uint256,uint256)': FunctionFragment;
     'upgradeTo(address)': FunctionFragment;
     'upgradeToAndCall(address,bytes)': FunctionFragment;
     'uri(uint256)': FunctionFragment;
-    'initialize(address,address,string,string,string,address,address)': FunctionFragment;
-    'supportsInterface(bytes4)': FunctionFragment;
-    'isApprovedForAll(address,address)': FunctionFragment;
+    'withdraw(uint256)': FunctionFragment;
+    'initialize(address)': FunctionFragment;
+    'makeOffer(uint256,uint256)': FunctionFragment;
+    'getOffer(address,uint256)': FunctionFragment;
+    'takeOffer(address,address,uint256,uint256,uint256)': FunctionFragment;
   };
 
-  encodeFunctionData(
-    functionFragment: 'COLLECTION_MANAGER_ROLE',
-    values?: undefined
-  ): string;
+  encodeFunctionData(functionFragment: 'CURRENCY', values?: undefined): string;
   encodeFunctionData(
     functionFragment: 'DEFAULT_ADMIN_ROLE',
     values?: undefined
@@ -69,14 +61,6 @@ export interface CollectionInterface extends utils.Interface {
   encodeFunctionData(
     functionFragment: 'META_TX_FORWARDER',
     values?: undefined
-  ): string;
-  encodeFunctionData(
-    functionFragment: 'TRANSFER_OPERATOR',
-    values?: undefined
-  ): string;
-  encodeFunctionData(
-    functionFragment: 'anonymAttachToNFT',
-    values: [BigNumberish, BytesLike]
   ): string;
   encodeFunctionData(
     functionFragment: 'balanceOf',
@@ -87,8 +71,12 @@ export interface CollectionInterface extends utils.Interface {
     values: [string[], BigNumberish[]]
   ): string;
   encodeFunctionData(
-    functionFragment: 'contractURI',
+    functionFragment: 'currencyContract',
     values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: 'deposit',
+    values: [BigNumberish]
   ): string;
   encodeFunctionData(functionFragment: 'freeport', values?: undefined): string;
   encodeFunctionData(
@@ -100,14 +88,6 @@ export interface CollectionInterface extends utils.Interface {
     values: [BytesLike]
   ): string;
   encodeFunctionData(
-    functionFragment: 'getRoyalties',
-    values?: undefined
-  ): string;
-  encodeFunctionData(
-    functionFragment: 'getRoyaltiesForBeneficiary',
-    values: [string]
-  ): string;
-  encodeFunctionData(
     functionFragment: 'grantRole',
     values: [BytesLike, string]
   ): string;
@@ -115,27 +95,13 @@ export interface CollectionInterface extends utils.Interface {
     functionFragment: 'hasRole',
     values: [BytesLike, string]
   ): string;
-  encodeFunctionData(functionFragment: 'idCounter', values?: undefined): string;
+  encodeFunctionData(
+    functionFragment: 'isApprovedForAll',
+    values: [string, string]
+  ): string;
   encodeFunctionData(
     functionFragment: 'isTrustedForwarder',
     values: [string]
-  ): string;
-  encodeFunctionData(
-    functionFragment: 'issue',
-    values: [BigNumberish, BytesLike]
-  ): string;
-  encodeFunctionData(
-    functionFragment: 'issueOnBehalfOf',
-    values: [string, BigNumberish, BytesLike]
-  ): string;
-  encodeFunctionData(
-    functionFragment: 'minterAttachToNFT',
-    values: [BigNumberish, BytesLike]
-  ): string;
-  encodeFunctionData(functionFragment: 'name', values?: undefined): string;
-  encodeFunctionData(
-    functionFragment: 'nftAttachment',
-    values?: undefined
   ): string;
   encodeFunctionData(
     functionFragment: 'renounceRole',
@@ -157,17 +123,11 @@ export interface CollectionInterface extends utils.Interface {
     functionFragment: 'setApprovalForAll',
     values: [string, boolean]
   ): string;
+  encodeFunctionData(functionFragment: 'setERC20', values: [string]): string;
   encodeFunctionData(functionFragment: 'setURI', values: [string]): string;
   encodeFunctionData(
-    functionFragment: 'setupRoyaltyConfiguration',
-    values: [
-      string,
-      BigNumberish,
-      BigNumberish,
-      string,
-      BigNumberish,
-      BigNumberish
-    ]
+    functionFragment: 'supportsInterface',
+    values: [BytesLike]
   ): string;
   encodeFunctionData(
     functionFragment: 'transferFrom',
@@ -180,22 +140,24 @@ export interface CollectionInterface extends utils.Interface {
   ): string;
   encodeFunctionData(functionFragment: 'uri', values: [BigNumberish]): string;
   encodeFunctionData(
-    functionFragment: 'initialize',
-    values: [string, string, string, string, string, string, string]
+    functionFragment: 'withdraw',
+    values: [BigNumberish]
+  ): string;
+  encodeFunctionData(functionFragment: 'initialize', values: [string]): string;
+  encodeFunctionData(
+    functionFragment: 'makeOffer',
+    values: [BigNumberish, BigNumberish]
   ): string;
   encodeFunctionData(
-    functionFragment: 'supportsInterface',
-    values: [BytesLike]
+    functionFragment: 'getOffer',
+    values: [string, BigNumberish]
   ): string;
   encodeFunctionData(
-    functionFragment: 'isApprovedForAll',
-    values: [string, string]
+    functionFragment: 'takeOffer',
+    values: [string, string, BigNumberish, BigNumberish, BigNumberish]
   ): string;
 
-  decodeFunctionResult(
-    functionFragment: 'COLLECTION_MANAGER_ROLE',
-    data: BytesLike
-  ): Result;
+  decodeFunctionResult(functionFragment: 'CURRENCY', data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: 'DEFAULT_ADMIN_ROLE',
     data: BytesLike
@@ -204,23 +166,16 @@ export interface CollectionInterface extends utils.Interface {
     functionFragment: 'META_TX_FORWARDER',
     data: BytesLike
   ): Result;
-  decodeFunctionResult(
-    functionFragment: 'TRANSFER_OPERATOR',
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: 'anonymAttachToNFT',
-    data: BytesLike
-  ): Result;
   decodeFunctionResult(functionFragment: 'balanceOf', data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: 'balanceOfBatch',
     data: BytesLike
   ): Result;
   decodeFunctionResult(
-    functionFragment: 'contractURI',
+    functionFragment: 'currencyContract',
     data: BytesLike
   ): Result;
+  decodeFunctionResult(functionFragment: 'deposit', data: BytesLike): Result;
   decodeFunctionResult(functionFragment: 'freeport', data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: 'getGlobalNftId',
@@ -230,33 +185,14 @@ export interface CollectionInterface extends utils.Interface {
     functionFragment: 'getRoleAdmin',
     data: BytesLike
   ): Result;
-  decodeFunctionResult(
-    functionFragment: 'getRoyalties',
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: 'getRoyaltiesForBeneficiary',
-    data: BytesLike
-  ): Result;
   decodeFunctionResult(functionFragment: 'grantRole', data: BytesLike): Result;
   decodeFunctionResult(functionFragment: 'hasRole', data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: 'idCounter', data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: 'isApprovedForAll',
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(
     functionFragment: 'isTrustedForwarder',
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(functionFragment: 'issue', data: BytesLike): Result;
-  decodeFunctionResult(
-    functionFragment: 'issueOnBehalfOf',
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: 'minterAttachToNFT',
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(functionFragment: 'name', data: BytesLike): Result;
-  decodeFunctionResult(
-    functionFragment: 'nftAttachment',
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -276,9 +212,10 @@ export interface CollectionInterface extends utils.Interface {
     functionFragment: 'setApprovalForAll',
     data: BytesLike
   ): Result;
+  decodeFunctionResult(functionFragment: 'setERC20', data: BytesLike): Result;
   decodeFunctionResult(functionFragment: 'setURI', data: BytesLike): Result;
   decodeFunctionResult(
-    functionFragment: 'setupRoyaltyConfiguration',
+    functionFragment: 'supportsInterface',
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -291,23 +228,21 @@ export interface CollectionInterface extends utils.Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: 'uri', data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'withdraw', data: BytesLike): Result;
   decodeFunctionResult(functionFragment: 'initialize', data: BytesLike): Result;
-  decodeFunctionResult(
-    functionFragment: 'supportsInterface',
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: 'isApprovedForAll',
-    data: BytesLike
-  ): Result;
+  decodeFunctionResult(functionFragment: 'makeOffer', data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'getOffer', data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'takeOffer', data: BytesLike): Result;
 
   events: {
     'AdminChanged(address,address)': EventFragment;
     'ApprovalForAll(address,address,bool)': EventFragment;
     'BeaconUpgraded(address)': EventFragment;
+    'MakeOffer(address,uint256,uint256)': EventFragment;
     'RoleAdminChanged(bytes32,bytes32,bytes32)': EventFragment;
     'RoleGranted(bytes32,address,address)': EventFragment;
     'RoleRevoked(bytes32,address,address)': EventFragment;
+    'TakeOffer(address,address,uint256,uint256,uint256)': EventFragment;
     'TransferBatch(address,address,address,uint256[],uint256[])': EventFragment;
     'TransferSingle(address,address,address,uint256,uint256)': EventFragment;
     'URI(string,uint256)': EventFragment;
@@ -317,9 +252,11 @@ export interface CollectionInterface extends utils.Interface {
   getEvent(nameOrSignatureOrTopic: 'AdminChanged'): EventFragment;
   getEvent(nameOrSignatureOrTopic: 'ApprovalForAll'): EventFragment;
   getEvent(nameOrSignatureOrTopic: 'BeaconUpgraded'): EventFragment;
+  getEvent(nameOrSignatureOrTopic: 'MakeOffer'): EventFragment;
   getEvent(nameOrSignatureOrTopic: 'RoleAdminChanged'): EventFragment;
   getEvent(nameOrSignatureOrTopic: 'RoleGranted'): EventFragment;
   getEvent(nameOrSignatureOrTopic: 'RoleRevoked'): EventFragment;
+  getEvent(nameOrSignatureOrTopic: 'TakeOffer'): EventFragment;
   getEvent(nameOrSignatureOrTopic: 'TransferBatch'): EventFragment;
   getEvent(nameOrSignatureOrTopic: 'TransferSingle'): EventFragment;
   getEvent(nameOrSignatureOrTopic: 'URI'): EventFragment;
@@ -344,6 +281,13 @@ export type BeaconUpgradedEvent = TypedEvent<[string], { beacon: string }>;
 
 export type BeaconUpgradedEventFilter = TypedEventFilter<BeaconUpgradedEvent>;
 
+export type MakeOfferEvent = TypedEvent<
+  [string, BigNumber, BigNumber],
+  { seller: string; nftId: BigNumber; price: BigNumber }
+>;
+
+export type MakeOfferEventFilter = TypedEventFilter<MakeOfferEvent>;
+
 export type RoleAdminChangedEvent = TypedEvent<
   [string, string, string],
   { role: string; previousAdminRole: string; newAdminRole: string }
@@ -365,6 +309,19 @@ export type RoleRevokedEvent = TypedEvent<
 >;
 
 export type RoleRevokedEventFilter = TypedEventFilter<RoleRevokedEvent>;
+
+export type TakeOfferEvent = TypedEvent<
+  [string, string, BigNumber, BigNumber, BigNumber],
+  {
+    buyer: string;
+    seller: string;
+    nftId: BigNumber;
+    price: BigNumber;
+    amount: BigNumber;
+  }
+>;
+
+export type TakeOfferEventFilter = TypedEventFilter<TakeOfferEvent>;
 
 export type TransferBatchEvent = TypedEvent<
   [string, string, string, BigNumber[], BigNumber[]],
@@ -403,12 +360,12 @@ export type UpgradedEvent = TypedEvent<[string], { implementation: string }>;
 
 export type UpgradedEventFilter = TypedEventFilter<UpgradedEvent>;
 
-export interface Collection extends BaseContract {
+export interface Marketplace extends BaseContract {
   connect(signerOrProvider: Signer | Provider | string): this;
   attach(addressOrName: string): this;
   deployed(): Promise<this>;
 
-  interface: CollectionInterface;
+  interface: MarketplaceInterface;
 
   queryFilter<TEvent extends TypedEvent>(
     event: TypedEventFilter<TEvent>,
@@ -431,14 +388,14 @@ export interface Collection extends BaseContract {
 
   functions: {
     /**
-     * Collection manager role.  Used for configuring the amounts and beneficiaries of royalties on primary and secondary transfers of this NFT.
+     * The token ID that represents the internal currency for all payments in this contract.
      */
-    COLLECTION_MANAGER_ROLE(overrides?: CallOverrides): Promise<[string]>;
+    CURRENCY(overrides?: CallOverrides): Promise<[BigNumber]>;
 
     /**
-     * Collection manager role.  Used for configuring the amounts and beneficiaries of royalties on primary and secondary transfers of this NFT.
+     * The token ID that represents the internal currency for all payments in this contract.
      */
-    'COLLECTION_MANAGER_ROLE()'(overrides?: CallOverrides): Promise<[string]>;
+    'CURRENCY()'(overrides?: CallOverrides): Promise<[BigNumber]>;
 
     DEFAULT_ADMIN_ROLE(overrides?: CallOverrides): Promise<[string]>;
 
@@ -447,28 +404,6 @@ export interface Collection extends BaseContract {
     META_TX_FORWARDER(overrides?: CallOverrides): Promise<[string]>;
 
     'META_TX_FORWARDER()'(overrides?: CallOverrides): Promise<[string]>;
-
-    TRANSFER_OPERATOR(overrides?: CallOverrides): Promise<[string]>;
-
-    'TRANSFER_OPERATOR()'(overrides?: CallOverrides): Promise<[string]>;
-
-    /**
-     * Attach data `attachment` to the collection NFT with specific inner NFT id.
-     */
-    anonymAttachToNFT(
-      nftId: BigNumberish,
-      attachment: BytesLike,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>;
-
-    /**
-     * Attach data `attachment` to the collection NFT with specific inner NFT id.
-     */
-    'anonymAttachToNFT(uint256,bytes)'(
-      nftId: BigNumberish,
-      attachment: BytesLike,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>;
 
     /**
      * See {IERC1155-balanceOf}. Requirements: - `account` cannot be the zero address.
@@ -506,9 +441,31 @@ export interface Collection extends BaseContract {
       overrides?: CallOverrides
     ): Promise<[BigNumber[]]>;
 
-    contractURI(overrides?: CallOverrides): Promise<[string]>;
+    /**
+     * The address of ERC-20 token's contract
+     */
+    currencyContract(overrides?: CallOverrides): Promise<[string]>;
 
-    'contractURI()'(overrides?: CallOverrides): Promise<[string]>;
+    /**
+     * The address of ERC-20 token's contract
+     */
+    'currencyContract()'(overrides?: CallOverrides): Promise<[string]>;
+
+    /**
+     * Deposit currency from ERC20 into the internal currency. This requires payer to approve deposit.
+     */
+    deposit(
+      amount: BigNumberish,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
+
+    /**
+     * Deposit currency from ERC20 into the internal currency. This requires payer to approve deposit.
+     */
+    'deposit(uint256)'(
+      amount: BigNumberish,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
 
     freeport(overrides?: CallOverrides): Promise<[string]>;
 
@@ -542,64 +499,6 @@ export interface Collection extends BaseContract {
       role: BytesLike,
       overrides?: CallOverrides
     ): Promise<[string]>;
-
-    /**
-     * Return the current configuration of royalties for all NFTs of the collection.
-     */
-    getRoyalties(overrides?: CallOverrides): Promise<
-      [string, BigNumber, BigNumber, string, BigNumber, BigNumber] & {
-        primaryRoyaltyAccount: string;
-        primaryRoyaltyCut: BigNumber;
-        primaryRoyaltyMinimum: BigNumber;
-        secondaryRoyaltyAccount: string;
-        secondaryRoyaltyCut: BigNumber;
-        secondaryRoyaltyMinimum: BigNumber;
-      }
-    >;
-
-    /**
-     * Return the current configuration of royalties for all NFTs of the collection.
-     */
-    'getRoyalties()'(overrides?: CallOverrides): Promise<
-      [string, BigNumber, BigNumber, string, BigNumber, BigNumber] & {
-        primaryRoyaltyAccount: string;
-        primaryRoyaltyCut: BigNumber;
-        primaryRoyaltyMinimum: BigNumber;
-        secondaryRoyaltyAccount: string;
-        secondaryRoyaltyCut: BigNumber;
-        secondaryRoyaltyMinimum: BigNumber;
-      }
-    >;
-
-    /**
-     * Return the amount of royalties earned by a beneficiary on each primary and secondary transfer of an NFT. This function supports Joint Accounts. If royalties are paid to a JA and beneficiary is an owner of the JA, the shares of the royalties for this owner are returned.
-     */
-    getRoyaltiesForBeneficiary(
-      beneficiary: string,
-      overrides?: CallOverrides
-    ): Promise<
-      [BigNumber, BigNumber, BigNumber, BigNumber] & {
-        primaryCut: BigNumber;
-        primaryMinimum: BigNumber;
-        secondaryCut: BigNumber;
-        secondaryMinimum: BigNumber;
-      }
-    >;
-
-    /**
-     * Return the amount of royalties earned by a beneficiary on each primary and secondary transfer of an NFT. This function supports Joint Accounts. If royalties are paid to a JA and beneficiary is an owner of the JA, the shares of the royalties for this owner are returned.
-     */
-    'getRoyaltiesForBeneficiary(address)'(
-      beneficiary: string,
-      overrides?: CallOverrides
-    ): Promise<
-      [BigNumber, BigNumber, BigNumber, BigNumber] & {
-        primaryCut: BigNumber;
-        primaryMinimum: BigNumber;
-        secondaryCut: BigNumber;
-        secondaryMinimum: BigNumber;
-      }
-    >;
 
     /**
      * Grants `role` to `account`. If `account` had not been already granted `role`, emits a {RoleGranted} event. Requirements: - the caller must have ``role``'s admin role.
@@ -638,14 +537,22 @@ export interface Collection extends BaseContract {
     ): Promise<[boolean]>;
 
     /**
-     * A counter of NFT types. This is used to generate unique NFT IDs.
+     * See {IERC1155-isApprovedForAll}.
      */
-    idCounter(overrides?: CallOverrides): Promise<[number]>;
+    isApprovedForAll(
+      account: string,
+      operator: string,
+      overrides?: CallOverrides
+    ): Promise<[boolean]>;
 
     /**
-     * A counter of NFT types. This is used to generate unique NFT IDs.
+     * See {IERC1155-isApprovedForAll}.
      */
-    'idCounter()'(overrides?: CallOverrides): Promise<[number]>;
+    'isApprovedForAll(address,address)'(
+      account: string,
+      operator: string,
+      overrides?: CallOverrides
+    ): Promise<[boolean]>;
 
     isTrustedForwarder(
       forwarder: string,
@@ -656,70 +563,6 @@ export interface Collection extends BaseContract {
       forwarder: string,
       overrides?: CallOverrides
     ): Promise<[boolean]>;
-
-    /**
-     * Issue a supply of NFTs of a new type, and return its ID. No more NFT of this type can be issued again. The caller will be recorded as the issuer and it will initially own the entire supply.
-     */
-    issue(
-      supply: BigNumberish,
-      data: BytesLike,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>;
-
-    /**
-     * Issue a supply of NFTs of a new type, and return its ID. No more NFT of this type can be issued again. The caller will be recorded as the issuer and it will initially own the entire supply.
-     */
-    'issue(uint64,bytes)'(
-      supply: BigNumberish,
-      data: BytesLike,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>;
-
-    /**
-     * Issue a supply of NFTs of a new type on behalf of minter, and return its ID. No more NFT of this type can be issued again. The caller will be recorded as the issuer and it will initially own the entire supply. Only for collection manager role.
-     */
-    issueOnBehalfOf(
-      minter: string,
-      supply: BigNumberish,
-      data: BytesLike,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>;
-
-    /**
-     * Issue a supply of NFTs of a new type on behalf of minter, and return its ID. No more NFT of this type can be issued again. The caller will be recorded as the issuer and it will initially own the entire supply. Only for collection manager role.
-     */
-    'issueOnBehalfOf(address,uint64,bytes)'(
-      minter: string,
-      supply: BigNumberish,
-      data: BytesLike,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>;
-
-    /**
-     * Attach data `attachment` to the collection NFT with specific inner NFT id, as the minter of this NFT type. This only works for NFT IDs in the Freeport format.
-     */
-    minterAttachToNFT(
-      nftId: BigNumberish,
-      attachment: BytesLike,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>;
-
-    /**
-     * Attach data `attachment` to the collection NFT with specific inner NFT id, as the minter of this NFT type. This only works for NFT IDs in the Freeport format.
-     */
-    'minterAttachToNFT(uint256,bytes)'(
-      nftId: BigNumberish,
-      attachment: BytesLike,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>;
-
-    name(overrides?: CallOverrides): Promise<[string]>;
-
-    'name()'(overrides?: CallOverrides): Promise<[string]>;
-
-    nftAttachment(overrides?: CallOverrides): Promise<[string]>;
-
-    'nftAttachment()'(overrides?: CallOverrides): Promise<[string]>;
 
     /**
      * Revokes `role` from the calling account. Roles are often managed via {grantRole} and {revokeRole}: this function's purpose is to provide a mechanism for accounts to lose their privileges if they are compromised (such as when a trusted device is misplaced). If the calling account had been granted `role`, emits a {RoleRevoked} event. Requirements: - the caller must be `account`.
@@ -823,6 +666,22 @@ export interface Collection extends BaseContract {
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
+    /**
+     * Sets token's contract address. This token is used to deposit and withdraw on chain adapter's contract is deployed.
+     */
+    setERC20(
+      _currencyContract: string,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
+
+    /**
+     * Sets token's contract address. This token is used to deposit and withdraw on chain adapter's contract is deployed.
+     */
+    'setERC20(address)'(
+      _currencyContract: string,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
+
     setURI(
       newuri: string,
       overrides?: Overrides & { from?: string | Promise<string> }
@@ -834,30 +693,20 @@ export interface Collection extends BaseContract {
     ): Promise<ContractTransaction>;
 
     /**
-     * Configure the amounts and beneficiaries of royalties on primary and secondary transfers of this NFT.  Delegating to Freeport implementation.
+     * Supports interfaces of AccessControl, ERC1155, and ERC1155 MetadataURI.
      */
-    setupRoyaltyConfiguration(
-      primaryRoyaltyAccount: string,
-      primaryRoyaltyCut: BigNumberish,
-      primaryRoyaltyMinimum: BigNumberish,
-      secondaryRoyaltyAccount: string,
-      secondaryRoyaltyCut: BigNumberish,
-      secondaryRoyaltyMinimum: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>;
+    supportsInterface(
+      interfaceId: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<[boolean]>;
 
     /**
-     * Configure the amounts and beneficiaries of royalties on primary and secondary transfers of this NFT.  Delegating to Freeport implementation.
+     * Supports interfaces of AccessControl, ERC1155, and ERC1155 MetadataURI.
      */
-    'setupRoyaltyConfiguration(address,uint256,uint256,address,uint256,uint256)'(
-      primaryRoyaltyAccount: string,
-      primaryRoyaltyCut: BigNumberish,
-      primaryRoyaltyMinimum: BigNumberish,
-      secondaryRoyaltyAccount: string,
-      secondaryRoyaltyCut: BigNumberish,
-      secondaryRoyaltyMinimum: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>;
+    'supportsInterface(bytes4)'(
+      interfaceId: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<[boolean]>;
 
     /**
      * transferFrom performs a simple transfer, without calling the hooks  (no _beforeTokenTransfer and no onERC1155Received).
@@ -916,66 +765,102 @@ export interface Collection extends BaseContract {
       overrides?: CallOverrides
     ): Promise<[string]>;
 
+    /**
+     * Withdraw currency from internal to ERC20
+     */
+    withdraw(
+      amount: BigNumberish,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
+
+    /**
+     * Withdraw currency from internal to ERC20
+     */
+    'withdraw(uint256)'(
+      amount: BigNumberish,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
+
     initialize(
-      admin: string,
-      manager: string,
-      _name: string,
-      _uri: string,
-      __contractURI: string,
       _freeport: string,
-      _nftAttachment: string,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
-    'initialize(address,address,string,string,string,address,address)'(
-      admin: string,
-      manager: string,
-      _name: string,
-      _uri: string,
-      __contractURI: string,
+    'initialize(address)'(
       _freeport: string,
-      _nftAttachment: string,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
     /**
-     * See {IERC165-supportsInterface}.
+     * Create an offer to sell a type of NFTs for a price per unit. All the NFTs of this type owned by the caller will be for sale. To cancel, call again with a price of 0.
      */
-    supportsInterface(
-      interfaceId: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<[boolean]>;
+    makeOffer(
+      nftId: BigNumberish,
+      price: BigNumberish,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
 
     /**
-     * See {IERC165-supportsInterface}.
+     * Create an offer to sell a type of NFTs for a price per unit. All the NFTs of this type owned by the caller will be for sale. To cancel, call again with a price of 0.
      */
-    'supportsInterface(bytes4)'(
-      interfaceId: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<[boolean]>;
+    'makeOffer(uint256,uint256)'(
+      nftId: BigNumberish,
+      price: BigNumberish,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
 
-    isApprovedForAll(
-      account: string,
-      operator: string,
+    /**
+     * Return the price offered by the given seller for the given NFT type.
+     */
+    getOffer(
+      seller: string,
+      nftId: BigNumberish,
       overrides?: CallOverrides
-    ): Promise<[boolean]>;
+    ): Promise<[BigNumber]>;
 
-    'isApprovedForAll(address,address)'(
-      account: string,
-      operator: string,
+    /**
+     * Return the price offered by the given seller for the given NFT type.
+     */
+    'getOffer(address,uint256)'(
+      seller: string,
+      nftId: BigNumberish,
       overrides?: CallOverrides
-    ): Promise<[boolean]>;
+    ): Promise<[BigNumber]>;
+
+    /**
+     * Accept an offer, paying the price per unit for an amount of NFTs. The offer must have been created beforehand by makeOffer. The sender pays ERC20. The sender is not necessarily the same as buyer, see FiatGateway. The seller receives internal currency (equivalent to the ERC20 payment, see the function withdraw). The buyer receives the NFT. The parameter expectedPriceOrZero can be used to validate the price that the buyer expects to pay. This prevents a race condition with makeOffer or setExchangeRate. Pass 0 to disable this validation and accept any current price.
+     */
+    takeOffer(
+      buyer: string,
+      seller: string,
+      nftId: BigNumberish,
+      expectedPriceOrZero: BigNumberish,
+      amount: BigNumberish,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
+
+    /**
+     * Accept an offer, paying the price per unit for an amount of NFTs. The offer must have been created beforehand by makeOffer. The sender pays ERC20. The sender is not necessarily the same as buyer, see FiatGateway. The seller receives internal currency (equivalent to the ERC20 payment, see the function withdraw). The buyer receives the NFT. The parameter expectedPriceOrZero can be used to validate the price that the buyer expects to pay. This prevents a race condition with makeOffer or setExchangeRate. Pass 0 to disable this validation and accept any current price.
+     */
+    'takeOffer(address,address,uint256,uint256,uint256)'(
+      buyer: string,
+      seller: string,
+      nftId: BigNumberish,
+      expectedPriceOrZero: BigNumberish,
+      amount: BigNumberish,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
   };
 
   /**
-   * Collection manager role.  Used for configuring the amounts and beneficiaries of royalties on primary and secondary transfers of this NFT.
+   * The token ID that represents the internal currency for all payments in this contract.
    */
-  COLLECTION_MANAGER_ROLE(overrides?: CallOverrides): Promise<string>;
+  CURRENCY(overrides?: CallOverrides): Promise<BigNumber>;
 
   /**
-   * Collection manager role.  Used for configuring the amounts and beneficiaries of royalties on primary and secondary transfers of this NFT.
+   * The token ID that represents the internal currency for all payments in this contract.
    */
-  'COLLECTION_MANAGER_ROLE()'(overrides?: CallOverrides): Promise<string>;
+  'CURRENCY()'(overrides?: CallOverrides): Promise<BigNumber>;
 
   DEFAULT_ADMIN_ROLE(overrides?: CallOverrides): Promise<string>;
 
@@ -984,28 +869,6 @@ export interface Collection extends BaseContract {
   META_TX_FORWARDER(overrides?: CallOverrides): Promise<string>;
 
   'META_TX_FORWARDER()'(overrides?: CallOverrides): Promise<string>;
-
-  TRANSFER_OPERATOR(overrides?: CallOverrides): Promise<string>;
-
-  'TRANSFER_OPERATOR()'(overrides?: CallOverrides): Promise<string>;
-
-  /**
-   * Attach data `attachment` to the collection NFT with specific inner NFT id.
-   */
-  anonymAttachToNFT(
-    nftId: BigNumberish,
-    attachment: BytesLike,
-    overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>;
-
-  /**
-   * Attach data `attachment` to the collection NFT with specific inner NFT id.
-   */
-  'anonymAttachToNFT(uint256,bytes)'(
-    nftId: BigNumberish,
-    attachment: BytesLike,
-    overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>;
 
   /**
    * See {IERC1155-balanceOf}. Requirements: - `account` cannot be the zero address.
@@ -1043,9 +906,31 @@ export interface Collection extends BaseContract {
     overrides?: CallOverrides
   ): Promise<BigNumber[]>;
 
-  contractURI(overrides?: CallOverrides): Promise<string>;
+  /**
+   * The address of ERC-20 token's contract
+   */
+  currencyContract(overrides?: CallOverrides): Promise<string>;
 
-  'contractURI()'(overrides?: CallOverrides): Promise<string>;
+  /**
+   * The address of ERC-20 token's contract
+   */
+  'currencyContract()'(overrides?: CallOverrides): Promise<string>;
+
+  /**
+   * Deposit currency from ERC20 into the internal currency. This requires payer to approve deposit.
+   */
+  deposit(
+    amount: BigNumberish,
+    overrides?: Overrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
+
+  /**
+   * Deposit currency from ERC20 into the internal currency. This requires payer to approve deposit.
+   */
+  'deposit(uint256)'(
+    amount: BigNumberish,
+    overrides?: Overrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
 
   freeport(overrides?: CallOverrides): Promise<string>;
 
@@ -1079,64 +964,6 @@ export interface Collection extends BaseContract {
     role: BytesLike,
     overrides?: CallOverrides
   ): Promise<string>;
-
-  /**
-   * Return the current configuration of royalties for all NFTs of the collection.
-   */
-  getRoyalties(overrides?: CallOverrides): Promise<
-    [string, BigNumber, BigNumber, string, BigNumber, BigNumber] & {
-      primaryRoyaltyAccount: string;
-      primaryRoyaltyCut: BigNumber;
-      primaryRoyaltyMinimum: BigNumber;
-      secondaryRoyaltyAccount: string;
-      secondaryRoyaltyCut: BigNumber;
-      secondaryRoyaltyMinimum: BigNumber;
-    }
-  >;
-
-  /**
-   * Return the current configuration of royalties for all NFTs of the collection.
-   */
-  'getRoyalties()'(overrides?: CallOverrides): Promise<
-    [string, BigNumber, BigNumber, string, BigNumber, BigNumber] & {
-      primaryRoyaltyAccount: string;
-      primaryRoyaltyCut: BigNumber;
-      primaryRoyaltyMinimum: BigNumber;
-      secondaryRoyaltyAccount: string;
-      secondaryRoyaltyCut: BigNumber;
-      secondaryRoyaltyMinimum: BigNumber;
-    }
-  >;
-
-  /**
-   * Return the amount of royalties earned by a beneficiary on each primary and secondary transfer of an NFT. This function supports Joint Accounts. If royalties are paid to a JA and beneficiary is an owner of the JA, the shares of the royalties for this owner are returned.
-   */
-  getRoyaltiesForBeneficiary(
-    beneficiary: string,
-    overrides?: CallOverrides
-  ): Promise<
-    [BigNumber, BigNumber, BigNumber, BigNumber] & {
-      primaryCut: BigNumber;
-      primaryMinimum: BigNumber;
-      secondaryCut: BigNumber;
-      secondaryMinimum: BigNumber;
-    }
-  >;
-
-  /**
-   * Return the amount of royalties earned by a beneficiary on each primary and secondary transfer of an NFT. This function supports Joint Accounts. If royalties are paid to a JA and beneficiary is an owner of the JA, the shares of the royalties for this owner are returned.
-   */
-  'getRoyaltiesForBeneficiary(address)'(
-    beneficiary: string,
-    overrides?: CallOverrides
-  ): Promise<
-    [BigNumber, BigNumber, BigNumber, BigNumber] & {
-      primaryCut: BigNumber;
-      primaryMinimum: BigNumber;
-      secondaryCut: BigNumber;
-      secondaryMinimum: BigNumber;
-    }
-  >;
 
   /**
    * Grants `role` to `account`. If `account` had not been already granted `role`, emits a {RoleGranted} event. Requirements: - the caller must have ``role``'s admin role.
@@ -1175,14 +1002,22 @@ export interface Collection extends BaseContract {
   ): Promise<boolean>;
 
   /**
-   * A counter of NFT types. This is used to generate unique NFT IDs.
+   * See {IERC1155-isApprovedForAll}.
    */
-  idCounter(overrides?: CallOverrides): Promise<number>;
+  isApprovedForAll(
+    account: string,
+    operator: string,
+    overrides?: CallOverrides
+  ): Promise<boolean>;
 
   /**
-   * A counter of NFT types. This is used to generate unique NFT IDs.
+   * See {IERC1155-isApprovedForAll}.
    */
-  'idCounter()'(overrides?: CallOverrides): Promise<number>;
+  'isApprovedForAll(address,address)'(
+    account: string,
+    operator: string,
+    overrides?: CallOverrides
+  ): Promise<boolean>;
 
   isTrustedForwarder(
     forwarder: string,
@@ -1193,70 +1028,6 @@ export interface Collection extends BaseContract {
     forwarder: string,
     overrides?: CallOverrides
   ): Promise<boolean>;
-
-  /**
-   * Issue a supply of NFTs of a new type, and return its ID. No more NFT of this type can be issued again. The caller will be recorded as the issuer and it will initially own the entire supply.
-   */
-  issue(
-    supply: BigNumberish,
-    data: BytesLike,
-    overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>;
-
-  /**
-   * Issue a supply of NFTs of a new type, and return its ID. No more NFT of this type can be issued again. The caller will be recorded as the issuer and it will initially own the entire supply.
-   */
-  'issue(uint64,bytes)'(
-    supply: BigNumberish,
-    data: BytesLike,
-    overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>;
-
-  /**
-   * Issue a supply of NFTs of a new type on behalf of minter, and return its ID. No more NFT of this type can be issued again. The caller will be recorded as the issuer and it will initially own the entire supply. Only for collection manager role.
-   */
-  issueOnBehalfOf(
-    minter: string,
-    supply: BigNumberish,
-    data: BytesLike,
-    overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>;
-
-  /**
-   * Issue a supply of NFTs of a new type on behalf of minter, and return its ID. No more NFT of this type can be issued again. The caller will be recorded as the issuer and it will initially own the entire supply. Only for collection manager role.
-   */
-  'issueOnBehalfOf(address,uint64,bytes)'(
-    minter: string,
-    supply: BigNumberish,
-    data: BytesLike,
-    overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>;
-
-  /**
-   * Attach data `attachment` to the collection NFT with specific inner NFT id, as the minter of this NFT type. This only works for NFT IDs in the Freeport format.
-   */
-  minterAttachToNFT(
-    nftId: BigNumberish,
-    attachment: BytesLike,
-    overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>;
-
-  /**
-   * Attach data `attachment` to the collection NFT with specific inner NFT id, as the minter of this NFT type. This only works for NFT IDs in the Freeport format.
-   */
-  'minterAttachToNFT(uint256,bytes)'(
-    nftId: BigNumberish,
-    attachment: BytesLike,
-    overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>;
-
-  name(overrides?: CallOverrides): Promise<string>;
-
-  'name()'(overrides?: CallOverrides): Promise<string>;
-
-  nftAttachment(overrides?: CallOverrides): Promise<string>;
-
-  'nftAttachment()'(overrides?: CallOverrides): Promise<string>;
 
   /**
    * Revokes `role` from the calling account. Roles are often managed via {grantRole} and {revokeRole}: this function's purpose is to provide a mechanism for accounts to lose their privileges if they are compromised (such as when a trusted device is misplaced). If the calling account had been granted `role`, emits a {RoleRevoked} event. Requirements: - the caller must be `account`.
@@ -1360,6 +1131,22 @@ export interface Collection extends BaseContract {
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
+  /**
+   * Sets token's contract address. This token is used to deposit and withdraw on chain adapter's contract is deployed.
+   */
+  setERC20(
+    _currencyContract: string,
+    overrides?: Overrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
+
+  /**
+   * Sets token's contract address. This token is used to deposit and withdraw on chain adapter's contract is deployed.
+   */
+  'setERC20(address)'(
+    _currencyContract: string,
+    overrides?: Overrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
+
   setURI(
     newuri: string,
     overrides?: Overrides & { from?: string | Promise<string> }
@@ -1371,30 +1158,20 @@ export interface Collection extends BaseContract {
   ): Promise<ContractTransaction>;
 
   /**
-   * Configure the amounts and beneficiaries of royalties on primary and secondary transfers of this NFT.  Delegating to Freeport implementation.
+   * Supports interfaces of AccessControl, ERC1155, and ERC1155 MetadataURI.
    */
-  setupRoyaltyConfiguration(
-    primaryRoyaltyAccount: string,
-    primaryRoyaltyCut: BigNumberish,
-    primaryRoyaltyMinimum: BigNumberish,
-    secondaryRoyaltyAccount: string,
-    secondaryRoyaltyCut: BigNumberish,
-    secondaryRoyaltyMinimum: BigNumberish,
-    overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>;
+  supportsInterface(
+    interfaceId: BytesLike,
+    overrides?: CallOverrides
+  ): Promise<boolean>;
 
   /**
-   * Configure the amounts and beneficiaries of royalties on primary and secondary transfers of this NFT.  Delegating to Freeport implementation.
+   * Supports interfaces of AccessControl, ERC1155, and ERC1155 MetadataURI.
    */
-  'setupRoyaltyConfiguration(address,uint256,uint256,address,uint256,uint256)'(
-    primaryRoyaltyAccount: string,
-    primaryRoyaltyCut: BigNumberish,
-    primaryRoyaltyMinimum: BigNumberish,
-    secondaryRoyaltyAccount: string,
-    secondaryRoyaltyCut: BigNumberish,
-    secondaryRoyaltyMinimum: BigNumberish,
-    overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>;
+  'supportsInterface(bytes4)'(
+    interfaceId: BytesLike,
+    overrides?: CallOverrides
+  ): Promise<boolean>;
 
   /**
    * transferFrom performs a simple transfer, without calling the hooks  (no _beforeTokenTransfer and no onERC1155Received).
@@ -1453,66 +1230,102 @@ export interface Collection extends BaseContract {
     overrides?: CallOverrides
   ): Promise<string>;
 
+  /**
+   * Withdraw currency from internal to ERC20
+   */
+  withdraw(
+    amount: BigNumberish,
+    overrides?: Overrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
+
+  /**
+   * Withdraw currency from internal to ERC20
+   */
+  'withdraw(uint256)'(
+    amount: BigNumberish,
+    overrides?: Overrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
+
   initialize(
-    admin: string,
-    manager: string,
-    _name: string,
-    _uri: string,
-    __contractURI: string,
     _freeport: string,
-    _nftAttachment: string,
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
-  'initialize(address,address,string,string,string,address,address)'(
-    admin: string,
-    manager: string,
-    _name: string,
-    _uri: string,
-    __contractURI: string,
+  'initialize(address)'(
     _freeport: string,
-    _nftAttachment: string,
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
   /**
-   * See {IERC165-supportsInterface}.
+   * Create an offer to sell a type of NFTs for a price per unit. All the NFTs of this type owned by the caller will be for sale. To cancel, call again with a price of 0.
    */
-  supportsInterface(
-    interfaceId: BytesLike,
-    overrides?: CallOverrides
-  ): Promise<boolean>;
+  makeOffer(
+    nftId: BigNumberish,
+    price: BigNumberish,
+    overrides?: Overrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
 
   /**
-   * See {IERC165-supportsInterface}.
+   * Create an offer to sell a type of NFTs for a price per unit. All the NFTs of this type owned by the caller will be for sale. To cancel, call again with a price of 0.
    */
-  'supportsInterface(bytes4)'(
-    interfaceId: BytesLike,
-    overrides?: CallOverrides
-  ): Promise<boolean>;
+  'makeOffer(uint256,uint256)'(
+    nftId: BigNumberish,
+    price: BigNumberish,
+    overrides?: Overrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
 
-  isApprovedForAll(
-    account: string,
-    operator: string,
+  /**
+   * Return the price offered by the given seller for the given NFT type.
+   */
+  getOffer(
+    seller: string,
+    nftId: BigNumberish,
     overrides?: CallOverrides
-  ): Promise<boolean>;
+  ): Promise<BigNumber>;
 
-  'isApprovedForAll(address,address)'(
-    account: string,
-    operator: string,
+  /**
+   * Return the price offered by the given seller for the given NFT type.
+   */
+  'getOffer(address,uint256)'(
+    seller: string,
+    nftId: BigNumberish,
     overrides?: CallOverrides
-  ): Promise<boolean>;
+  ): Promise<BigNumber>;
+
+  /**
+   * Accept an offer, paying the price per unit for an amount of NFTs. The offer must have been created beforehand by makeOffer. The sender pays ERC20. The sender is not necessarily the same as buyer, see FiatGateway. The seller receives internal currency (equivalent to the ERC20 payment, see the function withdraw). The buyer receives the NFT. The parameter expectedPriceOrZero can be used to validate the price that the buyer expects to pay. This prevents a race condition with makeOffer or setExchangeRate. Pass 0 to disable this validation and accept any current price.
+   */
+  takeOffer(
+    buyer: string,
+    seller: string,
+    nftId: BigNumberish,
+    expectedPriceOrZero: BigNumberish,
+    amount: BigNumberish,
+    overrides?: Overrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
+
+  /**
+   * Accept an offer, paying the price per unit for an amount of NFTs. The offer must have been created beforehand by makeOffer. The sender pays ERC20. The sender is not necessarily the same as buyer, see FiatGateway. The seller receives internal currency (equivalent to the ERC20 payment, see the function withdraw). The buyer receives the NFT. The parameter expectedPriceOrZero can be used to validate the price that the buyer expects to pay. This prevents a race condition with makeOffer or setExchangeRate. Pass 0 to disable this validation and accept any current price.
+   */
+  'takeOffer(address,address,uint256,uint256,uint256)'(
+    buyer: string,
+    seller: string,
+    nftId: BigNumberish,
+    expectedPriceOrZero: BigNumberish,
+    amount: BigNumberish,
+    overrides?: Overrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
 
   callStatic: {
     /**
-     * Collection manager role.  Used for configuring the amounts and beneficiaries of royalties on primary and secondary transfers of this NFT.
+     * The token ID that represents the internal currency for all payments in this contract.
      */
-    COLLECTION_MANAGER_ROLE(overrides?: CallOverrides): Promise<string>;
+    CURRENCY(overrides?: CallOverrides): Promise<BigNumber>;
 
     /**
-     * Collection manager role.  Used for configuring the amounts and beneficiaries of royalties on primary and secondary transfers of this NFT.
+     * The token ID that represents the internal currency for all payments in this contract.
      */
-    'COLLECTION_MANAGER_ROLE()'(overrides?: CallOverrides): Promise<string>;
+    'CURRENCY()'(overrides?: CallOverrides): Promise<BigNumber>;
 
     DEFAULT_ADMIN_ROLE(overrides?: CallOverrides): Promise<string>;
 
@@ -1521,28 +1334,6 @@ export interface Collection extends BaseContract {
     META_TX_FORWARDER(overrides?: CallOverrides): Promise<string>;
 
     'META_TX_FORWARDER()'(overrides?: CallOverrides): Promise<string>;
-
-    TRANSFER_OPERATOR(overrides?: CallOverrides): Promise<string>;
-
-    'TRANSFER_OPERATOR()'(overrides?: CallOverrides): Promise<string>;
-
-    /**
-     * Attach data `attachment` to the collection NFT with specific inner NFT id.
-     */
-    anonymAttachToNFT(
-      nftId: BigNumberish,
-      attachment: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<void>;
-
-    /**
-     * Attach data `attachment` to the collection NFT with specific inner NFT id.
-     */
-    'anonymAttachToNFT(uint256,bytes)'(
-      nftId: BigNumberish,
-      attachment: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<void>;
 
     /**
      * See {IERC1155-balanceOf}. Requirements: - `account` cannot be the zero address.
@@ -1580,9 +1371,28 @@ export interface Collection extends BaseContract {
       overrides?: CallOverrides
     ): Promise<BigNumber[]>;
 
-    contractURI(overrides?: CallOverrides): Promise<string>;
+    /**
+     * The address of ERC-20 token's contract
+     */
+    currencyContract(overrides?: CallOverrides): Promise<string>;
 
-    'contractURI()'(overrides?: CallOverrides): Promise<string>;
+    /**
+     * The address of ERC-20 token's contract
+     */
+    'currencyContract()'(overrides?: CallOverrides): Promise<string>;
+
+    /**
+     * Deposit currency from ERC20 into the internal currency. This requires payer to approve deposit.
+     */
+    deposit(amount: BigNumberish, overrides?: CallOverrides): Promise<void>;
+
+    /**
+     * Deposit currency from ERC20 into the internal currency. This requires payer to approve deposit.
+     */
+    'deposit(uint256)'(
+      amount: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<void>;
 
     freeport(overrides?: CallOverrides): Promise<string>;
 
@@ -1616,64 +1426,6 @@ export interface Collection extends BaseContract {
       role: BytesLike,
       overrides?: CallOverrides
     ): Promise<string>;
-
-    /**
-     * Return the current configuration of royalties for all NFTs of the collection.
-     */
-    getRoyalties(overrides?: CallOverrides): Promise<
-      [string, BigNumber, BigNumber, string, BigNumber, BigNumber] & {
-        primaryRoyaltyAccount: string;
-        primaryRoyaltyCut: BigNumber;
-        primaryRoyaltyMinimum: BigNumber;
-        secondaryRoyaltyAccount: string;
-        secondaryRoyaltyCut: BigNumber;
-        secondaryRoyaltyMinimum: BigNumber;
-      }
-    >;
-
-    /**
-     * Return the current configuration of royalties for all NFTs of the collection.
-     */
-    'getRoyalties()'(overrides?: CallOverrides): Promise<
-      [string, BigNumber, BigNumber, string, BigNumber, BigNumber] & {
-        primaryRoyaltyAccount: string;
-        primaryRoyaltyCut: BigNumber;
-        primaryRoyaltyMinimum: BigNumber;
-        secondaryRoyaltyAccount: string;
-        secondaryRoyaltyCut: BigNumber;
-        secondaryRoyaltyMinimum: BigNumber;
-      }
-    >;
-
-    /**
-     * Return the amount of royalties earned by a beneficiary on each primary and secondary transfer of an NFT. This function supports Joint Accounts. If royalties are paid to a JA and beneficiary is an owner of the JA, the shares of the royalties for this owner are returned.
-     */
-    getRoyaltiesForBeneficiary(
-      beneficiary: string,
-      overrides?: CallOverrides
-    ): Promise<
-      [BigNumber, BigNumber, BigNumber, BigNumber] & {
-        primaryCut: BigNumber;
-        primaryMinimum: BigNumber;
-        secondaryCut: BigNumber;
-        secondaryMinimum: BigNumber;
-      }
-    >;
-
-    /**
-     * Return the amount of royalties earned by a beneficiary on each primary and secondary transfer of an NFT. This function supports Joint Accounts. If royalties are paid to a JA and beneficiary is an owner of the JA, the shares of the royalties for this owner are returned.
-     */
-    'getRoyaltiesForBeneficiary(address)'(
-      beneficiary: string,
-      overrides?: CallOverrides
-    ): Promise<
-      [BigNumber, BigNumber, BigNumber, BigNumber] & {
-        primaryCut: BigNumber;
-        primaryMinimum: BigNumber;
-        secondaryCut: BigNumber;
-        secondaryMinimum: BigNumber;
-      }
-    >;
 
     /**
      * Grants `role` to `account`. If `account` had not been already granted `role`, emits a {RoleGranted} event. Requirements: - the caller must have ``role``'s admin role.
@@ -1712,14 +1464,22 @@ export interface Collection extends BaseContract {
     ): Promise<boolean>;
 
     /**
-     * A counter of NFT types. This is used to generate unique NFT IDs.
+     * See {IERC1155-isApprovedForAll}.
      */
-    idCounter(overrides?: CallOverrides): Promise<number>;
+    isApprovedForAll(
+      account: string,
+      operator: string,
+      overrides?: CallOverrides
+    ): Promise<boolean>;
 
     /**
-     * A counter of NFT types. This is used to generate unique NFT IDs.
+     * See {IERC1155-isApprovedForAll}.
      */
-    'idCounter()'(overrides?: CallOverrides): Promise<number>;
+    'isApprovedForAll(address,address)'(
+      account: string,
+      operator: string,
+      overrides?: CallOverrides
+    ): Promise<boolean>;
 
     isTrustedForwarder(
       forwarder: string,
@@ -1730,70 +1490,6 @@ export interface Collection extends BaseContract {
       forwarder: string,
       overrides?: CallOverrides
     ): Promise<boolean>;
-
-    /**
-     * Issue a supply of NFTs of a new type, and return its ID. No more NFT of this type can be issued again. The caller will be recorded as the issuer and it will initially own the entire supply.
-     */
-    issue(
-      supply: BigNumberish,
-      data: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
-    /**
-     * Issue a supply of NFTs of a new type, and return its ID. No more NFT of this type can be issued again. The caller will be recorded as the issuer and it will initially own the entire supply.
-     */
-    'issue(uint64,bytes)'(
-      supply: BigNumberish,
-      data: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
-    /**
-     * Issue a supply of NFTs of a new type on behalf of minter, and return its ID. No more NFT of this type can be issued again. The caller will be recorded as the issuer and it will initially own the entire supply. Only for collection manager role.
-     */
-    issueOnBehalfOf(
-      minter: string,
-      supply: BigNumberish,
-      data: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
-    /**
-     * Issue a supply of NFTs of a new type on behalf of minter, and return its ID. No more NFT of this type can be issued again. The caller will be recorded as the issuer and it will initially own the entire supply. Only for collection manager role.
-     */
-    'issueOnBehalfOf(address,uint64,bytes)'(
-      minter: string,
-      supply: BigNumberish,
-      data: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
-    /**
-     * Attach data `attachment` to the collection NFT with specific inner NFT id, as the minter of this NFT type. This only works for NFT IDs in the Freeport format.
-     */
-    minterAttachToNFT(
-      nftId: BigNumberish,
-      attachment: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<void>;
-
-    /**
-     * Attach data `attachment` to the collection NFT with specific inner NFT id, as the minter of this NFT type. This only works for NFT IDs in the Freeport format.
-     */
-    'minterAttachToNFT(uint256,bytes)'(
-      nftId: BigNumberish,
-      attachment: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<void>;
-
-    name(overrides?: CallOverrides): Promise<string>;
-
-    'name()'(overrides?: CallOverrides): Promise<string>;
-
-    nftAttachment(overrides?: CallOverrides): Promise<string>;
-
-    'nftAttachment()'(overrides?: CallOverrides): Promise<string>;
 
     /**
      * Revokes `role` from the calling account. Roles are often managed via {grantRole} and {revokeRole}: this function's purpose is to provide a mechanism for accounts to lose their privileges if they are compromised (such as when a trusted device is misplaced). If the calling account had been granted `role`, emits a {RoleRevoked} event. Requirements: - the caller must be `account`.
@@ -1897,35 +1593,41 @@ export interface Collection extends BaseContract {
       overrides?: CallOverrides
     ): Promise<void>;
 
+    /**
+     * Sets token's contract address. This token is used to deposit and withdraw on chain adapter's contract is deployed.
+     */
+    setERC20(
+      _currencyContract: string,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    /**
+     * Sets token's contract address. This token is used to deposit and withdraw on chain adapter's contract is deployed.
+     */
+    'setERC20(address)'(
+      _currencyContract: string,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
     setURI(newuri: string, overrides?: CallOverrides): Promise<void>;
 
     'setURI(string)'(newuri: string, overrides?: CallOverrides): Promise<void>;
 
     /**
-     * Configure the amounts and beneficiaries of royalties on primary and secondary transfers of this NFT.  Delegating to Freeport implementation.
+     * Supports interfaces of AccessControl, ERC1155, and ERC1155 MetadataURI.
      */
-    setupRoyaltyConfiguration(
-      primaryRoyaltyAccount: string,
-      primaryRoyaltyCut: BigNumberish,
-      primaryRoyaltyMinimum: BigNumberish,
-      secondaryRoyaltyAccount: string,
-      secondaryRoyaltyCut: BigNumberish,
-      secondaryRoyaltyMinimum: BigNumberish,
+    supportsInterface(
+      interfaceId: BytesLike,
       overrides?: CallOverrides
-    ): Promise<void>;
+    ): Promise<boolean>;
 
     /**
-     * Configure the amounts and beneficiaries of royalties on primary and secondary transfers of this NFT.  Delegating to Freeport implementation.
+     * Supports interfaces of AccessControl, ERC1155, and ERC1155 MetadataURI.
      */
-    'setupRoyaltyConfiguration(address,uint256,uint256,address,uint256,uint256)'(
-      primaryRoyaltyAccount: string,
-      primaryRoyaltyCut: BigNumberish,
-      primaryRoyaltyMinimum: BigNumberish,
-      secondaryRoyaltyAccount: string,
-      secondaryRoyaltyCut: BigNumberish,
-      secondaryRoyaltyMinimum: BigNumberish,
+    'supportsInterface(bytes4)'(
+      interfaceId: BytesLike,
       overrides?: CallOverrides
-    ): Promise<void>;
+    ): Promise<boolean>;
 
     /**
      * transferFrom performs a simple transfer, without calling the hooks  (no _beforeTokenTransfer and no onERC1155Received).
@@ -1984,55 +1686,85 @@ export interface Collection extends BaseContract {
       overrides?: CallOverrides
     ): Promise<string>;
 
-    initialize(
-      admin: string,
-      manager: string,
-      _name: string,
-      _uri: string,
-      __contractURI: string,
-      _freeport: string,
-      _nftAttachment: string,
+    /**
+     * Withdraw currency from internal to ERC20
+     */
+    withdraw(amount: BigNumberish, overrides?: CallOverrides): Promise<void>;
+
+    /**
+     * Withdraw currency from internal to ERC20
+     */
+    'withdraw(uint256)'(
+      amount: BigNumberish,
       overrides?: CallOverrides
     ): Promise<void>;
 
-    'initialize(address,address,string,string,string,address,address)'(
-      admin: string,
-      manager: string,
-      _name: string,
-      _uri: string,
-      __contractURI: string,
+    initialize(_freeport: string, overrides?: CallOverrides): Promise<void>;
+
+    'initialize(address)'(
       _freeport: string,
-      _nftAttachment: string,
       overrides?: CallOverrides
     ): Promise<void>;
 
     /**
-     * See {IERC165-supportsInterface}.
+     * Create an offer to sell a type of NFTs for a price per unit. All the NFTs of this type owned by the caller will be for sale. To cancel, call again with a price of 0.
      */
-    supportsInterface(
-      interfaceId: BytesLike,
+    makeOffer(
+      nftId: BigNumberish,
+      price: BigNumberish,
       overrides?: CallOverrides
-    ): Promise<boolean>;
+    ): Promise<void>;
 
     /**
-     * See {IERC165-supportsInterface}.
+     * Create an offer to sell a type of NFTs for a price per unit. All the NFTs of this type owned by the caller will be for sale. To cancel, call again with a price of 0.
      */
-    'supportsInterface(bytes4)'(
-      interfaceId: BytesLike,
+    'makeOffer(uint256,uint256)'(
+      nftId: BigNumberish,
+      price: BigNumberish,
       overrides?: CallOverrides
-    ): Promise<boolean>;
+    ): Promise<void>;
 
-    isApprovedForAll(
-      account: string,
-      operator: string,
+    /**
+     * Return the price offered by the given seller for the given NFT type.
+     */
+    getOffer(
+      seller: string,
+      nftId: BigNumberish,
       overrides?: CallOverrides
-    ): Promise<boolean>;
+    ): Promise<BigNumber>;
 
-    'isApprovedForAll(address,address)'(
-      account: string,
-      operator: string,
+    /**
+     * Return the price offered by the given seller for the given NFT type.
+     */
+    'getOffer(address,uint256)'(
+      seller: string,
+      nftId: BigNumberish,
       overrides?: CallOverrides
-    ): Promise<boolean>;
+    ): Promise<BigNumber>;
+
+    /**
+     * Accept an offer, paying the price per unit for an amount of NFTs. The offer must have been created beforehand by makeOffer. The sender pays ERC20. The sender is not necessarily the same as buyer, see FiatGateway. The seller receives internal currency (equivalent to the ERC20 payment, see the function withdraw). The buyer receives the NFT. The parameter expectedPriceOrZero can be used to validate the price that the buyer expects to pay. This prevents a race condition with makeOffer or setExchangeRate. Pass 0 to disable this validation and accept any current price.
+     */
+    takeOffer(
+      buyer: string,
+      seller: string,
+      nftId: BigNumberish,
+      expectedPriceOrZero: BigNumberish,
+      amount: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    /**
+     * Accept an offer, paying the price per unit for an amount of NFTs. The offer must have been created beforehand by makeOffer. The sender pays ERC20. The sender is not necessarily the same as buyer, see FiatGateway. The seller receives internal currency (equivalent to the ERC20 payment, see the function withdraw). The buyer receives the NFT. The parameter expectedPriceOrZero can be used to validate the price that the buyer expects to pay. This prevents a race condition with makeOffer or setExchangeRate. Pass 0 to disable this validation and accept any current price.
+     */
+    'takeOffer(address,address,uint256,uint256,uint256)'(
+      buyer: string,
+      seller: string,
+      nftId: BigNumberish,
+      expectedPriceOrZero: BigNumberish,
+      amount: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<void>;
   };
 
   filters: {
@@ -2060,6 +1792,17 @@ export interface Collection extends BaseContract {
       beacon?: string | null
     ): BeaconUpgradedEventFilter;
     BeaconUpgraded(beacon?: string | null): BeaconUpgradedEventFilter;
+
+    'MakeOffer(address,uint256,uint256)'(
+      seller?: string | null,
+      nftId?: BigNumberish | null,
+      price?: null
+    ): MakeOfferEventFilter;
+    MakeOffer(
+      seller?: string | null,
+      nftId?: BigNumberish | null,
+      price?: null
+    ): MakeOfferEventFilter;
 
     'RoleAdminChanged(bytes32,bytes32,bytes32)'(
       role?: BytesLike | null,
@@ -2093,6 +1836,21 @@ export interface Collection extends BaseContract {
       account?: string | null,
       sender?: string | null
     ): RoleRevokedEventFilter;
+
+    'TakeOffer(address,address,uint256,uint256,uint256)'(
+      buyer?: string | null,
+      seller?: string | null,
+      nftId?: BigNumberish | null,
+      price?: null,
+      amount?: null
+    ): TakeOfferEventFilter;
+    TakeOffer(
+      buyer?: string | null,
+      seller?: string | null,
+      nftId?: BigNumberish | null,
+      price?: null,
+      amount?: null
+    ): TakeOfferEventFilter;
 
     'TransferBatch(address,address,address,uint256[],uint256[])'(
       operator?: string | null,
@@ -2136,14 +1894,14 @@ export interface Collection extends BaseContract {
 
   estimateGas: {
     /**
-     * Collection manager role.  Used for configuring the amounts and beneficiaries of royalties on primary and secondary transfers of this NFT.
+     * The token ID that represents the internal currency for all payments in this contract.
      */
-    COLLECTION_MANAGER_ROLE(overrides?: CallOverrides): Promise<BigNumber>;
+    CURRENCY(overrides?: CallOverrides): Promise<BigNumber>;
 
     /**
-     * Collection manager role.  Used for configuring the amounts and beneficiaries of royalties on primary and secondary transfers of this NFT.
+     * The token ID that represents the internal currency for all payments in this contract.
      */
-    'COLLECTION_MANAGER_ROLE()'(overrides?: CallOverrides): Promise<BigNumber>;
+    'CURRENCY()'(overrides?: CallOverrides): Promise<BigNumber>;
 
     DEFAULT_ADMIN_ROLE(overrides?: CallOverrides): Promise<BigNumber>;
 
@@ -2152,28 +1910,6 @@ export interface Collection extends BaseContract {
     META_TX_FORWARDER(overrides?: CallOverrides): Promise<BigNumber>;
 
     'META_TX_FORWARDER()'(overrides?: CallOverrides): Promise<BigNumber>;
-
-    TRANSFER_OPERATOR(overrides?: CallOverrides): Promise<BigNumber>;
-
-    'TRANSFER_OPERATOR()'(overrides?: CallOverrides): Promise<BigNumber>;
-
-    /**
-     * Attach data `attachment` to the collection NFT with specific inner NFT id.
-     */
-    anonymAttachToNFT(
-      nftId: BigNumberish,
-      attachment: BytesLike,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>;
-
-    /**
-     * Attach data `attachment` to the collection NFT with specific inner NFT id.
-     */
-    'anonymAttachToNFT(uint256,bytes)'(
-      nftId: BigNumberish,
-      attachment: BytesLike,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>;
 
     /**
      * See {IERC1155-balanceOf}. Requirements: - `account` cannot be the zero address.
@@ -2211,9 +1947,31 @@ export interface Collection extends BaseContract {
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
-    contractURI(overrides?: CallOverrides): Promise<BigNumber>;
+    /**
+     * The address of ERC-20 token's contract
+     */
+    currencyContract(overrides?: CallOverrides): Promise<BigNumber>;
 
-    'contractURI()'(overrides?: CallOverrides): Promise<BigNumber>;
+    /**
+     * The address of ERC-20 token's contract
+     */
+    'currencyContract()'(overrides?: CallOverrides): Promise<BigNumber>;
+
+    /**
+     * Deposit currency from ERC20 into the internal currency. This requires payer to approve deposit.
+     */
+    deposit(
+      amount: BigNumberish,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<BigNumber>;
+
+    /**
+     * Deposit currency from ERC20 into the internal currency. This requires payer to approve deposit.
+     */
+    'deposit(uint256)'(
+      amount: BigNumberish,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<BigNumber>;
 
     freeport(overrides?: CallOverrides): Promise<BigNumber>;
 
@@ -2248,32 +2006,6 @@ export interface Collection extends BaseContract {
      */
     'getRoleAdmin(bytes32)'(
       role: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
-    /**
-     * Return the current configuration of royalties for all NFTs of the collection.
-     */
-    getRoyalties(overrides?: CallOverrides): Promise<BigNumber>;
-
-    /**
-     * Return the current configuration of royalties for all NFTs of the collection.
-     */
-    'getRoyalties()'(overrides?: CallOverrides): Promise<BigNumber>;
-
-    /**
-     * Return the amount of royalties earned by a beneficiary on each primary and secondary transfer of an NFT. This function supports Joint Accounts. If royalties are paid to a JA and beneficiary is an owner of the JA, the shares of the royalties for this owner are returned.
-     */
-    getRoyaltiesForBeneficiary(
-      beneficiary: string,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
-    /**
-     * Return the amount of royalties earned by a beneficiary on each primary and secondary transfer of an NFT. This function supports Joint Accounts. If royalties are paid to a JA and beneficiary is an owner of the JA, the shares of the royalties for this owner are returned.
-     */
-    'getRoyaltiesForBeneficiary(address)'(
-      beneficiary: string,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
@@ -2314,14 +2046,22 @@ export interface Collection extends BaseContract {
     ): Promise<BigNumber>;
 
     /**
-     * A counter of NFT types. This is used to generate unique NFT IDs.
+     * See {IERC1155-isApprovedForAll}.
      */
-    idCounter(overrides?: CallOverrides): Promise<BigNumber>;
+    isApprovedForAll(
+      account: string,
+      operator: string,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
 
     /**
-     * A counter of NFT types. This is used to generate unique NFT IDs.
+     * See {IERC1155-isApprovedForAll}.
      */
-    'idCounter()'(overrides?: CallOverrides): Promise<BigNumber>;
+    'isApprovedForAll(address,address)'(
+      account: string,
+      operator: string,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
 
     isTrustedForwarder(
       forwarder: string,
@@ -2332,70 +2072,6 @@ export interface Collection extends BaseContract {
       forwarder: string,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
-
-    /**
-     * Issue a supply of NFTs of a new type, and return its ID. No more NFT of this type can be issued again. The caller will be recorded as the issuer and it will initially own the entire supply.
-     */
-    issue(
-      supply: BigNumberish,
-      data: BytesLike,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>;
-
-    /**
-     * Issue a supply of NFTs of a new type, and return its ID. No more NFT of this type can be issued again. The caller will be recorded as the issuer and it will initially own the entire supply.
-     */
-    'issue(uint64,bytes)'(
-      supply: BigNumberish,
-      data: BytesLike,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>;
-
-    /**
-     * Issue a supply of NFTs of a new type on behalf of minter, and return its ID. No more NFT of this type can be issued again. The caller will be recorded as the issuer and it will initially own the entire supply. Only for collection manager role.
-     */
-    issueOnBehalfOf(
-      minter: string,
-      supply: BigNumberish,
-      data: BytesLike,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>;
-
-    /**
-     * Issue a supply of NFTs of a new type on behalf of minter, and return its ID. No more NFT of this type can be issued again. The caller will be recorded as the issuer and it will initially own the entire supply. Only for collection manager role.
-     */
-    'issueOnBehalfOf(address,uint64,bytes)'(
-      minter: string,
-      supply: BigNumberish,
-      data: BytesLike,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>;
-
-    /**
-     * Attach data `attachment` to the collection NFT with specific inner NFT id, as the minter of this NFT type. This only works for NFT IDs in the Freeport format.
-     */
-    minterAttachToNFT(
-      nftId: BigNumberish,
-      attachment: BytesLike,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>;
-
-    /**
-     * Attach data `attachment` to the collection NFT with specific inner NFT id, as the minter of this NFT type. This only works for NFT IDs in the Freeport format.
-     */
-    'minterAttachToNFT(uint256,bytes)'(
-      nftId: BigNumberish,
-      attachment: BytesLike,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>;
-
-    name(overrides?: CallOverrides): Promise<BigNumber>;
-
-    'name()'(overrides?: CallOverrides): Promise<BigNumber>;
-
-    nftAttachment(overrides?: CallOverrides): Promise<BigNumber>;
-
-    'nftAttachment()'(overrides?: CallOverrides): Promise<BigNumber>;
 
     /**
      * Revokes `role` from the calling account. Roles are often managed via {grantRole} and {revokeRole}: this function's purpose is to provide a mechanism for accounts to lose their privileges if they are compromised (such as when a trusted device is misplaced). If the calling account had been granted `role`, emits a {RoleRevoked} event. Requirements: - the caller must be `account`.
@@ -2499,6 +2175,22 @@ export interface Collection extends BaseContract {
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
+    /**
+     * Sets token's contract address. This token is used to deposit and withdraw on chain adapter's contract is deployed.
+     */
+    setERC20(
+      _currencyContract: string,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<BigNumber>;
+
+    /**
+     * Sets token's contract address. This token is used to deposit and withdraw on chain adapter's contract is deployed.
+     */
+    'setERC20(address)'(
+      _currencyContract: string,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<BigNumber>;
+
     setURI(
       newuri: string,
       overrides?: Overrides & { from?: string | Promise<string> }
@@ -2510,29 +2202,19 @@ export interface Collection extends BaseContract {
     ): Promise<BigNumber>;
 
     /**
-     * Configure the amounts and beneficiaries of royalties on primary and secondary transfers of this NFT.  Delegating to Freeport implementation.
+     * Supports interfaces of AccessControl, ERC1155, and ERC1155 MetadataURI.
      */
-    setupRoyaltyConfiguration(
-      primaryRoyaltyAccount: string,
-      primaryRoyaltyCut: BigNumberish,
-      primaryRoyaltyMinimum: BigNumberish,
-      secondaryRoyaltyAccount: string,
-      secondaryRoyaltyCut: BigNumberish,
-      secondaryRoyaltyMinimum: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+    supportsInterface(
+      interfaceId: BytesLike,
+      overrides?: CallOverrides
     ): Promise<BigNumber>;
 
     /**
-     * Configure the amounts and beneficiaries of royalties on primary and secondary transfers of this NFT.  Delegating to Freeport implementation.
+     * Supports interfaces of AccessControl, ERC1155, and ERC1155 MetadataURI.
      */
-    'setupRoyaltyConfiguration(address,uint256,uint256,address,uint256,uint256)'(
-      primaryRoyaltyAccount: string,
-      primaryRoyaltyCut: BigNumberish,
-      primaryRoyaltyMinimum: BigNumberish,
-      secondaryRoyaltyAccount: string,
-      secondaryRoyaltyCut: BigNumberish,
-      secondaryRoyaltyMinimum: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+    'supportsInterface(bytes4)'(
+      interfaceId: BytesLike,
+      overrides?: CallOverrides
     ): Promise<BigNumber>;
 
     /**
@@ -2592,71 +2274,103 @@ export interface Collection extends BaseContract {
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
+    /**
+     * Withdraw currency from internal to ERC20
+     */
+    withdraw(
+      amount: BigNumberish,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<BigNumber>;
+
+    /**
+     * Withdraw currency from internal to ERC20
+     */
+    'withdraw(uint256)'(
+      amount: BigNumberish,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<BigNumber>;
+
     initialize(
-      admin: string,
-      manager: string,
-      _name: string,
-      _uri: string,
-      __contractURI: string,
       _freeport: string,
-      _nftAttachment: string,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
-    'initialize(address,address,string,string,string,address,address)'(
-      admin: string,
-      manager: string,
-      _name: string,
-      _uri: string,
-      __contractURI: string,
+    'initialize(address)'(
       _freeport: string,
-      _nftAttachment: string,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
     /**
-     * See {IERC165-supportsInterface}.
+     * Create an offer to sell a type of NFTs for a price per unit. All the NFTs of this type owned by the caller will be for sale. To cancel, call again with a price of 0.
      */
-    supportsInterface(
-      interfaceId: BytesLike,
+    makeOffer(
+      nftId: BigNumberish,
+      price: BigNumberish,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<BigNumber>;
+
+    /**
+     * Create an offer to sell a type of NFTs for a price per unit. All the NFTs of this type owned by the caller will be for sale. To cancel, call again with a price of 0.
+     */
+    'makeOffer(uint256,uint256)'(
+      nftId: BigNumberish,
+      price: BigNumberish,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<BigNumber>;
+
+    /**
+     * Return the price offered by the given seller for the given NFT type.
+     */
+    getOffer(
+      seller: string,
+      nftId: BigNumberish,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
     /**
-     * See {IERC165-supportsInterface}.
+     * Return the price offered by the given seller for the given NFT type.
      */
-    'supportsInterface(bytes4)'(
-      interfaceId: BytesLike,
+    'getOffer(address,uint256)'(
+      seller: string,
+      nftId: BigNumberish,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
-    isApprovedForAll(
-      account: string,
-      operator: string,
-      overrides?: CallOverrides
+    /**
+     * Accept an offer, paying the price per unit for an amount of NFTs. The offer must have been created beforehand by makeOffer. The sender pays ERC20. The sender is not necessarily the same as buyer, see FiatGateway. The seller receives internal currency (equivalent to the ERC20 payment, see the function withdraw). The buyer receives the NFT. The parameter expectedPriceOrZero can be used to validate the price that the buyer expects to pay. This prevents a race condition with makeOffer or setExchangeRate. Pass 0 to disable this validation and accept any current price.
+     */
+    takeOffer(
+      buyer: string,
+      seller: string,
+      nftId: BigNumberish,
+      expectedPriceOrZero: BigNumberish,
+      amount: BigNumberish,
+      overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
-    'isApprovedForAll(address,address)'(
-      account: string,
-      operator: string,
-      overrides?: CallOverrides
+    /**
+     * Accept an offer, paying the price per unit for an amount of NFTs. The offer must have been created beforehand by makeOffer. The sender pays ERC20. The sender is not necessarily the same as buyer, see FiatGateway. The seller receives internal currency (equivalent to the ERC20 payment, see the function withdraw). The buyer receives the NFT. The parameter expectedPriceOrZero can be used to validate the price that the buyer expects to pay. This prevents a race condition with makeOffer or setExchangeRate. Pass 0 to disable this validation and accept any current price.
+     */
+    'takeOffer(address,address,uint256,uint256,uint256)'(
+      buyer: string,
+      seller: string,
+      nftId: BigNumberish,
+      expectedPriceOrZero: BigNumberish,
+      amount: BigNumberish,
+      overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
   };
 
   populateTransaction: {
     /**
-     * Collection manager role.  Used for configuring the amounts and beneficiaries of royalties on primary and secondary transfers of this NFT.
+     * The token ID that represents the internal currency for all payments in this contract.
      */
-    COLLECTION_MANAGER_ROLE(
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
+    CURRENCY(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     /**
-     * Collection manager role.  Used for configuring the amounts and beneficiaries of royalties on primary and secondary transfers of this NFT.
+     * The token ID that represents the internal currency for all payments in this contract.
      */
-    'COLLECTION_MANAGER_ROLE()'(
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
+    'CURRENCY()'(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     DEFAULT_ADMIN_ROLE(
       overrides?: CallOverrides
@@ -2670,30 +2384,6 @@ export interface Collection extends BaseContract {
 
     'META_TX_FORWARDER()'(
       overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    TRANSFER_OPERATOR(overrides?: CallOverrides): Promise<PopulatedTransaction>;
-
-    'TRANSFER_OPERATOR()'(
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    /**
-     * Attach data `attachment` to the collection NFT with specific inner NFT id.
-     */
-    anonymAttachToNFT(
-      nftId: BigNumberish,
-      attachment: BytesLike,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>;
-
-    /**
-     * Attach data `attachment` to the collection NFT with specific inner NFT id.
-     */
-    'anonymAttachToNFT(uint256,bytes)'(
-      nftId: BigNumberish,
-      attachment: BytesLike,
-      overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 
     /**
@@ -2732,9 +2422,33 @@ export interface Collection extends BaseContract {
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
-    contractURI(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+    /**
+     * The address of ERC-20 token's contract
+     */
+    currencyContract(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
-    'contractURI()'(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+    /**
+     * The address of ERC-20 token's contract
+     */
+    'currencyContract()'(
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    /**
+     * Deposit currency from ERC20 into the internal currency. This requires payer to approve deposit.
+     */
+    deposit(
+      amount: BigNumberish,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
+
+    /**
+     * Deposit currency from ERC20 into the internal currency. This requires payer to approve deposit.
+     */
+    'deposit(uint256)'(
+      amount: BigNumberish,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
 
     freeport(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
@@ -2769,32 +2483,6 @@ export interface Collection extends BaseContract {
      */
     'getRoleAdmin(bytes32)'(
       role: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    /**
-     * Return the current configuration of royalties for all NFTs of the collection.
-     */
-    getRoyalties(overrides?: CallOverrides): Promise<PopulatedTransaction>;
-
-    /**
-     * Return the current configuration of royalties for all NFTs of the collection.
-     */
-    'getRoyalties()'(overrides?: CallOverrides): Promise<PopulatedTransaction>;
-
-    /**
-     * Return the amount of royalties earned by a beneficiary on each primary and secondary transfer of an NFT. This function supports Joint Accounts. If royalties are paid to a JA and beneficiary is an owner of the JA, the shares of the royalties for this owner are returned.
-     */
-    getRoyaltiesForBeneficiary(
-      beneficiary: string,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    /**
-     * Return the amount of royalties earned by a beneficiary on each primary and secondary transfer of an NFT. This function supports Joint Accounts. If royalties are paid to a JA and beneficiary is an owner of the JA, the shares of the royalties for this owner are returned.
-     */
-    'getRoyaltiesForBeneficiary(address)'(
-      beneficiary: string,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
@@ -2835,14 +2523,22 @@ export interface Collection extends BaseContract {
     ): Promise<PopulatedTransaction>;
 
     /**
-     * A counter of NFT types. This is used to generate unique NFT IDs.
+     * See {IERC1155-isApprovedForAll}.
      */
-    idCounter(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+    isApprovedForAll(
+      account: string,
+      operator: string,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
 
     /**
-     * A counter of NFT types. This is used to generate unique NFT IDs.
+     * See {IERC1155-isApprovedForAll}.
      */
-    'idCounter()'(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+    'isApprovedForAll(address,address)'(
+      account: string,
+      operator: string,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
 
     isTrustedForwarder(
       forwarder: string,
@@ -2853,70 +2549,6 @@ export interface Collection extends BaseContract {
       forwarder: string,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
-
-    /**
-     * Issue a supply of NFTs of a new type, and return its ID. No more NFT of this type can be issued again. The caller will be recorded as the issuer and it will initially own the entire supply.
-     */
-    issue(
-      supply: BigNumberish,
-      data: BytesLike,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>;
-
-    /**
-     * Issue a supply of NFTs of a new type, and return its ID. No more NFT of this type can be issued again. The caller will be recorded as the issuer and it will initially own the entire supply.
-     */
-    'issue(uint64,bytes)'(
-      supply: BigNumberish,
-      data: BytesLike,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>;
-
-    /**
-     * Issue a supply of NFTs of a new type on behalf of minter, and return its ID. No more NFT of this type can be issued again. The caller will be recorded as the issuer and it will initially own the entire supply. Only for collection manager role.
-     */
-    issueOnBehalfOf(
-      minter: string,
-      supply: BigNumberish,
-      data: BytesLike,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>;
-
-    /**
-     * Issue a supply of NFTs of a new type on behalf of minter, and return its ID. No more NFT of this type can be issued again. The caller will be recorded as the issuer and it will initially own the entire supply. Only for collection manager role.
-     */
-    'issueOnBehalfOf(address,uint64,bytes)'(
-      minter: string,
-      supply: BigNumberish,
-      data: BytesLike,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>;
-
-    /**
-     * Attach data `attachment` to the collection NFT with specific inner NFT id, as the minter of this NFT type. This only works for NFT IDs in the Freeport format.
-     */
-    minterAttachToNFT(
-      nftId: BigNumberish,
-      attachment: BytesLike,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>;
-
-    /**
-     * Attach data `attachment` to the collection NFT with specific inner NFT id, as the minter of this NFT type. This only works for NFT IDs in the Freeport format.
-     */
-    'minterAttachToNFT(uint256,bytes)'(
-      nftId: BigNumberish,
-      attachment: BytesLike,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>;
-
-    name(overrides?: CallOverrides): Promise<PopulatedTransaction>;
-
-    'name()'(overrides?: CallOverrides): Promise<PopulatedTransaction>;
-
-    nftAttachment(overrides?: CallOverrides): Promise<PopulatedTransaction>;
-
-    'nftAttachment()'(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     /**
      * Revokes `role` from the calling account. Roles are often managed via {grantRole} and {revokeRole}: this function's purpose is to provide a mechanism for accounts to lose their privileges if they are compromised (such as when a trusted device is misplaced). If the calling account had been granted `role`, emits a {RoleRevoked} event. Requirements: - the caller must be `account`.
@@ -3020,6 +2652,22 @@ export interface Collection extends BaseContract {
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 
+    /**
+     * Sets token's contract address. This token is used to deposit and withdraw on chain adapter's contract is deployed.
+     */
+    setERC20(
+      _currencyContract: string,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
+
+    /**
+     * Sets token's contract address. This token is used to deposit and withdraw on chain adapter's contract is deployed.
+     */
+    'setERC20(address)'(
+      _currencyContract: string,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
+
     setURI(
       newuri: string,
       overrides?: Overrides & { from?: string | Promise<string> }
@@ -3031,29 +2679,19 @@ export interface Collection extends BaseContract {
     ): Promise<PopulatedTransaction>;
 
     /**
-     * Configure the amounts and beneficiaries of royalties on primary and secondary transfers of this NFT.  Delegating to Freeport implementation.
+     * Supports interfaces of AccessControl, ERC1155, and ERC1155 MetadataURI.
      */
-    setupRoyaltyConfiguration(
-      primaryRoyaltyAccount: string,
-      primaryRoyaltyCut: BigNumberish,
-      primaryRoyaltyMinimum: BigNumberish,
-      secondaryRoyaltyAccount: string,
-      secondaryRoyaltyCut: BigNumberish,
-      secondaryRoyaltyMinimum: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+    supportsInterface(
+      interfaceId: BytesLike,
+      overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
     /**
-     * Configure the amounts and beneficiaries of royalties on primary and secondary transfers of this NFT.  Delegating to Freeport implementation.
+     * Supports interfaces of AccessControl, ERC1155, and ERC1155 MetadataURI.
      */
-    'setupRoyaltyConfiguration(address,uint256,uint256,address,uint256,uint256)'(
-      primaryRoyaltyAccount: string,
-      primaryRoyaltyCut: BigNumberish,
-      primaryRoyaltyMinimum: BigNumberish,
-      secondaryRoyaltyAccount: string,
-      secondaryRoyaltyCut: BigNumberish,
-      secondaryRoyaltyMinimum: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+    'supportsInterface(bytes4)'(
+      interfaceId: BytesLike,
+      overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
     /**
@@ -3116,54 +2754,90 @@ export interface Collection extends BaseContract {
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
+    /**
+     * Withdraw currency from internal to ERC20
+     */
+    withdraw(
+      amount: BigNumberish,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
+
+    /**
+     * Withdraw currency from internal to ERC20
+     */
+    'withdraw(uint256)'(
+      amount: BigNumberish,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
+
     initialize(
-      admin: string,
-      manager: string,
-      _name: string,
-      _uri: string,
-      __contractURI: string,
       _freeport: string,
-      _nftAttachment: string,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 
-    'initialize(address,address,string,string,string,address,address)'(
-      admin: string,
-      manager: string,
-      _name: string,
-      _uri: string,
-      __contractURI: string,
+    'initialize(address)'(
       _freeport: string,
-      _nftAttachment: string,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 
     /**
-     * See {IERC165-supportsInterface}.
+     * Create an offer to sell a type of NFTs for a price per unit. All the NFTs of this type owned by the caller will be for sale. To cancel, call again with a price of 0.
      */
-    supportsInterface(
-      interfaceId: BytesLike,
+    makeOffer(
+      nftId: BigNumberish,
+      price: BigNumberish,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
+
+    /**
+     * Create an offer to sell a type of NFTs for a price per unit. All the NFTs of this type owned by the caller will be for sale. To cancel, call again with a price of 0.
+     */
+    'makeOffer(uint256,uint256)'(
+      nftId: BigNumberish,
+      price: BigNumberish,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
+
+    /**
+     * Return the price offered by the given seller for the given NFT type.
+     */
+    getOffer(
+      seller: string,
+      nftId: BigNumberish,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
     /**
-     * See {IERC165-supportsInterface}.
+     * Return the price offered by the given seller for the given NFT type.
      */
-    'supportsInterface(bytes4)'(
-      interfaceId: BytesLike,
+    'getOffer(address,uint256)'(
+      seller: string,
+      nftId: BigNumberish,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
-    isApprovedForAll(
-      account: string,
-      operator: string,
-      overrides?: CallOverrides
+    /**
+     * Accept an offer, paying the price per unit for an amount of NFTs. The offer must have been created beforehand by makeOffer. The sender pays ERC20. The sender is not necessarily the same as buyer, see FiatGateway. The seller receives internal currency (equivalent to the ERC20 payment, see the function withdraw). The buyer receives the NFT. The parameter expectedPriceOrZero can be used to validate the price that the buyer expects to pay. This prevents a race condition with makeOffer or setExchangeRate. Pass 0 to disable this validation and accept any current price.
+     */
+    takeOffer(
+      buyer: string,
+      seller: string,
+      nftId: BigNumberish,
+      expectedPriceOrZero: BigNumberish,
+      amount: BigNumberish,
+      overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 
-    'isApprovedForAll(address,address)'(
-      account: string,
-      operator: string,
-      overrides?: CallOverrides
+    /**
+     * Accept an offer, paying the price per unit for an amount of NFTs. The offer must have been created beforehand by makeOffer. The sender pays ERC20. The sender is not necessarily the same as buyer, see FiatGateway. The seller receives internal currency (equivalent to the ERC20 payment, see the function withdraw). The buyer receives the NFT. The parameter expectedPriceOrZero can be used to validate the price that the buyer expects to pay. This prevents a race condition with makeOffer or setExchangeRate. Pass 0 to disable this validation and accept any current price.
+     */
+    'takeOffer(address,address,uint256,uint256,uint256)'(
+      buyer: string,
+      seller: string,
+      nftId: BigNumberish,
+      expectedPriceOrZero: BigNumberish,
+      amount: BigNumberish,
+      overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
   };
 }

@@ -7,6 +7,7 @@ import type {
   CollectionFactory,
   FiatGateway,
   Freeport,
+  Marketplace,
   MinimalForwarder,
   NFTAttachment,
   SimpleAuction,
@@ -17,6 +18,7 @@ import {
   CollectionFactory__factory,
   FiatGateway__factory,
   Freeport__factory,
+  Marketplace__factory,
   MinimalForwarder__factory,
   NFTAttachment__factory,
   SimpleAuction__factory,
@@ -317,6 +319,21 @@ export const getCollectionFactoryAddress = async (
   });
 };
 
+export const getMarketplaceAddress = async (
+  provider: Provider,
+  deployment: Deployment = 'prod',
+  application: ApplicationEnum = ApplicationEnum.DAVINCI
+): Promise<string> => {
+  const { chainId } = await provider.getNetwork();
+
+  return getContractAddress({
+    deployment,
+    chainId,
+    contractName: 'Marketplace',
+    application,
+  });
+};
+
 export type CreateContractConfig = {
   signer: Signer;
   contractAddress: string;
@@ -363,6 +380,12 @@ export const createCollectionFactory = ({
   contractAddress,
 }: CreateContractConfig): CollectionFactory =>
   CollectionFactory__factory.connect(contractAddress, signer);
+
+export const createMarketplace = ({
+  signer,
+  contractAddress,
+}: CreateContractConfig): Marketplace =>
+  Marketplace__factory.connect(contractAddress, signer);
 
 export const createCollection = ({
   signer,

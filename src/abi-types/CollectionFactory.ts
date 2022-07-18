@@ -4,6 +4,7 @@
 import {
   BaseContract,
   BigNumber,
+  BigNumberish,
   BytesLike,
   CallOverrides,
   ContractTransaction,
@@ -35,6 +36,8 @@ export interface CollectionFactoryInterface extends utils.Interface {
     'upgradeToAndCall(address,bytes)': FunctionFragment;
     'initialize(address,address)': FunctionFragment;
     'createCollection(address,string,string,string)': FunctionFragment;
+    'setMintAllowance(address,address)': FunctionFragment;
+    'mintOnBehalf(address,address,uint64,bytes)': FunctionFragment;
   };
 
   encodeFunctionData(
@@ -95,6 +98,14 @@ export interface CollectionFactoryInterface extends utils.Interface {
     functionFragment: 'createCollection',
     values: [string, string, string, string]
   ): string;
+  encodeFunctionData(
+    functionFragment: 'setMintAllowance',
+    values: [string, string]
+  ): string;
+  encodeFunctionData(
+    functionFragment: 'mintOnBehalf',
+    values: [string, string, BigNumberish, BytesLike]
+  ): string;
 
   decodeFunctionResult(
     functionFragment: 'COLLECTION_CREATOR_ROLE',
@@ -142,11 +153,20 @@ export interface CollectionFactoryInterface extends utils.Interface {
     functionFragment: 'createCollection',
     data: BytesLike
   ): Result;
+  decodeFunctionResult(
+    functionFragment: 'setMintAllowance',
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: 'mintOnBehalf',
+    data: BytesLike
+  ): Result;
 
   events: {
     'AdminChanged(address,address)': EventFragment;
     'BeaconUpgraded(address)': EventFragment;
     'CollectionCreated(string,address)': EventFragment;
+    'MintOnBehalf(address,address,address,uint256,uint64)': EventFragment;
     'RoleAdminChanged(bytes32,bytes32,bytes32)': EventFragment;
     'RoleGranted(bytes32,address,address)': EventFragment;
     'RoleRevoked(bytes32,address,address)': EventFragment;
@@ -156,6 +176,7 @@ export interface CollectionFactoryInterface extends utils.Interface {
   getEvent(nameOrSignatureOrTopic: 'AdminChanged'): EventFragment;
   getEvent(nameOrSignatureOrTopic: 'BeaconUpgraded'): EventFragment;
   getEvent(nameOrSignatureOrTopic: 'CollectionCreated'): EventFragment;
+  getEvent(nameOrSignatureOrTopic: 'MintOnBehalf'): EventFragment;
   getEvent(nameOrSignatureOrTopic: 'RoleAdminChanged'): EventFragment;
   getEvent(nameOrSignatureOrTopic: 'RoleGranted'): EventFragment;
   getEvent(nameOrSignatureOrTopic: 'RoleRevoked'): EventFragment;
@@ -180,6 +201,19 @@ export type CollectionCreatedEvent = TypedEvent<
 
 export type CollectionCreatedEventFilter =
   TypedEventFilter<CollectionCreatedEvent>;
+
+export type MintOnBehalfEvent = TypedEvent<
+  [string, string, string, BigNumber, BigNumber],
+  {
+    _operator: string;
+    _collection: string;
+    _holder: string;
+    _id: BigNumber;
+    _amount: BigNumber;
+  }
+>;
+
+export type MintOnBehalfEventFilter = TypedEventFilter<MintOnBehalfEvent>;
 
 export type RoleAdminChangedEvent = TypedEvent<
   [string, string, string],
@@ -409,7 +443,7 @@ export interface CollectionFactory extends BaseContract {
      * Deploying a new user collection.  Emits a {CollectionCreated} event.
      */
     createCollection(
-      creator: string,
+      collectionManager: string,
       name: string,
       uriTpl: string,
       contractURI: string,
@@ -420,10 +454,38 @@ export interface CollectionFactory extends BaseContract {
      * Deploying a new user collection.  Emits a {CollectionCreated} event.
      */
     'createCollection(address,string,string,string)'(
-      creator: string,
+      collectionManager: string,
       name: string,
       uriTpl: string,
       contractURI: string,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
+
+    setMintAllowance(
+      collection: string,
+      minter: string,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
+
+    'setMintAllowance(address,address)'(
+      collection: string,
+      minter: string,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
+
+    mintOnBehalf(
+      collection: string,
+      holder: string,
+      supply: BigNumberish,
+      data: BytesLike,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
+
+    'mintOnBehalf(address,address,uint64,bytes)'(
+      collection: string,
+      holder: string,
+      supply: BigNumberish,
+      data: BytesLike,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
   };
@@ -603,7 +665,7 @@ export interface CollectionFactory extends BaseContract {
    * Deploying a new user collection.  Emits a {CollectionCreated} event.
    */
   createCollection(
-    creator: string,
+    collectionManager: string,
     name: string,
     uriTpl: string,
     contractURI: string,
@@ -614,10 +676,38 @@ export interface CollectionFactory extends BaseContract {
    * Deploying a new user collection.  Emits a {CollectionCreated} event.
    */
   'createCollection(address,string,string,string)'(
-    creator: string,
+    collectionManager: string,
     name: string,
     uriTpl: string,
     contractURI: string,
+    overrides?: Overrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
+
+  setMintAllowance(
+    collection: string,
+    minter: string,
+    overrides?: Overrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
+
+  'setMintAllowance(address,address)'(
+    collection: string,
+    minter: string,
+    overrides?: Overrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
+
+  mintOnBehalf(
+    collection: string,
+    holder: string,
+    supply: BigNumberish,
+    data: BytesLike,
+    overrides?: Overrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
+
+  'mintOnBehalf(address,address,uint64,bytes)'(
+    collection: string,
+    holder: string,
+    supply: BigNumberish,
+    data: BytesLike,
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
@@ -797,7 +887,7 @@ export interface CollectionFactory extends BaseContract {
      * Deploying a new user collection.  Emits a {CollectionCreated} event.
      */
     createCollection(
-      creator: string,
+      collectionManager: string,
       name: string,
       uriTpl: string,
       contractURI: string,
@@ -808,12 +898,40 @@ export interface CollectionFactory extends BaseContract {
      * Deploying a new user collection.  Emits a {CollectionCreated} event.
      */
     'createCollection(address,string,string,string)'(
-      creator: string,
+      collectionManager: string,
       name: string,
       uriTpl: string,
       contractURI: string,
       overrides?: CallOverrides
     ): Promise<string>;
+
+    setMintAllowance(
+      collection: string,
+      minter: string,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    'setMintAllowance(address,address)'(
+      collection: string,
+      minter: string,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    mintOnBehalf(
+      collection: string,
+      holder: string,
+      supply: BigNumberish,
+      data: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    'mintOnBehalf(address,address,uint64,bytes)'(
+      collection: string,
+      holder: string,
+      supply: BigNumberish,
+      data: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<void>;
   };
 
   filters: {
@@ -839,6 +957,21 @@ export interface CollectionFactory extends BaseContract {
       name?: null,
       addr?: string | null
     ): CollectionCreatedEventFilter;
+
+    'MintOnBehalf(address,address,address,uint256,uint64)'(
+      _operator?: null,
+      _collection?: null,
+      _holder?: null,
+      _id?: null,
+      _amount?: null
+    ): MintOnBehalfEventFilter;
+    MintOnBehalf(
+      _operator?: null,
+      _collection?: null,
+      _holder?: null,
+      _id?: null,
+      _amount?: null
+    ): MintOnBehalfEventFilter;
 
     'RoleAdminChanged(bytes32,bytes32,bytes32)'(
       role?: BytesLike | null,
@@ -1056,7 +1189,7 @@ export interface CollectionFactory extends BaseContract {
      * Deploying a new user collection.  Emits a {CollectionCreated} event.
      */
     createCollection(
-      creator: string,
+      collectionManager: string,
       name: string,
       uriTpl: string,
       contractURI: string,
@@ -1067,10 +1200,38 @@ export interface CollectionFactory extends BaseContract {
      * Deploying a new user collection.  Emits a {CollectionCreated} event.
      */
     'createCollection(address,string,string,string)'(
-      creator: string,
+      collectionManager: string,
       name: string,
       uriTpl: string,
       contractURI: string,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<BigNumber>;
+
+    setMintAllowance(
+      collection: string,
+      minter: string,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<BigNumber>;
+
+    'setMintAllowance(address,address)'(
+      collection: string,
+      minter: string,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<BigNumber>;
+
+    mintOnBehalf(
+      collection: string,
+      holder: string,
+      supply: BigNumberish,
+      data: BytesLike,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<BigNumber>;
+
+    'mintOnBehalf(address,address,uint64,bytes)'(
+      collection: string,
+      holder: string,
+      supply: BigNumberish,
+      data: BytesLike,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
   };
@@ -1264,7 +1425,7 @@ export interface CollectionFactory extends BaseContract {
      * Deploying a new user collection.  Emits a {CollectionCreated} event.
      */
     createCollection(
-      creator: string,
+      collectionManager: string,
       name: string,
       uriTpl: string,
       contractURI: string,
@@ -1275,10 +1436,38 @@ export interface CollectionFactory extends BaseContract {
      * Deploying a new user collection.  Emits a {CollectionCreated} event.
      */
     'createCollection(address,string,string,string)'(
-      creator: string,
+      collectionManager: string,
       name: string,
       uriTpl: string,
       contractURI: string,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
+
+    setMintAllowance(
+      collection: string,
+      minter: string,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
+
+    'setMintAllowance(address,address)'(
+      collection: string,
+      minter: string,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
+
+    mintOnBehalf(
+      collection: string,
+      holder: string,
+      supply: BigNumberish,
+      data: BytesLike,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
+
+    'mintOnBehalf(address,address,uint64,bytes)'(
+      collection: string,
+      holder: string,
+      supply: BigNumberish,
+      data: BytesLike,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
   };
