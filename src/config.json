@@ -1,14 +1,13 @@
 {
   "dev": {
-    "80001": {
-      "Freeport": "0x702BA959B5542B2Bf88a1C5924F73Ed97482c64B",
-      "FiatGateway": "0x106Bf3D61952faE9279B08bdcB2e548316E0C1Ae",
-      "SimpleAuction": "0xCEAc6c102bEcE4ed2E5ede9df096F7175BB8CbaD",
-      "NFTAttachment": "0x39B27a0bc81C1366E2b05E02642Ef343a4f9223a",
-      "MinimalForwarder": "0x2d7FCbBfe773c5E7C7fccbA8434386048267c16D",
-      "ERC20": "0x4e5a86E128f8Fb652169f6652e2Cd17aAe409e96",
-      "CollectionFactory": "0xc4018973d7ae51b4669dDe7948904d034A79Bb86",
-      "Markerplace": "0xB0D3aF64CD682aF52d5Dd77D2402EE253be38107"
+    "3": {
+      "Freeport": "0x0442Fd8c8da95311C413c9514D8607946a104e2B",
+      "FiatGateway": "0x917Edbb1d0B3ebA888e96CeD6DAe4bB5A0C1d357",
+      "SimpleAuction": "0xB1f7EEBAAC2964b2Db7BB1ef6A18e2fc277C8788",
+      "NFTAttachment": "0x1E32B13862740d5E09f4D9e0475036E97fDC8364",
+      "ERC20": "0xb340C1E5837C4a7B30F37eEe93dB637b164D532a",
+      "CollectionFactory": "0x8299fdc2387E14842Cfc7ce797f277B806F9eEC3",
+      "Marketplace": "0x924948f48b7713c9A0BD7657fD27bc42891C1764"
     },
     "Token": {
       "symbol": "USDC",

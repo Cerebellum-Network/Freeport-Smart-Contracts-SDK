@@ -188,7 +188,8 @@
         }
       ],
       "stateMutability": "view",
-      "type": "function"
+      "type": "function",
+      "constant": true
     },
     {
       "inputs": [],
@@ -201,7 +202,8 @@
         }
       ],
       "stateMutability": "view",
-      "type": "function"
+      "type": "function",
+      "constant": true
     },
     {
       "inputs": [],
@@ -214,7 +216,8 @@
         }
       ],
       "stateMutability": "view",
-      "type": "function"
+      "type": "function",
+      "constant": true
     },
     {
       "inputs": [],
@@ -227,7 +230,8 @@
         }
       ],
       "stateMutability": "view",
-      "type": "function"
+      "type": "function",
+      "constant": true
     },
     {
       "inputs": [
@@ -246,7 +250,8 @@
         }
       ],
       "stateMutability": "view",
-      "type": "function"
+      "type": "function",
+      "constant": true
     },
     {
       "inputs": [
@@ -288,7 +293,8 @@
         }
       ],
       "stateMutability": "view",
-      "type": "function"
+      "type": "function",
+      "constant": true
     },
     {
       "inputs": [
@@ -307,7 +313,8 @@
         }
       ],
       "stateMutability": "view",
-      "type": "function"
+      "type": "function",
+      "constant": true
     },
     {
       "inputs": [],
@@ -320,7 +327,8 @@
         }
       ],
       "stateMutability": "view",
-      "type": "function"
+      "type": "function",
+      "constant": true
     },
     {
       "inputs": [
@@ -375,7 +383,8 @@
         }
       ],
       "stateMutability": "view",
-      "type": "function"
+      "type": "function",
+      "constant": true
     },
     {
       "inputs": [
@@ -406,7 +415,8 @@
       "name": "upgradeToAndCall",
       "outputs": [],
       "stateMutability": "payable",
-      "type": "function"
+      "type": "function",
+      "payable": true
     },
     {
       "inputs": [
@@ -4237,7 +4247,7 @@
                 }
               ]
             },
-            "name": "abi_decode_tuple_t_contract$_Freeport_$4388t_contract$_NFTAttachment_$4985",
+            "name": "abi_decode_tuple_t_contract$_Freeport_$4388t_contract$_NFTAttachment_$4990",
             "nodeType": "YulFunctionDefinition",
             "parameters": [
               {
@@ -6466,7 +6476,7 @@
                 }
               ]
             },
-            "name": "abi_encode_tuple_t_address_t_address_t_string_memory_ptr_t_string_memory_ptr_t_string_memory_ptr_t_contract$_Freeport_$4388_t_contract$_NFTAttachment_$4985__to_t_address_t_address_t_string_memory_ptr_t_string_memory_ptr_t_string_memory_ptr_t_address_t_address__fromStack_reversed",
+            "name": "abi_encode_tuple_t_address_t_address_t_string_memory_ptr_t_string_memory_ptr_t_string_memory_ptr_t_contract$_Freeport_$4388_t_contract$_NFTAttachment_$4990__to_t_address_t_address_t_string_memory_ptr_t_string_memory_ptr_t_string_memory_ptr_t_address_t_address__fromStack_reversed",
             "nodeType": "YulFunctionDefinition",
             "parameters": [
               {
@@ -7316,7 +7326,7 @@
                 }
               ]
             },
-            "name": "abi_encode_tuple_t_contract$_NFTAttachment_$4985__to_t_address__fromStack_reversed",
+            "name": "abi_encode_tuple_t_contract$_NFTAttachment_$4990__to_t_address__fromStack_reversed",
             "nodeType": "YulFunctionDefinition",
             "parameters": [
               {
@@ -10513,7 +10523,7 @@
           }
         ]
       },
-      "contents": "{\n    { }\n    function abi_decode_bytes(offset, end) -> array\n    {\n        if iszero(slt(add(offset, 0x1f), end)) { revert(array, array) }\n        let _1 := calldataload(offset)\n        let _2 := sub(shl(64, 1), 1)\n        if gt(_1, _2) { panic_error_0x41() }\n        let _3 := not(31)\n        let memPtr := mload(64)\n        let newFreePtr := add(memPtr, and(add(and(add(_1, 0x1f), _3), 63), _3))\n        if or(gt(newFreePtr, _2), lt(newFreePtr, memPtr)) { panic_error_0x41() }\n        mstore(64, newFreePtr)\n        mstore(memPtr, _1)\n        if gt(add(add(offset, _1), 0x20), end) { revert(array, array) }\n        calldatacopy(add(memPtr, 0x20), add(offset, 0x20), _1)\n        mstore(add(add(memPtr, _1), 0x20), array)\n        array := memPtr\n    }\n    function abi_decode_tuple_t_address(headStart, dataEnd) -> value0\n    {\n        if slt(sub(dataEnd, headStart), 32) { revert(value0, value0) }\n        let value := calldataload(headStart)\n        validator_revert_address(value)\n        value0 := value\n    }\n    function abi_decode_tuple_t_addresst_address(headStart, dataEnd) -> value0, value1\n    {\n        if slt(sub(dataEnd, headStart), 64) { revert(value1, value1) }\n        let value := calldataload(headStart)\n        validator_revert_address(value)\n        value0 := value\n        let value_1 := calldataload(add(headStart, 32))\n        validator_revert_address(value_1)\n        value1 := value_1\n    }\n    function abi_decode_tuple_t_addresst_addresst_uint64t_bytes_memory_ptr(headStart, dataEnd) -> value0, value1, value2, value3\n    {\n        if slt(sub(dataEnd, headStart), 128) { revert(value2, value2) }\n        let value := calldataload(headStart)\n        validator_revert_address(value)\n        value0 := value\n        let value_1 := calldataload(add(headStart, 32))\n        validator_revert_address(value_1)\n        value1 := value_1\n        let value_2 := calldataload(add(headStart, 64))\n        let _1 := sub(shl(64, 1), 1)\n        if iszero(eq(value_2, and(value_2, _1))) { revert(value2, value2) }\n        value2 := value_2\n        let offset := calldataload(add(headStart, 96))\n        if gt(offset, _1) { revert(value3, value3) }\n        value3 := abi_decode_bytes(add(headStart, offset), dataEnd)\n    }\n    function abi_decode_tuple_t_addresst_bytes_memory_ptr(headStart, dataEnd) -> value0, value1\n    {\n        if slt(sub(dataEnd, headStart), 64) { revert(value0, value0) }\n        let value := calldataload(headStart)\n        validator_revert_address(value)\n        value0 := value\n        let offset := calldataload(add(headStart, 32))\n        if gt(offset, sub(shl(64, 1), 1)) { revert(value1, value1) }\n        value1 := abi_decode_bytes(add(headStart, offset), dataEnd)\n    }\n    function abi_decode_tuple_t_addresst_string_memory_ptrt_string_memory_ptrt_string_memory_ptr(headStart, dataEnd) -> value0, value1, value2, value3\n    {\n        if slt(sub(dataEnd, headStart), 128) { revert(value0, value0) }\n        let value := calldataload(headStart)\n        validator_revert_address(value)\n        value0 := value\n        let offset := calldataload(add(headStart, 32))\n        let _1 := sub(shl(64, 1), 1)\n        if gt(offset, _1) { revert(value1, value1) }\n        value1 := abi_decode_bytes(add(headStart, offset), dataEnd)\n        let offset_1 := calldataload(add(headStart, 64))\n        if gt(offset_1, _1) { revert(value2, value2) }\n        value2 := abi_decode_bytes(add(headStart, offset_1), dataEnd)\n        let offset_2 := calldataload(add(headStart, 96))\n        if gt(offset_2, _1) { revert(value3, value3) }\n        value3 := abi_decode_bytes(add(headStart, offset_2), dataEnd)\n    }\n    function abi_decode_tuple_t_bytes32(headStart, dataEnd) -> value0\n    {\n        if slt(sub(dataEnd, headStart), 32) { revert(value0, value0) }\n        value0 := calldataload(headStart)\n    }\n    function abi_decode_tuple_t_bytes32t_address(headStart, dataEnd) -> value0, value1\n    {\n        if slt(sub(dataEnd, headStart), 64) { revert(value0, value0) }\n        value0 := calldataload(headStart)\n        let value := calldataload(add(headStart, 32))\n        validator_revert_address(value)\n        value1 := value\n    }\n    function abi_decode_tuple_t_bytes4(headStart, dataEnd) -> value0\n    {\n        if slt(sub(dataEnd, headStart), 32) { revert(value0, value0) }\n        let value := calldataload(headStart)\n        if iszero(eq(value, and(value, shl(224, 0xffffffff)))) { revert(value0, value0) }\n        value0 := value\n    }\n    function abi_decode_tuple_t_contract$_Freeport_$4388t_contract$_NFTAttachment_$4985(headStart, dataEnd) -> value0, value1\n    {\n        if slt(sub(dataEnd, headStart), 64) { revert(value0, value0) }\n        let value := calldataload(headStart)\n        validator_revert_address(value)\n        value0 := value\n        let value_1 := calldataload(add(headStart, 32))\n        validator_revert_address(value_1)\n        value1 := value_1\n    }\n    function abi_decode_tuple_t_uint256_fromMemory(headStart, dataEnd) -> value0\n    {\n        if slt(sub(dataEnd, headStart), 32) { revert(value0, value0) }\n        value0 := mload(headStart)\n    }\n    function abi_encode_bytes(value, pos) -> end\n    {\n        let length := mload(value)\n        mstore(pos, length)\n        copy_memory_to_memory(add(value, 0x20), add(pos, 0x20), length)\n        end := add(add(pos, and(add(length, 31), not(31))), 0x20)\n    }\n    function abi_encode_tuple_packed_t_bytes_memory_ptr__to_t_bytes_memory_ptr__nonPadded_inplace_fromStack_reversed(pos, value0) -> end\n    {\n        let length := mload(value0)\n        copy_memory_to_memory(add(value0, 0x20), pos, length)\n        end := add(pos, length)\n    }\n    function abi_encode_tuple_packed_t_string_memory_ptr__to_t_string_memory_ptr__nonPadded_inplace_fromStack_reversed(pos, value0) -> end\n    {\n        let length := mload(value0)\n        copy_memory_to_memory(add(value0, 0x20), pos, length)\n        end := add(pos, length)\n    }\n    function abi_encode_tuple_packed_t_stringliteral_da0d07ce4a2849fbfc4cb9d6f939e9bd93016c372ca4a5ff14fe06caf3d67874_t_string_memory_ptr_t_stringliteral_f986ce851518a691bccd44ea42a5a185d1b866ef6cb07984a09b81694d20ab69_t_string_memory_ptr__to_t_string_memory_ptr_t_string_memory_ptr_t_string_memory_ptr_t_string_memory_ptr__nonPadded_inplace_fromStack_reversed(pos, value1, value0) -> end\n    {\n        mstore(pos, \"AccessControl: account \")\n        let length := mload(value0)\n        copy_memory_to_memory(add(value0, 0x20), add(pos, 23), length)\n        let _1 := add(pos, length)\n        mstore(add(_1, 23), \" is missing role \")\n        let length_1 := mload(value1)\n        copy_memory_to_memory(add(value1, 0x20), add(_1, 40), length_1)\n        end := add(add(_1, length_1), 40)\n    }\n    function abi_encode_tuple_t_address__to_t_address__fromStack_reversed(headStart, value0) -> tail\n    {\n        tail := add(headStart, 32)\n        mstore(headStart, and(value0, sub(shl(160, 1), 1)))\n    }\n    function abi_encode_tuple_t_address_t_address_t_address_t_uint256_t_uint64__to_t_address_t_address_t_address_t_uint256_t_uint64__fromStack_reversed(headStart, value4, value3, value2, value1, value0) -> tail\n    {\n        tail := add(headStart, 160)\n        let _1 := sub(shl(160, 1), 1)\n        mstore(headStart, and(value0, _1))\n        mstore(add(headStart, 32), and(value1, _1))\n        mstore(add(headStart, 64), and(value2, _1))\n        mstore(add(headStart, 96), value3)\n        mstore(add(headStart, 128), and(value4, sub(shl(64, 1), 1)))\n    }\n    function abi_encode_tuple_t_address_t_address_t_string_memory_ptr_t_string_memory_ptr_t_string_memory_ptr_t_contract$_Freeport_$4388_t_contract$_NFTAttachment_$4985__to_t_address_t_address_t_string_memory_ptr_t_string_memory_ptr_t_string_memory_ptr_t_address_t_address__fromStack_reversed(headStart, value6, value5, value4, value3, value2, value1, value0) -> tail\n    {\n        let _1 := sub(shl(160, 1), 1)\n        mstore(headStart, and(value0, _1))\n        mstore(add(headStart, 32), and(value1, _1))\n        mstore(add(headStart, 64), 224)\n        let tail_1 := abi_encode_bytes(value2, add(headStart, 224))\n        mstore(add(headStart, 96), sub(tail_1, headStart))\n        let tail_2 := abi_encode_bytes(value3, tail_1)\n        mstore(add(headStart, 128), sub(tail_2, headStart))\n        tail := abi_encode_bytes(value4, tail_2)\n        mstore(add(headStart, 160), and(value5, _1))\n        mstore(add(headStart, 192), and(value6, _1))\n    }\n    function abi_encode_tuple_t_address_t_uint64_t_bytes_memory_ptr__to_t_address_t_uint64_t_bytes_memory_ptr__fromStack_reversed(headStart, value2, value1, value0) -> tail\n    {\n        mstore(headStart, and(value0, sub(shl(160, 1), 1)))\n        mstore(add(headStart, 32), and(value1, sub(shl(64, 1), 1)))\n        mstore(add(headStart, 64), 96)\n        tail := abi_encode_bytes(value2, add(headStart, 96))\n    }\n    function abi_encode_tuple_t_bool__to_t_bool__fromStack_reversed(headStart, value0) -> tail\n    {\n        tail := add(headStart, 32)\n        mstore(headStart, iszero(iszero(value0)))\n    }\n    function abi_encode_tuple_t_bytes32__to_t_bytes32__fromStack_reversed(headStart, value0) -> tail\n    {\n        tail := add(headStart, 32)\n        mstore(headStart, value0)\n    }\n    function abi_encode_tuple_t_contract$_Freeport_$4388__to_t_address__fromStack_reversed(headStart, value0) -> tail\n    {\n        tail := add(headStart, 32)\n        mstore(headStart, and(value0, sub(shl(160, 1), 1)))\n    }\n    function abi_encode_tuple_t_contract$_NFTAttachment_$4985__to_t_address__fromStack_reversed(headStart, value0) -> tail\n    {\n        tail := add(headStart, 32)\n        mstore(headStart, and(value0, sub(shl(160, 1), 1)))\n    }\n    function abi_encode_tuple_t_string_memory_ptr__to_t_string_memory_ptr__fromStack_reversed(headStart, value0) -> tail\n    {\n        mstore(headStart, 32)\n        tail := abi_encode_bytes(value0, add(headStart, 32))\n    }\n    function abi_encode_tuple_t_stringliteral_04fc88320d7c9f639317c75102c103ff0044d3075a5c627e24e76e5bbb2733c2__to_t_string_memory_ptr__fromStack_reversed(headStart) -> tail\n    {\n        mstore(headStart, 32)\n        mstore(add(headStart, 32), 32)\n        mstore(add(headStart, 64), \"Strings: hex length insufficient\")\n        tail := add(headStart, 96)\n    }\n    function abi_encode_tuple_t_stringliteral_2425ea74e68e4bcd365d89824a06e1475543dcbb6a12bf699e5abf6b11b9b6ed__to_t_string_memory_ptr__fromStack_reversed(headStart) -> tail\n    {\n        mstore(headStart, 32)\n        mstore(add(headStart, 32), 47)\n        mstore(add(headStart, 64), \"ERC1967Upgrade: upgrade breaks f\")\n        mstore(add(headStart, 96), \"urther upgrades\")\n        tail := add(headStart, 128)\n    }\n    function abi_encode_tuple_t_stringliteral_5c86de0fd40bcfe5c68e5e5a19dd628ec51e609f8f0b01251c58c32cd9fe6c55__to_t_string_memory_ptr__fromStack_reversed(headStart) -> tail\n    {\n        mstore(headStart, 32)\n        mstore(add(headStart, 32), 31)\n        mstore(add(headStart, 64), \"zero address collection manager\")\n        tail := add(headStart, 96)\n    }\n    function abi_encode_tuple_t_stringliteral_62f2acdec8b29aac2a108c6d3b76a056eee8702e0322bafc1aebad3ab186c7b2__to_t_string_memory_ptr__fromStack_reversed(headStart) -> tail\n    {\n        mstore(headStart, 32)\n        mstore(add(headStart, 32), 23)\n        mstore(add(headStart, 64), \"only collection creator\")\n        tail := add(headStart, 96)\n    }\n    function abi_encode_tuple_t_stringliteral_6f3b208787dea2462a200cdab645373234ab44364d8830a06c6c9f73e928a1bd__to_t_string_memory_ptr__fromStack_reversed(headStart) -> tail\n    {\n        mstore(headStart, 32)\n        mstore(add(headStart, 32), 30)\n        mstore(add(headStart, 64), \"collection name already exists\")\n        tail := add(headStart, 96)\n    }\n    function abi_encode_tuple_t_stringliteral_7a2a4e26842155ea933fe6eb6e3137eb5a296dcdf55721c552be7b4c3cc23759__to_t_string_memory_ptr__fromStack_reversed(headStart) -> tail\n    {\n        mstore(headStart, 32)\n        mstore(add(headStart, 32), 46)\n        mstore(add(headStart, 64), \"Initializable: contract is alrea\")\n        mstore(add(headStart, 96), \"dy initialized\")\n        tail := add(headStart, 128)\n    }\n    function abi_encode_tuple_t_stringliteral_972b7028e8de0bff0d553b3264eba2312ec98a552add05e58853b313f9f4ac65__to_t_string_memory_ptr__fromStack_reversed(headStart) -> tail\n    {\n        mstore(headStart, 32)\n        mstore(add(headStart, 32), 45)\n        mstore(add(headStart, 64), \"ERC1967: new implementation is n\")\n        mstore(add(headStart, 96), \"ot a contract\")\n        tail := add(headStart, 128)\n    }\n    function abi_encode_tuple_t_stringliteral_b94ded0918034cf8f896e19fa3cfdef1188cd569c577264a3622e49152f88520__to_t_string_memory_ptr__fromStack_reversed(headStart) -> tail\n    {\n        mstore(headStart, 32)\n        mstore(add(headStart, 32), 38)\n        mstore(add(headStart, 64), \"Address: delegate call to non-co\")\n        mstore(add(headStart, 96), \"ntract\")\n        tail := add(headStart, 128)\n    }\n    function abi_encode_tuple_t_stringliteral_c13c296baebb1f79b18541a06c39b3d56ce1654fd26fe72a62e2fb7efe67be9a__to_t_string_memory_ptr__fromStack_reversed(headStart) -> tail\n    {\n        mstore(headStart, 32)\n        mstore(add(headStart, 32), 10)\n        mstore(add(headStart, 64), \"Only Admin\")\n        tail := add(headStart, 96)\n    }\n    function abi_encode_tuple_t_stringliteral_fb06fa8ff2141e8ed74502f6792273793f25f0e9d3cf15344f3f5a0d4948fd4b__to_t_string_memory_ptr__fromStack_reversed(headStart) -> tail\n    {\n        mstore(headStart, 32)\n        mstore(add(headStart, 32), 47)\n        mstore(add(headStart, 64), \"AccessControl: can only renounce\")\n        mstore(add(headStart, 96), \" roles for self\")\n        tail := add(headStart, 128)\n    }\n    function checked_add_t_uint256(x, y) -> sum\n    {\n        if gt(x, not(y)) { panic_error_0x11() }\n        sum := add(x, y)\n    }\n    function checked_mul_t_uint256(x, y) -> product\n    {\n        if and(iszero(iszero(x)), gt(y, div(not(0), x))) { panic_error_0x11() }\n        product := mul(x, y)\n    }\n    function copy_memory_to_memory(src, dst, length)\n    {\n        let i := 0\n        for { } lt(i, length) { i := add(i, 32) }\n        {\n            mstore(add(dst, i), mload(add(src, i)))\n        }\n        if gt(i, length) { mstore(add(dst, length), 0) }\n    }\n    function decrement_t_uint256(value) -> ret\n    {\n        if iszero(value) { panic_error_0x11() }\n        ret := add(value, not(0))\n    }\n    function panic_error_0x11()\n    {\n        mstore(0, shl(224, 0x4e487b71))\n        mstore(4, 0x11)\n        revert(0, 0x24)\n    }\n    function panic_error_0x41()\n    {\n        mstore(0, shl(224, 0x4e487b71))\n        mstore(4, 0x41)\n        revert(0, 0x24)\n    }\n    function validator_revert_address(value)\n    {\n        if iszero(eq(value, and(value, sub(shl(160, 1), 1)))) { revert(0, 0) }\n    }\n}",
+      "contents": "{\n    { }\n    function abi_decode_bytes(offset, end) -> array\n    {\n        if iszero(slt(add(offset, 0x1f), end)) { revert(array, array) }\n        let _1 := calldataload(offset)\n        let _2 := sub(shl(64, 1), 1)\n        if gt(_1, _2) { panic_error_0x41() }\n        let _3 := not(31)\n        let memPtr := mload(64)\n        let newFreePtr := add(memPtr, and(add(and(add(_1, 0x1f), _3), 63), _3))\n        if or(gt(newFreePtr, _2), lt(newFreePtr, memPtr)) { panic_error_0x41() }\n        mstore(64, newFreePtr)\n        mstore(memPtr, _1)\n        if gt(add(add(offset, _1), 0x20), end) { revert(array, array) }\n        calldatacopy(add(memPtr, 0x20), add(offset, 0x20), _1)\n        mstore(add(add(memPtr, _1), 0x20), array)\n        array := memPtr\n    }\n    function abi_decode_tuple_t_address(headStart, dataEnd) -> value0\n    {\n        if slt(sub(dataEnd, headStart), 32) { revert(value0, value0) }\n        let value := calldataload(headStart)\n        validator_revert_address(value)\n        value0 := value\n    }\n    function abi_decode_tuple_t_addresst_address(headStart, dataEnd) -> value0, value1\n    {\n        if slt(sub(dataEnd, headStart), 64) { revert(value1, value1) }\n        let value := calldataload(headStart)\n        validator_revert_address(value)\n        value0 := value\n        let value_1 := calldataload(add(headStart, 32))\n        validator_revert_address(value_1)\n        value1 := value_1\n    }\n    function abi_decode_tuple_t_addresst_addresst_uint64t_bytes_memory_ptr(headStart, dataEnd) -> value0, value1, value2, value3\n    {\n        if slt(sub(dataEnd, headStart), 128) { revert(value2, value2) }\n        let value := calldataload(headStart)\n        validator_revert_address(value)\n        value0 := value\n        let value_1 := calldataload(add(headStart, 32))\n        validator_revert_address(value_1)\n        value1 := value_1\n        let value_2 := calldataload(add(headStart, 64))\n        let _1 := sub(shl(64, 1), 1)\n        if iszero(eq(value_2, and(value_2, _1))) { revert(value2, value2) }\n        value2 := value_2\n        let offset := calldataload(add(headStart, 96))\n        if gt(offset, _1) { revert(value3, value3) }\n        value3 := abi_decode_bytes(add(headStart, offset), dataEnd)\n    }\n    function abi_decode_tuple_t_addresst_bytes_memory_ptr(headStart, dataEnd) -> value0, value1\n    {\n        if slt(sub(dataEnd, headStart), 64) { revert(value0, value0) }\n        let value := calldataload(headStart)\n        validator_revert_address(value)\n        value0 := value\n        let offset := calldataload(add(headStart, 32))\n        if gt(offset, sub(shl(64, 1), 1)) { revert(value1, value1) }\n        value1 := abi_decode_bytes(add(headStart, offset), dataEnd)\n    }\n    function abi_decode_tuple_t_addresst_string_memory_ptrt_string_memory_ptrt_string_memory_ptr(headStart, dataEnd) -> value0, value1, value2, value3\n    {\n        if slt(sub(dataEnd, headStart), 128) { revert(value0, value0) }\n        let value := calldataload(headStart)\n        validator_revert_address(value)\n        value0 := value\n        let offset := calldataload(add(headStart, 32))\n        let _1 := sub(shl(64, 1), 1)\n        if gt(offset, _1) { revert(value1, value1) }\n        value1 := abi_decode_bytes(add(headStart, offset), dataEnd)\n        let offset_1 := calldataload(add(headStart, 64))\n        if gt(offset_1, _1) { revert(value2, value2) }\n        value2 := abi_decode_bytes(add(headStart, offset_1), dataEnd)\n        let offset_2 := calldataload(add(headStart, 96))\n        if gt(offset_2, _1) { revert(value3, value3) }\n        value3 := abi_decode_bytes(add(headStart, offset_2), dataEnd)\n    }\n    function abi_decode_tuple_t_bytes32(headStart, dataEnd) -> value0\n    {\n        if slt(sub(dataEnd, headStart), 32) { revert(value0, value0) }\n        value0 := calldataload(headStart)\n    }\n    function abi_decode_tuple_t_bytes32t_address(headStart, dataEnd) -> value0, value1\n    {\n        if slt(sub(dataEnd, headStart), 64) { revert(value0, value0) }\n        value0 := calldataload(headStart)\n        let value := calldataload(add(headStart, 32))\n        validator_revert_address(value)\n        value1 := value\n    }\n    function abi_decode_tuple_t_bytes4(headStart, dataEnd) -> value0\n    {\n        if slt(sub(dataEnd, headStart), 32) { revert(value0, value0) }\n        let value := calldataload(headStart)\n        if iszero(eq(value, and(value, shl(224, 0xffffffff)))) { revert(value0, value0) }\n        value0 := value\n    }\n    function abi_decode_tuple_t_contract$_Freeport_$4388t_contract$_NFTAttachment_$4990(headStart, dataEnd) -> value0, value1\n    {\n        if slt(sub(dataEnd, headStart), 64) { revert(value0, value0) }\n        let value := calldataload(headStart)\n        validator_revert_address(value)\n        value0 := value\n        let value_1 := calldataload(add(headStart, 32))\n        validator_revert_address(value_1)\n        value1 := value_1\n    }\n    function abi_decode_tuple_t_uint256_fromMemory(headStart, dataEnd) -> value0\n    {\n        if slt(sub(dataEnd, headStart), 32) { revert(value0, value0) }\n        value0 := mload(headStart)\n    }\n    function abi_encode_bytes(value, pos) -> end\n    {\n        let length := mload(value)\n        mstore(pos, length)\n        copy_memory_to_memory(add(value, 0x20), add(pos, 0x20), length)\n        end := add(add(pos, and(add(length, 31), not(31))), 0x20)\n    }\n    function abi_encode_tuple_packed_t_bytes_memory_ptr__to_t_bytes_memory_ptr__nonPadded_inplace_fromStack_reversed(pos, value0) -> end\n    {\n        let length := mload(value0)\n        copy_memory_to_memory(add(value0, 0x20), pos, length)\n        end := add(pos, length)\n    }\n    function abi_encode_tuple_packed_t_string_memory_ptr__to_t_string_memory_ptr__nonPadded_inplace_fromStack_reversed(pos, value0) -> end\n    {\n        let length := mload(value0)\n        copy_memory_to_memory(add(value0, 0x20), pos, length)\n        end := add(pos, length)\n    }\n    function abi_encode_tuple_packed_t_stringliteral_da0d07ce4a2849fbfc4cb9d6f939e9bd93016c372ca4a5ff14fe06caf3d67874_t_string_memory_ptr_t_stringliteral_f986ce851518a691bccd44ea42a5a185d1b866ef6cb07984a09b81694d20ab69_t_string_memory_ptr__to_t_string_memory_ptr_t_string_memory_ptr_t_string_memory_ptr_t_string_memory_ptr__nonPadded_inplace_fromStack_reversed(pos, value1, value0) -> end\n    {\n        mstore(pos, \"AccessControl: account \")\n        let length := mload(value0)\n        copy_memory_to_memory(add(value0, 0x20), add(pos, 23), length)\n        let _1 := add(pos, length)\n        mstore(add(_1, 23), \" is missing role \")\n        let length_1 := mload(value1)\n        copy_memory_to_memory(add(value1, 0x20), add(_1, 40), length_1)\n        end := add(add(_1, length_1), 40)\n    }\n    function abi_encode_tuple_t_address__to_t_address__fromStack_reversed(headStart, value0) -> tail\n    {\n        tail := add(headStart, 32)\n        mstore(headStart, and(value0, sub(shl(160, 1), 1)))\n    }\n    function abi_encode_tuple_t_address_t_address_t_address_t_uint256_t_uint64__to_t_address_t_address_t_address_t_uint256_t_uint64__fromStack_reversed(headStart, value4, value3, value2, value1, value0) -> tail\n    {\n        tail := add(headStart, 160)\n        let _1 := sub(shl(160, 1), 1)\n        mstore(headStart, and(value0, _1))\n        mstore(add(headStart, 32), and(value1, _1))\n        mstore(add(headStart, 64), and(value2, _1))\n        mstore(add(headStart, 96), value3)\n        mstore(add(headStart, 128), and(value4, sub(shl(64, 1), 1)))\n    }\n    function abi_encode_tuple_t_address_t_address_t_string_memory_ptr_t_string_memory_ptr_t_string_memory_ptr_t_contract$_Freeport_$4388_t_contract$_NFTAttachment_$4990__to_t_address_t_address_t_string_memory_ptr_t_string_memory_ptr_t_string_memory_ptr_t_address_t_address__fromStack_reversed(headStart, value6, value5, value4, value3, value2, value1, value0) -> tail\n    {\n        let _1 := sub(shl(160, 1), 1)\n        mstore(headStart, and(value0, _1))\n        mstore(add(headStart, 32), and(value1, _1))\n        mstore(add(headStart, 64), 224)\n        let tail_1 := abi_encode_bytes(value2, add(headStart, 224))\n        mstore(add(headStart, 96), sub(tail_1, headStart))\n        let tail_2 := abi_encode_bytes(value3, tail_1)\n        mstore(add(headStart, 128), sub(tail_2, headStart))\n        tail := abi_encode_bytes(value4, tail_2)\n        mstore(add(headStart, 160), and(value5, _1))\n        mstore(add(headStart, 192), and(value6, _1))\n    }\n    function abi_encode_tuple_t_address_t_uint64_t_bytes_memory_ptr__to_t_address_t_uint64_t_bytes_memory_ptr__fromStack_reversed(headStart, value2, value1, value0) -> tail\n    {\n        mstore(headStart, and(value0, sub(shl(160, 1), 1)))\n        mstore(add(headStart, 32), and(value1, sub(shl(64, 1), 1)))\n        mstore(add(headStart, 64), 96)\n        tail := abi_encode_bytes(value2, add(headStart, 96))\n    }\n    function abi_encode_tuple_t_bool__to_t_bool__fromStack_reversed(headStart, value0) -> tail\n    {\n        tail := add(headStart, 32)\n        mstore(headStart, iszero(iszero(value0)))\n    }\n    function abi_encode_tuple_t_bytes32__to_t_bytes32__fromStack_reversed(headStart, value0) -> tail\n    {\n        tail := add(headStart, 32)\n        mstore(headStart, value0)\n    }\n    function abi_encode_tuple_t_contract$_Freeport_$4388__to_t_address__fromStack_reversed(headStart, value0) -> tail\n    {\n        tail := add(headStart, 32)\n        mstore(headStart, and(value0, sub(shl(160, 1), 1)))\n    }\n    function abi_encode_tuple_t_contract$_NFTAttachment_$4990__to_t_address__fromStack_reversed(headStart, value0) -> tail\n    {\n        tail := add(headStart, 32)\n        mstore(headStart, and(value0, sub(shl(160, 1), 1)))\n    }\n    function abi_encode_tuple_t_string_memory_ptr__to_t_string_memory_ptr__fromStack_reversed(headStart, value0) -> tail\n    {\n        mstore(headStart, 32)\n        tail := abi_encode_bytes(value0, add(headStart, 32))\n    }\n    function abi_encode_tuple_t_stringliteral_04fc88320d7c9f639317c75102c103ff0044d3075a5c627e24e76e5bbb2733c2__to_t_string_memory_ptr__fromStack_reversed(headStart) -> tail\n    {\n        mstore(headStart, 32)\n        mstore(add(headStart, 32), 32)\n        mstore(add(headStart, 64), \"Strings: hex length insufficient\")\n        tail := add(headStart, 96)\n    }\n    function abi_encode_tuple_t_stringliteral_2425ea74e68e4bcd365d89824a06e1475543dcbb6a12bf699e5abf6b11b9b6ed__to_t_string_memory_ptr__fromStack_reversed(headStart) -> tail\n    {\n        mstore(headStart, 32)\n        mstore(add(headStart, 32), 47)\n        mstore(add(headStart, 64), \"ERC1967Upgrade: upgrade breaks f\")\n        mstore(add(headStart, 96), \"urther upgrades\")\n        tail := add(headStart, 128)\n    }\n    function abi_encode_tuple_t_stringliteral_5c86de0fd40bcfe5c68e5e5a19dd628ec51e609f8f0b01251c58c32cd9fe6c55__to_t_string_memory_ptr__fromStack_reversed(headStart) -> tail\n    {\n        mstore(headStart, 32)\n        mstore(add(headStart, 32), 31)\n        mstore(add(headStart, 64), \"zero address collection manager\")\n        tail := add(headStart, 96)\n    }\n    function abi_encode_tuple_t_stringliteral_62f2acdec8b29aac2a108c6d3b76a056eee8702e0322bafc1aebad3ab186c7b2__to_t_string_memory_ptr__fromStack_reversed(headStart) -> tail\n    {\n        mstore(headStart, 32)\n        mstore(add(headStart, 32), 23)\n        mstore(add(headStart, 64), \"only collection creator\")\n        tail := add(headStart, 96)\n    }\n    function abi_encode_tuple_t_stringliteral_6f3b208787dea2462a200cdab645373234ab44364d8830a06c6c9f73e928a1bd__to_t_string_memory_ptr__fromStack_reversed(headStart) -> tail\n    {\n        mstore(headStart, 32)\n        mstore(add(headStart, 32), 30)\n        mstore(add(headStart, 64), \"collection name already exists\")\n        tail := add(headStart, 96)\n    }\n    function abi_encode_tuple_t_stringliteral_7a2a4e26842155ea933fe6eb6e3137eb5a296dcdf55721c552be7b4c3cc23759__to_t_string_memory_ptr__fromStack_reversed(headStart) -> tail\n    {\n        mstore(headStart, 32)\n        mstore(add(headStart, 32), 46)\n        mstore(add(headStart, 64), \"Initializable: contract is alrea\")\n        mstore(add(headStart, 96), \"dy initialized\")\n        tail := add(headStart, 128)\n    }\n    function abi_encode_tuple_t_stringliteral_972b7028e8de0bff0d553b3264eba2312ec98a552add05e58853b313f9f4ac65__to_t_string_memory_ptr__fromStack_reversed(headStart) -> tail\n    {\n        mstore(headStart, 32)\n        mstore(add(headStart, 32), 45)\n        mstore(add(headStart, 64), \"ERC1967: new implementation is n\")\n        mstore(add(headStart, 96), \"ot a contract\")\n        tail := add(headStart, 128)\n    }\n    function abi_encode_tuple_t_stringliteral_b94ded0918034cf8f896e19fa3cfdef1188cd569c577264a3622e49152f88520__to_t_string_memory_ptr__fromStack_reversed(headStart) -> tail\n    {\n        mstore(headStart, 32)\n        mstore(add(headStart, 32), 38)\n        mstore(add(headStart, 64), \"Address: delegate call to non-co\")\n        mstore(add(headStart, 96), \"ntract\")\n        tail := add(headStart, 128)\n    }\n    function abi_encode_tuple_t_stringliteral_c13c296baebb1f79b18541a06c39b3d56ce1654fd26fe72a62e2fb7efe67be9a__to_t_string_memory_ptr__fromStack_reversed(headStart) -> tail\n    {\n        mstore(headStart, 32)\n        mstore(add(headStart, 32), 10)\n        mstore(add(headStart, 64), \"Only Admin\")\n        tail := add(headStart, 96)\n    }\n    function abi_encode_tuple_t_stringliteral_fb06fa8ff2141e8ed74502f6792273793f25f0e9d3cf15344f3f5a0d4948fd4b__to_t_string_memory_ptr__fromStack_reversed(headStart) -> tail\n    {\n        mstore(headStart, 32)\n        mstore(add(headStart, 32), 47)\n        mstore(add(headStart, 64), \"AccessControl: can only renounce\")\n        mstore(add(headStart, 96), \" roles for self\")\n        tail := add(headStart, 128)\n    }\n    function checked_add_t_uint256(x, y) -> sum\n    {\n        if gt(x, not(y)) { panic_error_0x11() }\n        sum := add(x, y)\n    }\n    function checked_mul_t_uint256(x, y) -> product\n    {\n        if and(iszero(iszero(x)), gt(y, div(not(0), x))) { panic_error_0x11() }\n        product := mul(x, y)\n    }\n    function copy_memory_to_memory(src, dst, length)\n    {\n        let i := 0\n        for { } lt(i, length) { i := add(i, 32) }\n        {\n            mstore(add(dst, i), mload(add(src, i)))\n        }\n        if gt(i, length) { mstore(add(dst, length), 0) }\n    }\n    function decrement_t_uint256(value) -> ret\n    {\n        if iszero(value) { panic_error_0x11() }\n        ret := add(value, not(0))\n    }\n    function panic_error_0x11()\n    {\n        mstore(0, shl(224, 0x4e487b71))\n        mstore(4, 0x11)\n        revert(0, 0x24)\n    }\n    function panic_error_0x41()\n    {\n        mstore(0, shl(224, 0x4e487b71))\n        mstore(4, 0x41)\n        revert(0, 0x24)\n    }\n    function validator_revert_address(value)\n    {\n        if iszero(eq(value, and(value, sub(shl(160, 1), 1)))) { revert(0, 0) }\n    }\n}",
       "id": 63,
       "language": "Yul",
       "name": "#utility.yul"
@@ -10528,23 +10538,23 @@
     "exportedSymbols": {
       "AccessControlUpgradeable": [395],
       "AddressUpgradeable": [1519],
-      "BaseNFT": [6054],
-      "BaseTransferOperator": [6128],
+      "BaseNFT": [6059],
+      "BaseTransferOperator": [6133],
       "Collection": [3783],
       "CollectionFactory": [4054],
-      "CollectionIdCounter": [8125],
-      "CollectionIssuance": [8267],
-      "CollectionNFTAttachment": [8325],
-      "CollectionRoyalties": [8447],
+      "CollectionIdCounter": [8130],
+      "CollectionIssuance": [8272],
+      "CollectionNFTAttachment": [8330],
+      "CollectionRoyalties": [8452],
       "ContextUpgradeable": [1564],
-      "Currency": [6202],
-      "ERC1155Upgradeable": [9545],
+      "Currency": [6207],
+      "ERC1155Upgradeable": [9550],
       "ERC165Upgradeable": [2017],
       "ERC1967UpgradeUpgradeable": [829],
-      "ERC20Adapter": [6330],
+      "ERC20Adapter": [6335],
       "Freeport": [4388],
-      "FreeportDelegator": [8466],
-      "HasGlobalNftId": [6436],
+      "FreeportDelegator": [8471],
+      "HasGlobalNftId": [6441],
       "IAccessControlUpgradeable": [44],
       "IBeaconUpgradeable": [839],
       "IERC1155MetadataURIUpgradeable": [1137],
@@ -10553,20 +10563,20 @@
       "IERC165Upgradeable": [2029],
       "IERC20": [2982],
       "Initializable": [885],
-      "Issuance": [6697],
-      "JointAccounts": [7041],
-      "MetaTxContext": [7118],
-      "NFTAttachment": [4985],
-      "NFTAttachmentDelegator": [8485],
-      "OpenSeaCollection": [7150],
-      "SimpleExchange": [7398],
+      "Issuance": [6702],
+      "JointAccounts": [7046],
+      "MetaTxContext": [7123],
+      "NFTAttachment": [4990],
+      "NFTAttachmentDelegator": [8490],
+      "OpenSeaCollection": [7155],
+      "SimpleExchange": [7403],
       "StorageSlotUpgradeable": [1624],
       "StringsUpgradeable": [1827],
-      "TransferFees": [8014],
-      "TransferOperator": [8058],
+      "TransferFees": [8019],
+      "TransferOperator": [8063],
       "UUPSUpgradeable": [959],
-      "Upgradeable": [8099],
-      "WithCollectionManager": [8119]
+      "Upgradeable": [8104],
+      "WithCollectionManager": [8124]
     },
     "id": 4055,
     "nodeType": "SourceUnit",
@@ -10584,7 +10594,7 @@
         "nameLocation": "-1:-1:-1",
         "nodeType": "ImportDirective",
         "scope": 4055,
-        "sourceUnit": 7119,
+        "sourceUnit": 7124,
         "src": "25:43:29",
         "symbolAliases": [],
         "unitAlias": ""
@@ -10609,7 +10619,7 @@
               "id": 3789,
               "name": "MetaTxContext",
               "nodeType": "IdentifierPath",
-              "referencedDeclaration": 7118,
+              "referencedDeclaration": 7123,
               "src": "216:13:29"
             },
             "id": 3790,
@@ -10628,7 +10638,7 @@
         "fullyImplemented": true,
         "id": 4054,
         "linearizedBaseContracts": [
-          4054, 7118, 8099, 395, 2017, 2029, 44, 1564, 959, 829, 885
+          4054, 7123, 8104, 395, 2017, 2029, 44, 1564, 959, 829, 885
         ],
         "name": "CollectionFactory",
         "nameLocation": "195:17:29",
@@ -10649,7 +10659,7 @@
                       "name": "__MetaTxContext_init",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 7053,
+                      "referencedDeclaration": 7058,
                       "src": "336:20:29",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_internal_nonpayable$__$returns$__$",
@@ -10733,7 +10743,7 @@
                       "referencedDeclaration": 3823,
                       "src": "399:13:29",
                       "typeDescriptions": {
-                        "typeIdentifier": "t_contract$_NFTAttachment_$4985",
+                        "typeIdentifier": "t_contract$_NFTAttachment_$4990",
                         "typeString": "contract NFTAttachment"
                       }
                     },
@@ -10747,13 +10757,13 @@
                       "referencedDeclaration": 3796,
                       "src": "415:14:29",
                       "typeDescriptions": {
-                        "typeIdentifier": "t_contract$_NFTAttachment_$4985",
+                        "typeIdentifier": "t_contract$_NFTAttachment_$4990",
                         "typeString": "contract NFTAttachment"
                       }
                     },
                     "src": "399:30:29",
                     "typeDescriptions": {
-                      "typeIdentifier": "t_contract$_NFTAttachment_$4985",
+                      "typeIdentifier": "t_contract$_NFTAttachment_$4990",
                       "typeString": "contract NFTAttachment"
                     }
                   },
@@ -10835,7 +10845,7 @@
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
-                    "typeIdentifier": "t_contract$_NFTAttachment_$4985",
+                    "typeIdentifier": "t_contract$_NFTAttachment_$4990",
                     "typeString": "contract NFTAttachment"
                   },
                   "typeName": {
@@ -10845,13 +10855,13 @@
                       "id": 3794,
                       "name": "NFTAttachment",
                       "nodeType": "IdentifierPath",
-                      "referencedDeclaration": 4985,
+                      "referencedDeclaration": 4990,
                       "src": "277:13:29"
                     },
-                    "referencedDeclaration": 4985,
+                    "referencedDeclaration": 4990,
                     "src": "277:13:29",
                     "typeDescriptions": {
-                      "typeIdentifier": "t_contract$_NFTAttachment_$4985",
+                      "typeIdentifier": "t_contract$_NFTAttachment_$4990",
                       "typeString": "contract NFTAttachment"
                     }
                   },
@@ -10967,7 +10977,7 @@
             "stateVariable": true,
             "storageLocation": "default",
             "typeDescriptions": {
-              "typeIdentifier": "t_contract$_NFTAttachment_$4985",
+              "typeIdentifier": "t_contract$_NFTAttachment_$4990",
               "typeString": "contract NFTAttachment"
             },
             "typeName": {
@@ -10977,13 +10987,13 @@
                 "id": 3821,
                 "name": "NFTAttachment",
                 "nodeType": "IdentifierPath",
-                "referencedDeclaration": 4985,
+                "referencedDeclaration": 4990,
                 "src": "665:13:29"
               },
-              "referencedDeclaration": 4985,
+              "referencedDeclaration": 4990,
               "src": "665:13:29",
               "typeDescriptions": {
-                "typeIdentifier": "t_contract$_NFTAttachment_$4985",
+                "typeIdentifier": "t_contract$_NFTAttachment_$4990",
                 "typeString": "contract NFTAttachment"
               }
             },
@@ -11492,8 +11502,8 @@
                               "id": 3879,
                               "name": "_msgSender",
                               "nodeType": "Identifier",
-                              "overloadedDeclarations": [7090],
-                              "referencedDeclaration": 7090,
+                              "overloadedDeclarations": [7095],
+                              "referencedDeclaration": 7095,
                               "src": "1909:10:29",
                               "typeDescriptions": {
                                 "typeIdentifier": "t_function_internal_view$__$returns$_t_address_$",
@@ -12155,7 +12165,7 @@
                         "referencedDeclaration": 3823,
                         "src": "2278:13:29",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_contract$_NFTAttachment_$4985",
+                          "typeIdentifier": "t_contract$_NFTAttachment_$4990",
                           "typeString": "contract NFTAttachment"
                         }
                       }
@@ -12187,7 +12197,7 @@
                           "typeString": "contract Freeport"
                         },
                         {
-                          "typeIdentifier": "t_contract$_NFTAttachment_$4985",
+                          "typeIdentifier": "t_contract$_NFTAttachment_$4990",
                           "typeString": "contract NFTAttachment"
                         }
                       ],
@@ -12213,7 +12223,7 @@
                       "referencedDeclaration": 3690,
                       "src": "2185:21:29",
                       "typeDescriptions": {
-                        "typeIdentifier": "t_function_external_nonpayable$_t_address_$_t_address_$_t_string_memory_ptr_$_t_string_memory_ptr_$_t_string_memory_ptr_$_t_contract$_Freeport_$4388_$_t_contract$_NFTAttachment_$4985_$returns$__$",
+                        "typeIdentifier": "t_function_external_nonpayable$_t_address_$_t_address_$_t_string_memory_ptr_$_t_string_memory_ptr_$_t_string_memory_ptr_$_t_contract$_Freeport_$4388_$_t_contract$_NFTAttachment_$4990_$returns$__$",
                         "typeString": "function (address,address,string memory,string memory,string memory,contract Freeport,contract NFTAttachment) external"
                       }
                     },
@@ -13104,8 +13114,8 @@
                               "id": 3993,
                               "name": "_msgSender",
                               "nodeType": "Identifier",
-                              "overloadedDeclarations": [7090],
-                              "referencedDeclaration": 7090,
+                              "overloadedDeclarations": [7095],
+                              "referencedDeclaration": 7095,
                               "src": "2803:10:29",
                               "typeDescriptions": {
                                 "typeIdentifier": "t_function_internal_view$__$returns$_t_address_$",
@@ -13435,8 +13445,8 @@
                               "id": 4022,
                               "name": "_msgSender",
                               "nodeType": "Identifier",
-                              "overloadedDeclarations": [7090],
-                              "referencedDeclaration": 7090,
+                              "overloadedDeclarations": [7095],
+                              "referencedDeclaration": 7095,
                               "src": "3059:10:29",
                               "typeDescriptions": {
                                 "typeIdentifier": "t_function_internal_view$__$returns$_t_address_$",
@@ -13594,8 +13604,8 @@
                       "id": 4030,
                       "name": "_msgSender",
                       "nodeType": "Identifier",
-                      "overloadedDeclarations": [7090],
-                      "referencedDeclaration": 7090,
+                      "overloadedDeclarations": [7095],
+                      "referencedDeclaration": 7095,
                       "src": "3129:10:29",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_internal_view$__$returns$_t_address_$",
@@ -13761,7 +13771,7 @@
                       "lValueRequested": false,
                       "memberName": "issueOnBehalfOf",
                       "nodeType": "MemberAccess",
-                      "referencedDeclaration": 8220,
+                      "referencedDeclaration": 8225,
                       "src": "3167:38:29",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_external_nonpayable$_t_address_$_t_uint64_$_t_bytes_memory_ptr_$returns$_t_uint256_$",
@@ -14055,6 +14065,189 @@
     "version": "0.8.4+commit.c7e474f2.Emscripten.clang"
   },
   "networks": {
+    "3": {
+      "events": {
+        "0x7e644d79422f17c01e4894b5f4f588d331ebfa28653d42ae832dc59e38c9798f": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "internalType": "address",
+              "name": "previousAdmin",
+              "type": "address"
+            },
+            {
+              "indexed": false,
+              "internalType": "address",
+              "name": "newAdmin",
+              "type": "address"
+            }
+          ],
+          "name": "AdminChanged",
+          "type": "event"
+        },
+        "0x1cf3b03a6cf19fa2baba4df148e9dcabedea7f8a5c07840e207e5c089be95d3e": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": true,
+              "internalType": "address",
+              "name": "beacon",
+              "type": "address"
+            }
+          ],
+          "name": "BeaconUpgraded",
+          "type": "event"
+        },
+        "0x2660dd916ec25bcad9a3dd62c721e438ec0e975817265c1e03c2639b24ac7007": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "internalType": "string",
+              "name": "name",
+              "type": "string"
+            },
+            {
+              "indexed": true,
+              "internalType": "address",
+              "name": "addr",
+              "type": "address"
+            }
+          ],
+          "name": "CollectionCreated",
+          "type": "event"
+        },
+        "0xc374fe64f912505e324ebcdfddeec8e13cacc40cfd16e03bfdb9efdedef9e221": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "internalType": "address",
+              "name": "_operator",
+              "type": "address"
+            },
+            {
+              "indexed": false,
+              "internalType": "address",
+              "name": "_collection",
+              "type": "address"
+            },
+            {
+              "indexed": false,
+              "internalType": "address",
+              "name": "_holder",
+              "type": "address"
+            },
+            {
+              "indexed": false,
+              "internalType": "uint256",
+              "name": "_id",
+              "type": "uint256"
+            },
+            {
+              "indexed": false,
+              "internalType": "uint64",
+              "name": "_amount",
+              "type": "uint64"
+            }
+          ],
+          "name": "MintOnBehalf",
+          "type": "event"
+        },
+        "0xbd79b86ffe0ab8e8776151514217cd7cacd52c909f66475c3af44e129f0b00ff": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": true,
+              "internalType": "bytes32",
+              "name": "role",
+              "type": "bytes32"
+            },
+            {
+              "indexed": true,
+              "internalType": "bytes32",
+              "name": "previousAdminRole",
+              "type": "bytes32"
+            },
+            {
+              "indexed": true,
+              "internalType": "bytes32",
+              "name": "newAdminRole",
+              "type": "bytes32"
+            }
+          ],
+          "name": "RoleAdminChanged",
+          "type": "event"
+        },
+        "0x2f8788117e7eff1d82e926ec794901d17c78024a50270940304540a733656f0d": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": true,
+              "internalType": "bytes32",
+              "name": "role",
+              "type": "bytes32"
+            },
+            {
+              "indexed": true,
+              "internalType": "address",
+              "name": "account",
+              "type": "address"
+            },
+            {
+              "indexed": true,
+              "internalType": "address",
+              "name": "sender",
+              "type": "address"
+            }
+          ],
+          "name": "RoleGranted",
+          "type": "event"
+        },
+        "0xf6391f5c32d9c69d2a47ea670b442974b53935d1edc7fd64eb21e047a839171b": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": true,
+              "internalType": "bytes32",
+              "name": "role",
+              "type": "bytes32"
+            },
+            {
+              "indexed": true,
+              "internalType": "address",
+              "name": "account",
+              "type": "address"
+            },
+            {
+              "indexed": true,
+              "internalType": "address",
+              "name": "sender",
+              "type": "address"
+            }
+          ],
+          "name": "RoleRevoked",
+          "type": "event"
+        },
+        "0xbc7cd75a20ee27fd9adebab32041f755214dbc6bffa90cc0225b39da2e5c2d3b": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": true,
+              "internalType": "address",
+              "name": "implementation",
+              "type": "address"
+            }
+          ],
+          "name": "Upgraded",
+          "type": "event"
+        }
+      },
+      "links": {},
+      "address": "0x8299fdc2387E14842Cfc7ce797f277B806F9eEC3",
+      "transactionHash": "0xaeab4d3ba5c325e3dbf965dba92532d0022939edf40a689b29576b95cc89d73f"
+    },
     "80001": {
       "events": {
         "0x7e644d79422f17c01e4894b5f4f588d331ebfa28653d42ae832dc59e38c9798f": {
@@ -14203,7 +14396,8 @@
     }
   },
   "schemaVersion": "3.4.8",
-  "updatedAt": "2022-07-15T15:24:50.615Z",
+  "updatedAt": "2022-07-21T13:18:38.234Z",
+  "networkType": "ethereum",
   "devdoc": {
     "kind": "dev",
     "methods": {

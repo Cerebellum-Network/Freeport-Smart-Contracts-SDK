@@ -15,7 +15,9 @@ import {
   getSimpleAuctionAddress,
 } from './index';
 
-const TESTNET_URL = 'https://rpc-mumbai.maticvigil.com';
+// const TESTNET_URL = 'https://rpc-mumbai.maticvigil.com';
+const TESTNET_URL =
+  'https://ropsten.infura.io/v3/0d496480092e423d90617329306a0e1b';
 
 jest.setTimeout(30e3);
 
@@ -126,12 +128,12 @@ testIfBiconomy(
 
 test('Application parameter should use different config', () => {
   const contractAddress = getContractAddress({
-    chainId: 80_001,
+    chainId: 3,
     contractName: 'Freeport',
     deployment: 'dev',
   });
 
-  expect(contractAddress).toEqual(config.dev['80001'].Freeport);
+  expect(contractAddress).toEqual(config.dev['3'].Freeport);
 
   const liveOneContractAddress = getContractAddress({
     chainId: 80_001,
