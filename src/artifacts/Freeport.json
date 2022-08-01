@@ -405,8 +405,7 @@
         }
       ],
       "stateMutability": "view",
-      "type": "function",
-      "constant": true
+      "type": "function"
     },
     {
       "inputs": [],
@@ -419,8 +418,7 @@
         }
       ],
       "stateMutability": "view",
-      "type": "function",
-      "constant": true
+      "type": "function"
     },
     {
       "inputs": [],
@@ -433,8 +431,7 @@
         }
       ],
       "stateMutability": "view",
-      "type": "function",
-      "constant": true
+      "type": "function"
     },
     {
       "inputs": [],
@@ -447,8 +444,7 @@
         }
       ],
       "stateMutability": "view",
-      "type": "function",
-      "constant": true
+      "type": "function"
     },
     {
       "inputs": [],
@@ -461,8 +457,7 @@
         }
       ],
       "stateMutability": "view",
-      "type": "function",
-      "constant": true
+      "type": "function"
     },
     {
       "inputs": [],
@@ -475,8 +470,7 @@
         }
       ],
       "stateMutability": "view",
-      "type": "function",
-      "constant": true
+      "type": "function"
     },
     {
       "inputs": [],
@@ -489,8 +483,7 @@
         }
       ],
       "stateMutability": "view",
-      "type": "function",
-      "constant": true
+      "type": "function"
     },
     {
       "inputs": [
@@ -514,8 +507,7 @@
         }
       ],
       "stateMutability": "view",
-      "type": "function",
-      "constant": true
+      "type": "function"
     },
     {
       "inputs": [
@@ -539,8 +531,7 @@
         }
       ],
       "stateMutability": "view",
-      "type": "function",
-      "constant": true
+      "type": "function"
     },
     {
       "inputs": [
@@ -564,8 +555,7 @@
         }
       ],
       "stateMutability": "view",
-      "type": "function",
-      "constant": true
+      "type": "function"
     },
     {
       "inputs": [
@@ -679,8 +669,7 @@
         }
       ],
       "stateMutability": "view",
-      "type": "function",
-      "constant": true
+      "type": "function"
     },
     {
       "inputs": [
@@ -730,8 +719,7 @@
         }
       ],
       "stateMutability": "view",
-      "type": "function",
-      "constant": true
+      "type": "function"
     },
     {
       "inputs": [
@@ -760,8 +748,7 @@
         }
       ],
       "stateMutability": "pure",
-      "type": "function",
-      "constant": true
+      "type": "function"
     },
     {
       "inputs": [
@@ -785,8 +772,7 @@
         }
       ],
       "stateMutability": "view",
-      "type": "function",
-      "constant": true
+      "type": "function"
     },
     {
       "inputs": [
@@ -805,8 +791,7 @@
         }
       ],
       "stateMutability": "view",
-      "type": "function",
-      "constant": true
+      "type": "function"
     },
     {
       "inputs": [
@@ -850,8 +835,7 @@
         }
       ],
       "stateMutability": "view",
-      "type": "function",
-      "constant": true
+      "type": "function"
     },
     {
       "inputs": [
@@ -890,8 +874,7 @@
         }
       ],
       "stateMutability": "view",
-      "type": "function",
-      "constant": true
+      "type": "function"
     },
     {
       "inputs": [
@@ -933,8 +916,7 @@
         }
       ],
       "stateMutability": "view",
-      "type": "function",
-      "constant": true
+      "type": "function"
     },
     {
       "inputs": [
@@ -958,8 +940,7 @@
         }
       ],
       "stateMutability": "view",
-      "type": "function",
-      "constant": true
+      "type": "function"
     },
     {
       "inputs": [
@@ -978,8 +959,7 @@
         }
       ],
       "stateMutability": "view",
-      "type": "function",
-      "constant": true
+      "type": "function"
     },
     {
       "inputs": [
@@ -998,8 +978,7 @@
         }
       ],
       "stateMutability": "view",
-      "type": "function",
-      "constant": true
+      "type": "function"
     },
     {
       "inputs": [
@@ -1052,8 +1031,7 @@
         }
       ],
       "stateMutability": "view",
-      "type": "function",
-      "constant": true
+      "type": "function"
     },
     {
       "inputs": [
@@ -1095,8 +1073,7 @@
         }
       ],
       "stateMutability": "pure",
-      "type": "function",
-      "constant": true
+      "type": "function"
     },
     {
       "inputs": [
@@ -1279,8 +1256,7 @@
         }
       ],
       "stateMutability": "view",
-      "type": "function",
-      "constant": true
+      "type": "function"
     },
     {
       "inputs": [
@@ -1372,8 +1348,7 @@
       "name": "upgradeToAndCall",
       "outputs": [],
       "stateMutability": "payable",
-      "type": "function",
-      "payable": true
+      "type": "function"
     },
     {
       "inputs": [
@@ -1392,8 +1367,7 @@
         }
       ],
       "stateMutability": "view",
-      "type": "function",
-      "constant": true
+      "type": "function"
     },
     {
       "inputs": [
@@ -25801,14 +25775,14 @@
     "exportedSymbols": {
       "AccessControlUpgradeable": [395],
       "AddressUpgradeable": [1519],
-      "BaseNFT": [6059],
+      "BaseNFT": [6032],
       "ContextUpgradeable": [1564],
-      "Currency": [6207],
-      "ERC1155Upgradeable": [9550],
+      "Currency": [6180],
+      "ERC1155Upgradeable": [9523],
       "ERC165Upgradeable": [2017],
       "ERC1967UpgradeUpgradeable": [829],
-      "ERC20Adapter": [6335],
-      "Freeport": [4388],
+      "ERC20Adapter": [6308],
+      "Freeport": [4361],
       "IAccessControlUpgradeable": [44],
       "IBeaconUpgradeable": [839],
       "IERC1155MetadataURIUpgradeable": [1137],
@@ -25817,22 +25791,22 @@
       "IERC165Upgradeable": [2029],
       "IERC20": [2982],
       "Initializable": [885],
-      "Issuance": [6702],
-      "JointAccounts": [7046],
-      "MetaTxContext": [7123],
-      "SimpleExchange": [7403],
+      "Issuance": [6675],
+      "JointAccounts": [7019],
+      "MetaTxContext": [7096],
+      "SimpleExchange": [7376],
       "StorageSlotUpgradeable": [1624],
       "StringsUpgradeable": [1827],
-      "TransferFees": [8019],
-      "TransferOperator": [8063],
+      "TransferFees": [7992],
+      "TransferOperator": [8036],
       "UUPSUpgradeable": [959],
-      "Upgradeable": [8104]
+      "Upgradeable": [8077]
     },
-    "id": 4389,
+    "id": 4362,
     "nodeType": "SourceUnit",
     "nodes": [
       {
-        "id": 4373,
+        "id": 4346,
         "literals": ["solidity", "^", "0.8", ".0"],
         "nodeType": "PragmaDirective",
         "src": "0:23:31"
@@ -25840,11 +25814,11 @@
       {
         "absolutePath": "project:/contracts/freeportParts/SimpleExchange.sol",
         "file": "./freeportParts/SimpleExchange.sol",
-        "id": 4374,
+        "id": 4347,
         "nameLocation": "-1:-1:-1",
         "nodeType": "ImportDirective",
-        "scope": 4389,
-        "sourceUnit": 7404,
+        "scope": 4362,
+        "sourceUnit": 7377,
         "src": "25:44:31",
         "symbolAliases": [],
         "unitAlias": ""
@@ -25854,13 +25828,13 @@
         "baseContracts": [
           {
             "baseName": {
-              "id": 4376,
+              "id": 4349,
               "name": "SimpleExchange",
               "nodeType": "IdentifierPath",
-              "referencedDeclaration": 7403,
+              "referencedDeclaration": 7376,
               "src": "597:14:31"
             },
-            "id": 4377,
+            "id": 4350,
             "nodeType": "InheritanceSpecifier",
             "src": "597:14:31"
           }
@@ -25868,16 +25842,16 @@
         "contractDependencies": [],
         "contractKind": "contract",
         "documentation": {
-          "id": 4375,
+          "id": 4348,
           "nodeType": "StructuredDocumentation",
           "src": "71:325:31",
           "text": "Main contract, including all components.\n- Hold and transfer NFTs using ERC1155.\n- Support atomic exchanges of NFTs for currency.\n- Issuance of NFTs with fixed supply.\n- Joint Accounts that distribute their funds over multiple owners.\n- Capture royalties on primary and secondary transfers, configurable per NFT type."
         },
         "fullyImplemented": true,
-        "id": 4388,
+        "id": 4361,
         "linearizedBaseContracts": [
-          4388, 7403, 8019, 7046, 6702, 6335, 8063, 6207, 6059, 7123, 8104, 395,
-          9550, 1137, 1122, 2017, 2029, 44, 1564, 959, 829, 885
+          4361, 7376, 7992, 7019, 6675, 6308, 8036, 6180, 6032, 7096, 8077, 395,
+          9523, 1137, 1122, 2017, 2029, 44, 1564, 959, 829, 885
         ],
         "name": "Freeport",
         "nameLocation": "406:8:31",
@@ -25885,7 +25859,7 @@
         "nodes": [
           {
             "body": {
-              "id": 4386,
+              "id": 4359,
               "nodeType": "Block",
               "src": "723:40:31",
               "statements": [
@@ -25894,18 +25868,18 @@
                     "arguments": [],
                     "expression": {
                       "argumentTypes": [],
-                      "id": 4383,
+                      "id": 4356,
                       "name": "__SimpleExchange_init",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 7223,
+                      "referencedDeclaration": 7196,
                       "src": "733:21:31",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_internal_nonpayable$__$returns$__$",
                         "typeString": "function ()"
                       }
                     },
-                    "id": 4384,
+                    "id": 4357,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -25920,28 +25894,28 @@
                       "typeString": "tuple()"
                     }
                   },
-                  "id": 4385,
+                  "id": 4358,
                   "nodeType": "ExpressionStatement",
                   "src": "733:23:31"
                 }
               ]
             },
             "documentation": {
-              "id": 4378,
+              "id": 4351,
               "nodeType": "StructuredDocumentation",
               "src": "619:58:31",
               "text": "Initialize this contract and its dependencies."
             },
             "functionSelector": "8129fc1c",
-            "id": 4387,
+            "id": 4360,
             "implemented": true,
             "kind": "function",
             "modifiers": [
               {
-                "id": 4381,
+                "id": 4354,
                 "kind": "modifierInvocation",
                 "modifierName": {
-                  "id": 4380,
+                  "id": 4353,
                   "name": "initializer",
                   "nodeType": "IdentifierPath",
                   "referencedDeclaration": 884,
@@ -25955,25 +25929,209 @@
             "nameLocation": "691:10:31",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 4379,
+              "id": 4352,
               "nodeType": "ParameterList",
               "parameters": [],
               "src": "701:2:31"
             },
             "returnParameters": {
-              "id": 4382,
+              "id": 4355,
               "nodeType": "ParameterList",
               "parameters": [],
               "src": "723:0:31"
             },
-            "scope": 4388,
+            "scope": 4361,
             "src": "682:81:31",
             "stateMutability": "nonpayable",
             "virtual": false,
             "visibility": "public"
           }
         ],
-        "scope": 4389,
+        "scope": 4362,
+        "src": "397:368:31",
+        "usedErrors": []
+      }
+    ],
+    "src": "0:766:31"
+  },
+  "legacyAST": {
+    "absolutePath": "project:/contracts/Freeport.sol",
+    "exportedSymbols": {
+      "AccessControlUpgradeable": [395],
+      "AddressUpgradeable": [1519],
+      "BaseNFT": [6032],
+      "ContextUpgradeable": [1564],
+      "Currency": [6180],
+      "ERC1155Upgradeable": [9523],
+      "ERC165Upgradeable": [2017],
+      "ERC1967UpgradeUpgradeable": [829],
+      "ERC20Adapter": [6308],
+      "Freeport": [4361],
+      "IAccessControlUpgradeable": [44],
+      "IBeaconUpgradeable": [839],
+      "IERC1155MetadataURIUpgradeable": [1137],
+      "IERC1155ReceiverUpgradeable": [1000],
+      "IERC1155Upgradeable": [1122],
+      "IERC165Upgradeable": [2029],
+      "IERC20": [2982],
+      "Initializable": [885],
+      "Issuance": [6675],
+      "JointAccounts": [7019],
+      "MetaTxContext": [7096],
+      "SimpleExchange": [7376],
+      "StorageSlotUpgradeable": [1624],
+      "StringsUpgradeable": [1827],
+      "TransferFees": [7992],
+      "TransferOperator": [8036],
+      "UUPSUpgradeable": [959],
+      "Upgradeable": [8077]
+    },
+    "id": 4362,
+    "nodeType": "SourceUnit",
+    "nodes": [
+      {
+        "id": 4346,
+        "literals": ["solidity", "^", "0.8", ".0"],
+        "nodeType": "PragmaDirective",
+        "src": "0:23:31"
+      },
+      {
+        "absolutePath": "project:/contracts/freeportParts/SimpleExchange.sol",
+        "file": "./freeportParts/SimpleExchange.sol",
+        "id": 4347,
+        "nameLocation": "-1:-1:-1",
+        "nodeType": "ImportDirective",
+        "scope": 4362,
+        "sourceUnit": 7377,
+        "src": "25:44:31",
+        "symbolAliases": [],
+        "unitAlias": ""
+      },
+      {
+        "abstract": false,
+        "baseContracts": [
+          {
+            "baseName": {
+              "id": 4349,
+              "name": "SimpleExchange",
+              "nodeType": "IdentifierPath",
+              "referencedDeclaration": 7376,
+              "src": "597:14:31"
+            },
+            "id": 4350,
+            "nodeType": "InheritanceSpecifier",
+            "src": "597:14:31"
+          }
+        ],
+        "contractDependencies": [],
+        "contractKind": "contract",
+        "documentation": {
+          "id": 4348,
+          "nodeType": "StructuredDocumentation",
+          "src": "71:325:31",
+          "text": "Main contract, including all components.\n- Hold and transfer NFTs using ERC1155.\n- Support atomic exchanges of NFTs for currency.\n- Issuance of NFTs with fixed supply.\n- Joint Accounts that distribute their funds over multiple owners.\n- Capture royalties on primary and secondary transfers, configurable per NFT type."
+        },
+        "fullyImplemented": true,
+        "id": 4361,
+        "linearizedBaseContracts": [
+          4361, 7376, 7992, 7019, 6675, 6308, 8036, 6180, 6032, 7096, 8077, 395,
+          9523, 1137, 1122, 2017, 2029, 44, 1564, 959, 829, 885
+        ],
+        "name": "Freeport",
+        "nameLocation": "406:8:31",
+        "nodeType": "ContractDefinition",
+        "nodes": [
+          {
+            "body": {
+              "id": 4359,
+              "nodeType": "Block",
+              "src": "723:40:31",
+              "statements": [
+                {
+                  "expression": {
+                    "arguments": [],
+                    "expression": {
+                      "argumentTypes": [],
+                      "id": 4356,
+                      "name": "__SimpleExchange_init",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 7196,
+                      "src": "733:21:31",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_function_internal_nonpayable$__$returns$__$",
+                        "typeString": "function ()"
+                      }
+                    },
+                    "id": 4357,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "kind": "functionCall",
+                    "lValueRequested": false,
+                    "names": [],
+                    "nodeType": "FunctionCall",
+                    "src": "733:23:31",
+                    "tryCall": false,
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_tuple$__$",
+                      "typeString": "tuple()"
+                    }
+                  },
+                  "id": 4358,
+                  "nodeType": "ExpressionStatement",
+                  "src": "733:23:31"
+                }
+              ]
+            },
+            "documentation": {
+              "id": 4351,
+              "nodeType": "StructuredDocumentation",
+              "src": "619:58:31",
+              "text": "Initialize this contract and its dependencies."
+            },
+            "functionSelector": "8129fc1c",
+            "id": 4360,
+            "implemented": true,
+            "kind": "function",
+            "modifiers": [
+              {
+                "id": 4354,
+                "kind": "modifierInvocation",
+                "modifierName": {
+                  "id": 4353,
+                  "name": "initializer",
+                  "nodeType": "IdentifierPath",
+                  "referencedDeclaration": 884,
+                  "src": "711:11:31"
+                },
+                "nodeType": "ModifierInvocation",
+                "src": "711:11:31"
+              }
+            ],
+            "name": "initialize",
+            "nameLocation": "691:10:31",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 4352,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "701:2:31"
+            },
+            "returnParameters": {
+              "id": 4355,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "723:0:31"
+            },
+            "scope": 4361,
+            "src": "682:81:31",
+            "stateMutability": "nonpayable",
+            "virtual": false,
+            "visibility": "public"
+          }
+        ],
+        "scope": 4362,
         "src": "397:368:31",
         "usedErrors": []
       }
@@ -25985,406 +26143,6 @@
     "version": "0.8.4+commit.c7e474f2.Emscripten.clang"
   },
   "networks": {
-    "3": {
-      "events": {
-        "0x7e644d79422f17c01e4894b5f4f588d331ebfa28653d42ae832dc59e38c9798f": {
-          "anonymous": false,
-          "inputs": [
-            {
-              "indexed": false,
-              "internalType": "address",
-              "name": "previousAdmin",
-              "type": "address"
-            },
-            {
-              "indexed": false,
-              "internalType": "address",
-              "name": "newAdmin",
-              "type": "address"
-            }
-          ],
-          "name": "AdminChanged",
-          "type": "event"
-        },
-        "0x17307eab39ab6107e8899845ad3d59bd9653f200f220920489ca2b5937696c31": {
-          "anonymous": false,
-          "inputs": [
-            {
-              "indexed": true,
-              "internalType": "address",
-              "name": "account",
-              "type": "address"
-            },
-            {
-              "indexed": true,
-              "internalType": "address",
-              "name": "operator",
-              "type": "address"
-            },
-            {
-              "indexed": false,
-              "internalType": "bool",
-              "name": "approved",
-              "type": "bool"
-            }
-          ],
-          "name": "ApprovalForAll",
-          "type": "event"
-        },
-        "0x1cf3b03a6cf19fa2baba4df148e9dcabedea7f8a5c07840e207e5c089be95d3e": {
-          "anonymous": false,
-          "inputs": [
-            {
-              "indexed": true,
-              "internalType": "address",
-              "name": "beacon",
-              "type": "address"
-            }
-          ],
-          "name": "BeaconUpgraded",
-          "type": "event"
-        },
-        "0x006fb9851f1fd2fbc9fa36680d17e1254999a38e5f3c76c3a1ecc126a464601b": {
-          "anonymous": false,
-          "inputs": [
-            {
-              "indexed": true,
-              "internalType": "address",
-              "name": "account",
-              "type": "address"
-            },
-            {
-              "indexed": true,
-              "internalType": "address",
-              "name": "owner",
-              "type": "address"
-            },
-            {
-              "indexed": false,
-              "internalType": "uint256",
-              "name": "fraction",
-              "type": "uint256"
-            }
-          ],
-          "name": "JointAccountShareCreated",
-          "type": "event"
-        },
-        "0x040259e2f9c7930380b3a5c979ad8a30ecf8d344d3bcdb149e2c454ab85fcd8f": {
-          "anonymous": false,
-          "inputs": [
-            {
-              "indexed": true,
-              "internalType": "address",
-              "name": "seller",
-              "type": "address"
-            },
-            {
-              "indexed": true,
-              "internalType": "uint256",
-              "name": "nftId",
-              "type": "uint256"
-            },
-            {
-              "indexed": false,
-              "internalType": "uint256",
-              "name": "price",
-              "type": "uint256"
-            }
-          ],
-          "name": "MakeOffer",
-          "type": "event"
-        },
-        "0xbd79b86ffe0ab8e8776151514217cd7cacd52c909f66475c3af44e129f0b00ff": {
-          "anonymous": false,
-          "inputs": [
-            {
-              "indexed": true,
-              "internalType": "bytes32",
-              "name": "role",
-              "type": "bytes32"
-            },
-            {
-              "indexed": true,
-              "internalType": "bytes32",
-              "name": "previousAdminRole",
-              "type": "bytes32"
-            },
-            {
-              "indexed": true,
-              "internalType": "bytes32",
-              "name": "newAdminRole",
-              "type": "bytes32"
-            }
-          ],
-          "name": "RoleAdminChanged",
-          "type": "event"
-        },
-        "0x2f8788117e7eff1d82e926ec794901d17c78024a50270940304540a733656f0d": {
-          "anonymous": false,
-          "inputs": [
-            {
-              "indexed": true,
-              "internalType": "bytes32",
-              "name": "role",
-              "type": "bytes32"
-            },
-            {
-              "indexed": true,
-              "internalType": "address",
-              "name": "account",
-              "type": "address"
-            },
-            {
-              "indexed": true,
-              "internalType": "address",
-              "name": "sender",
-              "type": "address"
-            }
-          ],
-          "name": "RoleGranted",
-          "type": "event"
-        },
-        "0xf6391f5c32d9c69d2a47ea670b442974b53935d1edc7fd64eb21e047a839171b": {
-          "anonymous": false,
-          "inputs": [
-            {
-              "indexed": true,
-              "internalType": "bytes32",
-              "name": "role",
-              "type": "bytes32"
-            },
-            {
-              "indexed": true,
-              "internalType": "address",
-              "name": "account",
-              "type": "address"
-            },
-            {
-              "indexed": true,
-              "internalType": "address",
-              "name": "sender",
-              "type": "address"
-            }
-          ],
-          "name": "RoleRevoked",
-          "type": "event"
-        },
-        "0x3df2272e42784a2455bbbdcdf25ae0f67d41f801896514cc4cd255aa8ee75e4c": {
-          "anonymous": false,
-          "inputs": [
-            {
-              "indexed": true,
-              "internalType": "uint256",
-              "name": "nftId",
-              "type": "uint256"
-            },
-            {
-              "indexed": false,
-              "internalType": "address",
-              "name": "primaryRoyaltyAccount",
-              "type": "address"
-            },
-            {
-              "indexed": false,
-              "internalType": "uint256",
-              "name": "primaryRoyaltyCut",
-              "type": "uint256"
-            },
-            {
-              "indexed": false,
-              "internalType": "uint256",
-              "name": "primaryRoyaltyMinimum",
-              "type": "uint256"
-            },
-            {
-              "indexed": false,
-              "internalType": "address",
-              "name": "secondaryRoyaltyAccount",
-              "type": "address"
-            },
-            {
-              "indexed": false,
-              "internalType": "uint256",
-              "name": "secondaryRoyaltyCut",
-              "type": "uint256"
-            },
-            {
-              "indexed": false,
-              "internalType": "uint256",
-              "name": "secondaryRoyaltyMinimum",
-              "type": "uint256"
-            }
-          ],
-          "name": "RoyaltiesConfigured",
-          "type": "event"
-        },
-        "0x7bdd35d2167385bdbed0892e34b48298770ffce27fe71928c767071865f51544": {
-          "anonymous": false,
-          "inputs": [
-            {
-              "indexed": true,
-              "internalType": "uint256",
-              "name": "nftId",
-              "type": "uint256"
-            },
-            {
-              "indexed": false,
-              "internalType": "uint256",
-              "name": "lockUntil",
-              "type": "uint256"
-            }
-          ],
-          "name": "RoyaltiesLocked",
-          "type": "event"
-        },
-        "0xe90359125940e7c9b26005d19d4d8a2a5335ea8bef094bcd61bb8f8091cad117": {
-          "anonymous": false,
-          "inputs": [
-            {
-              "indexed": true,
-              "internalType": "address",
-              "name": "buyer",
-              "type": "address"
-            },
-            {
-              "indexed": true,
-              "internalType": "address",
-              "name": "seller",
-              "type": "address"
-            },
-            {
-              "indexed": true,
-              "internalType": "uint256",
-              "name": "nftId",
-              "type": "uint256"
-            },
-            {
-              "indexed": false,
-              "internalType": "uint256",
-              "name": "price",
-              "type": "uint256"
-            },
-            {
-              "indexed": false,
-              "internalType": "uint256",
-              "name": "amount",
-              "type": "uint256"
-            }
-          ],
-          "name": "TakeOffer",
-          "type": "event"
-        },
-        "0x4a39dc06d4c0dbc64b70af90fd698a233a518aa5d07e595d983b8c0526c8f7fb": {
-          "anonymous": false,
-          "inputs": [
-            {
-              "indexed": true,
-              "internalType": "address",
-              "name": "operator",
-              "type": "address"
-            },
-            {
-              "indexed": true,
-              "internalType": "address",
-              "name": "from",
-              "type": "address"
-            },
-            {
-              "indexed": true,
-              "internalType": "address",
-              "name": "to",
-              "type": "address"
-            },
-            {
-              "indexed": false,
-              "internalType": "uint256[]",
-              "name": "ids",
-              "type": "uint256[]"
-            },
-            {
-              "indexed": false,
-              "internalType": "uint256[]",
-              "name": "values",
-              "type": "uint256[]"
-            }
-          ],
-          "name": "TransferBatch",
-          "type": "event"
-        },
-        "0xc3d58168c5ae7397731d063d5bbf3d657854427343f4c083240f7aacaa2d0f62": {
-          "anonymous": false,
-          "inputs": [
-            {
-              "indexed": true,
-              "internalType": "address",
-              "name": "operator",
-              "type": "address"
-            },
-            {
-              "indexed": true,
-              "internalType": "address",
-              "name": "from",
-              "type": "address"
-            },
-            {
-              "indexed": true,
-              "internalType": "address",
-              "name": "to",
-              "type": "address"
-            },
-            {
-              "indexed": false,
-              "internalType": "uint256",
-              "name": "id",
-              "type": "uint256"
-            },
-            {
-              "indexed": false,
-              "internalType": "uint256",
-              "name": "value",
-              "type": "uint256"
-            }
-          ],
-          "name": "TransferSingle",
-          "type": "event"
-        },
-        "0x6bb7ff708619ba0610cba295a58592e0451dee2622938c8755667688daf3529b": {
-          "anonymous": false,
-          "inputs": [
-            {
-              "indexed": false,
-              "internalType": "string",
-              "name": "value",
-              "type": "string"
-            },
-            {
-              "indexed": true,
-              "internalType": "uint256",
-              "name": "id",
-              "type": "uint256"
-            }
-          ],
-          "name": "URI",
-          "type": "event"
-        },
-        "0xbc7cd75a20ee27fd9adebab32041f755214dbc6bffa90cc0225b39da2e5c2d3b": {
-          "anonymous": false,
-          "inputs": [
-            {
-              "indexed": true,
-              "internalType": "address",
-              "name": "implementation",
-              "type": "address"
-            }
-          ],
-          "name": "Upgraded",
-          "type": "event"
-        }
-      },
-      "links": {},
-      "address": "0x0442Fd8c8da95311C413c9514D8607946a104e2B",
-      "transactionHash": "0xf667d9c80003a4a03347d2da4fa7d5c57d68a2f5d77ed51a2a62362a44b15596"
-    },
     "137": {
       "events": {
         "0x7e644d79422f17c01e4894b5f4f588d331ebfa28653d42ae832dc59e38c9798f": {
@@ -27186,9 +26944,8 @@
       "transactionHash": "0x6adad31facec0e596e0a63d3d14003b398034d6ca130ae7c9f46b4ebe3e2d4c2"
     }
   },
-  "schemaVersion": "3.4.8",
-  "updatedAt": "2022-07-21T13:18:38.210Z",
-  "networkType": "ethereum",
+  "schemaVersion": "3.4.4",
+  "updatedAt": "2022-07-29T10:20:24.194Z",
   "devdoc": {
     "kind": "dev",
     "methods": {
