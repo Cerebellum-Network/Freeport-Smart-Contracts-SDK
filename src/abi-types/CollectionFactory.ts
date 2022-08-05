@@ -21,6 +21,7 @@ import { TypedEventFilter, TypedEvent, TypedListener, OnEvent } from './common';
 export interface CollectionFactoryInterface extends utils.Interface {
   functions: {
     'COLLECTION_CREATOR_ROLE()': FunctionFragment;
+    'COLLECTION_MANAGER_ROLE()': FunctionFragment;
     'DEFAULT_ADMIN_ROLE()': FunctionFragment;
     'META_TX_FORWARDER()': FunctionFragment;
     'freeport()': FunctionFragment;
@@ -36,12 +37,15 @@ export interface CollectionFactoryInterface extends utils.Interface {
     'upgradeToAndCall(address,bytes)': FunctionFragment;
     'initialize(address,address)': FunctionFragment;
     'createCollection(address,string,string,string)': FunctionFragment;
-    'setMintAllowance(address,address)': FunctionFragment;
     'mintOnBehalf(address,address,uint64,bytes)': FunctionFragment;
   };
 
   encodeFunctionData(
     functionFragment: 'COLLECTION_CREATOR_ROLE',
+    values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: 'COLLECTION_MANAGER_ROLE',
     values?: undefined
   ): string;
   encodeFunctionData(
@@ -99,16 +103,16 @@ export interface CollectionFactoryInterface extends utils.Interface {
     values: [string, string, string, string]
   ): string;
   encodeFunctionData(
-    functionFragment: 'setMintAllowance',
-    values: [string, string]
-  ): string;
-  encodeFunctionData(
     functionFragment: 'mintOnBehalf',
     values: [string, string, BigNumberish, BytesLike]
   ): string;
 
   decodeFunctionResult(
     functionFragment: 'COLLECTION_CREATOR_ROLE',
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: 'COLLECTION_MANAGER_ROLE',
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -151,10 +155,6 @@ export interface CollectionFactoryInterface extends utils.Interface {
   decodeFunctionResult(functionFragment: 'initialize', data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: 'createCollection',
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: 'setMintAllowance',
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -277,6 +277,16 @@ export interface CollectionFactory extends BaseContract {
      * Collection creator role.  Used for configuring the amounts and beneficiaries of royalties on primary and secondary transfers of this NFT.
      */
     'COLLECTION_CREATOR_ROLE()'(overrides?: CallOverrides): Promise<[string]>;
+
+    /**
+     * Allowance mapping for mint on behalf for each Collection.
+     */
+    COLLECTION_MANAGER_ROLE(overrides?: CallOverrides): Promise<[string]>;
+
+    /**
+     * Allowance mapping for mint on behalf for each Collection.
+     */
+    'COLLECTION_MANAGER_ROLE()'(overrides?: CallOverrides): Promise<[string]>;
 
     DEFAULT_ADMIN_ROLE(overrides?: CallOverrides): Promise<[string]>;
 
@@ -461,18 +471,6 @@ export interface CollectionFactory extends BaseContract {
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
-    setMintAllowance(
-      collection: string,
-      minter: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>;
-
-    'setMintAllowance(address,address)'(
-      collection: string,
-      minter: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>;
-
     mintOnBehalf(
       collection: string,
       holder: string,
@@ -499,6 +497,16 @@ export interface CollectionFactory extends BaseContract {
    * Collection creator role.  Used for configuring the amounts and beneficiaries of royalties on primary and secondary transfers of this NFT.
    */
   'COLLECTION_CREATOR_ROLE()'(overrides?: CallOverrides): Promise<string>;
+
+  /**
+   * Allowance mapping for mint on behalf for each Collection.
+   */
+  COLLECTION_MANAGER_ROLE(overrides?: CallOverrides): Promise<string>;
+
+  /**
+   * Allowance mapping for mint on behalf for each Collection.
+   */
+  'COLLECTION_MANAGER_ROLE()'(overrides?: CallOverrides): Promise<string>;
 
   DEFAULT_ADMIN_ROLE(overrides?: CallOverrides): Promise<string>;
 
@@ -683,18 +691,6 @@ export interface CollectionFactory extends BaseContract {
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
-  setMintAllowance(
-    collection: string,
-    minter: string,
-    overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>;
-
-  'setMintAllowance(address,address)'(
-    collection: string,
-    minter: string,
-    overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>;
-
   mintOnBehalf(
     collection: string,
     holder: string,
@@ -721,6 +717,16 @@ export interface CollectionFactory extends BaseContract {
      * Collection creator role.  Used for configuring the amounts and beneficiaries of royalties on primary and secondary transfers of this NFT.
      */
     'COLLECTION_CREATOR_ROLE()'(overrides?: CallOverrides): Promise<string>;
+
+    /**
+     * Allowance mapping for mint on behalf for each Collection.
+     */
+    COLLECTION_MANAGER_ROLE(overrides?: CallOverrides): Promise<string>;
+
+    /**
+     * Allowance mapping for mint on behalf for each Collection.
+     */
+    'COLLECTION_MANAGER_ROLE()'(overrides?: CallOverrides): Promise<string>;
 
     DEFAULT_ADMIN_ROLE(overrides?: CallOverrides): Promise<string>;
 
@@ -905,18 +911,6 @@ export interface CollectionFactory extends BaseContract {
       overrides?: CallOverrides
     ): Promise<string>;
 
-    setMintAllowance(
-      collection: string,
-      minter: string,
-      overrides?: CallOverrides
-    ): Promise<void>;
-
-    'setMintAllowance(address,address)'(
-      collection: string,
-      minter: string,
-      overrides?: CallOverrides
-    ): Promise<void>;
-
     mintOnBehalf(
       collection: string,
       holder: string,
@@ -1020,6 +1014,16 @@ export interface CollectionFactory extends BaseContract {
      * Collection creator role.  Used for configuring the amounts and beneficiaries of royalties on primary and secondary transfers of this NFT.
      */
     'COLLECTION_CREATOR_ROLE()'(overrides?: CallOverrides): Promise<BigNumber>;
+
+    /**
+     * Allowance mapping for mint on behalf for each Collection.
+     */
+    COLLECTION_MANAGER_ROLE(overrides?: CallOverrides): Promise<BigNumber>;
+
+    /**
+     * Allowance mapping for mint on behalf for each Collection.
+     */
+    'COLLECTION_MANAGER_ROLE()'(overrides?: CallOverrides): Promise<BigNumber>;
 
     DEFAULT_ADMIN_ROLE(overrides?: CallOverrides): Promise<BigNumber>;
 
@@ -1207,18 +1211,6 @@ export interface CollectionFactory extends BaseContract {
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
-    setMintAllowance(
-      collection: string,
-      minter: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>;
-
-    'setMintAllowance(address,address)'(
-      collection: string,
-      minter: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>;
-
     mintOnBehalf(
       collection: string,
       holder: string,
@@ -1248,6 +1240,20 @@ export interface CollectionFactory extends BaseContract {
      * Collection creator role.  Used for configuring the amounts and beneficiaries of royalties on primary and secondary transfers of this NFT.
      */
     'COLLECTION_CREATOR_ROLE()'(
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    /**
+     * Allowance mapping for mint on behalf for each Collection.
+     */
+    COLLECTION_MANAGER_ROLE(
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    /**
+     * Allowance mapping for mint on behalf for each Collection.
+     */
+    'COLLECTION_MANAGER_ROLE()'(
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
@@ -1440,18 +1446,6 @@ export interface CollectionFactory extends BaseContract {
       name: string,
       uriTpl: string,
       contractURI: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>;
-
-    setMintAllowance(
-      collection: string,
-      minter: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>;
-
-    'setMintAllowance(address,address)'(
-      collection: string,
-      minter: string,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 

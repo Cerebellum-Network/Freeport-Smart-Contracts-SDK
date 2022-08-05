@@ -44,7 +44,7 @@ export interface FiatGatewayInterface extends utils.Interface {
     'withdrawERC20()': FunctionFragment;
     'withdrawCurrency()': FunctionFragment;
     'buyCereFromUsd(uint256,address,uint256)': FunctionFragment;
-    'buyNftFromUsd(uint256,address,address,uint256,uint256,uint256)': FunctionFragment;
+    'buyNftFromUsd(uint256,address,address,uint256,uint256,uint256,uint256)': FunctionFragment;
   };
 
   encodeFunctionData(functionFragment: 'CURRENCY', values?: undefined): string;
@@ -137,6 +137,7 @@ export interface FiatGatewayInterface extends utils.Interface {
       BigNumberish,
       string,
       string,
+      BigNumberish,
       BigNumberish,
       BigNumberish,
       BigNumberish
@@ -624,6 +625,7 @@ export interface FiatGateway extends BaseContract {
       buyer: string,
       seller: string,
       nftId: BigNumberish,
+      quantity: BigNumberish,
       expectedPriceOrZero: BigNumberish,
       nonce: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
@@ -632,11 +634,12 @@ export interface FiatGateway extends BaseContract {
     /**
      * Buy an NFT based on an off-chain fiat payment. The amount of fiat received is validated against the NFT price, using the configured exchange rate. Then, the tokens are used to buy an NFT in the same transaction. The NFT must be available for sale from the seller in SimpleExchange. Only the gateway with PAYMENT_SERVICE role can report successful payments. The parameter expectedPriceOrZero can be used to validate the price that the buyer expects to pay. This prevents a race condition with makeOffer or setExchangeRate. Pass 0 to disable this validation and accept any current price. The parameter nonce is ignored and accepted for compatibility.
      */
-    'buyNftFromUsd(uint256,address,address,uint256,uint256,uint256)'(
+    'buyNftFromUsd(uint256,address,address,uint256,uint256,uint256,uint256)'(
       penniesReceived: BigNumberish,
       buyer: string,
       seller: string,
       nftId: BigNumberish,
+      quantity: BigNumberish,
       expectedPriceOrZero: BigNumberish,
       nonce: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
@@ -954,6 +957,7 @@ export interface FiatGateway extends BaseContract {
     buyer: string,
     seller: string,
     nftId: BigNumberish,
+    quantity: BigNumberish,
     expectedPriceOrZero: BigNumberish,
     nonce: BigNumberish,
     overrides?: Overrides & { from?: string | Promise<string> }
@@ -962,11 +966,12 @@ export interface FiatGateway extends BaseContract {
   /**
    * Buy an NFT based on an off-chain fiat payment. The amount of fiat received is validated against the NFT price, using the configured exchange rate. Then, the tokens are used to buy an NFT in the same transaction. The NFT must be available for sale from the seller in SimpleExchange. Only the gateway with PAYMENT_SERVICE role can report successful payments. The parameter expectedPriceOrZero can be used to validate the price that the buyer expects to pay. This prevents a race condition with makeOffer or setExchangeRate. Pass 0 to disable this validation and accept any current price. The parameter nonce is ignored and accepted for compatibility.
    */
-  'buyNftFromUsd(uint256,address,address,uint256,uint256,uint256)'(
+  'buyNftFromUsd(uint256,address,address,uint256,uint256,uint256,uint256)'(
     penniesReceived: BigNumberish,
     buyer: string,
     seller: string,
     nftId: BigNumberish,
+    quantity: BigNumberish,
     expectedPriceOrZero: BigNumberish,
     nonce: BigNumberish,
     overrides?: Overrides & { from?: string | Promise<string> }
@@ -1269,6 +1274,7 @@ export interface FiatGateway extends BaseContract {
       buyer: string,
       seller: string,
       nftId: BigNumberish,
+      quantity: BigNumberish,
       expectedPriceOrZero: BigNumberish,
       nonce: BigNumberish,
       overrides?: CallOverrides
@@ -1277,11 +1283,12 @@ export interface FiatGateway extends BaseContract {
     /**
      * Buy an NFT based on an off-chain fiat payment. The amount of fiat received is validated against the NFT price, using the configured exchange rate. Then, the tokens are used to buy an NFT in the same transaction. The NFT must be available for sale from the seller in SimpleExchange. Only the gateway with PAYMENT_SERVICE role can report successful payments. The parameter expectedPriceOrZero can be used to validate the price that the buyer expects to pay. This prevents a race condition with makeOffer or setExchangeRate. Pass 0 to disable this validation and accept any current price. The parameter nonce is ignored and accepted for compatibility.
      */
-    'buyNftFromUsd(uint256,address,address,uint256,uint256,uint256)'(
+    'buyNftFromUsd(uint256,address,address,uint256,uint256,uint256,uint256)'(
       penniesReceived: BigNumberish,
       buyer: string,
       seller: string,
       nftId: BigNumberish,
+      quantity: BigNumberish,
       expectedPriceOrZero: BigNumberish,
       nonce: BigNumberish,
       overrides?: CallOverrides
@@ -1660,6 +1667,7 @@ export interface FiatGateway extends BaseContract {
       buyer: string,
       seller: string,
       nftId: BigNumberish,
+      quantity: BigNumberish,
       expectedPriceOrZero: BigNumberish,
       nonce: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
@@ -1668,11 +1676,12 @@ export interface FiatGateway extends BaseContract {
     /**
      * Buy an NFT based on an off-chain fiat payment. The amount of fiat received is validated against the NFT price, using the configured exchange rate. Then, the tokens are used to buy an NFT in the same transaction. The NFT must be available for sale from the seller in SimpleExchange. Only the gateway with PAYMENT_SERVICE role can report successful payments. The parameter expectedPriceOrZero can be used to validate the price that the buyer expects to pay. This prevents a race condition with makeOffer or setExchangeRate. Pass 0 to disable this validation and accept any current price. The parameter nonce is ignored and accepted for compatibility.
      */
-    'buyNftFromUsd(uint256,address,address,uint256,uint256,uint256)'(
+    'buyNftFromUsd(uint256,address,address,uint256,uint256,uint256,uint256)'(
       penniesReceived: BigNumberish,
       buyer: string,
       seller: string,
       nftId: BigNumberish,
+      quantity: BigNumberish,
       expectedPriceOrZero: BigNumberish,
       nonce: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
@@ -2014,6 +2023,7 @@ export interface FiatGateway extends BaseContract {
       buyer: string,
       seller: string,
       nftId: BigNumberish,
+      quantity: BigNumberish,
       expectedPriceOrZero: BigNumberish,
       nonce: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
@@ -2022,11 +2032,12 @@ export interface FiatGateway extends BaseContract {
     /**
      * Buy an NFT based on an off-chain fiat payment. The amount of fiat received is validated against the NFT price, using the configured exchange rate. Then, the tokens are used to buy an NFT in the same transaction. The NFT must be available for sale from the seller in SimpleExchange. Only the gateway with PAYMENT_SERVICE role can report successful payments. The parameter expectedPriceOrZero can be used to validate the price that the buyer expects to pay. This prevents a race condition with makeOffer or setExchangeRate. Pass 0 to disable this validation and accept any current price. The parameter nonce is ignored and accepted for compatibility.
      */
-    'buyNftFromUsd(uint256,address,address,uint256,uint256,uint256)'(
+    'buyNftFromUsd(uint256,address,address,uint256,uint256,uint256,uint256)'(
       penniesReceived: BigNumberish,
       buyer: string,
       seller: string,
       nftId: BigNumberish,
+      quantity: BigNumberish,
       expectedPriceOrZero: BigNumberish,
       nonce: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
