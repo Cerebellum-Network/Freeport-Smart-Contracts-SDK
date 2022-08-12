@@ -52,10 +52,10 @@ export interface CollectionInterface extends utils.Interface {
     'transferFrom(address,address,uint256,uint256)': FunctionFragment;
     'upgradeTo(address)': FunctionFragment;
     'upgradeToAndCall(address,bytes)': FunctionFragment;
-    'uri(uint256)': FunctionFragment;
-    'initialize(address,address,string,string,string,address,address)': FunctionFragment;
+    'initialize(address,address,string,string,string,address,address,address,address)': FunctionFragment;
     'supportsInterface(bytes4)': FunctionFragment;
     'isApprovedForAll(address,address)': FunctionFragment;
+    'uri(uint256)': FunctionFragment;
   };
 
   encodeFunctionData(
@@ -178,10 +178,19 @@ export interface CollectionInterface extends utils.Interface {
     functionFragment: 'upgradeToAndCall',
     values: [string, BytesLike]
   ): string;
-  encodeFunctionData(functionFragment: 'uri', values: [BigNumberish]): string;
   encodeFunctionData(
     functionFragment: 'initialize',
-    values: [string, string, string, string, string, string, string]
+    values: [
+      string,
+      string,
+      string,
+      string,
+      string,
+      string,
+      string,
+      string,
+      string
+    ]
   ): string;
   encodeFunctionData(
     functionFragment: 'supportsInterface',
@@ -191,6 +200,7 @@ export interface CollectionInterface extends utils.Interface {
     functionFragment: 'isApprovedForAll',
     values: [string, string]
   ): string;
+  encodeFunctionData(functionFragment: 'uri', values: [BigNumberish]): string;
 
   decodeFunctionResult(
     functionFragment: 'COLLECTION_MANAGER_ROLE',
@@ -290,7 +300,6 @@ export interface CollectionInterface extends utils.Interface {
     functionFragment: 'upgradeToAndCall',
     data: BytesLike
   ): Result;
-  decodeFunctionResult(functionFragment: 'uri', data: BytesLike): Result;
   decodeFunctionResult(functionFragment: 'initialize', data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: 'supportsInterface',
@@ -300,6 +309,7 @@ export interface CollectionInterface extends utils.Interface {
     functionFragment: 'isApprovedForAll',
     data: BytesLike
   ): Result;
+  decodeFunctionResult(functionFragment: 'uri', data: BytesLike): Result;
 
   events: {
     'AdminChanged(address,address)': EventFragment;
@@ -903,19 +913,6 @@ export interface Collection extends BaseContract {
       overrides?: PayableOverrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
-    /**
-     * See {IERC1155MetadataURI-uri}. This implementation returns the same URI for *all* token types. It relies on the token type ID substitution mechanism https://eips.ethereum.org/EIPS/eip-1155#metadata[defined in the EIP]. Clients calling this function must replace the `\{id\}` substring with the actual token type ID.
-     */
-    uri(arg0: BigNumberish, overrides?: CallOverrides): Promise<[string]>;
-
-    /**
-     * See {IERC1155MetadataURI-uri}. This implementation returns the same URI for *all* token types. It relies on the token type ID substitution mechanism https://eips.ethereum.org/EIPS/eip-1155#metadata[defined in the EIP]. Clients calling this function must replace the `\{id\}` substring with the actual token type ID.
-     */
-    'uri(uint256)'(
-      arg0: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<[string]>;
-
     initialize(
       admin: string,
       manager: string,
@@ -924,10 +921,12 @@ export interface Collection extends BaseContract {
       __contractURI: string,
       _freeport: string,
       _nftAttachment: string,
+      _marketplace: string,
+      _auction: string,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
-    'initialize(address,address,string,string,string,address,address)'(
+    'initialize(address,address,string,string,string,address,address,address,address)'(
       admin: string,
       manager: string,
       _name: string,
@@ -935,6 +934,8 @@ export interface Collection extends BaseContract {
       __contractURI: string,
       _freeport: string,
       _nftAttachment: string,
+      _marketplace: string,
+      _auction: string,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
@@ -965,6 +966,19 @@ export interface Collection extends BaseContract {
       operator: string,
       overrides?: CallOverrides
     ): Promise<[boolean]>;
+
+    /**
+     * URI override for OpenSea traits compatibility.
+     */
+    uri(nftId: BigNumberish, overrides?: CallOverrides): Promise<[string]>;
+
+    /**
+     * URI override for OpenSea traits compatibility.
+     */
+    'uri(uint256)'(
+      nftId: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<[string]>;
   };
 
   /**
@@ -1440,19 +1454,6 @@ export interface Collection extends BaseContract {
     overrides?: PayableOverrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
-  /**
-   * See {IERC1155MetadataURI-uri}. This implementation returns the same URI for *all* token types. It relies on the token type ID substitution mechanism https://eips.ethereum.org/EIPS/eip-1155#metadata[defined in the EIP]. Clients calling this function must replace the `\{id\}` substring with the actual token type ID.
-   */
-  uri(arg0: BigNumberish, overrides?: CallOverrides): Promise<string>;
-
-  /**
-   * See {IERC1155MetadataURI-uri}. This implementation returns the same URI for *all* token types. It relies on the token type ID substitution mechanism https://eips.ethereum.org/EIPS/eip-1155#metadata[defined in the EIP]. Clients calling this function must replace the `\{id\}` substring with the actual token type ID.
-   */
-  'uri(uint256)'(
-    arg0: BigNumberish,
-    overrides?: CallOverrides
-  ): Promise<string>;
-
   initialize(
     admin: string,
     manager: string,
@@ -1461,10 +1462,12 @@ export interface Collection extends BaseContract {
     __contractURI: string,
     _freeport: string,
     _nftAttachment: string,
+    _marketplace: string,
+    _auction: string,
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
-  'initialize(address,address,string,string,string,address,address)'(
+  'initialize(address,address,string,string,string,address,address,address,address)'(
     admin: string,
     manager: string,
     _name: string,
@@ -1472,6 +1475,8 @@ export interface Collection extends BaseContract {
     __contractURI: string,
     _freeport: string,
     _nftAttachment: string,
+    _marketplace: string,
+    _auction: string,
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
@@ -1502,6 +1507,19 @@ export interface Collection extends BaseContract {
     operator: string,
     overrides?: CallOverrides
   ): Promise<boolean>;
+
+  /**
+   * URI override for OpenSea traits compatibility.
+   */
+  uri(nftId: BigNumberish, overrides?: CallOverrides): Promise<string>;
+
+  /**
+   * URI override for OpenSea traits compatibility.
+   */
+  'uri(uint256)'(
+    nftId: BigNumberish,
+    overrides?: CallOverrides
+  ): Promise<string>;
 
   callStatic: {
     /**
@@ -1971,19 +1989,6 @@ export interface Collection extends BaseContract {
       overrides?: CallOverrides
     ): Promise<void>;
 
-    /**
-     * See {IERC1155MetadataURI-uri}. This implementation returns the same URI for *all* token types. It relies on the token type ID substitution mechanism https://eips.ethereum.org/EIPS/eip-1155#metadata[defined in the EIP]. Clients calling this function must replace the `\{id\}` substring with the actual token type ID.
-     */
-    uri(arg0: BigNumberish, overrides?: CallOverrides): Promise<string>;
-
-    /**
-     * See {IERC1155MetadataURI-uri}. This implementation returns the same URI for *all* token types. It relies on the token type ID substitution mechanism https://eips.ethereum.org/EIPS/eip-1155#metadata[defined in the EIP]. Clients calling this function must replace the `\{id\}` substring with the actual token type ID.
-     */
-    'uri(uint256)'(
-      arg0: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<string>;
-
     initialize(
       admin: string,
       manager: string,
@@ -1992,10 +1997,12 @@ export interface Collection extends BaseContract {
       __contractURI: string,
       _freeport: string,
       _nftAttachment: string,
+      _marketplace: string,
+      _auction: string,
       overrides?: CallOverrides
     ): Promise<void>;
 
-    'initialize(address,address,string,string,string,address,address)'(
+    'initialize(address,address,string,string,string,address,address,address,address)'(
       admin: string,
       manager: string,
       _name: string,
@@ -2003,6 +2010,8 @@ export interface Collection extends BaseContract {
       __contractURI: string,
       _freeport: string,
       _nftAttachment: string,
+      _marketplace: string,
+      _auction: string,
       overrides?: CallOverrides
     ): Promise<void>;
 
@@ -2033,6 +2042,19 @@ export interface Collection extends BaseContract {
       operator: string,
       overrides?: CallOverrides
     ): Promise<boolean>;
+
+    /**
+     * URI override for OpenSea traits compatibility.
+     */
+    uri(nftId: BigNumberish, overrides?: CallOverrides): Promise<string>;
+
+    /**
+     * URI override for OpenSea traits compatibility.
+     */
+    'uri(uint256)'(
+      nftId: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<string>;
   };
 
   filters: {
@@ -2579,19 +2601,6 @@ export interface Collection extends BaseContract {
       overrides?: PayableOverrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
-    /**
-     * See {IERC1155MetadataURI-uri}. This implementation returns the same URI for *all* token types. It relies on the token type ID substitution mechanism https://eips.ethereum.org/EIPS/eip-1155#metadata[defined in the EIP]. Clients calling this function must replace the `\{id\}` substring with the actual token type ID.
-     */
-    uri(arg0: BigNumberish, overrides?: CallOverrides): Promise<BigNumber>;
-
-    /**
-     * See {IERC1155MetadataURI-uri}. This implementation returns the same URI for *all* token types. It relies on the token type ID substitution mechanism https://eips.ethereum.org/EIPS/eip-1155#metadata[defined in the EIP]. Clients calling this function must replace the `\{id\}` substring with the actual token type ID.
-     */
-    'uri(uint256)'(
-      arg0: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
     initialize(
       admin: string,
       manager: string,
@@ -2600,10 +2609,12 @@ export interface Collection extends BaseContract {
       __contractURI: string,
       _freeport: string,
       _nftAttachment: string,
+      _marketplace: string,
+      _auction: string,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
-    'initialize(address,address,string,string,string,address,address)'(
+    'initialize(address,address,string,string,string,address,address,address,address)'(
       admin: string,
       manager: string,
       _name: string,
@@ -2611,6 +2622,8 @@ export interface Collection extends BaseContract {
       __contractURI: string,
       _freeport: string,
       _nftAttachment: string,
+      _marketplace: string,
+      _auction: string,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
@@ -2639,6 +2652,19 @@ export interface Collection extends BaseContract {
     'isApprovedForAll(address,address)'(
       account: string,
       operator: string,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    /**
+     * URI override for OpenSea traits compatibility.
+     */
+    uri(nftId: BigNumberish, overrides?: CallOverrides): Promise<BigNumber>;
+
+    /**
+     * URI override for OpenSea traits compatibility.
+     */
+    'uri(uint256)'(
+      nftId: BigNumberish,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
   };
@@ -3100,22 +3126,6 @@ export interface Collection extends BaseContract {
       overrides?: PayableOverrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 
-    /**
-     * See {IERC1155MetadataURI-uri}. This implementation returns the same URI for *all* token types. It relies on the token type ID substitution mechanism https://eips.ethereum.org/EIPS/eip-1155#metadata[defined in the EIP]. Clients calling this function must replace the `\{id\}` substring with the actual token type ID.
-     */
-    uri(
-      arg0: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    /**
-     * See {IERC1155MetadataURI-uri}. This implementation returns the same URI for *all* token types. It relies on the token type ID substitution mechanism https://eips.ethereum.org/EIPS/eip-1155#metadata[defined in the EIP]. Clients calling this function must replace the `\{id\}` substring with the actual token type ID.
-     */
-    'uri(uint256)'(
-      arg0: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
     initialize(
       admin: string,
       manager: string,
@@ -3124,10 +3134,12 @@ export interface Collection extends BaseContract {
       __contractURI: string,
       _freeport: string,
       _nftAttachment: string,
+      _marketplace: string,
+      _auction: string,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 
-    'initialize(address,address,string,string,string,address,address)'(
+    'initialize(address,address,string,string,string,address,address,address,address)'(
       admin: string,
       manager: string,
       _name: string,
@@ -3135,6 +3147,8 @@ export interface Collection extends BaseContract {
       __contractURI: string,
       _freeport: string,
       _nftAttachment: string,
+      _marketplace: string,
+      _auction: string,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 
@@ -3163,6 +3177,22 @@ export interface Collection extends BaseContract {
     'isApprovedForAll(address,address)'(
       account: string,
       operator: string,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    /**
+     * URI override for OpenSea traits compatibility.
+     */
+    uri(
+      nftId: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    /**
+     * URI override for OpenSea traits compatibility.
+     */
+    'uri(uint256)'(
+      nftId: BigNumberish,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
   };

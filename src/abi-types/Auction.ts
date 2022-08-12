@@ -18,38 +18,45 @@ import { FunctionFragment, Result, EventFragment } from '@ethersproject/abi';
 import { Listener, Provider } from '@ethersproject/providers';
 import { TypedEventFilter, TypedEvent, TypedListener, OnEvent } from './common';
 
-export interface CollectionFactoryInterface extends utils.Interface {
+export interface AuctionInterface extends utils.Interface {
   functions: {
-    'COLLECTION_CREATOR_ROLE()': FunctionFragment;
-    'COLLECTION_MANAGER_ROLE()': FunctionFragment;
+    'BUY_AUTHORIZATION_TYPEHASH()': FunctionFragment;
+    'BUY_AUTHORIZER_ROLE()': FunctionFragment;
+    'CURRENCY()': FunctionFragment;
     'DEFAULT_ADMIN_ROLE()': FunctionFragment;
     'META_TX_FORWARDER()': FunctionFragment;
-    'auction()': FunctionFragment;
     'freeport()': FunctionFragment;
+    'getGlobalNftId(uint32)': FunctionFragment;
     'getRoleAdmin(bytes32)': FunctionFragment;
     'grantRole(bytes32,address)': FunctionFragment;
     'hasRole(bytes32,address)': FunctionFragment;
     'isTrustedForwarder(address)': FunctionFragment;
-    'marketplace()': FunctionFragment;
-    'nftAttachment()': FunctionFragment;
+    'onERC1155BatchReceived(address,address,uint256[],uint256[],bytes)': FunctionFragment;
+    'onERC1155Received(address,address,uint256,uint256,bytes)': FunctionFragment;
     'renounceRole(bytes32,address)': FunctionFragment;
     'revokeRole(bytes32,address)': FunctionFragment;
-    'supportsInterface(bytes4)': FunctionFragment;
+    'sellerNftBids(address,uint256)': FunctionFragment;
     'upgradeTo(address)': FunctionFragment;
     'upgradeToAndCall(address,bytes)': FunctionFragment;
-    'initialize(address,address,address,address)': FunctionFragment;
-    'createCollection(address,string,string,string)': FunctionFragment;
-    'mintOnBehalf(address,address,uint64,bytes)': FunctionFragment;
+    'supportsInterface(bytes4)': FunctionFragment;
+    'initialize(address)': FunctionFragment;
+    'initialize_v2_0_0()': FunctionFragment;
+    'startAuction(uint256,uint256,uint256)': FunctionFragment;
+    'startSecuredAuction(uint256,uint256,uint256,bool)': FunctionFragment;
+    'bidOnAuction(address,uint256,uint256)': FunctionFragment;
+    'bidOnSecuredAuction(address,uint256,uint256,bytes)': FunctionFragment;
+    'settleAuction(address,uint256)': FunctionFragment;
   };
 
   encodeFunctionData(
-    functionFragment: 'COLLECTION_CREATOR_ROLE',
+    functionFragment: 'BUY_AUTHORIZATION_TYPEHASH',
     values?: undefined
   ): string;
   encodeFunctionData(
-    functionFragment: 'COLLECTION_MANAGER_ROLE',
+    functionFragment: 'BUY_AUTHORIZER_ROLE',
     values?: undefined
   ): string;
+  encodeFunctionData(functionFragment: 'CURRENCY', values?: undefined): string;
   encodeFunctionData(
     functionFragment: 'DEFAULT_ADMIN_ROLE',
     values?: undefined
@@ -58,8 +65,11 @@ export interface CollectionFactoryInterface extends utils.Interface {
     functionFragment: 'META_TX_FORWARDER',
     values?: undefined
   ): string;
-  encodeFunctionData(functionFragment: 'auction', values?: undefined): string;
   encodeFunctionData(functionFragment: 'freeport', values?: undefined): string;
+  encodeFunctionData(
+    functionFragment: 'getGlobalNftId',
+    values: [BigNumberish]
+  ): string;
   encodeFunctionData(
     functionFragment: 'getRoleAdmin',
     values: [BytesLike]
@@ -77,12 +87,12 @@ export interface CollectionFactoryInterface extends utils.Interface {
     values: [string]
   ): string;
   encodeFunctionData(
-    functionFragment: 'marketplace',
-    values?: undefined
+    functionFragment: 'onERC1155BatchReceived',
+    values: [string, string, BigNumberish[], BigNumberish[], BytesLike]
   ): string;
   encodeFunctionData(
-    functionFragment: 'nftAttachment',
-    values?: undefined
+    functionFragment: 'onERC1155Received',
+    values: [string, string, BigNumberish, BigNumberish, BytesLike]
   ): string;
   encodeFunctionData(
     functionFragment: 'renounceRole',
@@ -93,8 +103,8 @@ export interface CollectionFactoryInterface extends utils.Interface {
     values: [BytesLike, string]
   ): string;
   encodeFunctionData(
-    functionFragment: 'supportsInterface',
-    values: [BytesLike]
+    functionFragment: 'sellerNftBids',
+    values: [string, BigNumberish]
   ): string;
   encodeFunctionData(functionFragment: 'upgradeTo', values: [string]): string;
   encodeFunctionData(
@@ -102,26 +112,44 @@ export interface CollectionFactoryInterface extends utils.Interface {
     values: [string, BytesLike]
   ): string;
   encodeFunctionData(
-    functionFragment: 'initialize',
-    values: [string, string, string, string]
+    functionFragment: 'supportsInterface',
+    values: [BytesLike]
+  ): string;
+  encodeFunctionData(functionFragment: 'initialize', values: [string]): string;
+  encodeFunctionData(
+    functionFragment: 'initialize_v2_0_0',
+    values?: undefined
   ): string;
   encodeFunctionData(
-    functionFragment: 'createCollection',
-    values: [string, string, string, string]
+    functionFragment: 'startAuction',
+    values: [BigNumberish, BigNumberish, BigNumberish]
   ): string;
   encodeFunctionData(
-    functionFragment: 'mintOnBehalf',
-    values: [string, string, BigNumberish, BytesLike]
+    functionFragment: 'startSecuredAuction',
+    values: [BigNumberish, BigNumberish, BigNumberish, boolean]
+  ): string;
+  encodeFunctionData(
+    functionFragment: 'bidOnAuction',
+    values: [string, BigNumberish, BigNumberish]
+  ): string;
+  encodeFunctionData(
+    functionFragment: 'bidOnSecuredAuction',
+    values: [string, BigNumberish, BigNumberish, BytesLike]
+  ): string;
+  encodeFunctionData(
+    functionFragment: 'settleAuction',
+    values: [string, BigNumberish]
   ): string;
 
   decodeFunctionResult(
-    functionFragment: 'COLLECTION_CREATOR_ROLE',
+    functionFragment: 'BUY_AUTHORIZATION_TYPEHASH',
     data: BytesLike
   ): Result;
   decodeFunctionResult(
-    functionFragment: 'COLLECTION_MANAGER_ROLE',
+    functionFragment: 'BUY_AUTHORIZER_ROLE',
     data: BytesLike
   ): Result;
+  decodeFunctionResult(functionFragment: 'CURRENCY', data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: 'DEFAULT_ADMIN_ROLE',
     data: BytesLike
@@ -130,8 +158,11 @@ export interface CollectionFactoryInterface extends utils.Interface {
     functionFragment: 'META_TX_FORWARDER',
     data: BytesLike
   ): Result;
-  decodeFunctionResult(functionFragment: 'auction', data: BytesLike): Result;
   decodeFunctionResult(functionFragment: 'freeport', data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: 'getGlobalNftId',
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(
     functionFragment: 'getRoleAdmin',
     data: BytesLike
@@ -143,11 +174,11 @@ export interface CollectionFactoryInterface extends utils.Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(
-    functionFragment: 'marketplace',
+    functionFragment: 'onERC1155BatchReceived',
     data: BytesLike
   ): Result;
   decodeFunctionResult(
-    functionFragment: 'nftAttachment',
+    functionFragment: 'onERC1155Received',
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -156,7 +187,7 @@ export interface CollectionFactoryInterface extends utils.Interface {
   ): Result;
   decodeFunctionResult(functionFragment: 'revokeRole', data: BytesLike): Result;
   decodeFunctionResult(
-    functionFragment: 'supportsInterface',
+    functionFragment: 'sellerNftBids',
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: 'upgradeTo', data: BytesLike): Result;
@@ -164,34 +195,56 @@ export interface CollectionFactoryInterface extends utils.Interface {
     functionFragment: 'upgradeToAndCall',
     data: BytesLike
   ): Result;
+  decodeFunctionResult(
+    functionFragment: 'supportsInterface',
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(functionFragment: 'initialize', data: BytesLike): Result;
   decodeFunctionResult(
-    functionFragment: 'createCollection',
+    functionFragment: 'initialize_v2_0_0',
     data: BytesLike
   ): Result;
   decodeFunctionResult(
-    functionFragment: 'mintOnBehalf',
+    functionFragment: 'startAuction',
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: 'startSecuredAuction',
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: 'bidOnAuction',
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: 'bidOnSecuredAuction',
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: 'settleAuction',
     data: BytesLike
   ): Result;
 
   events: {
     'AdminChanged(address,address)': EventFragment;
     'BeaconUpgraded(address)': EventFragment;
-    'CollectionCreated(string,address)': EventFragment;
-    'MintOnBehalf(address,address,address,uint256,uint64)': EventFragment;
+    'BidOnAuction(address,uint256,uint256,uint256,address)': EventFragment;
     'RoleAdminChanged(bytes32,bytes32,bytes32)': EventFragment;
     'RoleGranted(bytes32,address,address)': EventFragment;
     'RoleRevoked(bytes32,address,address)': EventFragment;
+    'SettleAuction(address,uint256,uint256,address)': EventFragment;
+    'StartAuction(address,uint256,uint256,uint256,bool)': EventFragment;
     'Upgraded(address)': EventFragment;
   };
 
   getEvent(nameOrSignatureOrTopic: 'AdminChanged'): EventFragment;
   getEvent(nameOrSignatureOrTopic: 'BeaconUpgraded'): EventFragment;
-  getEvent(nameOrSignatureOrTopic: 'CollectionCreated'): EventFragment;
-  getEvent(nameOrSignatureOrTopic: 'MintOnBehalf'): EventFragment;
+  getEvent(nameOrSignatureOrTopic: 'BidOnAuction'): EventFragment;
   getEvent(nameOrSignatureOrTopic: 'RoleAdminChanged'): EventFragment;
   getEvent(nameOrSignatureOrTopic: 'RoleGranted'): EventFragment;
   getEvent(nameOrSignatureOrTopic: 'RoleRevoked'): EventFragment;
+  getEvent(nameOrSignatureOrTopic: 'SettleAuction'): EventFragment;
+  getEvent(nameOrSignatureOrTopic: 'StartAuction'): EventFragment;
   getEvent(nameOrSignatureOrTopic: 'Upgraded'): EventFragment;
 }
 
@@ -206,26 +259,18 @@ export type BeaconUpgradedEvent = TypedEvent<[string], { beacon: string }>;
 
 export type BeaconUpgradedEventFilter = TypedEventFilter<BeaconUpgradedEvent>;
 
-export type CollectionCreatedEvent = TypedEvent<
-  [string, string],
-  { name: string; addr: string }
->;
-
-export type CollectionCreatedEventFilter =
-  TypedEventFilter<CollectionCreatedEvent>;
-
-export type MintOnBehalfEvent = TypedEvent<
-  [string, string, string, BigNumber, BigNumber],
+export type BidOnAuctionEvent = TypedEvent<
+  [string, BigNumber, BigNumber, BigNumber, string],
   {
-    _operator: string;
-    _collection: string;
-    _holder: string;
-    _id: BigNumber;
-    _amount: BigNumber;
+    seller: string;
+    nftId: BigNumber;
+    price: BigNumber;
+    closeTimeSec: BigNumber;
+    buyer: string;
   }
 >;
 
-export type MintOnBehalfEventFilter = TypedEventFilter<MintOnBehalfEvent>;
+export type BidOnAuctionEventFilter = TypedEventFilter<BidOnAuctionEvent>;
 
 export type RoleAdminChangedEvent = TypedEvent<
   [string, string, string],
@@ -249,16 +294,36 @@ export type RoleRevokedEvent = TypedEvent<
 
 export type RoleRevokedEventFilter = TypedEventFilter<RoleRevokedEvent>;
 
+export type SettleAuctionEvent = TypedEvent<
+  [string, BigNumber, BigNumber, string],
+  { seller: string; nftId: BigNumber; price: BigNumber; buyer: string }
+>;
+
+export type SettleAuctionEventFilter = TypedEventFilter<SettleAuctionEvent>;
+
+export type StartAuctionEvent = TypedEvent<
+  [string, BigNumber, BigNumber, BigNumber, boolean],
+  {
+    seller: string;
+    nftId: BigNumber;
+    price: BigNumber;
+    closeTimeSec: BigNumber;
+    secured: boolean;
+  }
+>;
+
+export type StartAuctionEventFilter = TypedEventFilter<StartAuctionEvent>;
+
 export type UpgradedEvent = TypedEvent<[string], { implementation: string }>;
 
 export type UpgradedEventFilter = TypedEventFilter<UpgradedEvent>;
 
-export interface CollectionFactory extends BaseContract {
+export interface Auction extends BaseContract {
   connect(signerOrProvider: Signer | Provider | string): this;
   attach(addressOrName: string): this;
   deployed(): Promise<this>;
 
-  interface: CollectionFactoryInterface;
+  interface: AuctionInterface;
 
   queryFilter<TEvent extends TypedEvent>(
     event: TypedEventFilter<TEvent>,
@@ -280,25 +345,25 @@ export interface CollectionFactory extends BaseContract {
   removeListener: OnEvent<this>;
 
   functions: {
-    /**
-     * Collection creator role.  Used for configuring the amounts and beneficiaries of royalties on primary and secondary transfers of this NFT.
-     */
-    COLLECTION_CREATOR_ROLE(overrides?: CallOverrides): Promise<[string]>;
+    BUY_AUTHORIZATION_TYPEHASH(overrides?: CallOverrides): Promise<[string]>;
+
+    'BUY_AUTHORIZATION_TYPEHASH()'(
+      overrides?: CallOverrides
+    ): Promise<[string]>;
+
+    BUY_AUTHORIZER_ROLE(overrides?: CallOverrides): Promise<[string]>;
+
+    'BUY_AUTHORIZER_ROLE()'(overrides?: CallOverrides): Promise<[string]>;
 
     /**
-     * Collection creator role.  Used for configuring the amounts and beneficiaries of royalties on primary and secondary transfers of this NFT.
+     * The token ID that represents the CERE currency for all payments in this contract.
      */
-    'COLLECTION_CREATOR_ROLE()'(overrides?: CallOverrides): Promise<[string]>;
+    CURRENCY(overrides?: CallOverrides): Promise<[BigNumber]>;
 
     /**
-     * Allowance mapping for mint on behalf for each Collection.
+     * The token ID that represents the CERE currency for all payments in this contract.
      */
-    COLLECTION_MANAGER_ROLE(overrides?: CallOverrides): Promise<[string]>;
-
-    /**
-     * Allowance mapping for mint on behalf for each Collection.
-     */
-    'COLLECTION_MANAGER_ROLE()'(overrides?: CallOverrides): Promise<[string]>;
+    'CURRENCY()'(overrides?: CallOverrides): Promise<[BigNumber]>;
 
     DEFAULT_ADMIN_ROLE(overrides?: CallOverrides): Promise<[string]>;
 
@@ -308,13 +373,25 @@ export interface CollectionFactory extends BaseContract {
 
     'META_TX_FORWARDER()'(overrides?: CallOverrides): Promise<[string]>;
 
-    auction(overrides?: CallOverrides): Promise<[string]>;
-
-    'auction()'(overrides?: CallOverrides): Promise<[string]>;
-
     freeport(overrides?: CallOverrides): Promise<[string]>;
 
     'freeport()'(overrides?: CallOverrides): Promise<[string]>;
+
+    /**
+     * Calculate the global ID of an NFT type, identifying its inner nft id.
+     */
+    getGlobalNftId(
+      innerNftId: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<[BigNumber]>;
+
+    /**
+     * Calculate the global ID of an NFT type, identifying its inner nft id.
+     */
+    'getGlobalNftId(uint32)'(
+      innerNftId: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<[BigNumber]>;
 
     /**
      * Returns the admin role that controls `role`. See {grantRole} and {revokeRole}. To change a role's admin, use {_setRoleAdmin}.
@@ -375,13 +452,41 @@ export interface CollectionFactory extends BaseContract {
       overrides?: CallOverrides
     ): Promise<[boolean]>;
 
-    marketplace(overrides?: CallOverrides): Promise<[string]>;
+    onERC1155BatchReceived(
+      arg0: string,
+      arg1: string,
+      arg2: BigNumberish[],
+      arg3: BigNumberish[],
+      arg4: BytesLike,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
 
-    'marketplace()'(overrides?: CallOverrides): Promise<[string]>;
+    'onERC1155BatchReceived(address,address,uint256[],uint256[],bytes)'(
+      arg0: string,
+      arg1: string,
+      arg2: BigNumberish[],
+      arg3: BigNumberish[],
+      arg4: BytesLike,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
 
-    nftAttachment(overrides?: CallOverrides): Promise<[string]>;
+    onERC1155Received(
+      arg0: string,
+      arg1: string,
+      arg2: BigNumberish,
+      arg3: BigNumberish,
+      arg4: BytesLike,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
 
-    'nftAttachment()'(overrides?: CallOverrides): Promise<[string]>;
+    'onERC1155Received(address,address,uint256,uint256,bytes)'(
+      arg0: string,
+      arg1: string,
+      arg2: BigNumberish,
+      arg3: BigNumberish,
+      arg4: BytesLike,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
 
     /**
      * Revokes `role` from the calling account. Roles are often managed via {grantRole} and {revokeRole}: this function's purpose is to provide a mechanism for accounts to lose their privileges if they are compromised (such as when a trusted device is misplaced). If the calling account had been granted `role`, emits a {RoleRevoked} event. Requirements: - the caller must be `account`.
@@ -420,20 +525,36 @@ export interface CollectionFactory extends BaseContract {
     ): Promise<ContractTransaction>;
 
     /**
-     * See {IERC165-supportsInterface}.
+     * Seller => NFT ID => Bid.
      */
-    supportsInterface(
-      interfaceId: BytesLike,
+    sellerNftBids(
+      arg0: string,
+      arg1: BigNumberish,
       overrides?: CallOverrides
-    ): Promise<[boolean]>;
+    ): Promise<
+      [string, BigNumber, BigNumber, boolean] & {
+        buyer: string;
+        price: BigNumber;
+        closeTimeSec: BigNumber;
+        secured: boolean;
+      }
+    >;
 
     /**
-     * See {IERC165-supportsInterface}.
+     * Seller => NFT ID => Bid.
      */
-    'supportsInterface(bytes4)'(
-      interfaceId: BytesLike,
+    'sellerNftBids(address,uint256)'(
+      arg0: string,
+      arg1: BigNumberish,
       overrides?: CallOverrides
-    ): Promise<[boolean]>;
+    ): Promise<
+      [string, BigNumber, BigNumber, boolean] & {
+        buyer: string;
+        price: BigNumber;
+        closeTimeSec: BigNumber;
+        secured: boolean;
+      }
+    >;
 
     upgradeTo(
       newImplementation: string,
@@ -457,80 +578,142 @@ export interface CollectionFactory extends BaseContract {
       overrides?: PayableOverrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
+    /**
+     * Supports interfaces of AccessControl and ERC1155Receiver.
+     */
+    supportsInterface(
+      interfaceId: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<[boolean]>;
+
+    /**
+     * Supports interfaces of AccessControl and ERC1155Receiver.
+     */
+    'supportsInterface(bytes4)'(
+      interfaceId: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<[boolean]>;
+
+    /**
+     * Initialize this contract and its dependencies.
+     */
     initialize(
       _freeport: string,
-      _nftAttachment: string,
-      _marketplace: string,
-      _auction: string,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
-    'initialize(address,address,address,address)'(
+    /**
+     * Initialize this contract and its dependencies.
+     */
+    'initialize(address)'(
       _freeport: string,
-      _nftAttachment: string,
-      _marketplace: string,
-      _auction: string,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
     /**
-     * Deploying a new user collection.  Emits a {CollectionCreated} event.
+     * Initialize this contract after version 2.0.0. Allow deposit of USDC into Freeport.
      */
-    createCollection(
-      collectionManager: string,
-      name: string,
-      uriTpl: string,
-      contractURI: string,
+    initialize_v2_0_0(
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
     /**
-     * Deploying a new user collection.  Emits a {CollectionCreated} event.
+     * Initialize this contract after version 2.0.0. Allow deposit of USDC into Freeport.
      */
-    'createCollection(address,string,string,string)'(
-      collectionManager: string,
-      name: string,
-      uriTpl: string,
-      contractURI: string,
+    'initialize_v2_0_0()'(
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
-    mintOnBehalf(
-      collection: string,
-      holder: string,
-      supply: BigNumberish,
-      data: BytesLike,
+    startAuction(
+      nftId: BigNumberish,
+      minPrice: BigNumberish,
+      closeTimeSec: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
-    'mintOnBehalf(address,address,uint64,bytes)'(
-      collection: string,
-      holder: string,
-      supply: BigNumberish,
-      data: BytesLike,
+    'startAuction(uint256,uint256,uint256)'(
+      nftId: BigNumberish,
+      minPrice: BigNumberish,
+      closeTimeSec: BigNumberish,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
+
+    startSecuredAuction(
+      nftId: BigNumberish,
+      minPrice: BigNumberish,
+      closeTimeSec: BigNumberish,
+      secured: boolean,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
+
+    'startSecuredAuction(uint256,uint256,uint256,bool)'(
+      nftId: BigNumberish,
+      minPrice: BigNumberish,
+      closeTimeSec: BigNumberish,
+      secured: boolean,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
+
+    bidOnAuction(
+      seller: string,
+      nftId: BigNumberish,
+      price: BigNumberish,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
+
+    'bidOnAuction(address,uint256,uint256)'(
+      seller: string,
+      nftId: BigNumberish,
+      price: BigNumberish,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
+
+    bidOnSecuredAuction(
+      seller: string,
+      nftId: BigNumberish,
+      price: BigNumberish,
+      signature: BytesLike,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
+
+    'bidOnSecuredAuction(address,uint256,uint256,bytes)'(
+      seller: string,
+      nftId: BigNumberish,
+      price: BigNumberish,
+      signature: BytesLike,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
+
+    settleAuction(
+      seller: string,
+      nftId: BigNumberish,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
+
+    'settleAuction(address,uint256)'(
+      seller: string,
+      nftId: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
   };
 
-  /**
-   * Collection creator role.  Used for configuring the amounts and beneficiaries of royalties on primary and secondary transfers of this NFT.
-   */
-  COLLECTION_CREATOR_ROLE(overrides?: CallOverrides): Promise<string>;
+  BUY_AUTHORIZATION_TYPEHASH(overrides?: CallOverrides): Promise<string>;
+
+  'BUY_AUTHORIZATION_TYPEHASH()'(overrides?: CallOverrides): Promise<string>;
+
+  BUY_AUTHORIZER_ROLE(overrides?: CallOverrides): Promise<string>;
+
+  'BUY_AUTHORIZER_ROLE()'(overrides?: CallOverrides): Promise<string>;
 
   /**
-   * Collection creator role.  Used for configuring the amounts and beneficiaries of royalties on primary and secondary transfers of this NFT.
+   * The token ID that represents the CERE currency for all payments in this contract.
    */
-  'COLLECTION_CREATOR_ROLE()'(overrides?: CallOverrides): Promise<string>;
+  CURRENCY(overrides?: CallOverrides): Promise<BigNumber>;
 
   /**
-   * Allowance mapping for mint on behalf for each Collection.
+   * The token ID that represents the CERE currency for all payments in this contract.
    */
-  COLLECTION_MANAGER_ROLE(overrides?: CallOverrides): Promise<string>;
-
-  /**
-   * Allowance mapping for mint on behalf for each Collection.
-   */
-  'COLLECTION_MANAGER_ROLE()'(overrides?: CallOverrides): Promise<string>;
+  'CURRENCY()'(overrides?: CallOverrides): Promise<BigNumber>;
 
   DEFAULT_ADMIN_ROLE(overrides?: CallOverrides): Promise<string>;
 
@@ -540,13 +723,25 @@ export interface CollectionFactory extends BaseContract {
 
   'META_TX_FORWARDER()'(overrides?: CallOverrides): Promise<string>;
 
-  auction(overrides?: CallOverrides): Promise<string>;
-
-  'auction()'(overrides?: CallOverrides): Promise<string>;
-
   freeport(overrides?: CallOverrides): Promise<string>;
 
   'freeport()'(overrides?: CallOverrides): Promise<string>;
+
+  /**
+   * Calculate the global ID of an NFT type, identifying its inner nft id.
+   */
+  getGlobalNftId(
+    innerNftId: BigNumberish,
+    overrides?: CallOverrides
+  ): Promise<BigNumber>;
+
+  /**
+   * Calculate the global ID of an NFT type, identifying its inner nft id.
+   */
+  'getGlobalNftId(uint32)'(
+    innerNftId: BigNumberish,
+    overrides?: CallOverrides
+  ): Promise<BigNumber>;
 
   /**
    * Returns the admin role that controls `role`. See {grantRole} and {revokeRole}. To change a role's admin, use {_setRoleAdmin}.
@@ -607,13 +802,41 @@ export interface CollectionFactory extends BaseContract {
     overrides?: CallOverrides
   ): Promise<boolean>;
 
-  marketplace(overrides?: CallOverrides): Promise<string>;
+  onERC1155BatchReceived(
+    arg0: string,
+    arg1: string,
+    arg2: BigNumberish[],
+    arg3: BigNumberish[],
+    arg4: BytesLike,
+    overrides?: Overrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
 
-  'marketplace()'(overrides?: CallOverrides): Promise<string>;
+  'onERC1155BatchReceived(address,address,uint256[],uint256[],bytes)'(
+    arg0: string,
+    arg1: string,
+    arg2: BigNumberish[],
+    arg3: BigNumberish[],
+    arg4: BytesLike,
+    overrides?: Overrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
 
-  nftAttachment(overrides?: CallOverrides): Promise<string>;
+  onERC1155Received(
+    arg0: string,
+    arg1: string,
+    arg2: BigNumberish,
+    arg3: BigNumberish,
+    arg4: BytesLike,
+    overrides?: Overrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
 
-  'nftAttachment()'(overrides?: CallOverrides): Promise<string>;
+  'onERC1155Received(address,address,uint256,uint256,bytes)'(
+    arg0: string,
+    arg1: string,
+    arg2: BigNumberish,
+    arg3: BigNumberish,
+    arg4: BytesLike,
+    overrides?: Overrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
 
   /**
    * Revokes `role` from the calling account. Roles are often managed via {grantRole} and {revokeRole}: this function's purpose is to provide a mechanism for accounts to lose their privileges if they are compromised (such as when a trusted device is misplaced). If the calling account had been granted `role`, emits a {RoleRevoked} event. Requirements: - the caller must be `account`.
@@ -652,20 +875,36 @@ export interface CollectionFactory extends BaseContract {
   ): Promise<ContractTransaction>;
 
   /**
-   * See {IERC165-supportsInterface}.
+   * Seller => NFT ID => Bid.
    */
-  supportsInterface(
-    interfaceId: BytesLike,
+  sellerNftBids(
+    arg0: string,
+    arg1: BigNumberish,
     overrides?: CallOverrides
-  ): Promise<boolean>;
+  ): Promise<
+    [string, BigNumber, BigNumber, boolean] & {
+      buyer: string;
+      price: BigNumber;
+      closeTimeSec: BigNumber;
+      secured: boolean;
+    }
+  >;
 
   /**
-   * See {IERC165-supportsInterface}.
+   * Seller => NFT ID => Bid.
    */
-  'supportsInterface(bytes4)'(
-    interfaceId: BytesLike,
+  'sellerNftBids(address,uint256)'(
+    arg0: string,
+    arg1: BigNumberish,
     overrides?: CallOverrides
-  ): Promise<boolean>;
+  ): Promise<
+    [string, BigNumber, BigNumber, boolean] & {
+      buyer: string;
+      price: BigNumber;
+      closeTimeSec: BigNumber;
+      secured: boolean;
+    }
+  >;
 
   upgradeTo(
     newImplementation: string,
@@ -689,80 +928,142 @@ export interface CollectionFactory extends BaseContract {
     overrides?: PayableOverrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
+  /**
+   * Supports interfaces of AccessControl and ERC1155Receiver.
+   */
+  supportsInterface(
+    interfaceId: BytesLike,
+    overrides?: CallOverrides
+  ): Promise<boolean>;
+
+  /**
+   * Supports interfaces of AccessControl and ERC1155Receiver.
+   */
+  'supportsInterface(bytes4)'(
+    interfaceId: BytesLike,
+    overrides?: CallOverrides
+  ): Promise<boolean>;
+
+  /**
+   * Initialize this contract and its dependencies.
+   */
   initialize(
     _freeport: string,
-    _nftAttachment: string,
-    _marketplace: string,
-    _auction: string,
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
-  'initialize(address,address,address,address)'(
+  /**
+   * Initialize this contract and its dependencies.
+   */
+  'initialize(address)'(
     _freeport: string,
-    _nftAttachment: string,
-    _marketplace: string,
-    _auction: string,
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
   /**
-   * Deploying a new user collection.  Emits a {CollectionCreated} event.
+   * Initialize this contract after version 2.0.0. Allow deposit of USDC into Freeport.
    */
-  createCollection(
-    collectionManager: string,
-    name: string,
-    uriTpl: string,
-    contractURI: string,
+  initialize_v2_0_0(
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
   /**
-   * Deploying a new user collection.  Emits a {CollectionCreated} event.
+   * Initialize this contract after version 2.0.0. Allow deposit of USDC into Freeport.
    */
-  'createCollection(address,string,string,string)'(
-    collectionManager: string,
-    name: string,
-    uriTpl: string,
-    contractURI: string,
+  'initialize_v2_0_0()'(
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
-  mintOnBehalf(
-    collection: string,
-    holder: string,
-    supply: BigNumberish,
-    data: BytesLike,
+  startAuction(
+    nftId: BigNumberish,
+    minPrice: BigNumberish,
+    closeTimeSec: BigNumberish,
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
-  'mintOnBehalf(address,address,uint64,bytes)'(
-    collection: string,
-    holder: string,
-    supply: BigNumberish,
-    data: BytesLike,
+  'startAuction(uint256,uint256,uint256)'(
+    nftId: BigNumberish,
+    minPrice: BigNumberish,
+    closeTimeSec: BigNumberish,
+    overrides?: Overrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
+
+  startSecuredAuction(
+    nftId: BigNumberish,
+    minPrice: BigNumberish,
+    closeTimeSec: BigNumberish,
+    secured: boolean,
+    overrides?: Overrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
+
+  'startSecuredAuction(uint256,uint256,uint256,bool)'(
+    nftId: BigNumberish,
+    minPrice: BigNumberish,
+    closeTimeSec: BigNumberish,
+    secured: boolean,
+    overrides?: Overrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
+
+  bidOnAuction(
+    seller: string,
+    nftId: BigNumberish,
+    price: BigNumberish,
+    overrides?: Overrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
+
+  'bidOnAuction(address,uint256,uint256)'(
+    seller: string,
+    nftId: BigNumberish,
+    price: BigNumberish,
+    overrides?: Overrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
+
+  bidOnSecuredAuction(
+    seller: string,
+    nftId: BigNumberish,
+    price: BigNumberish,
+    signature: BytesLike,
+    overrides?: Overrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
+
+  'bidOnSecuredAuction(address,uint256,uint256,bytes)'(
+    seller: string,
+    nftId: BigNumberish,
+    price: BigNumberish,
+    signature: BytesLike,
+    overrides?: Overrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
+
+  settleAuction(
+    seller: string,
+    nftId: BigNumberish,
+    overrides?: Overrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
+
+  'settleAuction(address,uint256)'(
+    seller: string,
+    nftId: BigNumberish,
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
   callStatic: {
-    /**
-     * Collection creator role.  Used for configuring the amounts and beneficiaries of royalties on primary and secondary transfers of this NFT.
-     */
-    COLLECTION_CREATOR_ROLE(overrides?: CallOverrides): Promise<string>;
+    BUY_AUTHORIZATION_TYPEHASH(overrides?: CallOverrides): Promise<string>;
+
+    'BUY_AUTHORIZATION_TYPEHASH()'(overrides?: CallOverrides): Promise<string>;
+
+    BUY_AUTHORIZER_ROLE(overrides?: CallOverrides): Promise<string>;
+
+    'BUY_AUTHORIZER_ROLE()'(overrides?: CallOverrides): Promise<string>;
 
     /**
-     * Collection creator role.  Used for configuring the amounts and beneficiaries of royalties on primary and secondary transfers of this NFT.
+     * The token ID that represents the CERE currency for all payments in this contract.
      */
-    'COLLECTION_CREATOR_ROLE()'(overrides?: CallOverrides): Promise<string>;
+    CURRENCY(overrides?: CallOverrides): Promise<BigNumber>;
 
     /**
-     * Allowance mapping for mint on behalf for each Collection.
+     * The token ID that represents the CERE currency for all payments in this contract.
      */
-    COLLECTION_MANAGER_ROLE(overrides?: CallOverrides): Promise<string>;
-
-    /**
-     * Allowance mapping for mint on behalf for each Collection.
-     */
-    'COLLECTION_MANAGER_ROLE()'(overrides?: CallOverrides): Promise<string>;
+    'CURRENCY()'(overrides?: CallOverrides): Promise<BigNumber>;
 
     DEFAULT_ADMIN_ROLE(overrides?: CallOverrides): Promise<string>;
 
@@ -772,13 +1073,25 @@ export interface CollectionFactory extends BaseContract {
 
     'META_TX_FORWARDER()'(overrides?: CallOverrides): Promise<string>;
 
-    auction(overrides?: CallOverrides): Promise<string>;
-
-    'auction()'(overrides?: CallOverrides): Promise<string>;
-
     freeport(overrides?: CallOverrides): Promise<string>;
 
     'freeport()'(overrides?: CallOverrides): Promise<string>;
+
+    /**
+     * Calculate the global ID of an NFT type, identifying its inner nft id.
+     */
+    getGlobalNftId(
+      innerNftId: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    /**
+     * Calculate the global ID of an NFT type, identifying its inner nft id.
+     */
+    'getGlobalNftId(uint32)'(
+      innerNftId: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
 
     /**
      * Returns the admin role that controls `role`. See {grantRole} and {revokeRole}. To change a role's admin, use {_setRoleAdmin}.
@@ -839,13 +1152,41 @@ export interface CollectionFactory extends BaseContract {
       overrides?: CallOverrides
     ): Promise<boolean>;
 
-    marketplace(overrides?: CallOverrides): Promise<string>;
+    onERC1155BatchReceived(
+      arg0: string,
+      arg1: string,
+      arg2: BigNumberish[],
+      arg3: BigNumberish[],
+      arg4: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<string>;
 
-    'marketplace()'(overrides?: CallOverrides): Promise<string>;
+    'onERC1155BatchReceived(address,address,uint256[],uint256[],bytes)'(
+      arg0: string,
+      arg1: string,
+      arg2: BigNumberish[],
+      arg3: BigNumberish[],
+      arg4: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<string>;
 
-    nftAttachment(overrides?: CallOverrides): Promise<string>;
+    onERC1155Received(
+      arg0: string,
+      arg1: string,
+      arg2: BigNumberish,
+      arg3: BigNumberish,
+      arg4: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<string>;
 
-    'nftAttachment()'(overrides?: CallOverrides): Promise<string>;
+    'onERC1155Received(address,address,uint256,uint256,bytes)'(
+      arg0: string,
+      arg1: string,
+      arg2: BigNumberish,
+      arg3: BigNumberish,
+      arg4: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<string>;
 
     /**
      * Revokes `role` from the calling account. Roles are often managed via {grantRole} and {revokeRole}: this function's purpose is to provide a mechanism for accounts to lose their privileges if they are compromised (such as when a trusted device is misplaced). If the calling account had been granted `role`, emits a {RoleRevoked} event. Requirements: - the caller must be `account`.
@@ -884,20 +1225,36 @@ export interface CollectionFactory extends BaseContract {
     ): Promise<void>;
 
     /**
-     * See {IERC165-supportsInterface}.
+     * Seller => NFT ID => Bid.
      */
-    supportsInterface(
-      interfaceId: BytesLike,
+    sellerNftBids(
+      arg0: string,
+      arg1: BigNumberish,
       overrides?: CallOverrides
-    ): Promise<boolean>;
+    ): Promise<
+      [string, BigNumber, BigNumber, boolean] & {
+        buyer: string;
+        price: BigNumber;
+        closeTimeSec: BigNumber;
+        secured: boolean;
+      }
+    >;
 
     /**
-     * See {IERC165-supportsInterface}.
+     * Seller => NFT ID => Bid.
      */
-    'supportsInterface(bytes4)'(
-      interfaceId: BytesLike,
+    'sellerNftBids(address,uint256)'(
+      arg0: string,
+      arg1: BigNumberish,
       overrides?: CallOverrides
-    ): Promise<boolean>;
+    ): Promise<
+      [string, BigNumber, BigNumber, boolean] & {
+        buyer: string;
+        price: BigNumber;
+        closeTimeSec: BigNumber;
+        secured: boolean;
+      }
+    >;
 
     upgradeTo(
       newImplementation: string,
@@ -921,57 +1278,114 @@ export interface CollectionFactory extends BaseContract {
       overrides?: CallOverrides
     ): Promise<void>;
 
-    initialize(
-      _freeport: string,
-      _nftAttachment: string,
-      _marketplace: string,
-      _auction: string,
+    /**
+     * Supports interfaces of AccessControl and ERC1155Receiver.
+     */
+    supportsInterface(
+      interfaceId: BytesLike,
       overrides?: CallOverrides
-    ): Promise<void>;
+    ): Promise<boolean>;
 
-    'initialize(address,address,address,address)'(
+    /**
+     * Supports interfaces of AccessControl and ERC1155Receiver.
+     */
+    'supportsInterface(bytes4)'(
+      interfaceId: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<boolean>;
+
+    /**
+     * Initialize this contract and its dependencies.
+     */
+    initialize(_freeport: string, overrides?: CallOverrides): Promise<void>;
+
+    /**
+     * Initialize this contract and its dependencies.
+     */
+    'initialize(address)'(
       _freeport: string,
-      _nftAttachment: string,
-      _marketplace: string,
-      _auction: string,
       overrides?: CallOverrides
     ): Promise<void>;
 
     /**
-     * Deploying a new user collection.  Emits a {CollectionCreated} event.
+     * Initialize this contract after version 2.0.0. Allow deposit of USDC into Freeport.
      */
-    createCollection(
-      collectionManager: string,
-      name: string,
-      uriTpl: string,
-      contractURI: string,
-      overrides?: CallOverrides
-    ): Promise<string>;
+    initialize_v2_0_0(overrides?: CallOverrides): Promise<void>;
 
     /**
-     * Deploying a new user collection.  Emits a {CollectionCreated} event.
+     * Initialize this contract after version 2.0.0. Allow deposit of USDC into Freeport.
      */
-    'createCollection(address,string,string,string)'(
-      collectionManager: string,
-      name: string,
-      uriTpl: string,
-      contractURI: string,
-      overrides?: CallOverrides
-    ): Promise<string>;
+    'initialize_v2_0_0()'(overrides?: CallOverrides): Promise<void>;
 
-    mintOnBehalf(
-      collection: string,
-      holder: string,
-      supply: BigNumberish,
-      data: BytesLike,
+    startAuction(
+      nftId: BigNumberish,
+      minPrice: BigNumberish,
+      closeTimeSec: BigNumberish,
       overrides?: CallOverrides
     ): Promise<void>;
 
-    'mintOnBehalf(address,address,uint64,bytes)'(
-      collection: string,
-      holder: string,
-      supply: BigNumberish,
-      data: BytesLike,
+    'startAuction(uint256,uint256,uint256)'(
+      nftId: BigNumberish,
+      minPrice: BigNumberish,
+      closeTimeSec: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    startSecuredAuction(
+      nftId: BigNumberish,
+      minPrice: BigNumberish,
+      closeTimeSec: BigNumberish,
+      secured: boolean,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    'startSecuredAuction(uint256,uint256,uint256,bool)'(
+      nftId: BigNumberish,
+      minPrice: BigNumberish,
+      closeTimeSec: BigNumberish,
+      secured: boolean,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    bidOnAuction(
+      seller: string,
+      nftId: BigNumberish,
+      price: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    'bidOnAuction(address,uint256,uint256)'(
+      seller: string,
+      nftId: BigNumberish,
+      price: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    bidOnSecuredAuction(
+      seller: string,
+      nftId: BigNumberish,
+      price: BigNumberish,
+      signature: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    'bidOnSecuredAuction(address,uint256,uint256,bytes)'(
+      seller: string,
+      nftId: BigNumberish,
+      price: BigNumberish,
+      signature: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    settleAuction(
+      seller: string,
+      nftId: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    'settleAuction(address,uint256)'(
+      seller: string,
+      nftId: BigNumberish,
       overrides?: CallOverrides
     ): Promise<void>;
   };
@@ -991,29 +1405,20 @@ export interface CollectionFactory extends BaseContract {
     ): BeaconUpgradedEventFilter;
     BeaconUpgraded(beacon?: string | null): BeaconUpgradedEventFilter;
 
-    'CollectionCreated(string,address)'(
-      name?: null,
-      addr?: string | null
-    ): CollectionCreatedEventFilter;
-    CollectionCreated(
-      name?: null,
-      addr?: string | null
-    ): CollectionCreatedEventFilter;
-
-    'MintOnBehalf(address,address,address,uint256,uint64)'(
-      _operator?: null,
-      _collection?: null,
-      _holder?: null,
-      _id?: null,
-      _amount?: null
-    ): MintOnBehalfEventFilter;
-    MintOnBehalf(
-      _operator?: null,
-      _collection?: null,
-      _holder?: null,
-      _id?: null,
-      _amount?: null
-    ): MintOnBehalfEventFilter;
+    'BidOnAuction(address,uint256,uint256,uint256,address)'(
+      seller?: string | null,
+      nftId?: BigNumberish | null,
+      price?: null,
+      closeTimeSec?: null,
+      buyer?: null
+    ): BidOnAuctionEventFilter;
+    BidOnAuction(
+      seller?: string | null,
+      nftId?: BigNumberish | null,
+      price?: null,
+      closeTimeSec?: null,
+      buyer?: null
+    ): BidOnAuctionEventFilter;
 
     'RoleAdminChanged(bytes32,bytes32,bytes32)'(
       role?: BytesLike | null,
@@ -1048,30 +1453,58 @@ export interface CollectionFactory extends BaseContract {
       sender?: string | null
     ): RoleRevokedEventFilter;
 
+    'SettleAuction(address,uint256,uint256,address)'(
+      seller?: string | null,
+      nftId?: BigNumberish | null,
+      price?: null,
+      buyer?: null
+    ): SettleAuctionEventFilter;
+    SettleAuction(
+      seller?: string | null,
+      nftId?: BigNumberish | null,
+      price?: null,
+      buyer?: null
+    ): SettleAuctionEventFilter;
+
+    'StartAuction(address,uint256,uint256,uint256,bool)'(
+      seller?: string | null,
+      nftId?: BigNumberish | null,
+      price?: null,
+      closeTimeSec?: null,
+      secured?: null
+    ): StartAuctionEventFilter;
+    StartAuction(
+      seller?: string | null,
+      nftId?: BigNumberish | null,
+      price?: null,
+      closeTimeSec?: null,
+      secured?: null
+    ): StartAuctionEventFilter;
+
     'Upgraded(address)'(implementation?: string | null): UpgradedEventFilter;
     Upgraded(implementation?: string | null): UpgradedEventFilter;
   };
 
   estimateGas: {
-    /**
-     * Collection creator role.  Used for configuring the amounts and beneficiaries of royalties on primary and secondary transfers of this NFT.
-     */
-    COLLECTION_CREATOR_ROLE(overrides?: CallOverrides): Promise<BigNumber>;
+    BUY_AUTHORIZATION_TYPEHASH(overrides?: CallOverrides): Promise<BigNumber>;
+
+    'BUY_AUTHORIZATION_TYPEHASH()'(
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    BUY_AUTHORIZER_ROLE(overrides?: CallOverrides): Promise<BigNumber>;
+
+    'BUY_AUTHORIZER_ROLE()'(overrides?: CallOverrides): Promise<BigNumber>;
 
     /**
-     * Collection creator role.  Used for configuring the amounts and beneficiaries of royalties on primary and secondary transfers of this NFT.
+     * The token ID that represents the CERE currency for all payments in this contract.
      */
-    'COLLECTION_CREATOR_ROLE()'(overrides?: CallOverrides): Promise<BigNumber>;
+    CURRENCY(overrides?: CallOverrides): Promise<BigNumber>;
 
     /**
-     * Allowance mapping for mint on behalf for each Collection.
+     * The token ID that represents the CERE currency for all payments in this contract.
      */
-    COLLECTION_MANAGER_ROLE(overrides?: CallOverrides): Promise<BigNumber>;
-
-    /**
-     * Allowance mapping for mint on behalf for each Collection.
-     */
-    'COLLECTION_MANAGER_ROLE()'(overrides?: CallOverrides): Promise<BigNumber>;
+    'CURRENCY()'(overrides?: CallOverrides): Promise<BigNumber>;
 
     DEFAULT_ADMIN_ROLE(overrides?: CallOverrides): Promise<BigNumber>;
 
@@ -1081,13 +1514,25 @@ export interface CollectionFactory extends BaseContract {
 
     'META_TX_FORWARDER()'(overrides?: CallOverrides): Promise<BigNumber>;
 
-    auction(overrides?: CallOverrides): Promise<BigNumber>;
-
-    'auction()'(overrides?: CallOverrides): Promise<BigNumber>;
-
     freeport(overrides?: CallOverrides): Promise<BigNumber>;
 
     'freeport()'(overrides?: CallOverrides): Promise<BigNumber>;
+
+    /**
+     * Calculate the global ID of an NFT type, identifying its inner nft id.
+     */
+    getGlobalNftId(
+      innerNftId: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    /**
+     * Calculate the global ID of an NFT type, identifying its inner nft id.
+     */
+    'getGlobalNftId(uint32)'(
+      innerNftId: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
 
     /**
      * Returns the admin role that controls `role`. See {grantRole} and {revokeRole}. To change a role's admin, use {_setRoleAdmin}.
@@ -1151,13 +1596,41 @@ export interface CollectionFactory extends BaseContract {
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
-    marketplace(overrides?: CallOverrides): Promise<BigNumber>;
+    onERC1155BatchReceived(
+      arg0: string,
+      arg1: string,
+      arg2: BigNumberish[],
+      arg3: BigNumberish[],
+      arg4: BytesLike,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<BigNumber>;
 
-    'marketplace()'(overrides?: CallOverrides): Promise<BigNumber>;
+    'onERC1155BatchReceived(address,address,uint256[],uint256[],bytes)'(
+      arg0: string,
+      arg1: string,
+      arg2: BigNumberish[],
+      arg3: BigNumberish[],
+      arg4: BytesLike,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<BigNumber>;
 
-    nftAttachment(overrides?: CallOverrides): Promise<BigNumber>;
+    onERC1155Received(
+      arg0: string,
+      arg1: string,
+      arg2: BigNumberish,
+      arg3: BigNumberish,
+      arg4: BytesLike,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<BigNumber>;
 
-    'nftAttachment()'(overrides?: CallOverrides): Promise<BigNumber>;
+    'onERC1155Received(address,address,uint256,uint256,bytes)'(
+      arg0: string,
+      arg1: string,
+      arg2: BigNumberish,
+      arg3: BigNumberish,
+      arg4: BytesLike,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<BigNumber>;
 
     /**
      * Revokes `role` from the calling account. Roles are often managed via {grantRole} and {revokeRole}: this function's purpose is to provide a mechanism for accounts to lose their privileges if they are compromised (such as when a trusted device is misplaced). If the calling account had been granted `role`, emits a {RoleRevoked} event. Requirements: - the caller must be `account`.
@@ -1196,18 +1669,20 @@ export interface CollectionFactory extends BaseContract {
     ): Promise<BigNumber>;
 
     /**
-     * See {IERC165-supportsInterface}.
+     * Seller => NFT ID => Bid.
      */
-    supportsInterface(
-      interfaceId: BytesLike,
+    sellerNftBids(
+      arg0: string,
+      arg1: BigNumberish,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
     /**
-     * See {IERC165-supportsInterface}.
+     * Seller => NFT ID => Bid.
      */
-    'supportsInterface(bytes4)'(
-      interfaceId: BytesLike,
+    'sellerNftBids(address,uint256)'(
+      arg0: string,
+      arg1: BigNumberish,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
@@ -1233,89 +1708,151 @@ export interface CollectionFactory extends BaseContract {
       overrides?: PayableOverrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
+    /**
+     * Supports interfaces of AccessControl and ERC1155Receiver.
+     */
+    supportsInterface(
+      interfaceId: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    /**
+     * Supports interfaces of AccessControl and ERC1155Receiver.
+     */
+    'supportsInterface(bytes4)'(
+      interfaceId: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    /**
+     * Initialize this contract and its dependencies.
+     */
     initialize(
       _freeport: string,
-      _nftAttachment: string,
-      _marketplace: string,
-      _auction: string,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
-    'initialize(address,address,address,address)'(
+    /**
+     * Initialize this contract and its dependencies.
+     */
+    'initialize(address)'(
       _freeport: string,
-      _nftAttachment: string,
-      _marketplace: string,
-      _auction: string,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
     /**
-     * Deploying a new user collection.  Emits a {CollectionCreated} event.
+     * Initialize this contract after version 2.0.0. Allow deposit of USDC into Freeport.
      */
-    createCollection(
-      collectionManager: string,
-      name: string,
-      uriTpl: string,
-      contractURI: string,
+    initialize_v2_0_0(
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
     /**
-     * Deploying a new user collection.  Emits a {CollectionCreated} event.
+     * Initialize this contract after version 2.0.0. Allow deposit of USDC into Freeport.
      */
-    'createCollection(address,string,string,string)'(
-      collectionManager: string,
-      name: string,
-      uriTpl: string,
-      contractURI: string,
+    'initialize_v2_0_0()'(
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
-    mintOnBehalf(
-      collection: string,
-      holder: string,
-      supply: BigNumberish,
-      data: BytesLike,
+    startAuction(
+      nftId: BigNumberish,
+      minPrice: BigNumberish,
+      closeTimeSec: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
-    'mintOnBehalf(address,address,uint64,bytes)'(
-      collection: string,
-      holder: string,
-      supply: BigNumberish,
-      data: BytesLike,
+    'startAuction(uint256,uint256,uint256)'(
+      nftId: BigNumberish,
+      minPrice: BigNumberish,
+      closeTimeSec: BigNumberish,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<BigNumber>;
+
+    startSecuredAuction(
+      nftId: BigNumberish,
+      minPrice: BigNumberish,
+      closeTimeSec: BigNumberish,
+      secured: boolean,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<BigNumber>;
+
+    'startSecuredAuction(uint256,uint256,uint256,bool)'(
+      nftId: BigNumberish,
+      minPrice: BigNumberish,
+      closeTimeSec: BigNumberish,
+      secured: boolean,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<BigNumber>;
+
+    bidOnAuction(
+      seller: string,
+      nftId: BigNumberish,
+      price: BigNumberish,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<BigNumber>;
+
+    'bidOnAuction(address,uint256,uint256)'(
+      seller: string,
+      nftId: BigNumberish,
+      price: BigNumberish,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<BigNumber>;
+
+    bidOnSecuredAuction(
+      seller: string,
+      nftId: BigNumberish,
+      price: BigNumberish,
+      signature: BytesLike,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<BigNumber>;
+
+    'bidOnSecuredAuction(address,uint256,uint256,bytes)'(
+      seller: string,
+      nftId: BigNumberish,
+      price: BigNumberish,
+      signature: BytesLike,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<BigNumber>;
+
+    settleAuction(
+      seller: string,
+      nftId: BigNumberish,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<BigNumber>;
+
+    'settleAuction(address,uint256)'(
+      seller: string,
+      nftId: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
   };
 
   populateTransaction: {
-    /**
-     * Collection creator role.  Used for configuring the amounts and beneficiaries of royalties on primary and secondary transfers of this NFT.
-     */
-    COLLECTION_CREATOR_ROLE(
+    BUY_AUTHORIZATION_TYPEHASH(
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    'BUY_AUTHORIZATION_TYPEHASH()'(
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    BUY_AUTHORIZER_ROLE(
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    'BUY_AUTHORIZER_ROLE()'(
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
     /**
-     * Collection creator role.  Used for configuring the amounts and beneficiaries of royalties on primary and secondary transfers of this NFT.
+     * The token ID that represents the CERE currency for all payments in this contract.
      */
-    'COLLECTION_CREATOR_ROLE()'(
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
+    CURRENCY(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     /**
-     * Allowance mapping for mint on behalf for each Collection.
+     * The token ID that represents the CERE currency for all payments in this contract.
      */
-    COLLECTION_MANAGER_ROLE(
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    /**
-     * Allowance mapping for mint on behalf for each Collection.
-     */
-    'COLLECTION_MANAGER_ROLE()'(
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
+    'CURRENCY()'(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     DEFAULT_ADMIN_ROLE(
       overrides?: CallOverrides
@@ -1331,13 +1868,25 @@ export interface CollectionFactory extends BaseContract {
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
-    auction(overrides?: CallOverrides): Promise<PopulatedTransaction>;
-
-    'auction()'(overrides?: CallOverrides): Promise<PopulatedTransaction>;
-
     freeport(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     'freeport()'(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    /**
+     * Calculate the global ID of an NFT type, identifying its inner nft id.
+     */
+    getGlobalNftId(
+      innerNftId: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    /**
+     * Calculate the global ID of an NFT type, identifying its inner nft id.
+     */
+    'getGlobalNftId(uint32)'(
+      innerNftId: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
 
     /**
      * Returns the admin role that controls `role`. See {grantRole} and {revokeRole}. To change a role's admin, use {_setRoleAdmin}.
@@ -1401,13 +1950,41 @@ export interface CollectionFactory extends BaseContract {
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
-    marketplace(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+    onERC1155BatchReceived(
+      arg0: string,
+      arg1: string,
+      arg2: BigNumberish[],
+      arg3: BigNumberish[],
+      arg4: BytesLike,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
 
-    'marketplace()'(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+    'onERC1155BatchReceived(address,address,uint256[],uint256[],bytes)'(
+      arg0: string,
+      arg1: string,
+      arg2: BigNumberish[],
+      arg3: BigNumberish[],
+      arg4: BytesLike,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
 
-    nftAttachment(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+    onERC1155Received(
+      arg0: string,
+      arg1: string,
+      arg2: BigNumberish,
+      arg3: BigNumberish,
+      arg4: BytesLike,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
 
-    'nftAttachment()'(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+    'onERC1155Received(address,address,uint256,uint256,bytes)'(
+      arg0: string,
+      arg1: string,
+      arg2: BigNumberish,
+      arg3: BigNumberish,
+      arg4: BytesLike,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
 
     /**
      * Revokes `role` from the calling account. Roles are often managed via {grantRole} and {revokeRole}: this function's purpose is to provide a mechanism for accounts to lose their privileges if they are compromised (such as when a trusted device is misplaced). If the calling account had been granted `role`, emits a {RoleRevoked} event. Requirements: - the caller must be `account`.
@@ -1446,18 +2023,20 @@ export interface CollectionFactory extends BaseContract {
     ): Promise<PopulatedTransaction>;
 
     /**
-     * See {IERC165-supportsInterface}.
+     * Seller => NFT ID => Bid.
      */
-    supportsInterface(
-      interfaceId: BytesLike,
+    sellerNftBids(
+      arg0: string,
+      arg1: BigNumberish,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
     /**
-     * See {IERC165-supportsInterface}.
+     * Seller => NFT ID => Bid.
      */
-    'supportsInterface(bytes4)'(
-      interfaceId: BytesLike,
+    'sellerNftBids(address,uint256)'(
+      arg0: string,
+      arg1: BigNumberish,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
@@ -1483,57 +2062,121 @@ export interface CollectionFactory extends BaseContract {
       overrides?: PayableOverrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 
+    /**
+     * Supports interfaces of AccessControl and ERC1155Receiver.
+     */
+    supportsInterface(
+      interfaceId: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    /**
+     * Supports interfaces of AccessControl and ERC1155Receiver.
+     */
+    'supportsInterface(bytes4)'(
+      interfaceId: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    /**
+     * Initialize this contract and its dependencies.
+     */
     initialize(
       _freeport: string,
-      _nftAttachment: string,
-      _marketplace: string,
-      _auction: string,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 
-    'initialize(address,address,address,address)'(
+    /**
+     * Initialize this contract and its dependencies.
+     */
+    'initialize(address)'(
       _freeport: string,
-      _nftAttachment: string,
-      _marketplace: string,
-      _auction: string,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 
     /**
-     * Deploying a new user collection.  Emits a {CollectionCreated} event.
+     * Initialize this contract after version 2.0.0. Allow deposit of USDC into Freeport.
      */
-    createCollection(
-      collectionManager: string,
-      name: string,
-      uriTpl: string,
-      contractURI: string,
+    initialize_v2_0_0(
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 
     /**
-     * Deploying a new user collection.  Emits a {CollectionCreated} event.
+     * Initialize this contract after version 2.0.0. Allow deposit of USDC into Freeport.
      */
-    'createCollection(address,string,string,string)'(
-      collectionManager: string,
-      name: string,
-      uriTpl: string,
-      contractURI: string,
+    'initialize_v2_0_0()'(
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 
-    mintOnBehalf(
-      collection: string,
-      holder: string,
-      supply: BigNumberish,
-      data: BytesLike,
+    startAuction(
+      nftId: BigNumberish,
+      minPrice: BigNumberish,
+      closeTimeSec: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 
-    'mintOnBehalf(address,address,uint64,bytes)'(
-      collection: string,
-      holder: string,
-      supply: BigNumberish,
-      data: BytesLike,
+    'startAuction(uint256,uint256,uint256)'(
+      nftId: BigNumberish,
+      minPrice: BigNumberish,
+      closeTimeSec: BigNumberish,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
+
+    startSecuredAuction(
+      nftId: BigNumberish,
+      minPrice: BigNumberish,
+      closeTimeSec: BigNumberish,
+      secured: boolean,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
+
+    'startSecuredAuction(uint256,uint256,uint256,bool)'(
+      nftId: BigNumberish,
+      minPrice: BigNumberish,
+      closeTimeSec: BigNumberish,
+      secured: boolean,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
+
+    bidOnAuction(
+      seller: string,
+      nftId: BigNumberish,
+      price: BigNumberish,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
+
+    'bidOnAuction(address,uint256,uint256)'(
+      seller: string,
+      nftId: BigNumberish,
+      price: BigNumberish,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
+
+    bidOnSecuredAuction(
+      seller: string,
+      nftId: BigNumberish,
+      price: BigNumberish,
+      signature: BytesLike,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
+
+    'bidOnSecuredAuction(address,uint256,uint256,bytes)'(
+      seller: string,
+      nftId: BigNumberish,
+      price: BigNumberish,
+      signature: BytesLike,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
+
+    settleAuction(
+      seller: string,
+      nftId: BigNumberish,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
+
+    'settleAuction(address,uint256)'(
+      seller: string,
+      nftId: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
   };
