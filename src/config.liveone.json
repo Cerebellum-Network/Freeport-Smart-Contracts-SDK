@@ -6,7 +6,10 @@
       "SimpleAuction": "0x9516B2486f196807aFa7c6C0625336F6A7AF98e6",
       "NFTAttachment": "0x891e1e06Ec421b193CdC9bC53b038AD5e053bED9",
       "MinimalForwarder": "0x0000000000000000000000000000000000000001",
-      "ERC20": "0x93E73E25F290f8A50281A801109f75CB4E8e3233"
+      "ERC20": "0x93E73E25F290f8A50281A801109f75CB4E8e3233",
+      "CollectionFactory": "0xc667eedf8d70bdc6a6a4b4b17ddb4a80b5994e61",
+      "Marketplace": "0x18BF5fC659e3d35277fCdf17bba3FB2884686FcE",
+      "Auction": "0x68efeffc018e42e42911b003b93871f42563308b"
     },
     "Token": {
       "symbol": "USDC",
