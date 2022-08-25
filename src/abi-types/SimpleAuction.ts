@@ -25,6 +25,7 @@ export interface SimpleAuctionInterface extends utils.Interface {
     'CURRENCY()': FunctionFragment;
     'DEFAULT_ADMIN_ROLE()': FunctionFragment;
     'META_TX_FORWARDER()': FunctionFragment;
+    'bidCollateral(address,uint256)': FunctionFragment;
     'freeport()': FunctionFragment;
     'getRoleAdmin(bytes32)': FunctionFragment;
     'grantRole(bytes32,address)': FunctionFragment;
@@ -39,6 +40,7 @@ export interface SimpleAuctionInterface extends utils.Interface {
     'upgradeToAndCall(address,bytes)': FunctionFragment;
     'supportsInterface(bytes4)': FunctionFragment;
     'initialize(address)': FunctionFragment;
+    'initialize_update(address)': FunctionFragment;
     'initialize_v2_0_0()': FunctionFragment;
     'startAuction(uint256,uint256,uint256)': FunctionFragment;
     'startSecuredAuction(uint256,uint256,uint256,bool)': FunctionFragment;
@@ -63,6 +65,10 @@ export interface SimpleAuctionInterface extends utils.Interface {
   encodeFunctionData(
     functionFragment: 'META_TX_FORWARDER',
     values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: 'bidCollateral',
+    values: [string, BigNumberish]
   ): string;
   encodeFunctionData(functionFragment: 'freeport', values?: undefined): string;
   encodeFunctionData(
@@ -112,6 +118,10 @@ export interface SimpleAuctionInterface extends utils.Interface {
   ): string;
   encodeFunctionData(functionFragment: 'initialize', values: [string]): string;
   encodeFunctionData(
+    functionFragment: 'initialize_update',
+    values: [string]
+  ): string;
+  encodeFunctionData(
     functionFragment: 'initialize_v2_0_0',
     values?: undefined
   ): string;
@@ -153,6 +163,10 @@ export interface SimpleAuctionInterface extends utils.Interface {
     functionFragment: 'META_TX_FORWARDER',
     data: BytesLike
   ): Result;
+  decodeFunctionResult(
+    functionFragment: 'bidCollateral',
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(functionFragment: 'freeport', data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: 'getRoleAdmin',
@@ -191,6 +205,10 @@ export interface SimpleAuctionInterface extends utils.Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: 'initialize', data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: 'initialize_update',
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(
     functionFragment: 'initialize_v2_0_0',
     data: BytesLike
@@ -363,6 +381,24 @@ export interface SimpleAuction extends BaseContract {
     META_TX_FORWARDER(overrides?: CallOverrides): Promise<[string]>;
 
     'META_TX_FORWARDER()'(overrides?: CallOverrides): Promise<[string]>;
+
+    /**
+     * Tracking amount of collateral NFTs.
+     */
+    bidCollateral(
+      arg0: string,
+      arg1: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<[BigNumber]>;
+
+    /**
+     * Tracking amount of collateral NFTs.
+     */
+    'bidCollateral(address,uint256)'(
+      arg0: string,
+      arg1: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<[BigNumber]>;
 
     freeport(overrides?: CallOverrides): Promise<[string]>;
 
@@ -585,6 +621,16 @@ export interface SimpleAuction extends BaseContract {
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
+    initialize_update(
+      _freeport: string,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
+
+    'initialize_update(address)'(
+      _freeport: string,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
+
     /**
      * Initialize this contract after version 2.0.0. Allow deposit of USDC into Freeport.
      */
@@ -697,6 +743,24 @@ export interface SimpleAuction extends BaseContract {
   META_TX_FORWARDER(overrides?: CallOverrides): Promise<string>;
 
   'META_TX_FORWARDER()'(overrides?: CallOverrides): Promise<string>;
+
+  /**
+   * Tracking amount of collateral NFTs.
+   */
+  bidCollateral(
+    arg0: string,
+    arg1: BigNumberish,
+    overrides?: CallOverrides
+  ): Promise<BigNumber>;
+
+  /**
+   * Tracking amount of collateral NFTs.
+   */
+  'bidCollateral(address,uint256)'(
+    arg0: string,
+    arg1: BigNumberish,
+    overrides?: CallOverrides
+  ): Promise<BigNumber>;
 
   freeport(overrides?: CallOverrides): Promise<string>;
 
@@ -919,6 +983,16 @@ export interface SimpleAuction extends BaseContract {
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
+  initialize_update(
+    _freeport: string,
+    overrides?: Overrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
+
+  'initialize_update(address)'(
+    _freeport: string,
+    overrides?: Overrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
+
   /**
    * Initialize this contract after version 2.0.0. Allow deposit of USDC into Freeport.
    */
@@ -1031,6 +1105,24 @@ export interface SimpleAuction extends BaseContract {
     META_TX_FORWARDER(overrides?: CallOverrides): Promise<string>;
 
     'META_TX_FORWARDER()'(overrides?: CallOverrides): Promise<string>;
+
+    /**
+     * Tracking amount of collateral NFTs.
+     */
+    bidCollateral(
+      arg0: string,
+      arg1: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    /**
+     * Tracking amount of collateral NFTs.
+     */
+    'bidCollateral(address,uint256)'(
+      arg0: string,
+      arg1: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
 
     freeport(overrides?: CallOverrides): Promise<string>;
 
@@ -1250,6 +1342,16 @@ export interface SimpleAuction extends BaseContract {
       overrides?: CallOverrides
     ): Promise<void>;
 
+    initialize_update(
+      _freeport: string,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    'initialize_update(address)'(
+      _freeport: string,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
     /**
      * Initialize this contract after version 2.0.0. Allow deposit of USDC into Freeport.
      */
@@ -1456,6 +1558,24 @@ export interface SimpleAuction extends BaseContract {
     META_TX_FORWARDER(overrides?: CallOverrides): Promise<BigNumber>;
 
     'META_TX_FORWARDER()'(overrides?: CallOverrides): Promise<BigNumber>;
+
+    /**
+     * Tracking amount of collateral NFTs.
+     */
+    bidCollateral(
+      arg0: string,
+      arg1: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    /**
+     * Tracking amount of collateral NFTs.
+     */
+    'bidCollateral(address,uint256)'(
+      arg0: string,
+      arg1: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
 
     freeport(overrides?: CallOverrides): Promise<BigNumber>;
 
@@ -1667,6 +1787,16 @@ export interface SimpleAuction extends BaseContract {
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
+    initialize_update(
+      _freeport: string,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<BigNumber>;
+
+    'initialize_update(address)'(
+      _freeport: string,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<BigNumber>;
+
     /**
      * Initialize this contract after version 2.0.0. Allow deposit of USDC into Freeport.
      */
@@ -1792,6 +1922,24 @@ export interface SimpleAuction extends BaseContract {
     META_TX_FORWARDER(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     'META_TX_FORWARDER()'(
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    /**
+     * Tracking amount of collateral NFTs.
+     */
+    bidCollateral(
+      arg0: string,
+      arg1: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    /**
+     * Tracking amount of collateral NFTs.
+     */
+    'bidCollateral(address,uint256)'(
+      arg0: string,
+      arg1: BigNumberish,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
@@ -2001,6 +2149,16 @@ export interface SimpleAuction extends BaseContract {
      * Initialize this contract and its dependencies.
      */
     'initialize(address)'(
+      _freeport: string,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
+
+    initialize_update(
+      _freeport: string,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
+
+    'initialize_update(address)'(
       _freeport: string,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;

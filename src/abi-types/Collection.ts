@@ -55,6 +55,7 @@ export interface CollectionInterface extends utils.Interface {
     'initialize(address,address,string,string,string,address,address,address,address)': FunctionFragment;
     'supportsInterface(bytes4)': FunctionFragment;
     'isApprovedForAll(address,address)': FunctionFragment;
+    'balanceOfGlobalNftId(address,uint256)': FunctionFragment;
     'uri(uint256)': FunctionFragment;
   };
 
@@ -200,6 +201,10 @@ export interface CollectionInterface extends utils.Interface {
     functionFragment: 'isApprovedForAll',
     values: [string, string]
   ): string;
+  encodeFunctionData(
+    functionFragment: 'balanceOfGlobalNftId',
+    values: [string, BigNumberish]
+  ): string;
   encodeFunctionData(functionFragment: 'uri', values: [BigNumberish]): string;
 
   decodeFunctionResult(
@@ -307,6 +312,10 @@ export interface CollectionInterface extends utils.Interface {
   ): Result;
   decodeFunctionResult(
     functionFragment: 'isApprovedForAll',
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: 'balanceOfGlobalNftId',
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: 'uri', data: BytesLike): Result;
@@ -968,6 +977,24 @@ export interface Collection extends BaseContract {
     ): Promise<[boolean]>;
 
     /**
+     * Wrapper around {IERC1155-balanceOf}. Convenient way of getting NFT balance.
+     */
+    balanceOfGlobalNftId(
+      account: string,
+      nftId: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<[BigNumber]>;
+
+    /**
+     * Wrapper around {IERC1155-balanceOf}. Convenient way of getting NFT balance.
+     */
+    'balanceOfGlobalNftId(address,uint256)'(
+      account: string,
+      nftId: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<[BigNumber]>;
+
+    /**
      * URI override for OpenSea traits compatibility.
      */
     uri(nftId: BigNumberish, overrides?: CallOverrides): Promise<[string]>;
@@ -1509,6 +1536,24 @@ export interface Collection extends BaseContract {
   ): Promise<boolean>;
 
   /**
+   * Wrapper around {IERC1155-balanceOf}. Convenient way of getting NFT balance.
+   */
+  balanceOfGlobalNftId(
+    account: string,
+    nftId: BigNumberish,
+    overrides?: CallOverrides
+  ): Promise<BigNumber>;
+
+  /**
+   * Wrapper around {IERC1155-balanceOf}. Convenient way of getting NFT balance.
+   */
+  'balanceOfGlobalNftId(address,uint256)'(
+    account: string,
+    nftId: BigNumberish,
+    overrides?: CallOverrides
+  ): Promise<BigNumber>;
+
+  /**
    * URI override for OpenSea traits compatibility.
    */
   uri(nftId: BigNumberish, overrides?: CallOverrides): Promise<string>;
@@ -2042,6 +2087,24 @@ export interface Collection extends BaseContract {
       operator: string,
       overrides?: CallOverrides
     ): Promise<boolean>;
+
+    /**
+     * Wrapper around {IERC1155-balanceOf}. Convenient way of getting NFT balance.
+     */
+    balanceOfGlobalNftId(
+      account: string,
+      nftId: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    /**
+     * Wrapper around {IERC1155-balanceOf}. Convenient way of getting NFT balance.
+     */
+    'balanceOfGlobalNftId(address,uint256)'(
+      account: string,
+      nftId: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
 
     /**
      * URI override for OpenSea traits compatibility.
@@ -2656,6 +2719,24 @@ export interface Collection extends BaseContract {
     ): Promise<BigNumber>;
 
     /**
+     * Wrapper around {IERC1155-balanceOf}. Convenient way of getting NFT balance.
+     */
+    balanceOfGlobalNftId(
+      account: string,
+      nftId: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    /**
+     * Wrapper around {IERC1155-balanceOf}. Convenient way of getting NFT balance.
+     */
+    'balanceOfGlobalNftId(address,uint256)'(
+      account: string,
+      nftId: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    /**
      * URI override for OpenSea traits compatibility.
      */
     uri(nftId: BigNumberish, overrides?: CallOverrides): Promise<BigNumber>;
@@ -3177,6 +3258,24 @@ export interface Collection extends BaseContract {
     'isApprovedForAll(address,address)'(
       account: string,
       operator: string,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    /**
+     * Wrapper around {IERC1155-balanceOf}. Convenient way of getting NFT balance.
+     */
+    balanceOfGlobalNftId(
+      account: string,
+      nftId: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    /**
+     * Wrapper around {IERC1155-balanceOf}. Convenient way of getting NFT balance.
+     */
+    'balanceOfGlobalNftId(address,uint256)'(
+      account: string,
+      nftId: BigNumberish,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 

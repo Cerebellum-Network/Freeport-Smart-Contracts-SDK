@@ -38,6 +38,7 @@ export interface CollectionFactoryInterface extends utils.Interface {
     'upgradeTo(address)': FunctionFragment;
     'upgradeToAndCall(address,bytes)': FunctionFragment;
     'initialize(address,address,address,address)': FunctionFragment;
+    'initialize_update(address,address,address,address)': FunctionFragment;
     'createCollection(address,string,string,string)': FunctionFragment;
     'mintOnBehalf(address,address,uint64,bytes)': FunctionFragment;
   };
@@ -106,6 +107,10 @@ export interface CollectionFactoryInterface extends utils.Interface {
     values: [string, string, string, string]
   ): string;
   encodeFunctionData(
+    functionFragment: 'initialize_update',
+    values: [string, string, string, string]
+  ): string;
+  encodeFunctionData(
     functionFragment: 'createCollection',
     values: [string, string, string, string]
   ): string;
@@ -165,6 +170,10 @@ export interface CollectionFactoryInterface extends utils.Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: 'initialize', data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: 'initialize_update',
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(
     functionFragment: 'createCollection',
     data: BytesLike
@@ -473,6 +482,22 @@ export interface CollectionFactory extends BaseContract {
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
+    initialize_update(
+      _freeport: string,
+      _nftAttachment: string,
+      _marketplace: string,
+      _auction: string,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
+
+    'initialize_update(address,address,address,address)'(
+      _freeport: string,
+      _nftAttachment: string,
+      _marketplace: string,
+      _auction: string,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
+
     /**
      * Deploying a new user collection.  Emits a {CollectionCreated} event.
      */
@@ -705,6 +730,22 @@ export interface CollectionFactory extends BaseContract {
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
+  initialize_update(
+    _freeport: string,
+    _nftAttachment: string,
+    _marketplace: string,
+    _auction: string,
+    overrides?: Overrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
+
+  'initialize_update(address,address,address,address)'(
+    _freeport: string,
+    _nftAttachment: string,
+    _marketplace: string,
+    _auction: string,
+    overrides?: Overrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
+
   /**
    * Deploying a new user collection.  Emits a {CollectionCreated} event.
    */
@@ -930,6 +971,22 @@ export interface CollectionFactory extends BaseContract {
     ): Promise<void>;
 
     'initialize(address,address,address,address)'(
+      _freeport: string,
+      _nftAttachment: string,
+      _marketplace: string,
+      _auction: string,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    initialize_update(
+      _freeport: string,
+      _nftAttachment: string,
+      _marketplace: string,
+      _auction: string,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    'initialize_update(address,address,address,address)'(
       _freeport: string,
       _nftAttachment: string,
       _marketplace: string,
@@ -1249,6 +1306,22 @@ export interface CollectionFactory extends BaseContract {
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
+    initialize_update(
+      _freeport: string,
+      _nftAttachment: string,
+      _marketplace: string,
+      _auction: string,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<BigNumber>;
+
+    'initialize_update(address,address,address,address)'(
+      _freeport: string,
+      _nftAttachment: string,
+      _marketplace: string,
+      _auction: string,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<BigNumber>;
+
     /**
      * Deploying a new user collection.  Emits a {CollectionCreated} event.
      */
@@ -1492,6 +1565,22 @@ export interface CollectionFactory extends BaseContract {
     ): Promise<PopulatedTransaction>;
 
     'initialize(address,address,address,address)'(
+      _freeport: string,
+      _nftAttachment: string,
+      _marketplace: string,
+      _auction: string,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
+
+    initialize_update(
+      _freeport: string,
+      _nftAttachment: string,
+      _marketplace: string,
+      _auction: string,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
+
+    'initialize_update(address,address,address,address)'(
       _freeport: string,
       _nftAttachment: string,
       _marketplace: string,
