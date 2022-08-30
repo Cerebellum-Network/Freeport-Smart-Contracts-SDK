@@ -20,40 +20,25 @@ import { TypedEventFilter, TypedEvent, TypedListener, OnEvent } from './common';
 
 export interface MarketplaceInterface extends utils.Interface {
   functions: {
-    'CURRENCY()': FunctionFragment;
     'DEFAULT_ADMIN_ROLE()': FunctionFragment;
     'META_TX_FORWARDER()': FunctionFragment;
-    'balanceOf(address,uint256)': FunctionFragment;
-    'balanceOfBatch(address[],uint256[])': FunctionFragment;
-    'currencyContract()': FunctionFragment;
-    'deposit(uint256)': FunctionFragment;
     'freeport()': FunctionFragment;
     'getGlobalNftId(uint32)': FunctionFragment;
     'getRoleAdmin(bytes32)': FunctionFragment;
     'grantRole(bytes32,address)': FunctionFragment;
     'hasRole(bytes32,address)': FunctionFragment;
-    'isApprovedForAll(address,address)': FunctionFragment;
     'isTrustedForwarder(address)': FunctionFragment;
     'renounceRole(bytes32,address)': FunctionFragment;
     'revokeRole(bytes32,address)': FunctionFragment;
-    'safeBatchTransferFrom(address,address,uint256[],uint256[],bytes)': FunctionFragment;
-    'safeTransferFrom(address,address,uint256,uint256,bytes)': FunctionFragment;
-    'setApprovalForAll(address,bool)': FunctionFragment;
-    'setERC20(address)': FunctionFragment;
-    'setURI(string)': FunctionFragment;
     'supportsInterface(bytes4)': FunctionFragment;
-    'transferFrom(address,address,uint256,uint256)': FunctionFragment;
     'upgradeTo(address)': FunctionFragment;
     'upgradeToAndCall(address,bytes)': FunctionFragment;
-    'uri(uint256)': FunctionFragment;
-    'withdraw(uint256)': FunctionFragment;
     'initialize(address)': FunctionFragment;
     'makeOffer(uint256,uint256)': FunctionFragment;
     'getOffer(address,uint256)': FunctionFragment;
     'takeOffer(address,address,uint256,uint256,uint256)': FunctionFragment;
   };
 
-  encodeFunctionData(functionFragment: 'CURRENCY', values?: undefined): string;
   encodeFunctionData(
     functionFragment: 'DEFAULT_ADMIN_ROLE',
     values?: undefined
@@ -61,22 +46,6 @@ export interface MarketplaceInterface extends utils.Interface {
   encodeFunctionData(
     functionFragment: 'META_TX_FORWARDER',
     values?: undefined
-  ): string;
-  encodeFunctionData(
-    functionFragment: 'balanceOf',
-    values: [string, BigNumberish]
-  ): string;
-  encodeFunctionData(
-    functionFragment: 'balanceOfBatch',
-    values: [string[], BigNumberish[]]
-  ): string;
-  encodeFunctionData(
-    functionFragment: 'currencyContract',
-    values?: undefined
-  ): string;
-  encodeFunctionData(
-    functionFragment: 'deposit',
-    values: [BigNumberish]
   ): string;
   encodeFunctionData(functionFragment: 'freeport', values?: undefined): string;
   encodeFunctionData(
@@ -96,10 +65,6 @@ export interface MarketplaceInterface extends utils.Interface {
     values: [BytesLike, string]
   ): string;
   encodeFunctionData(
-    functionFragment: 'isApprovedForAll',
-    values: [string, string]
-  ): string;
-  encodeFunctionData(
     functionFragment: 'isTrustedForwarder',
     values: [string]
   ): string;
@@ -112,36 +77,13 @@ export interface MarketplaceInterface extends utils.Interface {
     values: [BytesLike, string]
   ): string;
   encodeFunctionData(
-    functionFragment: 'safeBatchTransferFrom',
-    values: [string, string, BigNumberish[], BigNumberish[], BytesLike]
-  ): string;
-  encodeFunctionData(
-    functionFragment: 'safeTransferFrom',
-    values: [string, string, BigNumberish, BigNumberish, BytesLike]
-  ): string;
-  encodeFunctionData(
-    functionFragment: 'setApprovalForAll',
-    values: [string, boolean]
-  ): string;
-  encodeFunctionData(functionFragment: 'setERC20', values: [string]): string;
-  encodeFunctionData(functionFragment: 'setURI', values: [string]): string;
-  encodeFunctionData(
     functionFragment: 'supportsInterface',
     values: [BytesLike]
-  ): string;
-  encodeFunctionData(
-    functionFragment: 'transferFrom',
-    values: [string, string, BigNumberish, BigNumberish]
   ): string;
   encodeFunctionData(functionFragment: 'upgradeTo', values: [string]): string;
   encodeFunctionData(
     functionFragment: 'upgradeToAndCall',
     values: [string, BytesLike]
-  ): string;
-  encodeFunctionData(functionFragment: 'uri', values: [BigNumberish]): string;
-  encodeFunctionData(
-    functionFragment: 'withdraw',
-    values: [BigNumberish]
   ): string;
   encodeFunctionData(functionFragment: 'initialize', values: [string]): string;
   encodeFunctionData(
@@ -157,7 +99,6 @@ export interface MarketplaceInterface extends utils.Interface {
     values: [string, string, BigNumberish, BigNumberish, BigNumberish]
   ): string;
 
-  decodeFunctionResult(functionFragment: 'CURRENCY', data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: 'DEFAULT_ADMIN_ROLE',
     data: BytesLike
@@ -166,16 +107,6 @@ export interface MarketplaceInterface extends utils.Interface {
     functionFragment: 'META_TX_FORWARDER',
     data: BytesLike
   ): Result;
-  decodeFunctionResult(functionFragment: 'balanceOf', data: BytesLike): Result;
-  decodeFunctionResult(
-    functionFragment: 'balanceOfBatch',
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: 'currencyContract',
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(functionFragment: 'deposit', data: BytesLike): Result;
   decodeFunctionResult(functionFragment: 'freeport', data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: 'getGlobalNftId',
@@ -188,10 +119,6 @@ export interface MarketplaceInterface extends utils.Interface {
   decodeFunctionResult(functionFragment: 'grantRole', data: BytesLike): Result;
   decodeFunctionResult(functionFragment: 'hasRole', data: BytesLike): Result;
   decodeFunctionResult(
-    functionFragment: 'isApprovedForAll',
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
     functionFragment: 'isTrustedForwarder',
     data: BytesLike
   ): Result;
@@ -201,25 +128,7 @@ export interface MarketplaceInterface extends utils.Interface {
   ): Result;
   decodeFunctionResult(functionFragment: 'revokeRole', data: BytesLike): Result;
   decodeFunctionResult(
-    functionFragment: 'safeBatchTransferFrom',
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: 'safeTransferFrom',
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: 'setApprovalForAll',
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(functionFragment: 'setERC20', data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: 'setURI', data: BytesLike): Result;
-  decodeFunctionResult(
     functionFragment: 'supportsInterface',
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: 'transferFrom',
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: 'upgradeTo', data: BytesLike): Result;
@@ -227,8 +136,6 @@ export interface MarketplaceInterface extends utils.Interface {
     functionFragment: 'upgradeToAndCall',
     data: BytesLike
   ): Result;
-  decodeFunctionResult(functionFragment: 'uri', data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: 'withdraw', data: BytesLike): Result;
   decodeFunctionResult(functionFragment: 'initialize', data: BytesLike): Result;
   decodeFunctionResult(functionFragment: 'makeOffer', data: BytesLike): Result;
   decodeFunctionResult(functionFragment: 'getOffer', data: BytesLike): Result;
@@ -236,30 +143,22 @@ export interface MarketplaceInterface extends utils.Interface {
 
   events: {
     'AdminChanged(address,address)': EventFragment;
-    'ApprovalForAll(address,address,bool)': EventFragment;
     'BeaconUpgraded(address)': EventFragment;
     'MakeOffer(address,uint256,uint256)': EventFragment;
     'RoleAdminChanged(bytes32,bytes32,bytes32)': EventFragment;
     'RoleGranted(bytes32,address,address)': EventFragment;
     'RoleRevoked(bytes32,address,address)': EventFragment;
     'TakeOffer(address,address,uint256,uint256,uint256)': EventFragment;
-    'TransferBatch(address,address,address,uint256[],uint256[])': EventFragment;
-    'TransferSingle(address,address,address,uint256,uint256)': EventFragment;
-    'URI(string,uint256)': EventFragment;
     'Upgraded(address)': EventFragment;
   };
 
   getEvent(nameOrSignatureOrTopic: 'AdminChanged'): EventFragment;
-  getEvent(nameOrSignatureOrTopic: 'ApprovalForAll'): EventFragment;
   getEvent(nameOrSignatureOrTopic: 'BeaconUpgraded'): EventFragment;
   getEvent(nameOrSignatureOrTopic: 'MakeOffer'): EventFragment;
   getEvent(nameOrSignatureOrTopic: 'RoleAdminChanged'): EventFragment;
   getEvent(nameOrSignatureOrTopic: 'RoleGranted'): EventFragment;
   getEvent(nameOrSignatureOrTopic: 'RoleRevoked'): EventFragment;
   getEvent(nameOrSignatureOrTopic: 'TakeOffer'): EventFragment;
-  getEvent(nameOrSignatureOrTopic: 'TransferBatch'): EventFragment;
-  getEvent(nameOrSignatureOrTopic: 'TransferSingle'): EventFragment;
-  getEvent(nameOrSignatureOrTopic: 'URI'): EventFragment;
   getEvent(nameOrSignatureOrTopic: 'Upgraded'): EventFragment;
 }
 
@@ -269,13 +168,6 @@ export type AdminChangedEvent = TypedEvent<
 >;
 
 export type AdminChangedEventFilter = TypedEventFilter<AdminChangedEvent>;
-
-export type ApprovalForAllEvent = TypedEvent<
-  [string, string, boolean],
-  { account: string; operator: string; approved: boolean }
->;
-
-export type ApprovalForAllEventFilter = TypedEventFilter<ApprovalForAllEvent>;
 
 export type BeaconUpgradedEvent = TypedEvent<[string], { beacon: string }>;
 
@@ -323,39 +215,6 @@ export type TakeOfferEvent = TypedEvent<
 
 export type TakeOfferEventFilter = TypedEventFilter<TakeOfferEvent>;
 
-export type TransferBatchEvent = TypedEvent<
-  [string, string, string, BigNumber[], BigNumber[]],
-  {
-    operator: string;
-    from: string;
-    to: string;
-    ids: BigNumber[];
-    values: BigNumber[];
-  }
->;
-
-export type TransferBatchEventFilter = TypedEventFilter<TransferBatchEvent>;
-
-export type TransferSingleEvent = TypedEvent<
-  [string, string, string, BigNumber, BigNumber],
-  {
-    operator: string;
-    from: string;
-    to: string;
-    id: BigNumber;
-    value: BigNumber;
-  }
->;
-
-export type TransferSingleEventFilter = TypedEventFilter<TransferSingleEvent>;
-
-export type URIEvent = TypedEvent<
-  [string, BigNumber],
-  { value: string; id: BigNumber }
->;
-
-export type URIEventFilter = TypedEventFilter<URIEvent>;
-
 export type UpgradedEvent = TypedEvent<[string], { implementation: string }>;
 
 export type UpgradedEventFilter = TypedEventFilter<UpgradedEvent>;
@@ -387,16 +246,6 @@ export interface Marketplace extends BaseContract {
   removeListener: OnEvent<this>;
 
   functions: {
-    /**
-     * The token ID that represents the internal currency for all payments in this contract.
-     */
-    CURRENCY(overrides?: CallOverrides): Promise<[BigNumber]>;
-
-    /**
-     * The token ID that represents the internal currency for all payments in this contract.
-     */
-    'CURRENCY()'(overrides?: CallOverrides): Promise<[BigNumber]>;
-
     DEFAULT_ADMIN_ROLE(overrides?: CallOverrides): Promise<[string]>;
 
     'DEFAULT_ADMIN_ROLE()'(overrides?: CallOverrides): Promise<[string]>;
@@ -404,68 +253,6 @@ export interface Marketplace extends BaseContract {
     META_TX_FORWARDER(overrides?: CallOverrides): Promise<[string]>;
 
     'META_TX_FORWARDER()'(overrides?: CallOverrides): Promise<[string]>;
-
-    /**
-     * See {IERC1155-balanceOf}. Requirements: - `account` cannot be the zero address.
-     */
-    balanceOf(
-      account: string,
-      id: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<[BigNumber]>;
-
-    /**
-     * See {IERC1155-balanceOf}. Requirements: - `account` cannot be the zero address.
-     */
-    'balanceOf(address,uint256)'(
-      account: string,
-      id: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<[BigNumber]>;
-
-    /**
-     * See {IERC1155-balanceOfBatch}. Requirements: - `accounts` and `ids` must have the same length.
-     */
-    balanceOfBatch(
-      accounts: string[],
-      ids: BigNumberish[],
-      overrides?: CallOverrides
-    ): Promise<[BigNumber[]]>;
-
-    /**
-     * See {IERC1155-balanceOfBatch}. Requirements: - `accounts` and `ids` must have the same length.
-     */
-    'balanceOfBatch(address[],uint256[])'(
-      accounts: string[],
-      ids: BigNumberish[],
-      overrides?: CallOverrides
-    ): Promise<[BigNumber[]]>;
-
-    /**
-     * The address of ERC-20 token's contract
-     */
-    currencyContract(overrides?: CallOverrides): Promise<[string]>;
-
-    /**
-     * The address of ERC-20 token's contract
-     */
-    'currencyContract()'(overrides?: CallOverrides): Promise<[string]>;
-
-    /**
-     * Deposit currency from ERC20 into the internal currency. This requires payer to approve deposit.
-     */
-    deposit(
-      amount: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>;
-
-    /**
-     * Deposit currency from ERC20 into the internal currency. This requires payer to approve deposit.
-     */
-    'deposit(uint256)'(
-      amount: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>;
 
     freeport(overrides?: CallOverrides): Promise<[string]>;
 
@@ -536,24 +323,6 @@ export interface Marketplace extends BaseContract {
       overrides?: CallOverrides
     ): Promise<[boolean]>;
 
-    /**
-     * See {IERC1155-isApprovedForAll}.
-     */
-    isApprovedForAll(
-      account: string,
-      operator: string,
-      overrides?: CallOverrides
-    ): Promise<[boolean]>;
-
-    /**
-     * See {IERC1155-isApprovedForAll}.
-     */
-    'isApprovedForAll(address,address)'(
-      account: string,
-      operator: string,
-      overrides?: CallOverrides
-    ): Promise<[boolean]>;
-
     isTrustedForwarder(
       forwarder: string,
       overrides?: CallOverrides
@@ -601,99 +370,7 @@ export interface Marketplace extends BaseContract {
     ): Promise<ContractTransaction>;
 
     /**
-     * See {IERC1155-safeBatchTransferFrom}.
-     */
-    safeBatchTransferFrom(
-      from: string,
-      to: string,
-      ids: BigNumberish[],
-      amounts: BigNumberish[],
-      data: BytesLike,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>;
-
-    /**
-     * See {IERC1155-safeBatchTransferFrom}.
-     */
-    'safeBatchTransferFrom(address,address,uint256[],uint256[],bytes)'(
-      from: string,
-      to: string,
-      ids: BigNumberish[],
-      amounts: BigNumberish[],
-      data: BytesLike,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>;
-
-    /**
-     * See {IERC1155-safeTransferFrom}.
-     */
-    safeTransferFrom(
-      from: string,
-      to: string,
-      id: BigNumberish,
-      amount: BigNumberish,
-      data: BytesLike,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>;
-
-    /**
-     * See {IERC1155-safeTransferFrom}.
-     */
-    'safeTransferFrom(address,address,uint256,uint256,bytes)'(
-      from: string,
-      to: string,
-      id: BigNumberish,
-      amount: BigNumberish,
-      data: BytesLike,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>;
-
-    /**
-     * See {IERC1155-setApprovalForAll}.
-     */
-    setApprovalForAll(
-      operator: string,
-      approved: boolean,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>;
-
-    /**
-     * See {IERC1155-setApprovalForAll}.
-     */
-    'setApprovalForAll(address,bool)'(
-      operator: string,
-      approved: boolean,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>;
-
-    /**
-     * Sets token's contract address. This token is used to deposit and withdraw on chain adapter's contract is deployed.
-     */
-    setERC20(
-      _currencyContract: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>;
-
-    /**
-     * Sets token's contract address. This token is used to deposit and withdraw on chain adapter's contract is deployed.
-     */
-    'setERC20(address)'(
-      _currencyContract: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>;
-
-    setURI(
-      newuri: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>;
-
-    'setURI(string)'(
-      newuri: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>;
-
-    /**
-     * Supports interfaces of AccessControl, ERC1155, and ERC1155 MetadataURI.
+     * See {IERC165-supportsInterface}.
      */
     supportsInterface(
       interfaceId: BytesLike,
@@ -701,34 +378,12 @@ export interface Marketplace extends BaseContract {
     ): Promise<[boolean]>;
 
     /**
-     * Supports interfaces of AccessControl, ERC1155, and ERC1155 MetadataURI.
+     * See {IERC165-supportsInterface}.
      */
     'supportsInterface(bytes4)'(
       interfaceId: BytesLike,
       overrides?: CallOverrides
     ): Promise<[boolean]>;
-
-    /**
-     * transferFrom performs a simple transfer, without calling the hooks  (no _beforeTokenTransfer and no onERC1155Received).
-     */
-    transferFrom(
-      from: string,
-      to: string,
-      id: BigNumberish,
-      amount: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>;
-
-    /**
-     * transferFrom performs a simple transfer, without calling the hooks  (no _beforeTokenTransfer and no onERC1155Received).
-     */
-    'transferFrom(address,address,uint256,uint256)'(
-      from: string,
-      to: string,
-      id: BigNumberish,
-      amount: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>;
 
     upgradeTo(
       newImplementation: string,
@@ -750,35 +405,6 @@ export interface Marketplace extends BaseContract {
       newImplementation: string,
       data: BytesLike,
       overrides?: PayableOverrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>;
-
-    /**
-     * See {IERC1155MetadataURI-uri}. This implementation returns the same URI for *all* token types. It relies on the token type ID substitution mechanism https://eips.ethereum.org/EIPS/eip-1155#metadata[defined in the EIP]. Clients calling this function must replace the `\{id\}` substring with the actual token type ID.
-     */
-    uri(arg0: BigNumberish, overrides?: CallOverrides): Promise<[string]>;
-
-    /**
-     * See {IERC1155MetadataURI-uri}. This implementation returns the same URI for *all* token types. It relies on the token type ID substitution mechanism https://eips.ethereum.org/EIPS/eip-1155#metadata[defined in the EIP]. Clients calling this function must replace the `\{id\}` substring with the actual token type ID.
-     */
-    'uri(uint256)'(
-      arg0: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<[string]>;
-
-    /**
-     * Withdraw currency from internal to ERC20
-     */
-    withdraw(
-      amount: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>;
-
-    /**
-     * Withdraw currency from internal to ERC20
-     */
-    'withdraw(uint256)'(
-      amount: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
     initialize(
@@ -828,7 +454,7 @@ export interface Marketplace extends BaseContract {
     ): Promise<[BigNumber]>;
 
     /**
-     * Accept an offer, paying the price per unit for an amount of NFTs. The offer must have been created beforehand by makeOffer. The sender pays ERC20. The sender is not necessarily the same as buyer, see FiatGateway. The seller receives internal currency (equivalent to the ERC20 payment, see the function withdraw). The buyer receives the NFT. The parameter expectedPriceOrZero can be used to validate the price that the buyer expects to pay. This prevents a race condition with makeOffer or setExchangeRate. Pass 0 to disable this validation and accept any current price.
+     * Accept an offer, paying the price per unit for an amount of NFTs. The offer must have been created beforehand by makeOffer. The sender pays ERC20. The sender must have "approved" this contract in the ERC20 contract. The seller receives ERC20. The buyer receives the NFT. The sender is not necessarily the same as buyer, see FiatGateway. The parameter expectedPriceOrZero can be used to validate the price that the buyer expects to pay. This prevents a race condition with makeOffer or setExchangeRate. Pass 0 to disable this validation and accept any current price.
      */
     takeOffer(
       buyer: string,
@@ -840,7 +466,7 @@ export interface Marketplace extends BaseContract {
     ): Promise<ContractTransaction>;
 
     /**
-     * Accept an offer, paying the price per unit for an amount of NFTs. The offer must have been created beforehand by makeOffer. The sender pays ERC20. The sender is not necessarily the same as buyer, see FiatGateway. The seller receives internal currency (equivalent to the ERC20 payment, see the function withdraw). The buyer receives the NFT. The parameter expectedPriceOrZero can be used to validate the price that the buyer expects to pay. This prevents a race condition with makeOffer or setExchangeRate. Pass 0 to disable this validation and accept any current price.
+     * Accept an offer, paying the price per unit for an amount of NFTs. The offer must have been created beforehand by makeOffer. The sender pays ERC20. The sender must have "approved" this contract in the ERC20 contract. The seller receives ERC20. The buyer receives the NFT. The sender is not necessarily the same as buyer, see FiatGateway. The parameter expectedPriceOrZero can be used to validate the price that the buyer expects to pay. This prevents a race condition with makeOffer or setExchangeRate. Pass 0 to disable this validation and accept any current price.
      */
     'takeOffer(address,address,uint256,uint256,uint256)'(
       buyer: string,
@@ -852,16 +478,6 @@ export interface Marketplace extends BaseContract {
     ): Promise<ContractTransaction>;
   };
 
-  /**
-   * The token ID that represents the internal currency for all payments in this contract.
-   */
-  CURRENCY(overrides?: CallOverrides): Promise<BigNumber>;
-
-  /**
-   * The token ID that represents the internal currency for all payments in this contract.
-   */
-  'CURRENCY()'(overrides?: CallOverrides): Promise<BigNumber>;
-
   DEFAULT_ADMIN_ROLE(overrides?: CallOverrides): Promise<string>;
 
   'DEFAULT_ADMIN_ROLE()'(overrides?: CallOverrides): Promise<string>;
@@ -869,68 +485,6 @@ export interface Marketplace extends BaseContract {
   META_TX_FORWARDER(overrides?: CallOverrides): Promise<string>;
 
   'META_TX_FORWARDER()'(overrides?: CallOverrides): Promise<string>;
-
-  /**
-   * See {IERC1155-balanceOf}. Requirements: - `account` cannot be the zero address.
-   */
-  balanceOf(
-    account: string,
-    id: BigNumberish,
-    overrides?: CallOverrides
-  ): Promise<BigNumber>;
-
-  /**
-   * See {IERC1155-balanceOf}. Requirements: - `account` cannot be the zero address.
-   */
-  'balanceOf(address,uint256)'(
-    account: string,
-    id: BigNumberish,
-    overrides?: CallOverrides
-  ): Promise<BigNumber>;
-
-  /**
-   * See {IERC1155-balanceOfBatch}. Requirements: - `accounts` and `ids` must have the same length.
-   */
-  balanceOfBatch(
-    accounts: string[],
-    ids: BigNumberish[],
-    overrides?: CallOverrides
-  ): Promise<BigNumber[]>;
-
-  /**
-   * See {IERC1155-balanceOfBatch}. Requirements: - `accounts` and `ids` must have the same length.
-   */
-  'balanceOfBatch(address[],uint256[])'(
-    accounts: string[],
-    ids: BigNumberish[],
-    overrides?: CallOverrides
-  ): Promise<BigNumber[]>;
-
-  /**
-   * The address of ERC-20 token's contract
-   */
-  currencyContract(overrides?: CallOverrides): Promise<string>;
-
-  /**
-   * The address of ERC-20 token's contract
-   */
-  'currencyContract()'(overrides?: CallOverrides): Promise<string>;
-
-  /**
-   * Deposit currency from ERC20 into the internal currency. This requires payer to approve deposit.
-   */
-  deposit(
-    amount: BigNumberish,
-    overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>;
-
-  /**
-   * Deposit currency from ERC20 into the internal currency. This requires payer to approve deposit.
-   */
-  'deposit(uint256)'(
-    amount: BigNumberish,
-    overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>;
 
   freeport(overrides?: CallOverrides): Promise<string>;
 
@@ -1001,24 +555,6 @@ export interface Marketplace extends BaseContract {
     overrides?: CallOverrides
   ): Promise<boolean>;
 
-  /**
-   * See {IERC1155-isApprovedForAll}.
-   */
-  isApprovedForAll(
-    account: string,
-    operator: string,
-    overrides?: CallOverrides
-  ): Promise<boolean>;
-
-  /**
-   * See {IERC1155-isApprovedForAll}.
-   */
-  'isApprovedForAll(address,address)'(
-    account: string,
-    operator: string,
-    overrides?: CallOverrides
-  ): Promise<boolean>;
-
   isTrustedForwarder(
     forwarder: string,
     overrides?: CallOverrides
@@ -1066,99 +602,7 @@ export interface Marketplace extends BaseContract {
   ): Promise<ContractTransaction>;
 
   /**
-   * See {IERC1155-safeBatchTransferFrom}.
-   */
-  safeBatchTransferFrom(
-    from: string,
-    to: string,
-    ids: BigNumberish[],
-    amounts: BigNumberish[],
-    data: BytesLike,
-    overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>;
-
-  /**
-   * See {IERC1155-safeBatchTransferFrom}.
-   */
-  'safeBatchTransferFrom(address,address,uint256[],uint256[],bytes)'(
-    from: string,
-    to: string,
-    ids: BigNumberish[],
-    amounts: BigNumberish[],
-    data: BytesLike,
-    overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>;
-
-  /**
-   * See {IERC1155-safeTransferFrom}.
-   */
-  safeTransferFrom(
-    from: string,
-    to: string,
-    id: BigNumberish,
-    amount: BigNumberish,
-    data: BytesLike,
-    overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>;
-
-  /**
-   * See {IERC1155-safeTransferFrom}.
-   */
-  'safeTransferFrom(address,address,uint256,uint256,bytes)'(
-    from: string,
-    to: string,
-    id: BigNumberish,
-    amount: BigNumberish,
-    data: BytesLike,
-    overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>;
-
-  /**
-   * See {IERC1155-setApprovalForAll}.
-   */
-  setApprovalForAll(
-    operator: string,
-    approved: boolean,
-    overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>;
-
-  /**
-   * See {IERC1155-setApprovalForAll}.
-   */
-  'setApprovalForAll(address,bool)'(
-    operator: string,
-    approved: boolean,
-    overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>;
-
-  /**
-   * Sets token's contract address. This token is used to deposit and withdraw on chain adapter's contract is deployed.
-   */
-  setERC20(
-    _currencyContract: string,
-    overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>;
-
-  /**
-   * Sets token's contract address. This token is used to deposit and withdraw on chain adapter's contract is deployed.
-   */
-  'setERC20(address)'(
-    _currencyContract: string,
-    overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>;
-
-  setURI(
-    newuri: string,
-    overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>;
-
-  'setURI(string)'(
-    newuri: string,
-    overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>;
-
-  /**
-   * Supports interfaces of AccessControl, ERC1155, and ERC1155 MetadataURI.
+   * See {IERC165-supportsInterface}.
    */
   supportsInterface(
     interfaceId: BytesLike,
@@ -1166,34 +610,12 @@ export interface Marketplace extends BaseContract {
   ): Promise<boolean>;
 
   /**
-   * Supports interfaces of AccessControl, ERC1155, and ERC1155 MetadataURI.
+   * See {IERC165-supportsInterface}.
    */
   'supportsInterface(bytes4)'(
     interfaceId: BytesLike,
     overrides?: CallOverrides
   ): Promise<boolean>;
-
-  /**
-   * transferFrom performs a simple transfer, without calling the hooks  (no _beforeTokenTransfer and no onERC1155Received).
-   */
-  transferFrom(
-    from: string,
-    to: string,
-    id: BigNumberish,
-    amount: BigNumberish,
-    overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>;
-
-  /**
-   * transferFrom performs a simple transfer, without calling the hooks  (no _beforeTokenTransfer and no onERC1155Received).
-   */
-  'transferFrom(address,address,uint256,uint256)'(
-    from: string,
-    to: string,
-    id: BigNumberish,
-    amount: BigNumberish,
-    overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>;
 
   upgradeTo(
     newImplementation: string,
@@ -1215,35 +637,6 @@ export interface Marketplace extends BaseContract {
     newImplementation: string,
     data: BytesLike,
     overrides?: PayableOverrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>;
-
-  /**
-   * See {IERC1155MetadataURI-uri}. This implementation returns the same URI for *all* token types. It relies on the token type ID substitution mechanism https://eips.ethereum.org/EIPS/eip-1155#metadata[defined in the EIP]. Clients calling this function must replace the `\{id\}` substring with the actual token type ID.
-   */
-  uri(arg0: BigNumberish, overrides?: CallOverrides): Promise<string>;
-
-  /**
-   * See {IERC1155MetadataURI-uri}. This implementation returns the same URI for *all* token types. It relies on the token type ID substitution mechanism https://eips.ethereum.org/EIPS/eip-1155#metadata[defined in the EIP]. Clients calling this function must replace the `\{id\}` substring with the actual token type ID.
-   */
-  'uri(uint256)'(
-    arg0: BigNumberish,
-    overrides?: CallOverrides
-  ): Promise<string>;
-
-  /**
-   * Withdraw currency from internal to ERC20
-   */
-  withdraw(
-    amount: BigNumberish,
-    overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>;
-
-  /**
-   * Withdraw currency from internal to ERC20
-   */
-  'withdraw(uint256)'(
-    amount: BigNumberish,
-    overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
   initialize(
@@ -1293,7 +686,7 @@ export interface Marketplace extends BaseContract {
   ): Promise<BigNumber>;
 
   /**
-   * Accept an offer, paying the price per unit for an amount of NFTs. The offer must have been created beforehand by makeOffer. The sender pays ERC20. The sender is not necessarily the same as buyer, see FiatGateway. The seller receives internal currency (equivalent to the ERC20 payment, see the function withdraw). The buyer receives the NFT. The parameter expectedPriceOrZero can be used to validate the price that the buyer expects to pay. This prevents a race condition with makeOffer or setExchangeRate. Pass 0 to disable this validation and accept any current price.
+   * Accept an offer, paying the price per unit for an amount of NFTs. The offer must have been created beforehand by makeOffer. The sender pays ERC20. The sender must have "approved" this contract in the ERC20 contract. The seller receives ERC20. The buyer receives the NFT. The sender is not necessarily the same as buyer, see FiatGateway. The parameter expectedPriceOrZero can be used to validate the price that the buyer expects to pay. This prevents a race condition with makeOffer or setExchangeRate. Pass 0 to disable this validation and accept any current price.
    */
   takeOffer(
     buyer: string,
@@ -1305,7 +698,7 @@ export interface Marketplace extends BaseContract {
   ): Promise<ContractTransaction>;
 
   /**
-   * Accept an offer, paying the price per unit for an amount of NFTs. The offer must have been created beforehand by makeOffer. The sender pays ERC20. The sender is not necessarily the same as buyer, see FiatGateway. The seller receives internal currency (equivalent to the ERC20 payment, see the function withdraw). The buyer receives the NFT. The parameter expectedPriceOrZero can be used to validate the price that the buyer expects to pay. This prevents a race condition with makeOffer or setExchangeRate. Pass 0 to disable this validation and accept any current price.
+   * Accept an offer, paying the price per unit for an amount of NFTs. The offer must have been created beforehand by makeOffer. The sender pays ERC20. The sender must have "approved" this contract in the ERC20 contract. The seller receives ERC20. The buyer receives the NFT. The sender is not necessarily the same as buyer, see FiatGateway. The parameter expectedPriceOrZero can be used to validate the price that the buyer expects to pay. This prevents a race condition with makeOffer or setExchangeRate. Pass 0 to disable this validation and accept any current price.
    */
   'takeOffer(address,address,uint256,uint256,uint256)'(
     buyer: string,
@@ -1317,16 +710,6 @@ export interface Marketplace extends BaseContract {
   ): Promise<ContractTransaction>;
 
   callStatic: {
-    /**
-     * The token ID that represents the internal currency for all payments in this contract.
-     */
-    CURRENCY(overrides?: CallOverrides): Promise<BigNumber>;
-
-    /**
-     * The token ID that represents the internal currency for all payments in this contract.
-     */
-    'CURRENCY()'(overrides?: CallOverrides): Promise<BigNumber>;
-
     DEFAULT_ADMIN_ROLE(overrides?: CallOverrides): Promise<string>;
 
     'DEFAULT_ADMIN_ROLE()'(overrides?: CallOverrides): Promise<string>;
@@ -1334,65 +717,6 @@ export interface Marketplace extends BaseContract {
     META_TX_FORWARDER(overrides?: CallOverrides): Promise<string>;
 
     'META_TX_FORWARDER()'(overrides?: CallOverrides): Promise<string>;
-
-    /**
-     * See {IERC1155-balanceOf}. Requirements: - `account` cannot be the zero address.
-     */
-    balanceOf(
-      account: string,
-      id: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
-    /**
-     * See {IERC1155-balanceOf}. Requirements: - `account` cannot be the zero address.
-     */
-    'balanceOf(address,uint256)'(
-      account: string,
-      id: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
-    /**
-     * See {IERC1155-balanceOfBatch}. Requirements: - `accounts` and `ids` must have the same length.
-     */
-    balanceOfBatch(
-      accounts: string[],
-      ids: BigNumberish[],
-      overrides?: CallOverrides
-    ): Promise<BigNumber[]>;
-
-    /**
-     * See {IERC1155-balanceOfBatch}. Requirements: - `accounts` and `ids` must have the same length.
-     */
-    'balanceOfBatch(address[],uint256[])'(
-      accounts: string[],
-      ids: BigNumberish[],
-      overrides?: CallOverrides
-    ): Promise<BigNumber[]>;
-
-    /**
-     * The address of ERC-20 token's contract
-     */
-    currencyContract(overrides?: CallOverrides): Promise<string>;
-
-    /**
-     * The address of ERC-20 token's contract
-     */
-    'currencyContract()'(overrides?: CallOverrides): Promise<string>;
-
-    /**
-     * Deposit currency from ERC20 into the internal currency. This requires payer to approve deposit.
-     */
-    deposit(amount: BigNumberish, overrides?: CallOverrides): Promise<void>;
-
-    /**
-     * Deposit currency from ERC20 into the internal currency. This requires payer to approve deposit.
-     */
-    'deposit(uint256)'(
-      amount: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<void>;
 
     freeport(overrides?: CallOverrides): Promise<string>;
 
@@ -1463,24 +787,6 @@ export interface Marketplace extends BaseContract {
       overrides?: CallOverrides
     ): Promise<boolean>;
 
-    /**
-     * See {IERC1155-isApprovedForAll}.
-     */
-    isApprovedForAll(
-      account: string,
-      operator: string,
-      overrides?: CallOverrides
-    ): Promise<boolean>;
-
-    /**
-     * See {IERC1155-isApprovedForAll}.
-     */
-    'isApprovedForAll(address,address)'(
-      account: string,
-      operator: string,
-      overrides?: CallOverrides
-    ): Promise<boolean>;
-
     isTrustedForwarder(
       forwarder: string,
       overrides?: CallOverrides
@@ -1528,93 +834,7 @@ export interface Marketplace extends BaseContract {
     ): Promise<void>;
 
     /**
-     * See {IERC1155-safeBatchTransferFrom}.
-     */
-    safeBatchTransferFrom(
-      from: string,
-      to: string,
-      ids: BigNumberish[],
-      amounts: BigNumberish[],
-      data: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<void>;
-
-    /**
-     * See {IERC1155-safeBatchTransferFrom}.
-     */
-    'safeBatchTransferFrom(address,address,uint256[],uint256[],bytes)'(
-      from: string,
-      to: string,
-      ids: BigNumberish[],
-      amounts: BigNumberish[],
-      data: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<void>;
-
-    /**
-     * See {IERC1155-safeTransferFrom}.
-     */
-    safeTransferFrom(
-      from: string,
-      to: string,
-      id: BigNumberish,
-      amount: BigNumberish,
-      data: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<void>;
-
-    /**
-     * See {IERC1155-safeTransferFrom}.
-     */
-    'safeTransferFrom(address,address,uint256,uint256,bytes)'(
-      from: string,
-      to: string,
-      id: BigNumberish,
-      amount: BigNumberish,
-      data: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<void>;
-
-    /**
-     * See {IERC1155-setApprovalForAll}.
-     */
-    setApprovalForAll(
-      operator: string,
-      approved: boolean,
-      overrides?: CallOverrides
-    ): Promise<void>;
-
-    /**
-     * See {IERC1155-setApprovalForAll}.
-     */
-    'setApprovalForAll(address,bool)'(
-      operator: string,
-      approved: boolean,
-      overrides?: CallOverrides
-    ): Promise<void>;
-
-    /**
-     * Sets token's contract address. This token is used to deposit and withdraw on chain adapter's contract is deployed.
-     */
-    setERC20(
-      _currencyContract: string,
-      overrides?: CallOverrides
-    ): Promise<void>;
-
-    /**
-     * Sets token's contract address. This token is used to deposit and withdraw on chain adapter's contract is deployed.
-     */
-    'setERC20(address)'(
-      _currencyContract: string,
-      overrides?: CallOverrides
-    ): Promise<void>;
-
-    setURI(newuri: string, overrides?: CallOverrides): Promise<void>;
-
-    'setURI(string)'(newuri: string, overrides?: CallOverrides): Promise<void>;
-
-    /**
-     * Supports interfaces of AccessControl, ERC1155, and ERC1155 MetadataURI.
+     * See {IERC165-supportsInterface}.
      */
     supportsInterface(
       interfaceId: BytesLike,
@@ -1622,34 +842,12 @@ export interface Marketplace extends BaseContract {
     ): Promise<boolean>;
 
     /**
-     * Supports interfaces of AccessControl, ERC1155, and ERC1155 MetadataURI.
+     * See {IERC165-supportsInterface}.
      */
     'supportsInterface(bytes4)'(
       interfaceId: BytesLike,
       overrides?: CallOverrides
     ): Promise<boolean>;
-
-    /**
-     * transferFrom performs a simple transfer, without calling the hooks  (no _beforeTokenTransfer and no onERC1155Received).
-     */
-    transferFrom(
-      from: string,
-      to: string,
-      id: BigNumberish,
-      amount: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<void>;
-
-    /**
-     * transferFrom performs a simple transfer, without calling the hooks  (no _beforeTokenTransfer and no onERC1155Received).
-     */
-    'transferFrom(address,address,uint256,uint256)'(
-      from: string,
-      to: string,
-      id: BigNumberish,
-      amount: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<void>;
 
     upgradeTo(
       newImplementation: string,
@@ -1670,32 +868,6 @@ export interface Marketplace extends BaseContract {
     'upgradeToAndCall(address,bytes)'(
       newImplementation: string,
       data: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<void>;
-
-    /**
-     * See {IERC1155MetadataURI-uri}. This implementation returns the same URI for *all* token types. It relies on the token type ID substitution mechanism https://eips.ethereum.org/EIPS/eip-1155#metadata[defined in the EIP]. Clients calling this function must replace the `\{id\}` substring with the actual token type ID.
-     */
-    uri(arg0: BigNumberish, overrides?: CallOverrides): Promise<string>;
-
-    /**
-     * See {IERC1155MetadataURI-uri}. This implementation returns the same URI for *all* token types. It relies on the token type ID substitution mechanism https://eips.ethereum.org/EIPS/eip-1155#metadata[defined in the EIP]. Clients calling this function must replace the `\{id\}` substring with the actual token type ID.
-     */
-    'uri(uint256)'(
-      arg0: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<string>;
-
-    /**
-     * Withdraw currency from internal to ERC20
-     */
-    withdraw(amount: BigNumberish, overrides?: CallOverrides): Promise<void>;
-
-    /**
-     * Withdraw currency from internal to ERC20
-     */
-    'withdraw(uint256)'(
-      amount: BigNumberish,
       overrides?: CallOverrides
     ): Promise<void>;
 
@@ -1743,7 +915,7 @@ export interface Marketplace extends BaseContract {
     ): Promise<BigNumber>;
 
     /**
-     * Accept an offer, paying the price per unit for an amount of NFTs. The offer must have been created beforehand by makeOffer. The sender pays ERC20. The sender is not necessarily the same as buyer, see FiatGateway. The seller receives internal currency (equivalent to the ERC20 payment, see the function withdraw). The buyer receives the NFT. The parameter expectedPriceOrZero can be used to validate the price that the buyer expects to pay. This prevents a race condition with makeOffer or setExchangeRate. Pass 0 to disable this validation and accept any current price.
+     * Accept an offer, paying the price per unit for an amount of NFTs. The offer must have been created beforehand by makeOffer. The sender pays ERC20. The sender must have "approved" this contract in the ERC20 contract. The seller receives ERC20. The buyer receives the NFT. The sender is not necessarily the same as buyer, see FiatGateway. The parameter expectedPriceOrZero can be used to validate the price that the buyer expects to pay. This prevents a race condition with makeOffer or setExchangeRate. Pass 0 to disable this validation and accept any current price.
      */
     takeOffer(
       buyer: string,
@@ -1755,7 +927,7 @@ export interface Marketplace extends BaseContract {
     ): Promise<void>;
 
     /**
-     * Accept an offer, paying the price per unit for an amount of NFTs. The offer must have been created beforehand by makeOffer. The sender pays ERC20. The sender is not necessarily the same as buyer, see FiatGateway. The seller receives internal currency (equivalent to the ERC20 payment, see the function withdraw). The buyer receives the NFT. The parameter expectedPriceOrZero can be used to validate the price that the buyer expects to pay. This prevents a race condition with makeOffer or setExchangeRate. Pass 0 to disable this validation and accept any current price.
+     * Accept an offer, paying the price per unit for an amount of NFTs. The offer must have been created beforehand by makeOffer. The sender pays ERC20. The sender must have "approved" this contract in the ERC20 contract. The seller receives ERC20. The buyer receives the NFT. The sender is not necessarily the same as buyer, see FiatGateway. The parameter expectedPriceOrZero can be used to validate the price that the buyer expects to pay. This prevents a race condition with makeOffer or setExchangeRate. Pass 0 to disable this validation and accept any current price.
      */
     'takeOffer(address,address,uint256,uint256,uint256)'(
       buyer: string,
@@ -1776,17 +948,6 @@ export interface Marketplace extends BaseContract {
       previousAdmin?: null,
       newAdmin?: null
     ): AdminChangedEventFilter;
-
-    'ApprovalForAll(address,address,bool)'(
-      account?: string | null,
-      operator?: string | null,
-      approved?: null
-    ): ApprovalForAllEventFilter;
-    ApprovalForAll(
-      account?: string | null,
-      operator?: string | null,
-      approved?: null
-    ): ApprovalForAllEventFilter;
 
     'BeaconUpgraded(address)'(
       beacon?: string | null
@@ -1852,57 +1013,11 @@ export interface Marketplace extends BaseContract {
       amount?: null
     ): TakeOfferEventFilter;
 
-    'TransferBatch(address,address,address,uint256[],uint256[])'(
-      operator?: string | null,
-      from?: string | null,
-      to?: string | null,
-      ids?: null,
-      values?: null
-    ): TransferBatchEventFilter;
-    TransferBatch(
-      operator?: string | null,
-      from?: string | null,
-      to?: string | null,
-      ids?: null,
-      values?: null
-    ): TransferBatchEventFilter;
-
-    'TransferSingle(address,address,address,uint256,uint256)'(
-      operator?: string | null,
-      from?: string | null,
-      to?: string | null,
-      id?: null,
-      value?: null
-    ): TransferSingleEventFilter;
-    TransferSingle(
-      operator?: string | null,
-      from?: string | null,
-      to?: string | null,
-      id?: null,
-      value?: null
-    ): TransferSingleEventFilter;
-
-    'URI(string,uint256)'(
-      value?: null,
-      id?: BigNumberish | null
-    ): URIEventFilter;
-    URI(value?: null, id?: BigNumberish | null): URIEventFilter;
-
     'Upgraded(address)'(implementation?: string | null): UpgradedEventFilter;
     Upgraded(implementation?: string | null): UpgradedEventFilter;
   };
 
   estimateGas: {
-    /**
-     * The token ID that represents the internal currency for all payments in this contract.
-     */
-    CURRENCY(overrides?: CallOverrides): Promise<BigNumber>;
-
-    /**
-     * The token ID that represents the internal currency for all payments in this contract.
-     */
-    'CURRENCY()'(overrides?: CallOverrides): Promise<BigNumber>;
-
     DEFAULT_ADMIN_ROLE(overrides?: CallOverrides): Promise<BigNumber>;
 
     'DEFAULT_ADMIN_ROLE()'(overrides?: CallOverrides): Promise<BigNumber>;
@@ -1910,68 +1025,6 @@ export interface Marketplace extends BaseContract {
     META_TX_FORWARDER(overrides?: CallOverrides): Promise<BigNumber>;
 
     'META_TX_FORWARDER()'(overrides?: CallOverrides): Promise<BigNumber>;
-
-    /**
-     * See {IERC1155-balanceOf}. Requirements: - `account` cannot be the zero address.
-     */
-    balanceOf(
-      account: string,
-      id: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
-    /**
-     * See {IERC1155-balanceOf}. Requirements: - `account` cannot be the zero address.
-     */
-    'balanceOf(address,uint256)'(
-      account: string,
-      id: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
-    /**
-     * See {IERC1155-balanceOfBatch}. Requirements: - `accounts` and `ids` must have the same length.
-     */
-    balanceOfBatch(
-      accounts: string[],
-      ids: BigNumberish[],
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
-    /**
-     * See {IERC1155-balanceOfBatch}. Requirements: - `accounts` and `ids` must have the same length.
-     */
-    'balanceOfBatch(address[],uint256[])'(
-      accounts: string[],
-      ids: BigNumberish[],
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
-    /**
-     * The address of ERC-20 token's contract
-     */
-    currencyContract(overrides?: CallOverrides): Promise<BigNumber>;
-
-    /**
-     * The address of ERC-20 token's contract
-     */
-    'currencyContract()'(overrides?: CallOverrides): Promise<BigNumber>;
-
-    /**
-     * Deposit currency from ERC20 into the internal currency. This requires payer to approve deposit.
-     */
-    deposit(
-      amount: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>;
-
-    /**
-     * Deposit currency from ERC20 into the internal currency. This requires payer to approve deposit.
-     */
-    'deposit(uint256)'(
-      amount: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>;
 
     freeport(overrides?: CallOverrides): Promise<BigNumber>;
 
@@ -2045,24 +1098,6 @@ export interface Marketplace extends BaseContract {
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
-    /**
-     * See {IERC1155-isApprovedForAll}.
-     */
-    isApprovedForAll(
-      account: string,
-      operator: string,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
-    /**
-     * See {IERC1155-isApprovedForAll}.
-     */
-    'isApprovedForAll(address,address)'(
-      account: string,
-      operator: string,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
     isTrustedForwarder(
       forwarder: string,
       overrides?: CallOverrides
@@ -2110,99 +1145,7 @@ export interface Marketplace extends BaseContract {
     ): Promise<BigNumber>;
 
     /**
-     * See {IERC1155-safeBatchTransferFrom}.
-     */
-    safeBatchTransferFrom(
-      from: string,
-      to: string,
-      ids: BigNumberish[],
-      amounts: BigNumberish[],
-      data: BytesLike,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>;
-
-    /**
-     * See {IERC1155-safeBatchTransferFrom}.
-     */
-    'safeBatchTransferFrom(address,address,uint256[],uint256[],bytes)'(
-      from: string,
-      to: string,
-      ids: BigNumberish[],
-      amounts: BigNumberish[],
-      data: BytesLike,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>;
-
-    /**
-     * See {IERC1155-safeTransferFrom}.
-     */
-    safeTransferFrom(
-      from: string,
-      to: string,
-      id: BigNumberish,
-      amount: BigNumberish,
-      data: BytesLike,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>;
-
-    /**
-     * See {IERC1155-safeTransferFrom}.
-     */
-    'safeTransferFrom(address,address,uint256,uint256,bytes)'(
-      from: string,
-      to: string,
-      id: BigNumberish,
-      amount: BigNumberish,
-      data: BytesLike,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>;
-
-    /**
-     * See {IERC1155-setApprovalForAll}.
-     */
-    setApprovalForAll(
-      operator: string,
-      approved: boolean,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>;
-
-    /**
-     * See {IERC1155-setApprovalForAll}.
-     */
-    'setApprovalForAll(address,bool)'(
-      operator: string,
-      approved: boolean,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>;
-
-    /**
-     * Sets token's contract address. This token is used to deposit and withdraw on chain adapter's contract is deployed.
-     */
-    setERC20(
-      _currencyContract: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>;
-
-    /**
-     * Sets token's contract address. This token is used to deposit and withdraw on chain adapter's contract is deployed.
-     */
-    'setERC20(address)'(
-      _currencyContract: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>;
-
-    setURI(
-      newuri: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>;
-
-    'setURI(string)'(
-      newuri: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>;
-
-    /**
-     * Supports interfaces of AccessControl, ERC1155, and ERC1155 MetadataURI.
+     * See {IERC165-supportsInterface}.
      */
     supportsInterface(
       interfaceId: BytesLike,
@@ -2210,33 +1153,11 @@ export interface Marketplace extends BaseContract {
     ): Promise<BigNumber>;
 
     /**
-     * Supports interfaces of AccessControl, ERC1155, and ERC1155 MetadataURI.
+     * See {IERC165-supportsInterface}.
      */
     'supportsInterface(bytes4)'(
       interfaceId: BytesLike,
       overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
-    /**
-     * transferFrom performs a simple transfer, without calling the hooks  (no _beforeTokenTransfer and no onERC1155Received).
-     */
-    transferFrom(
-      from: string,
-      to: string,
-      id: BigNumberish,
-      amount: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>;
-
-    /**
-     * transferFrom performs a simple transfer, without calling the hooks  (no _beforeTokenTransfer and no onERC1155Received).
-     */
-    'transferFrom(address,address,uint256,uint256)'(
-      from: string,
-      to: string,
-      id: BigNumberish,
-      amount: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
     upgradeTo(
@@ -2259,35 +1180,6 @@ export interface Marketplace extends BaseContract {
       newImplementation: string,
       data: BytesLike,
       overrides?: PayableOverrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>;
-
-    /**
-     * See {IERC1155MetadataURI-uri}. This implementation returns the same URI for *all* token types. It relies on the token type ID substitution mechanism https://eips.ethereum.org/EIPS/eip-1155#metadata[defined in the EIP]. Clients calling this function must replace the `\{id\}` substring with the actual token type ID.
-     */
-    uri(arg0: BigNumberish, overrides?: CallOverrides): Promise<BigNumber>;
-
-    /**
-     * See {IERC1155MetadataURI-uri}. This implementation returns the same URI for *all* token types. It relies on the token type ID substitution mechanism https://eips.ethereum.org/EIPS/eip-1155#metadata[defined in the EIP]. Clients calling this function must replace the `\{id\}` substring with the actual token type ID.
-     */
-    'uri(uint256)'(
-      arg0: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
-    /**
-     * Withdraw currency from internal to ERC20
-     */
-    withdraw(
-      amount: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>;
-
-    /**
-     * Withdraw currency from internal to ERC20
-     */
-    'withdraw(uint256)'(
-      amount: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
     initialize(
@@ -2337,7 +1229,7 @@ export interface Marketplace extends BaseContract {
     ): Promise<BigNumber>;
 
     /**
-     * Accept an offer, paying the price per unit for an amount of NFTs. The offer must have been created beforehand by makeOffer. The sender pays ERC20. The sender is not necessarily the same as buyer, see FiatGateway. The seller receives internal currency (equivalent to the ERC20 payment, see the function withdraw). The buyer receives the NFT. The parameter expectedPriceOrZero can be used to validate the price that the buyer expects to pay. This prevents a race condition with makeOffer or setExchangeRate. Pass 0 to disable this validation and accept any current price.
+     * Accept an offer, paying the price per unit for an amount of NFTs. The offer must have been created beforehand by makeOffer. The sender pays ERC20. The sender must have "approved" this contract in the ERC20 contract. The seller receives ERC20. The buyer receives the NFT. The sender is not necessarily the same as buyer, see FiatGateway. The parameter expectedPriceOrZero can be used to validate the price that the buyer expects to pay. This prevents a race condition with makeOffer or setExchangeRate. Pass 0 to disable this validation and accept any current price.
      */
     takeOffer(
       buyer: string,
@@ -2349,7 +1241,7 @@ export interface Marketplace extends BaseContract {
     ): Promise<BigNumber>;
 
     /**
-     * Accept an offer, paying the price per unit for an amount of NFTs. The offer must have been created beforehand by makeOffer. The sender pays ERC20. The sender is not necessarily the same as buyer, see FiatGateway. The seller receives internal currency (equivalent to the ERC20 payment, see the function withdraw). The buyer receives the NFT. The parameter expectedPriceOrZero can be used to validate the price that the buyer expects to pay. This prevents a race condition with makeOffer or setExchangeRate. Pass 0 to disable this validation and accept any current price.
+     * Accept an offer, paying the price per unit for an amount of NFTs. The offer must have been created beforehand by makeOffer. The sender pays ERC20. The sender must have "approved" this contract in the ERC20 contract. The seller receives ERC20. The buyer receives the NFT. The sender is not necessarily the same as buyer, see FiatGateway. The parameter expectedPriceOrZero can be used to validate the price that the buyer expects to pay. This prevents a race condition with makeOffer or setExchangeRate. Pass 0 to disable this validation and accept any current price.
      */
     'takeOffer(address,address,uint256,uint256,uint256)'(
       buyer: string,
@@ -2362,16 +1254,6 @@ export interface Marketplace extends BaseContract {
   };
 
   populateTransaction: {
-    /**
-     * The token ID that represents the internal currency for all payments in this contract.
-     */
-    CURRENCY(overrides?: CallOverrides): Promise<PopulatedTransaction>;
-
-    /**
-     * The token ID that represents the internal currency for all payments in this contract.
-     */
-    'CURRENCY()'(overrides?: CallOverrides): Promise<PopulatedTransaction>;
-
     DEFAULT_ADMIN_ROLE(
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
@@ -2384,70 +1266,6 @@ export interface Marketplace extends BaseContract {
 
     'META_TX_FORWARDER()'(
       overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    /**
-     * See {IERC1155-balanceOf}. Requirements: - `account` cannot be the zero address.
-     */
-    balanceOf(
-      account: string,
-      id: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    /**
-     * See {IERC1155-balanceOf}. Requirements: - `account` cannot be the zero address.
-     */
-    'balanceOf(address,uint256)'(
-      account: string,
-      id: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    /**
-     * See {IERC1155-balanceOfBatch}. Requirements: - `accounts` and `ids` must have the same length.
-     */
-    balanceOfBatch(
-      accounts: string[],
-      ids: BigNumberish[],
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    /**
-     * See {IERC1155-balanceOfBatch}. Requirements: - `accounts` and `ids` must have the same length.
-     */
-    'balanceOfBatch(address[],uint256[])'(
-      accounts: string[],
-      ids: BigNumberish[],
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    /**
-     * The address of ERC-20 token's contract
-     */
-    currencyContract(overrides?: CallOverrides): Promise<PopulatedTransaction>;
-
-    /**
-     * The address of ERC-20 token's contract
-     */
-    'currencyContract()'(
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    /**
-     * Deposit currency from ERC20 into the internal currency. This requires payer to approve deposit.
-     */
-    deposit(
-      amount: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>;
-
-    /**
-     * Deposit currency from ERC20 into the internal currency. This requires payer to approve deposit.
-     */
-    'deposit(uint256)'(
-      amount: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 
     freeport(overrides?: CallOverrides): Promise<PopulatedTransaction>;
@@ -2522,24 +1340,6 @@ export interface Marketplace extends BaseContract {
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
-    /**
-     * See {IERC1155-isApprovedForAll}.
-     */
-    isApprovedForAll(
-      account: string,
-      operator: string,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    /**
-     * See {IERC1155-isApprovedForAll}.
-     */
-    'isApprovedForAll(address,address)'(
-      account: string,
-      operator: string,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
     isTrustedForwarder(
       forwarder: string,
       overrides?: CallOverrides
@@ -2587,99 +1387,7 @@ export interface Marketplace extends BaseContract {
     ): Promise<PopulatedTransaction>;
 
     /**
-     * See {IERC1155-safeBatchTransferFrom}.
-     */
-    safeBatchTransferFrom(
-      from: string,
-      to: string,
-      ids: BigNumberish[],
-      amounts: BigNumberish[],
-      data: BytesLike,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>;
-
-    /**
-     * See {IERC1155-safeBatchTransferFrom}.
-     */
-    'safeBatchTransferFrom(address,address,uint256[],uint256[],bytes)'(
-      from: string,
-      to: string,
-      ids: BigNumberish[],
-      amounts: BigNumberish[],
-      data: BytesLike,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>;
-
-    /**
-     * See {IERC1155-safeTransferFrom}.
-     */
-    safeTransferFrom(
-      from: string,
-      to: string,
-      id: BigNumberish,
-      amount: BigNumberish,
-      data: BytesLike,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>;
-
-    /**
-     * See {IERC1155-safeTransferFrom}.
-     */
-    'safeTransferFrom(address,address,uint256,uint256,bytes)'(
-      from: string,
-      to: string,
-      id: BigNumberish,
-      amount: BigNumberish,
-      data: BytesLike,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>;
-
-    /**
-     * See {IERC1155-setApprovalForAll}.
-     */
-    setApprovalForAll(
-      operator: string,
-      approved: boolean,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>;
-
-    /**
-     * See {IERC1155-setApprovalForAll}.
-     */
-    'setApprovalForAll(address,bool)'(
-      operator: string,
-      approved: boolean,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>;
-
-    /**
-     * Sets token's contract address. This token is used to deposit and withdraw on chain adapter's contract is deployed.
-     */
-    setERC20(
-      _currencyContract: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>;
-
-    /**
-     * Sets token's contract address. This token is used to deposit and withdraw on chain adapter's contract is deployed.
-     */
-    'setERC20(address)'(
-      _currencyContract: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>;
-
-    setURI(
-      newuri: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>;
-
-    'setURI(string)'(
-      newuri: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>;
-
-    /**
-     * Supports interfaces of AccessControl, ERC1155, and ERC1155 MetadataURI.
+     * See {IERC165-supportsInterface}.
      */
     supportsInterface(
       interfaceId: BytesLike,
@@ -2687,33 +1395,11 @@ export interface Marketplace extends BaseContract {
     ): Promise<PopulatedTransaction>;
 
     /**
-     * Supports interfaces of AccessControl, ERC1155, and ERC1155 MetadataURI.
+     * See {IERC165-supportsInterface}.
      */
     'supportsInterface(bytes4)'(
       interfaceId: BytesLike,
       overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    /**
-     * transferFrom performs a simple transfer, without calling the hooks  (no _beforeTokenTransfer and no onERC1155Received).
-     */
-    transferFrom(
-      from: string,
-      to: string,
-      id: BigNumberish,
-      amount: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>;
-
-    /**
-     * transferFrom performs a simple transfer, without calling the hooks  (no _beforeTokenTransfer and no onERC1155Received).
-     */
-    'transferFrom(address,address,uint256,uint256)'(
-      from: string,
-      to: string,
-      id: BigNumberish,
-      amount: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 
     upgradeTo(
@@ -2736,38 +1422,6 @@ export interface Marketplace extends BaseContract {
       newImplementation: string,
       data: BytesLike,
       overrides?: PayableOverrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>;
-
-    /**
-     * See {IERC1155MetadataURI-uri}. This implementation returns the same URI for *all* token types. It relies on the token type ID substitution mechanism https://eips.ethereum.org/EIPS/eip-1155#metadata[defined in the EIP]. Clients calling this function must replace the `\{id\}` substring with the actual token type ID.
-     */
-    uri(
-      arg0: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    /**
-     * See {IERC1155MetadataURI-uri}. This implementation returns the same URI for *all* token types. It relies on the token type ID substitution mechanism https://eips.ethereum.org/EIPS/eip-1155#metadata[defined in the EIP]. Clients calling this function must replace the `\{id\}` substring with the actual token type ID.
-     */
-    'uri(uint256)'(
-      arg0: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    /**
-     * Withdraw currency from internal to ERC20
-     */
-    withdraw(
-      amount: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>;
-
-    /**
-     * Withdraw currency from internal to ERC20
-     */
-    'withdraw(uint256)'(
-      amount: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 
     initialize(
@@ -2817,7 +1471,7 @@ export interface Marketplace extends BaseContract {
     ): Promise<PopulatedTransaction>;
 
     /**
-     * Accept an offer, paying the price per unit for an amount of NFTs. The offer must have been created beforehand by makeOffer. The sender pays ERC20. The sender is not necessarily the same as buyer, see FiatGateway. The seller receives internal currency (equivalent to the ERC20 payment, see the function withdraw). The buyer receives the NFT. The parameter expectedPriceOrZero can be used to validate the price that the buyer expects to pay. This prevents a race condition with makeOffer or setExchangeRate. Pass 0 to disable this validation and accept any current price.
+     * Accept an offer, paying the price per unit for an amount of NFTs. The offer must have been created beforehand by makeOffer. The sender pays ERC20. The sender must have "approved" this contract in the ERC20 contract. The seller receives ERC20. The buyer receives the NFT. The sender is not necessarily the same as buyer, see FiatGateway. The parameter expectedPriceOrZero can be used to validate the price that the buyer expects to pay. This prevents a race condition with makeOffer or setExchangeRate. Pass 0 to disable this validation and accept any current price.
      */
     takeOffer(
       buyer: string,
@@ -2829,7 +1483,7 @@ export interface Marketplace extends BaseContract {
     ): Promise<PopulatedTransaction>;
 
     /**
-     * Accept an offer, paying the price per unit for an amount of NFTs. The offer must have been created beforehand by makeOffer. The sender pays ERC20. The sender is not necessarily the same as buyer, see FiatGateway. The seller receives internal currency (equivalent to the ERC20 payment, see the function withdraw). The buyer receives the NFT. The parameter expectedPriceOrZero can be used to validate the price that the buyer expects to pay. This prevents a race condition with makeOffer or setExchangeRate. Pass 0 to disable this validation and accept any current price.
+     * Accept an offer, paying the price per unit for an amount of NFTs. The offer must have been created beforehand by makeOffer. The sender pays ERC20. The sender must have "approved" this contract in the ERC20 contract. The seller receives ERC20. The buyer receives the NFT. The sender is not necessarily the same as buyer, see FiatGateway. The parameter expectedPriceOrZero can be used to validate the price that the buyer expects to pay. This prevents a race condition with makeOffer or setExchangeRate. Pass 0 to disable this validation and accept any current price.
      */
     'takeOffer(address,address,uint256,uint256,uint256)'(
       buyer: string,

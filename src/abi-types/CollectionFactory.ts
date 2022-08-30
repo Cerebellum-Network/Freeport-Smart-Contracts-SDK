@@ -26,6 +26,7 @@ export interface CollectionFactoryInterface extends utils.Interface {
     'META_TX_FORWARDER()': FunctionFragment;
     'auction()': FunctionFragment;
     'freeport()': FunctionFragment;
+    'getGlobalNftId(uint32)': FunctionFragment;
     'getRoleAdmin(bytes32)': FunctionFragment;
     'grantRole(bytes32,address)': FunctionFragment;
     'hasRole(bytes32,address)': FunctionFragment;
@@ -41,6 +42,7 @@ export interface CollectionFactoryInterface extends utils.Interface {
     'initialize_update(address,address,address,address)': FunctionFragment;
     'createCollection(address,string,string,string)': FunctionFragment;
     'mintOnBehalf(address,address,uint64,bytes)': FunctionFragment;
+    'parseNftId(uint256)': FunctionFragment;
   };
 
   encodeFunctionData(
@@ -61,6 +63,10 @@ export interface CollectionFactoryInterface extends utils.Interface {
   ): string;
   encodeFunctionData(functionFragment: 'auction', values?: undefined): string;
   encodeFunctionData(functionFragment: 'freeport', values?: undefined): string;
+  encodeFunctionData(
+    functionFragment: 'getGlobalNftId',
+    values: [BigNumberish]
+  ): string;
   encodeFunctionData(
     functionFragment: 'getRoleAdmin',
     values: [BytesLike]
@@ -118,6 +124,10 @@ export interface CollectionFactoryInterface extends utils.Interface {
     functionFragment: 'mintOnBehalf',
     values: [string, string, BigNumberish, BytesLike]
   ): string;
+  encodeFunctionData(
+    functionFragment: 'parseNftId',
+    values: [BigNumberish]
+  ): string;
 
   decodeFunctionResult(
     functionFragment: 'COLLECTION_CREATOR_ROLE',
@@ -137,6 +147,10 @@ export interface CollectionFactoryInterface extends utils.Interface {
   ): Result;
   decodeFunctionResult(functionFragment: 'auction', data: BytesLike): Result;
   decodeFunctionResult(functionFragment: 'freeport', data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: 'getGlobalNftId',
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(
     functionFragment: 'getRoleAdmin',
     data: BytesLike
@@ -182,6 +196,7 @@ export interface CollectionFactoryInterface extends utils.Interface {
     functionFragment: 'mintOnBehalf',
     data: BytesLike
   ): Result;
+  decodeFunctionResult(functionFragment: 'parseNftId', data: BytesLike): Result;
 
   events: {
     'AdminChanged(address,address)': EventFragment;
@@ -324,6 +339,22 @@ export interface CollectionFactory extends BaseContract {
     freeport(overrides?: CallOverrides): Promise<[string]>;
 
     'freeport()'(overrides?: CallOverrides): Promise<[string]>;
+
+    /**
+     * Calculate the global ID of an NFT type, identifying its inner nft id.
+     */
+    getGlobalNftId(
+      innerNftId: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<[BigNumber]>;
+
+    /**
+     * Calculate the global ID of an NFT type, identifying its inner nft id.
+     */
+    'getGlobalNftId(uint32)'(
+      innerNftId: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<[BigNumber]>;
 
     /**
      * Returns the admin role that controls `role`. See {grantRole} and {revokeRole}. To change a role's admin, use {_setRoleAdmin}.
@@ -535,6 +566,28 @@ export interface CollectionFactory extends BaseContract {
       data: BytesLike,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
+
+    parseNftId(
+      id: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<
+      [string, number, BigNumber] & {
+        collection: string;
+        innerId: number;
+        supply: BigNumber;
+      }
+    >;
+
+    'parseNftId(uint256)'(
+      id: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<
+      [string, number, BigNumber] & {
+        collection: string;
+        innerId: number;
+        supply: BigNumber;
+      }
+    >;
   };
 
   /**
@@ -572,6 +625,22 @@ export interface CollectionFactory extends BaseContract {
   freeport(overrides?: CallOverrides): Promise<string>;
 
   'freeport()'(overrides?: CallOverrides): Promise<string>;
+
+  /**
+   * Calculate the global ID of an NFT type, identifying its inner nft id.
+   */
+  getGlobalNftId(
+    innerNftId: BigNumberish,
+    overrides?: CallOverrides
+  ): Promise<BigNumber>;
+
+  /**
+   * Calculate the global ID of an NFT type, identifying its inner nft id.
+   */
+  'getGlobalNftId(uint32)'(
+    innerNftId: BigNumberish,
+    overrides?: CallOverrides
+  ): Promise<BigNumber>;
 
   /**
    * Returns the admin role that controls `role`. See {grantRole} and {revokeRole}. To change a role's admin, use {_setRoleAdmin}.
@@ -784,6 +853,28 @@ export interface CollectionFactory extends BaseContract {
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
+  parseNftId(
+    id: BigNumberish,
+    overrides?: CallOverrides
+  ): Promise<
+    [string, number, BigNumber] & {
+      collection: string;
+      innerId: number;
+      supply: BigNumber;
+    }
+  >;
+
+  'parseNftId(uint256)'(
+    id: BigNumberish,
+    overrides?: CallOverrides
+  ): Promise<
+    [string, number, BigNumber] & {
+      collection: string;
+      innerId: number;
+      supply: BigNumber;
+    }
+  >;
+
   callStatic: {
     /**
      * Collection creator role.  Used for configuring the amounts and beneficiaries of royalties on primary and secondary transfers of this NFT.
@@ -820,6 +911,22 @@ export interface CollectionFactory extends BaseContract {
     freeport(overrides?: CallOverrides): Promise<string>;
 
     'freeport()'(overrides?: CallOverrides): Promise<string>;
+
+    /**
+     * Calculate the global ID of an NFT type, identifying its inner nft id.
+     */
+    getGlobalNftId(
+      innerNftId: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    /**
+     * Calculate the global ID of an NFT type, identifying its inner nft id.
+     */
+    'getGlobalNftId(uint32)'(
+      innerNftId: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
 
     /**
      * Returns the admin role that controls `role`. See {grantRole} and {revokeRole}. To change a role's admin, use {_setRoleAdmin}.
@@ -1031,6 +1138,28 @@ export interface CollectionFactory extends BaseContract {
       data: BytesLike,
       overrides?: CallOverrides
     ): Promise<void>;
+
+    parseNftId(
+      id: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<
+      [string, number, BigNumber] & {
+        collection: string;
+        innerId: number;
+        supply: BigNumber;
+      }
+    >;
+
+    'parseNftId(uint256)'(
+      id: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<
+      [string, number, BigNumber] & {
+        collection: string;
+        innerId: number;
+        supply: BigNumber;
+      }
+    >;
   };
 
   filters: {
@@ -1145,6 +1274,22 @@ export interface CollectionFactory extends BaseContract {
     freeport(overrides?: CallOverrides): Promise<BigNumber>;
 
     'freeport()'(overrides?: CallOverrides): Promise<BigNumber>;
+
+    /**
+     * Calculate the global ID of an NFT type, identifying its inner nft id.
+     */
+    getGlobalNftId(
+      innerNftId: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    /**
+     * Calculate the global ID of an NFT type, identifying its inner nft id.
+     */
+    'getGlobalNftId(uint32)'(
+      innerNftId: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
 
     /**
      * Returns the admin role that controls `role`. See {grantRole} and {revokeRole}. To change a role's admin, use {_setRoleAdmin}.
@@ -1359,6 +1504,13 @@ export interface CollectionFactory extends BaseContract {
       data: BytesLike,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
+
+    parseNftId(id: BigNumberish, overrides?: CallOverrides): Promise<BigNumber>;
+
+    'parseNftId(uint256)'(
+      id: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
   };
 
   populateTransaction: {
@@ -1411,6 +1563,22 @@ export interface CollectionFactory extends BaseContract {
     freeport(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     'freeport()'(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    /**
+     * Calculate the global ID of an NFT type, identifying its inner nft id.
+     */
+    getGlobalNftId(
+      innerNftId: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    /**
+     * Calculate the global ID of an NFT type, identifying its inner nft id.
+     */
+    'getGlobalNftId(uint32)'(
+      innerNftId: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
 
     /**
      * Returns the admin role that controls `role`. See {grantRole} and {revokeRole}. To change a role's admin, use {_setRoleAdmin}.
@@ -1624,6 +1792,16 @@ export interface CollectionFactory extends BaseContract {
       supply: BigNumberish,
       data: BytesLike,
       overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
+
+    parseNftId(
+      id: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    'parseNftId(uint256)'(
+      id: BigNumberish,
+      overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
   };
 }

@@ -8,7 +8,7 @@
       "MinimalForwarder": "0x0000000000000000000000000000000000000001",
       "ERC20": "0x93E73E25F290f8A50281A801109f75CB4E8e3233",
       "CollectionFactory": "0xc667eedf8d70bdc6a6a4b4b17ddb4a80b5994e61",
-      "Marketplace": "0x18BF5fC659e3d35277fCdf17bba3FB2884686FcE",
+      "Marketplace": "0x765CE2CbE50c727639CDb5FdFF96dD1D8100283b",
       "Auction": "0x68efeffc018e42e42911b003b93871f42563308b"
     },
     "Token": {

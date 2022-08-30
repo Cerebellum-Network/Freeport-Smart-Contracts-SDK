@@ -25801,14 +25801,14 @@
     "exportedSymbols": {
       "AccessControlUpgradeable": [395],
       "AddressUpgradeable": [1519],
-      "BaseNFT": [6920],
+      "BaseNFT": [6901],
       "ContextUpgradeable": [1564],
-      "Currency": [7068],
-      "ERC1155Upgradeable": [10411],
+      "Currency": [7049],
+      "ERC1155Upgradeable": [10392],
       "ERC165Upgradeable": [2017],
       "ERC1967UpgradeUpgradeable": [829],
-      "ERC20Adapter": [7196],
-      "Freeport": [5212],
+      "ERC20Adapter": [7177],
+      "Freeport": [5210],
       "IAccessControlUpgradeable": [44],
       "IBeaconUpgradeable": [839],
       "IERC1155MetadataURIUpgradeable": [1137],
@@ -25817,22 +25817,22 @@
       "IERC165Upgradeable": [2029],
       "IERC20": [2982],
       "Initializable": [885],
-      "Issuance": [7563],
-      "JointAccounts": [7907],
-      "MetaTxContext": [7984],
-      "SimpleExchange": [8264],
+      "Issuance": [7544],
+      "JointAccounts": [7888],
+      "MetaTxContext": [7965],
+      "SimpleExchange": [8245],
       "StorageSlotUpgradeable": [1624],
       "StringsUpgradeable": [1827],
-      "TransferFees": [8880],
-      "TransferOperator": [8924],
+      "TransferFees": [8861],
+      "TransferOperator": [8905],
       "UUPSUpgradeable": [959],
-      "Upgradeable": [8965]
+      "Upgradeable": [8946]
     },
-    "id": 5213,
+    "id": 5211,
     "nodeType": "SourceUnit",
     "nodes": [
       {
-        "id": 5197,
+        "id": 5195,
         "literals": ["solidity", "^", "0.8", ".0"],
         "nodeType": "PragmaDirective",
         "src": "0:23:32"
@@ -25840,11 +25840,11 @@
       {
         "absolutePath": "project:/contracts/freeportParts/SimpleExchange.sol",
         "file": "./freeportParts/SimpleExchange.sol",
-        "id": 5198,
+        "id": 5196,
         "nameLocation": "-1:-1:-1",
         "nodeType": "ImportDirective",
-        "scope": 5213,
-        "sourceUnit": 8265,
+        "scope": 5211,
+        "sourceUnit": 8246,
         "src": "25:44:32",
         "symbolAliases": [],
         "unitAlias": ""
@@ -25854,13 +25854,13 @@
         "baseContracts": [
           {
             "baseName": {
-              "id": 5200,
+              "id": 5198,
               "name": "SimpleExchange",
               "nodeType": "IdentifierPath",
-              "referencedDeclaration": 8264,
+              "referencedDeclaration": 8245,
               "src": "597:14:32"
             },
-            "id": 5201,
+            "id": 5199,
             "nodeType": "InheritanceSpecifier",
             "src": "597:14:32"
           }
@@ -25868,16 +25868,16 @@
         "contractDependencies": [],
         "contractKind": "contract",
         "documentation": {
-          "id": 5199,
+          "id": 5197,
           "nodeType": "StructuredDocumentation",
           "src": "71:325:32",
           "text": "Main contract, including all components.\n- Hold and transfer NFTs using ERC1155.\n- Support atomic exchanges of NFTs for currency.\n- Issuance of NFTs with fixed supply.\n- Joint Accounts that distribute their funds over multiple owners.\n- Capture royalties on primary and secondary transfers, configurable per NFT type."
         },
         "fullyImplemented": true,
-        "id": 5212,
+        "id": 5210,
         "linearizedBaseContracts": [
-          5212, 8264, 8880, 7907, 7563, 7196, 8924, 7068, 6920, 7984, 8965, 395,
-          10411, 1137, 1122, 2017, 2029, 44, 1564, 959, 829, 885
+          5210, 8245, 8861, 7888, 7544, 7177, 8905, 7049, 6901, 7965, 8946, 395,
+          10392, 1137, 1122, 2017, 2029, 44, 1564, 959, 829, 885
         ],
         "name": "Freeport",
         "nameLocation": "406:8:32",
@@ -25885,7 +25885,7 @@
         "nodes": [
           {
             "body": {
-              "id": 5210,
+              "id": 5208,
               "nodeType": "Block",
               "src": "723:40:32",
               "statements": [
@@ -25894,18 +25894,18 @@
                     "arguments": [],
                     "expression": {
                       "argumentTypes": [],
-                      "id": 5207,
+                      "id": 5205,
                       "name": "__SimpleExchange_init",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 8084,
+                      "referencedDeclaration": 8065,
                       "src": "733:21:32",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_internal_nonpayable$__$returns$__$",
                         "typeString": "function ()"
                       }
                     },
-                    "id": 5208,
+                    "id": 5206,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -25920,28 +25920,28 @@
                       "typeString": "tuple()"
                     }
                   },
-                  "id": 5209,
+                  "id": 5207,
                   "nodeType": "ExpressionStatement",
                   "src": "733:23:32"
                 }
               ]
             },
             "documentation": {
-              "id": 5202,
+              "id": 5200,
               "nodeType": "StructuredDocumentation",
               "src": "619:58:32",
               "text": "Initialize this contract and its dependencies."
             },
             "functionSelector": "8129fc1c",
-            "id": 5211,
+            "id": 5209,
             "implemented": true,
             "kind": "function",
             "modifiers": [
               {
-                "id": 5205,
+                "id": 5203,
                 "kind": "modifierInvocation",
                 "modifierName": {
-                  "id": 5204,
+                  "id": 5202,
                   "name": "initializer",
                   "nodeType": "IdentifierPath",
                   "referencedDeclaration": 884,
@@ -25955,25 +25955,25 @@
             "nameLocation": "691:10:32",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 5203,
+              "id": 5201,
               "nodeType": "ParameterList",
               "parameters": [],
               "src": "701:2:32"
             },
             "returnParameters": {
-              "id": 5206,
+              "id": 5204,
               "nodeType": "ParameterList",
               "parameters": [],
               "src": "723:0:32"
             },
-            "scope": 5212,
+            "scope": 5210,
             "src": "682:81:32",
             "stateMutability": "nonpayable",
             "virtual": false,
             "visibility": "public"
           }
         ],
-        "scope": 5213,
+        "scope": 5211,
         "src": "397:368:32",
         "usedErrors": []
       }
@@ -25985,14 +25985,14 @@
     "exportedSymbols": {
       "AccessControlUpgradeable": [395],
       "AddressUpgradeable": [1519],
-      "BaseNFT": [6920],
+      "BaseNFT": [6901],
       "ContextUpgradeable": [1564],
-      "Currency": [7068],
-      "ERC1155Upgradeable": [10411],
+      "Currency": [7049],
+      "ERC1155Upgradeable": [10392],
       "ERC165Upgradeable": [2017],
       "ERC1967UpgradeUpgradeable": [829],
-      "ERC20Adapter": [7196],
-      "Freeport": [5212],
+      "ERC20Adapter": [7177],
+      "Freeport": [5210],
       "IAccessControlUpgradeable": [44],
       "IBeaconUpgradeable": [839],
       "IERC1155MetadataURIUpgradeable": [1137],
@@ -26001,22 +26001,22 @@
       "IERC165Upgradeable": [2029],
       "IERC20": [2982],
       "Initializable": [885],
-      "Issuance": [7563],
-      "JointAccounts": [7907],
-      "MetaTxContext": [7984],
-      "SimpleExchange": [8264],
+      "Issuance": [7544],
+      "JointAccounts": [7888],
+      "MetaTxContext": [7965],
+      "SimpleExchange": [8245],
       "StorageSlotUpgradeable": [1624],
       "StringsUpgradeable": [1827],
-      "TransferFees": [8880],
-      "TransferOperator": [8924],
+      "TransferFees": [8861],
+      "TransferOperator": [8905],
       "UUPSUpgradeable": [959],
-      "Upgradeable": [8965]
+      "Upgradeable": [8946]
     },
-    "id": 5213,
+    "id": 5211,
     "nodeType": "SourceUnit",
     "nodes": [
       {
-        "id": 5197,
+        "id": 5195,
         "literals": ["solidity", "^", "0.8", ".0"],
         "nodeType": "PragmaDirective",
         "src": "0:23:32"
@@ -26024,11 +26024,11 @@
       {
         "absolutePath": "project:/contracts/freeportParts/SimpleExchange.sol",
         "file": "./freeportParts/SimpleExchange.sol",
-        "id": 5198,
+        "id": 5196,
         "nameLocation": "-1:-1:-1",
         "nodeType": "ImportDirective",
-        "scope": 5213,
-        "sourceUnit": 8265,
+        "scope": 5211,
+        "sourceUnit": 8246,
         "src": "25:44:32",
         "symbolAliases": [],
         "unitAlias": ""
@@ -26038,13 +26038,13 @@
         "baseContracts": [
           {
             "baseName": {
-              "id": 5200,
+              "id": 5198,
               "name": "SimpleExchange",
               "nodeType": "IdentifierPath",
-              "referencedDeclaration": 8264,
+              "referencedDeclaration": 8245,
               "src": "597:14:32"
             },
-            "id": 5201,
+            "id": 5199,
             "nodeType": "InheritanceSpecifier",
             "src": "597:14:32"
           }
@@ -26052,16 +26052,16 @@
         "contractDependencies": [],
         "contractKind": "contract",
         "documentation": {
-          "id": 5199,
+          "id": 5197,
           "nodeType": "StructuredDocumentation",
           "src": "71:325:32",
           "text": "Main contract, including all components.\n- Hold and transfer NFTs using ERC1155.\n- Support atomic exchanges of NFTs for currency.\n- Issuance of NFTs with fixed supply.\n- Joint Accounts that distribute their funds over multiple owners.\n- Capture royalties on primary and secondary transfers, configurable per NFT type."
         },
         "fullyImplemented": true,
-        "id": 5212,
+        "id": 5210,
         "linearizedBaseContracts": [
-          5212, 8264, 8880, 7907, 7563, 7196, 8924, 7068, 6920, 7984, 8965, 395,
-          10411, 1137, 1122, 2017, 2029, 44, 1564, 959, 829, 885
+          5210, 8245, 8861, 7888, 7544, 7177, 8905, 7049, 6901, 7965, 8946, 395,
+          10392, 1137, 1122, 2017, 2029, 44, 1564, 959, 829, 885
         ],
         "name": "Freeport",
         "nameLocation": "406:8:32",
@@ -26069,7 +26069,7 @@
         "nodes": [
           {
             "body": {
-              "id": 5210,
+              "id": 5208,
               "nodeType": "Block",
               "src": "723:40:32",
               "statements": [
@@ -26078,18 +26078,18 @@
                     "arguments": [],
                     "expression": {
                       "argumentTypes": [],
-                      "id": 5207,
+                      "id": 5205,
                       "name": "__SimpleExchange_init",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 8084,
+                      "referencedDeclaration": 8065,
                       "src": "733:21:32",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_internal_nonpayable$__$returns$__$",
                         "typeString": "function ()"
                       }
                     },
-                    "id": 5208,
+                    "id": 5206,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -26104,28 +26104,28 @@
                       "typeString": "tuple()"
                     }
                   },
-                  "id": 5209,
+                  "id": 5207,
                   "nodeType": "ExpressionStatement",
                   "src": "733:23:32"
                 }
               ]
             },
             "documentation": {
-              "id": 5202,
+              "id": 5200,
               "nodeType": "StructuredDocumentation",
               "src": "619:58:32",
               "text": "Initialize this contract and its dependencies."
             },
             "functionSelector": "8129fc1c",
-            "id": 5211,
+            "id": 5209,
             "implemented": true,
             "kind": "function",
             "modifiers": [
               {
-                "id": 5205,
+                "id": 5203,
                 "kind": "modifierInvocation",
                 "modifierName": {
-                  "id": 5204,
+                  "id": 5202,
                   "name": "initializer",
                   "nodeType": "IdentifierPath",
                   "referencedDeclaration": 884,
@@ -26139,25 +26139,25 @@
             "nameLocation": "691:10:32",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 5203,
+              "id": 5201,
               "nodeType": "ParameterList",
               "parameters": [],
               "src": "701:2:32"
             },
             "returnParameters": {
-              "id": 5206,
+              "id": 5204,
               "nodeType": "ParameterList",
               "parameters": [],
               "src": "723:0:32"
             },
-            "scope": 5212,
+            "scope": 5210,
             "src": "682:81:32",
             "stateMutability": "nonpayable",
             "virtual": false,
             "visibility": "public"
           }
         ],
-        "scope": 5213,
+        "scope": 5211,
         "src": "397:368:32",
         "usedErrors": []
       }
@@ -26966,12 +26966,12 @@
         }
       },
       "links": {},
-      "address": "0xf6982632Ca45010AE55a4D827D70F176E0a7cf61",
+      "address": "0x702BA959B5542B2Bf88a1C5924F73Ed97482c64B",
       "transactionHash": "0x6adad31facec0e596e0a63d3d14003b398034d6ca130ae7c9f46b4ebe3e2d4c2"
     }
   },
   "schemaVersion": "3.4.4",
-  "updatedAt": "2022-08-25T07:18:49.083Z",
+  "updatedAt": "2022-08-30T01:02:06.637Z",
   "networkType": "ethereum",
   "devdoc": {
     "kind": "dev",
