@@ -12,6 +12,7 @@ export type { MinimalForwarder } from './MinimalForwarder';
 export type { NFTAttachment } from './NFTAttachment';
 export type { SimpleAuction } from './SimpleAuction';
 export type { TestERC20 } from './TestERC20';
+export type { USDC } from './USDC';
 
 export { Auction__factory } from './factories/Auction__factory';
 export { BypassForwarder__factory } from './factories/BypassForwarder__factory';
@@ -24,3 +25,4 @@ export { MinimalForwarder__factory } from './factories/MinimalForwarder__factory
 export { NFTAttachment__factory } from './factories/NFTAttachment__factory';
 export { SimpleAuction__factory } from './factories/SimpleAuction__factory';
 export { TestERC20__factory } from './factories/TestERC20__factory';
+export { USDC__factory } from './factories/USDC__factory';

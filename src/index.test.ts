@@ -8,11 +8,14 @@ import {
   createFreeport,
   createProviderSigner,
   createSimpleAuction,
+  createUSDC,
   Deployment,
   getCollectionFactoryAddress,
   getContractAddress,
   getFreeportAddress,
   getSimpleAuctionAddress,
+  getUSDCAddress,
+  increaseAllowanceWithAuthorization,
 } from './index';
 
 const TESTNET_URL = 'https://rpc-mumbai.maticvigil.com';
@@ -123,6 +126,38 @@ testIfBiconomy(
     stop();
   }
 );
+
+testIfBiconomy('approve USDC with Biconomy', async () => {
+  const { provider, signer, stop } = await createProviderSigner({
+    rpcUrl: TESTNET_URL,
+    mnemonic: MNEMONIC_WITHOUT_MATIC,
+    biconomyApiKey,
+    biconomyDebug: false,
+  });
+  const owner = await signer.getAddress();
+
+  const usdcAddress = await getUSDCAddress(provider, deployment);
+  const usdcContract = createUSDC({ signer, contractAddress: usdcAddress });
+
+  const auctionAddress = await getSimpleAuctionAddress(provider, deployment);
+
+  const allowanceBefore = await usdcContract.allowance(owner, auctionAddress);
+
+  const value = 9;
+  const tx = await increaseAllowanceWithAuthorization(
+    provider,
+    usdcContract,
+    owner,
+    auctionAddress,
+    value
+  );
+  await tx.wait();
+
+  const allowanceAfter = await usdcContract.allowance(owner, auctionAddress);
+  expect(allowanceAfter.gt(allowanceBefore)).toBe(true);
+
+  stop();
+});
 
 test('Application parameter should use different config', () => {
   const contractAddress = getContractAddress({
