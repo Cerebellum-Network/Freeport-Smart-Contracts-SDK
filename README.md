@@ -2,9 +2,11 @@
 
 ### Releases
 
-#### vNext
+#### v8.1.0
 
-- Fixed publish to NPM script
+- new Marketplace and Auction smart contracts
+- added OpenSea compatible Collections
+- added 'quantity' parameter for buyNftByUsd method
 
 #### v7.2.0
 

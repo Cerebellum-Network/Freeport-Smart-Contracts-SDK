@@ -4,11 +4,13 @@ import config from './config.json';
 import configLiveone from './config.liveone.json';
 import {
   ApplicationEnum,
+  createCollectionFactory,
   createFreeport,
   createProviderSigner,
   createSimpleAuction,
   createUSDC,
   Deployment,
+  getCollectionFactoryAddress,
   getContractAddress,
   getFreeportAddress,
   getSimpleAuctionAddress,

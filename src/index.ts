@@ -3,8 +3,12 @@ import HDWalletProvider from '@truffle/hdwallet-provider';
 import { providers, Signer, Wallet } from 'ethers';
 
 import type {
+  Auction,
+  Collection,
+  CollectionFactory,
   FiatGateway,
   Freeport,
+  Marketplace,
   MinimalForwarder,
   NFTAttachment,
   SimpleAuction,
@@ -12,8 +16,12 @@ import type {
   USDC,
 } from './abi-types';
 import {
+  Auction__factory,
+  Collection__factory,
+  CollectionFactory__factory,
   FiatGateway__factory,
   Freeport__factory,
+  Marketplace__factory,
   MinimalForwarder__factory,
   NFTAttachment__factory,
   SimpleAuction__factory,
@@ -316,6 +324,51 @@ export const getUSDCAddress = async (
   });
 };
 
+export const getCollectionFactoryAddress = async (
+  provider: Provider,
+  deployment: Deployment = 'prod',
+  application: ApplicationEnum = ApplicationEnum.DAVINCI
+): Promise<string> => {
+  const { chainId } = await provider.getNetwork();
+
+  return getContractAddress({
+    deployment,
+    chainId,
+    contractName: 'CollectionFactory',
+    application,
+  });
+};
+
+export const getMarketplaceAddress = async (
+  provider: Provider,
+  deployment: Deployment = 'prod',
+  application: ApplicationEnum = ApplicationEnum.DAVINCI
+): Promise<string> => {
+  const { chainId } = await provider.getNetwork();
+
+  return getContractAddress({
+    deployment,
+    chainId,
+    contractName: 'Marketplace',
+    application,
+  });
+};
+
+export const getAuctionAddress = async (
+  provider: Provider,
+  deployment: Deployment = 'prod',
+  application: ApplicationEnum = ApplicationEnum.DAVINCI
+): Promise<string> => {
+  const { chainId } = await provider.getNetwork();
+
+  return getContractAddress({
+    deployment,
+    chainId,
+    contractName: 'Auction',
+    application,
+  });
+};
+
 export type CreateContractConfig = {
   signer: Signer;
   contractAddress: string;
@@ -362,3 +415,27 @@ export const createUSDC = ({
   contractAddress,
 }: CreateContractConfig): USDC =>
   USDC__factory.connect(contractAddress, signer);
+
+export const createCollectionFactory = ({
+  signer,
+  contractAddress,
+}: CreateContractConfig): CollectionFactory =>
+  CollectionFactory__factory.connect(contractAddress, signer);
+
+export const createMarketplace = ({
+  signer,
+  contractAddress,
+}: CreateContractConfig): Marketplace =>
+  Marketplace__factory.connect(contractAddress, signer);
+
+export const createAuction = ({
+  signer,
+  contractAddress,
+}: CreateContractConfig): Auction =>
+  Auction__factory.connect(contractAddress, signer);
+
+export const createCollection = ({
+  signer,
+  contractAddress,
+}: CreateContractConfig): Collection =>
+  Collection__factory.connect(contractAddress, signer);

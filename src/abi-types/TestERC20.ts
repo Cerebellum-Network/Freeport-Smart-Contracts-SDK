@@ -310,7 +310,7 @@ export interface TestERC20 extends BaseContract {
     'decimals()'(overrides?: CallOverrides): Promise<[number]>;
 
     /**
-     * Mint some test tokens to an account. Max 10M per call.
+     * Mint some test tokens to an account.
      */
     mint(
       account: string,
@@ -319,7 +319,7 @@ export interface TestERC20 extends BaseContract {
     ): Promise<ContractTransaction>;
 
     /**
-     * Mint some test tokens to an account. Max 10M per call.
+     * Mint some test tokens to an account.
      */
     'mint(address,uint256)'(
       account: string,
@@ -492,7 +492,7 @@ export interface TestERC20 extends BaseContract {
   'decimals()'(overrides?: CallOverrides): Promise<number>;
 
   /**
-   * Mint some test tokens to an account. Max 10M per call.
+   * Mint some test tokens to an account.
    */
   mint(
     account: string,
@@ -501,7 +501,7 @@ export interface TestERC20 extends BaseContract {
   ): Promise<ContractTransaction>;
 
   /**
-   * Mint some test tokens to an account. Max 10M per call.
+   * Mint some test tokens to an account.
    */
   'mint(address,uint256)'(
     account: string,
@@ -674,7 +674,7 @@ export interface TestERC20 extends BaseContract {
     'decimals()'(overrides?: CallOverrides): Promise<number>;
 
     /**
-     * Mint some test tokens to an account. Max 10M per call.
+     * Mint some test tokens to an account.
      */
     mint(
       account: string,
@@ -683,7 +683,7 @@ export interface TestERC20 extends BaseContract {
     ): Promise<void>;
 
     /**
-     * Mint some test tokens to an account. Max 10M per call.
+     * Mint some test tokens to an account.
      */
     'mint(address,uint256)'(
       account: string,
@@ -881,7 +881,7 @@ export interface TestERC20 extends BaseContract {
     'decimals()'(overrides?: CallOverrides): Promise<BigNumber>;
 
     /**
-     * Mint some test tokens to an account. Max 10M per call.
+     * Mint some test tokens to an account.
      */
     mint(
       account: string,
@@ -890,7 +890,7 @@ export interface TestERC20 extends BaseContract {
     ): Promise<BigNumber>;
 
     /**
-     * Mint some test tokens to an account. Max 10M per call.
+     * Mint some test tokens to an account.
      */
     'mint(address,uint256)'(
       account: string,
@@ -1067,7 +1067,7 @@ export interface TestERC20 extends BaseContract {
     'decimals()'(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     /**
-     * Mint some test tokens to an account. Max 10M per call.
+     * Mint some test tokens to an account.
      */
     mint(
       account: string,
@@ -1076,7 +1076,7 @@ export interface TestERC20 extends BaseContract {
     ): Promise<PopulatedTransaction>;
 
     /**
-     * Mint some test tokens to an account. Max 10M per call.
+     * Mint some test tokens to an account.
      */
     'mint(address,uint256)'(
       account: string,

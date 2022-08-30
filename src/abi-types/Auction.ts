@@ -18,7 +18,7 @@ import { FunctionFragment, Result, EventFragment } from '@ethersproject/abi';
 import { Listener, Provider } from '@ethersproject/providers';
 import { TypedEventFilter, TypedEvent, TypedListener, OnEvent } from './common';
 
-export interface SimpleAuctionInterface extends utils.Interface {
+export interface AuctionInterface extends utils.Interface {
   functions: {
     'BUY_AUTHORIZATION_TYPEHASH()': FunctionFragment;
     'BUY_AUTHORIZER_ROLE()': FunctionFragment;
@@ -27,6 +27,7 @@ export interface SimpleAuctionInterface extends utils.Interface {
     'META_TX_FORWARDER()': FunctionFragment;
     'bidCollateral(address,uint256)': FunctionFragment;
     'freeport()': FunctionFragment;
+    'getGlobalNftId(uint32)': FunctionFragment;
     'getRoleAdmin(bytes32)': FunctionFragment;
     'grantRole(bytes32,address)': FunctionFragment;
     'hasRole(bytes32,address)': FunctionFragment;
@@ -71,6 +72,10 @@ export interface SimpleAuctionInterface extends utils.Interface {
     values: [string, BigNumberish]
   ): string;
   encodeFunctionData(functionFragment: 'freeport', values?: undefined): string;
+  encodeFunctionData(
+    functionFragment: 'getGlobalNftId',
+    values: [BigNumberish]
+  ): string;
   encodeFunctionData(
     functionFragment: 'getRoleAdmin',
     values: [BytesLike]
@@ -168,6 +173,10 @@ export interface SimpleAuctionInterface extends utils.Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: 'freeport', data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: 'getGlobalNftId',
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(
     functionFragment: 'getRoleAdmin',
     data: BytesLike
@@ -327,12 +336,12 @@ export type UpgradedEvent = TypedEvent<[string], { implementation: string }>;
 
 export type UpgradedEventFilter = TypedEventFilter<UpgradedEvent>;
 
-export interface SimpleAuction extends BaseContract {
+export interface Auction extends BaseContract {
   connect(signerOrProvider: Signer | Provider | string): this;
   attach(addressOrName: string): this;
   deployed(): Promise<this>;
 
-  interface: SimpleAuctionInterface;
+  interface: AuctionInterface;
 
   queryFilter<TEvent extends TypedEvent>(
     event: TypedEventFilter<TEvent>,
@@ -403,6 +412,22 @@ export interface SimpleAuction extends BaseContract {
     freeport(overrides?: CallOverrides): Promise<[string]>;
 
     'freeport()'(overrides?: CallOverrides): Promise<[string]>;
+
+    /**
+     * Calculate the global ID of an NFT type, identifying its inner nft id.
+     */
+    getGlobalNftId(
+      innerNftId: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<[BigNumber]>;
+
+    /**
+     * Calculate the global ID of an NFT type, identifying its inner nft id.
+     */
+    'getGlobalNftId(uint32)'(
+      innerNftId: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<[BigNumber]>;
 
     /**
      * Returns the admin role that controls `role`. See {grantRole} and {revokeRole}. To change a role's admin, use {_setRoleAdmin}.
@@ -767,6 +792,22 @@ export interface SimpleAuction extends BaseContract {
   'freeport()'(overrides?: CallOverrides): Promise<string>;
 
   /**
+   * Calculate the global ID of an NFT type, identifying its inner nft id.
+   */
+  getGlobalNftId(
+    innerNftId: BigNumberish,
+    overrides?: CallOverrides
+  ): Promise<BigNumber>;
+
+  /**
+   * Calculate the global ID of an NFT type, identifying its inner nft id.
+   */
+  'getGlobalNftId(uint32)'(
+    innerNftId: BigNumberish,
+    overrides?: CallOverrides
+  ): Promise<BigNumber>;
+
+  /**
    * Returns the admin role that controls `role`. See {grantRole} and {revokeRole}. To change a role's admin, use {_setRoleAdmin}.
    */
   getRoleAdmin(role: BytesLike, overrides?: CallOverrides): Promise<string>;
@@ -1127,6 +1168,22 @@ export interface SimpleAuction extends BaseContract {
     freeport(overrides?: CallOverrides): Promise<string>;
 
     'freeport()'(overrides?: CallOverrides): Promise<string>;
+
+    /**
+     * Calculate the global ID of an NFT type, identifying its inner nft id.
+     */
+    getGlobalNftId(
+      innerNftId: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    /**
+     * Calculate the global ID of an NFT type, identifying its inner nft id.
+     */
+    'getGlobalNftId(uint32)'(
+      innerNftId: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
 
     /**
      * Returns the admin role that controls `role`. See {grantRole} and {revokeRole}. To change a role's admin, use {_setRoleAdmin}.
@@ -1582,6 +1639,22 @@ export interface SimpleAuction extends BaseContract {
     'freeport()'(overrides?: CallOverrides): Promise<BigNumber>;
 
     /**
+     * Calculate the global ID of an NFT type, identifying its inner nft id.
+     */
+    getGlobalNftId(
+      innerNftId: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    /**
+     * Calculate the global ID of an NFT type, identifying its inner nft id.
+     */
+    'getGlobalNftId(uint32)'(
+      innerNftId: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    /**
      * Returns the admin role that controls `role`. See {grantRole} and {revokeRole}. To change a role's admin, use {_setRoleAdmin}.
      */
     getRoleAdmin(
@@ -1946,6 +2019,22 @@ export interface SimpleAuction extends BaseContract {
     freeport(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     'freeport()'(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    /**
+     * Calculate the global ID of an NFT type, identifying its inner nft id.
+     */
+    getGlobalNftId(
+      innerNftId: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    /**
+     * Calculate the global ID of an NFT type, identifying its inner nft id.
+     */
+    'getGlobalNftId(uint32)'(
+      innerNftId: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
 
     /**
      * Returns the admin role that controls `role`. See {grantRole} and {revokeRole}. To change a role's admin, use {_setRoleAdmin}.
