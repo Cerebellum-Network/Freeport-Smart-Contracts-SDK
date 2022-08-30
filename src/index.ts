@@ -13,6 +13,7 @@ import type {
   NFTAttachment,
   SimpleAuction,
   TestERC20 as ERC20,
+  USDC,
 } from './abi-types';
 import {
   Auction__factory,
@@ -25,11 +26,13 @@ import {
   NFTAttachment__factory,
   SimpleAuction__factory,
   TestERC20__factory as ERC20__factory,
+  USDC__factory,
 } from './abi-types';
 import config from './config.json';
 import configLiveOne from './config.liveone.json';
 
 export * from './abi-types';
+export * from './metatx';
 
 declare global {
   interface Window {
@@ -66,7 +69,7 @@ export const enableBiconomy = async (
   walletProvider: any,
   biconomyApiKey: string,
   debug: boolean
-) => {
+): Promise<providers.Web3Provider> => {
   const biconomyProvider = new Biconomy(walletProvider, {
     debug,
     apiKey: biconomyApiKey,
@@ -306,6 +309,21 @@ export const getERC20Address = async (
   });
 };
 
+export const getUSDCAddress = async (
+  provider: Provider,
+  deployment: Deployment = 'prod',
+  application: ApplicationEnum = ApplicationEnum.DAVINCI
+): Promise<string> => {
+  const { chainId } = await provider.getNetwork();
+
+  return getContractAddress({
+    deployment,
+    chainId,
+    contractName: 'USDC',
+    application,
+  });
+};
+
 export const getCollectionFactoryAddress = async (
   provider: Provider,
   deployment: Deployment = 'prod',
@@ -391,6 +409,12 @@ export const createERC20 = ({
   contractAddress,
 }: CreateContractConfig): ERC20 =>
   ERC20__factory.connect(contractAddress, signer);
+
+export const createUSDC = ({
+  signer,
+  contractAddress,
+}: CreateContractConfig): USDC =>
+  USDC__factory.connect(contractAddress, signer);
 
 export const createCollectionFactory = ({
   signer,
