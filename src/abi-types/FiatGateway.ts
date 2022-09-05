@@ -25,9 +25,11 @@ export interface FiatGatewayInterface extends utils.Interface {
     'EXCHANGE_RATE_ORACLE()': FunctionFragment;
     'PAYMENT_SERVICE()': FunctionFragment;
     'freeport()': FunctionFragment;
+    'getGlobalNftId(uint32)': FunctionFragment;
     'getRoleAdmin(bytes32)': FunctionFragment;
     'grantRole(bytes32,address)': FunctionFragment;
     'hasRole(bytes32,address)': FunctionFragment;
+    'marketplace()': FunctionFragment;
     'onERC1155BatchReceived(address,address,uint256[],uint256[],bytes)': FunctionFragment;
     'onERC1155Received(address,address,uint256,uint256,bytes)': FunctionFragment;
     'renounceRole(bytes32,address)': FunctionFragment;
@@ -37,14 +39,15 @@ export interface FiatGatewayInterface extends utils.Interface {
     'upgradeTo(address)': FunctionFragment;
     'upgradeToAndCall(address,bytes)': FunctionFragment;
     'supportsInterface(bytes4)': FunctionFragment;
-    'initialize(address)': FunctionFragment;
-    'initialize_v2_0_0()': FunctionFragment;
+    'initialize(address,address)': FunctionFragment;
+    'initialize_update(address,address)': FunctionFragment;
     'setExchangeRate(uint256)': FunctionFragment;
     'getExchangeRate()': FunctionFragment;
     'withdrawERC20()': FunctionFragment;
     'withdrawCurrency()': FunctionFragment;
     'buyCereFromUsd(uint256,address,uint256)': FunctionFragment;
-    'buyNftFromUsd(uint256,address,address,uint256,uint256,uint256,uint256)': FunctionFragment;
+    'buyNftsFromUsd(uint256,address,address,uint256,uint256,uint256,uint256)': FunctionFragment;
+    'buyNftFromUsd(uint256,address,address,uint256,uint256,uint256)': FunctionFragment;
   };
 
   encodeFunctionData(functionFragment: 'CURRENCY', values?: undefined): string;
@@ -62,6 +65,10 @@ export interface FiatGatewayInterface extends utils.Interface {
   ): string;
   encodeFunctionData(functionFragment: 'freeport', values?: undefined): string;
   encodeFunctionData(
+    functionFragment: 'getGlobalNftId',
+    values: [BigNumberish]
+  ): string;
+  encodeFunctionData(
     functionFragment: 'getRoleAdmin',
     values: [BytesLike]
   ): string;
@@ -72,6 +79,10 @@ export interface FiatGatewayInterface extends utils.Interface {
   encodeFunctionData(
     functionFragment: 'hasRole',
     values: [BytesLike, string]
+  ): string;
+  encodeFunctionData(
+    functionFragment: 'marketplace',
+    values?: undefined
   ): string;
   encodeFunctionData(
     functionFragment: 'onERC1155BatchReceived',
@@ -106,10 +117,13 @@ export interface FiatGatewayInterface extends utils.Interface {
     functionFragment: 'supportsInterface',
     values: [BytesLike]
   ): string;
-  encodeFunctionData(functionFragment: 'initialize', values: [string]): string;
   encodeFunctionData(
-    functionFragment: 'initialize_v2_0_0',
-    values?: undefined
+    functionFragment: 'initialize',
+    values: [string, string]
+  ): string;
+  encodeFunctionData(
+    functionFragment: 'initialize_update',
+    values: [string, string]
   ): string;
   encodeFunctionData(
     functionFragment: 'setExchangeRate',
@@ -132,12 +146,23 @@ export interface FiatGatewayInterface extends utils.Interface {
     values: [BigNumberish, string, BigNumberish]
   ): string;
   encodeFunctionData(
-    functionFragment: 'buyNftFromUsd',
+    functionFragment: 'buyNftsFromUsd',
     values: [
       BigNumberish,
       string,
       string,
       BigNumberish,
+      BigNumberish,
+      BigNumberish,
+      BigNumberish
+    ]
+  ): string;
+  encodeFunctionData(
+    functionFragment: 'buyNftFromUsd',
+    values: [
+      BigNumberish,
+      string,
+      string,
       BigNumberish,
       BigNumberish,
       BigNumberish
@@ -159,11 +184,19 @@ export interface FiatGatewayInterface extends utils.Interface {
   ): Result;
   decodeFunctionResult(functionFragment: 'freeport', data: BytesLike): Result;
   decodeFunctionResult(
+    functionFragment: 'getGlobalNftId',
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
     functionFragment: 'getRoleAdmin',
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: 'grantRole', data: BytesLike): Result;
   decodeFunctionResult(functionFragment: 'hasRole', data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: 'marketplace',
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(
     functionFragment: 'onERC1155BatchReceived',
     data: BytesLike
@@ -196,7 +229,7 @@ export interface FiatGatewayInterface extends utils.Interface {
   ): Result;
   decodeFunctionResult(functionFragment: 'initialize', data: BytesLike): Result;
   decodeFunctionResult(
-    functionFragment: 'initialize_v2_0_0',
+    functionFragment: 'initialize_update',
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -217,6 +250,10 @@ export interface FiatGatewayInterface extends utils.Interface {
   ): Result;
   decodeFunctionResult(
     functionFragment: 'buyCereFromUsd',
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: 'buyNftsFromUsd',
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -341,6 +378,22 @@ export interface FiatGateway extends BaseContract {
     'freeport()'(overrides?: CallOverrides): Promise<[string]>;
 
     /**
+     * Calculate the global ID of an NFT type, identifying its inner nft id.
+     */
+    getGlobalNftId(
+      innerNftId: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<[BigNumber]>;
+
+    /**
+     * Calculate the global ID of an NFT type, identifying its inner nft id.
+     */
+    'getGlobalNftId(uint32)'(
+      innerNftId: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<[BigNumber]>;
+
+    /**
      * Returns the admin role that controls `role`. See {grantRole} and {revokeRole}. To change a role's admin, use {_setRoleAdmin}.
      */
     getRoleAdmin(role: BytesLike, overrides?: CallOverrides): Promise<[string]>;
@@ -388,6 +441,10 @@ export interface FiatGateway extends BaseContract {
       account: string,
       overrides?: CallOverrides
     ): Promise<[boolean]>;
+
+    marketplace(overrides?: CallOverrides): Promise<[string]>;
+
+    'marketplace()'(overrides?: CallOverrides): Promise<[string]>;
 
     onERC1155BatchReceived(
       arg0: string,
@@ -521,25 +578,25 @@ export interface FiatGateway extends BaseContract {
 
     initialize(
       _freeport: string,
+      _marketplace: string,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
-    'initialize(address)'(
+    'initialize(address,address)'(
       _freeport: string,
+      _marketplace: string,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
-    /**
-     * Initialize this contract after version 2.0.0. Allow deposit of USDC into Freeport.
-     */
-    initialize_v2_0_0(
+    initialize_update(
+      _freeport: string,
+      _marketplace: string,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
-    /**
-     * Initialize this contract after version 2.0.0. Allow deposit of USDC into Freeport.
-     */
-    'initialize_v2_0_0()'(
+    'initialize_update(address,address)'(
+      _freeport: string,
+      _marketplace: string,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
@@ -620,7 +677,7 @@ export interface FiatGateway extends BaseContract {
     /**
      * Buy an NFT based on an off-chain fiat payment. The amount of fiat received is validated against the NFT price, using the configured exchange rate. Then, the tokens are used to buy an NFT in the same transaction. The NFT must be available for sale from the seller in SimpleExchange. Only the gateway with PAYMENT_SERVICE role can report successful payments. The parameter expectedPriceOrZero can be used to validate the price that the buyer expects to pay. This prevents a race condition with makeOffer or setExchangeRate. Pass 0 to disable this validation and accept any current price. The parameter nonce is ignored and accepted for compatibility.
      */
-    buyNftFromUsd(
+    buyNftsFromUsd(
       penniesReceived: BigNumberish,
       buyer: string,
       seller: string,
@@ -634,12 +691,38 @@ export interface FiatGateway extends BaseContract {
     /**
      * Buy an NFT based on an off-chain fiat payment. The amount of fiat received is validated against the NFT price, using the configured exchange rate. Then, the tokens are used to buy an NFT in the same transaction. The NFT must be available for sale from the seller in SimpleExchange. Only the gateway with PAYMENT_SERVICE role can report successful payments. The parameter expectedPriceOrZero can be used to validate the price that the buyer expects to pay. This prevents a race condition with makeOffer or setExchangeRate. Pass 0 to disable this validation and accept any current price. The parameter nonce is ignored and accepted for compatibility.
      */
-    'buyNftFromUsd(uint256,address,address,uint256,uint256,uint256,uint256)'(
+    'buyNftsFromUsd(uint256,address,address,uint256,uint256,uint256,uint256)'(
       penniesReceived: BigNumberish,
       buyer: string,
       seller: string,
       nftId: BigNumberish,
       quantity: BigNumberish,
+      expectedPriceOrZero: BigNumberish,
+      nonce: BigNumberish,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
+
+    /**
+     * Backward-compatible variant with quantity=1.
+     */
+    buyNftFromUsd(
+      penniesReceived: BigNumberish,
+      buyer: string,
+      seller: string,
+      nftId: BigNumberish,
+      expectedPriceOrZero: BigNumberish,
+      nonce: BigNumberish,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
+
+    /**
+     * Backward-compatible variant with quantity=1.
+     */
+    'buyNftFromUsd(uint256,address,address,uint256,uint256,uint256)'(
+      penniesReceived: BigNumberish,
+      buyer: string,
+      seller: string,
+      nftId: BigNumberish,
       expectedPriceOrZero: BigNumberish,
       nonce: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
@@ -671,6 +754,22 @@ export interface FiatGateway extends BaseContract {
   freeport(overrides?: CallOverrides): Promise<string>;
 
   'freeport()'(overrides?: CallOverrides): Promise<string>;
+
+  /**
+   * Calculate the global ID of an NFT type, identifying its inner nft id.
+   */
+  getGlobalNftId(
+    innerNftId: BigNumberish,
+    overrides?: CallOverrides
+  ): Promise<BigNumber>;
+
+  /**
+   * Calculate the global ID of an NFT type, identifying its inner nft id.
+   */
+  'getGlobalNftId(uint32)'(
+    innerNftId: BigNumberish,
+    overrides?: CallOverrides
+  ): Promise<BigNumber>;
 
   /**
    * Returns the admin role that controls `role`. See {grantRole} and {revokeRole}. To change a role's admin, use {_setRoleAdmin}.
@@ -720,6 +819,10 @@ export interface FiatGateway extends BaseContract {
     account: string,
     overrides?: CallOverrides
   ): Promise<boolean>;
+
+  marketplace(overrides?: CallOverrides): Promise<string>;
+
+  'marketplace()'(overrides?: CallOverrides): Promise<string>;
 
   onERC1155BatchReceived(
     arg0: string,
@@ -853,25 +956,25 @@ export interface FiatGateway extends BaseContract {
 
   initialize(
     _freeport: string,
+    _marketplace: string,
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
-  'initialize(address)'(
+  'initialize(address,address)'(
     _freeport: string,
+    _marketplace: string,
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
-  /**
-   * Initialize this contract after version 2.0.0. Allow deposit of USDC into Freeport.
-   */
-  initialize_v2_0_0(
+  initialize_update(
+    _freeport: string,
+    _marketplace: string,
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
-  /**
-   * Initialize this contract after version 2.0.0. Allow deposit of USDC into Freeport.
-   */
-  'initialize_v2_0_0()'(
+  'initialize_update(address,address)'(
+    _freeport: string,
+    _marketplace: string,
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
@@ -952,7 +1055,7 @@ export interface FiatGateway extends BaseContract {
   /**
    * Buy an NFT based on an off-chain fiat payment. The amount of fiat received is validated against the NFT price, using the configured exchange rate. Then, the tokens are used to buy an NFT in the same transaction. The NFT must be available for sale from the seller in SimpleExchange. Only the gateway with PAYMENT_SERVICE role can report successful payments. The parameter expectedPriceOrZero can be used to validate the price that the buyer expects to pay. This prevents a race condition with makeOffer or setExchangeRate. Pass 0 to disable this validation and accept any current price. The parameter nonce is ignored and accepted for compatibility.
    */
-  buyNftFromUsd(
+  buyNftsFromUsd(
     penniesReceived: BigNumberish,
     buyer: string,
     seller: string,
@@ -966,12 +1069,38 @@ export interface FiatGateway extends BaseContract {
   /**
    * Buy an NFT based on an off-chain fiat payment. The amount of fiat received is validated against the NFT price, using the configured exchange rate. Then, the tokens are used to buy an NFT in the same transaction. The NFT must be available for sale from the seller in SimpleExchange. Only the gateway with PAYMENT_SERVICE role can report successful payments. The parameter expectedPriceOrZero can be used to validate the price that the buyer expects to pay. This prevents a race condition with makeOffer or setExchangeRate. Pass 0 to disable this validation and accept any current price. The parameter nonce is ignored and accepted for compatibility.
    */
-  'buyNftFromUsd(uint256,address,address,uint256,uint256,uint256,uint256)'(
+  'buyNftsFromUsd(uint256,address,address,uint256,uint256,uint256,uint256)'(
     penniesReceived: BigNumberish,
     buyer: string,
     seller: string,
     nftId: BigNumberish,
     quantity: BigNumberish,
+    expectedPriceOrZero: BigNumberish,
+    nonce: BigNumberish,
+    overrides?: Overrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
+
+  /**
+   * Backward-compatible variant with quantity=1.
+   */
+  buyNftFromUsd(
+    penniesReceived: BigNumberish,
+    buyer: string,
+    seller: string,
+    nftId: BigNumberish,
+    expectedPriceOrZero: BigNumberish,
+    nonce: BigNumberish,
+    overrides?: Overrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
+
+  /**
+   * Backward-compatible variant with quantity=1.
+   */
+  'buyNftFromUsd(uint256,address,address,uint256,uint256,uint256)'(
+    penniesReceived: BigNumberish,
+    buyer: string,
+    seller: string,
+    nftId: BigNumberish,
     expectedPriceOrZero: BigNumberish,
     nonce: BigNumberish,
     overrides?: Overrides & { from?: string | Promise<string> }
@@ -1003,6 +1132,22 @@ export interface FiatGateway extends BaseContract {
     freeport(overrides?: CallOverrides): Promise<string>;
 
     'freeport()'(overrides?: CallOverrides): Promise<string>;
+
+    /**
+     * Calculate the global ID of an NFT type, identifying its inner nft id.
+     */
+    getGlobalNftId(
+      innerNftId: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    /**
+     * Calculate the global ID of an NFT type, identifying its inner nft id.
+     */
+    'getGlobalNftId(uint32)'(
+      innerNftId: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
 
     /**
      * Returns the admin role that controls `role`. See {grantRole} and {revokeRole}. To change a role's admin, use {_setRoleAdmin}.
@@ -1052,6 +1197,10 @@ export interface FiatGateway extends BaseContract {
       account: string,
       overrides?: CallOverrides
     ): Promise<boolean>;
+
+    marketplace(overrides?: CallOverrides): Promise<string>;
+
+    'marketplace()'(overrides?: CallOverrides): Promise<string>;
 
     onERC1155BatchReceived(
       arg0: string,
@@ -1183,22 +1332,29 @@ export interface FiatGateway extends BaseContract {
       overrides?: CallOverrides
     ): Promise<boolean>;
 
-    initialize(_freeport: string, overrides?: CallOverrides): Promise<void>;
-
-    'initialize(address)'(
+    initialize(
       _freeport: string,
+      _marketplace: string,
       overrides?: CallOverrides
     ): Promise<void>;
 
-    /**
-     * Initialize this contract after version 2.0.0. Allow deposit of USDC into Freeport.
-     */
-    initialize_v2_0_0(overrides?: CallOverrides): Promise<void>;
+    'initialize(address,address)'(
+      _freeport: string,
+      _marketplace: string,
+      overrides?: CallOverrides
+    ): Promise<void>;
 
-    /**
-     * Initialize this contract after version 2.0.0. Allow deposit of USDC into Freeport.
-     */
-    'initialize_v2_0_0()'(overrides?: CallOverrides): Promise<void>;
+    initialize_update(
+      _freeport: string,
+      _marketplace: string,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    'initialize_update(address,address)'(
+      _freeport: string,
+      _marketplace: string,
+      overrides?: CallOverrides
+    ): Promise<void>;
 
     /**
      * Set the exchange rate between fiat (USD) and Freeport currency (CERE). The rate is given as number of ERC20 Units (with 6 decimals) per USD cent (1 penny). Only the rate service with the EXCHANGE_RATE_ORACLE role can change the rate.
@@ -1269,7 +1425,7 @@ export interface FiatGateway extends BaseContract {
     /**
      * Buy an NFT based on an off-chain fiat payment. The amount of fiat received is validated against the NFT price, using the configured exchange rate. Then, the tokens are used to buy an NFT in the same transaction. The NFT must be available for sale from the seller in SimpleExchange. Only the gateway with PAYMENT_SERVICE role can report successful payments. The parameter expectedPriceOrZero can be used to validate the price that the buyer expects to pay. This prevents a race condition with makeOffer or setExchangeRate. Pass 0 to disable this validation and accept any current price. The parameter nonce is ignored and accepted for compatibility.
      */
-    buyNftFromUsd(
+    buyNftsFromUsd(
       penniesReceived: BigNumberish,
       buyer: string,
       seller: string,
@@ -1283,12 +1439,38 @@ export interface FiatGateway extends BaseContract {
     /**
      * Buy an NFT based on an off-chain fiat payment. The amount of fiat received is validated against the NFT price, using the configured exchange rate. Then, the tokens are used to buy an NFT in the same transaction. The NFT must be available for sale from the seller in SimpleExchange. Only the gateway with PAYMENT_SERVICE role can report successful payments. The parameter expectedPriceOrZero can be used to validate the price that the buyer expects to pay. This prevents a race condition with makeOffer or setExchangeRate. Pass 0 to disable this validation and accept any current price. The parameter nonce is ignored and accepted for compatibility.
      */
-    'buyNftFromUsd(uint256,address,address,uint256,uint256,uint256,uint256)'(
+    'buyNftsFromUsd(uint256,address,address,uint256,uint256,uint256,uint256)'(
       penniesReceived: BigNumberish,
       buyer: string,
       seller: string,
       nftId: BigNumberish,
       quantity: BigNumberish,
+      expectedPriceOrZero: BigNumberish,
+      nonce: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    /**
+     * Backward-compatible variant with quantity=1.
+     */
+    buyNftFromUsd(
+      penniesReceived: BigNumberish,
+      buyer: string,
+      seller: string,
+      nftId: BigNumberish,
+      expectedPriceOrZero: BigNumberish,
+      nonce: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    /**
+     * Backward-compatible variant with quantity=1.
+     */
+    'buyNftFromUsd(uint256,address,address,uint256,uint256,uint256)'(
+      penniesReceived: BigNumberish,
+      buyer: string,
+      seller: string,
+      nftId: BigNumberish,
       expectedPriceOrZero: BigNumberish,
       nonce: BigNumberish,
       overrides?: CallOverrides
@@ -1380,6 +1562,22 @@ export interface FiatGateway extends BaseContract {
     'freeport()'(overrides?: CallOverrides): Promise<BigNumber>;
 
     /**
+     * Calculate the global ID of an NFT type, identifying its inner nft id.
+     */
+    getGlobalNftId(
+      innerNftId: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    /**
+     * Calculate the global ID of an NFT type, identifying its inner nft id.
+     */
+    'getGlobalNftId(uint32)'(
+      innerNftId: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    /**
      * Returns the admin role that controls `role`. See {grantRole} and {revokeRole}. To change a role's admin, use {_setRoleAdmin}.
      */
     getRoleAdmin(
@@ -1430,6 +1628,10 @@ export interface FiatGateway extends BaseContract {
       account: string,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
+
+    marketplace(overrides?: CallOverrides): Promise<BigNumber>;
+
+    'marketplace()'(overrides?: CallOverrides): Promise<BigNumber>;
 
     onERC1155BatchReceived(
       arg0: string,
@@ -1563,25 +1765,25 @@ export interface FiatGateway extends BaseContract {
 
     initialize(
       _freeport: string,
+      _marketplace: string,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
-    'initialize(address)'(
+    'initialize(address,address)'(
       _freeport: string,
+      _marketplace: string,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
-    /**
-     * Initialize this contract after version 2.0.0. Allow deposit of USDC into Freeport.
-     */
-    initialize_v2_0_0(
+    initialize_update(
+      _freeport: string,
+      _marketplace: string,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
-    /**
-     * Initialize this contract after version 2.0.0. Allow deposit of USDC into Freeport.
-     */
-    'initialize_v2_0_0()'(
+    'initialize_update(address,address)'(
+      _freeport: string,
+      _marketplace: string,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
@@ -1662,7 +1864,7 @@ export interface FiatGateway extends BaseContract {
     /**
      * Buy an NFT based on an off-chain fiat payment. The amount of fiat received is validated against the NFT price, using the configured exchange rate. Then, the tokens are used to buy an NFT in the same transaction. The NFT must be available for sale from the seller in SimpleExchange. Only the gateway with PAYMENT_SERVICE role can report successful payments. The parameter expectedPriceOrZero can be used to validate the price that the buyer expects to pay. This prevents a race condition with makeOffer or setExchangeRate. Pass 0 to disable this validation and accept any current price. The parameter nonce is ignored and accepted for compatibility.
      */
-    buyNftFromUsd(
+    buyNftsFromUsd(
       penniesReceived: BigNumberish,
       buyer: string,
       seller: string,
@@ -1676,12 +1878,38 @@ export interface FiatGateway extends BaseContract {
     /**
      * Buy an NFT based on an off-chain fiat payment. The amount of fiat received is validated against the NFT price, using the configured exchange rate. Then, the tokens are used to buy an NFT in the same transaction. The NFT must be available for sale from the seller in SimpleExchange. Only the gateway with PAYMENT_SERVICE role can report successful payments. The parameter expectedPriceOrZero can be used to validate the price that the buyer expects to pay. This prevents a race condition with makeOffer or setExchangeRate. Pass 0 to disable this validation and accept any current price. The parameter nonce is ignored and accepted for compatibility.
      */
-    'buyNftFromUsd(uint256,address,address,uint256,uint256,uint256,uint256)'(
+    'buyNftsFromUsd(uint256,address,address,uint256,uint256,uint256,uint256)'(
       penniesReceived: BigNumberish,
       buyer: string,
       seller: string,
       nftId: BigNumberish,
       quantity: BigNumberish,
+      expectedPriceOrZero: BigNumberish,
+      nonce: BigNumberish,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<BigNumber>;
+
+    /**
+     * Backward-compatible variant with quantity=1.
+     */
+    buyNftFromUsd(
+      penniesReceived: BigNumberish,
+      buyer: string,
+      seller: string,
+      nftId: BigNumberish,
+      expectedPriceOrZero: BigNumberish,
+      nonce: BigNumberish,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<BigNumber>;
+
+    /**
+     * Backward-compatible variant with quantity=1.
+     */
+    'buyNftFromUsd(uint256,address,address,uint256,uint256,uint256)'(
+      penniesReceived: BigNumberish,
+      buyer: string,
+      seller: string,
+      nftId: BigNumberish,
       expectedPriceOrZero: BigNumberish,
       nonce: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
@@ -1724,6 +1952,22 @@ export interface FiatGateway extends BaseContract {
     freeport(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     'freeport()'(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    /**
+     * Calculate the global ID of an NFT type, identifying its inner nft id.
+     */
+    getGlobalNftId(
+      innerNftId: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    /**
+     * Calculate the global ID of an NFT type, identifying its inner nft id.
+     */
+    'getGlobalNftId(uint32)'(
+      innerNftId: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
 
     /**
      * Returns the admin role that controls `role`. See {grantRole} and {revokeRole}. To change a role's admin, use {_setRoleAdmin}.
@@ -1776,6 +2020,10 @@ export interface FiatGateway extends BaseContract {
       account: string,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
+
+    marketplace(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    'marketplace()'(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     onERC1155BatchReceived(
       arg0: string,
@@ -1917,25 +2165,25 @@ export interface FiatGateway extends BaseContract {
 
     initialize(
       _freeport: string,
+      _marketplace: string,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 
-    'initialize(address)'(
+    'initialize(address,address)'(
       _freeport: string,
+      _marketplace: string,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 
-    /**
-     * Initialize this contract after version 2.0.0. Allow deposit of USDC into Freeport.
-     */
-    initialize_v2_0_0(
+    initialize_update(
+      _freeport: string,
+      _marketplace: string,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 
-    /**
-     * Initialize this contract after version 2.0.0. Allow deposit of USDC into Freeport.
-     */
-    'initialize_v2_0_0()'(
+    'initialize_update(address,address)'(
+      _freeport: string,
+      _marketplace: string,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 
@@ -2018,7 +2266,7 @@ export interface FiatGateway extends BaseContract {
     /**
      * Buy an NFT based on an off-chain fiat payment. The amount of fiat received is validated against the NFT price, using the configured exchange rate. Then, the tokens are used to buy an NFT in the same transaction. The NFT must be available for sale from the seller in SimpleExchange. Only the gateway with PAYMENT_SERVICE role can report successful payments. The parameter expectedPriceOrZero can be used to validate the price that the buyer expects to pay. This prevents a race condition with makeOffer or setExchangeRate. Pass 0 to disable this validation and accept any current price. The parameter nonce is ignored and accepted for compatibility.
      */
-    buyNftFromUsd(
+    buyNftsFromUsd(
       penniesReceived: BigNumberish,
       buyer: string,
       seller: string,
@@ -2032,12 +2280,38 @@ export interface FiatGateway extends BaseContract {
     /**
      * Buy an NFT based on an off-chain fiat payment. The amount of fiat received is validated against the NFT price, using the configured exchange rate. Then, the tokens are used to buy an NFT in the same transaction. The NFT must be available for sale from the seller in SimpleExchange. Only the gateway with PAYMENT_SERVICE role can report successful payments. The parameter expectedPriceOrZero can be used to validate the price that the buyer expects to pay. This prevents a race condition with makeOffer or setExchangeRate. Pass 0 to disable this validation and accept any current price. The parameter nonce is ignored and accepted for compatibility.
      */
-    'buyNftFromUsd(uint256,address,address,uint256,uint256,uint256,uint256)'(
+    'buyNftsFromUsd(uint256,address,address,uint256,uint256,uint256,uint256)'(
       penniesReceived: BigNumberish,
       buyer: string,
       seller: string,
       nftId: BigNumberish,
       quantity: BigNumberish,
+      expectedPriceOrZero: BigNumberish,
+      nonce: BigNumberish,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
+
+    /**
+     * Backward-compatible variant with quantity=1.
+     */
+    buyNftFromUsd(
+      penniesReceived: BigNumberish,
+      buyer: string,
+      seller: string,
+      nftId: BigNumberish,
+      expectedPriceOrZero: BigNumberish,
+      nonce: BigNumberish,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
+
+    /**
+     * Backward-compatible variant with quantity=1.
+     */
+    'buyNftFromUsd(uint256,address,address,uint256,uint256,uint256)'(
+      penniesReceived: BigNumberish,
+      buyer: string,
+      seller: string,
+      nftId: BigNumberish,
       expectedPriceOrZero: BigNumberish,
       nonce: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
