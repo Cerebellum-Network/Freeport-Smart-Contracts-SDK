@@ -149,6 +149,7 @@ export interface MarketplaceInterface extends utils.Interface {
     'RoleGranted(bytes32,address,address)': EventFragment;
     'RoleRevoked(bytes32,address,address)': EventFragment;
     'TakeOffer(address,address,uint256,uint256,uint256)': EventFragment;
+    'TransferSingle(address,address,address,uint256,uint256)': EventFragment;
     'Upgraded(address)': EventFragment;
   };
 
@@ -159,6 +160,7 @@ export interface MarketplaceInterface extends utils.Interface {
   getEvent(nameOrSignatureOrTopic: 'RoleGranted'): EventFragment;
   getEvent(nameOrSignatureOrTopic: 'RoleRevoked'): EventFragment;
   getEvent(nameOrSignatureOrTopic: 'TakeOffer'): EventFragment;
+  getEvent(nameOrSignatureOrTopic: 'TransferSingle'): EventFragment;
   getEvent(nameOrSignatureOrTopic: 'Upgraded'): EventFragment;
 }
 
@@ -214,6 +216,19 @@ export type TakeOfferEvent = TypedEvent<
 >;
 
 export type TakeOfferEventFilter = TypedEventFilter<TakeOfferEvent>;
+
+export type TransferSingleEvent = TypedEvent<
+  [string, string, string, BigNumber, BigNumber],
+  {
+    operator: string;
+    from: string;
+    to: string;
+    id: BigNumber;
+    value: BigNumber;
+  }
+>;
+
+export type TransferSingleEventFilter = TypedEventFilter<TransferSingleEvent>;
 
 export type UpgradedEvent = TypedEvent<[string], { implementation: string }>;
 
@@ -1012,6 +1027,21 @@ export interface Marketplace extends BaseContract {
       price?: null,
       amount?: null
     ): TakeOfferEventFilter;
+
+    'TransferSingle(address,address,address,uint256,uint256)'(
+      operator?: string | null,
+      from?: string | null,
+      to?: string | null,
+      id?: null,
+      value?: null
+    ): TransferSingleEventFilter;
+    TransferSingle(
+      operator?: string | null,
+      from?: string | null,
+      to?: string | null,
+      id?: null,
+      value?: null
+    ): TransferSingleEventFilter;
 
     'Upgraded(address)'(implementation?: string | null): UpgradedEventFilter;
     Upgraded(implementation?: string | null): UpgradedEventFilter;

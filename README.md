@@ -2,6 +2,11 @@
 
 ### Releases
 
+#### v8.2.0
+
+- Separate buyNftByUsd and buyNftsByUsd (plural) functions to support multiple
+  deployments and upgrades.
+
 #### v8.1.0
 
 - new Marketplace and Auction smart contracts

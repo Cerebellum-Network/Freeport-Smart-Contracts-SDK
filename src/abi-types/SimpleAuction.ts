@@ -25,7 +25,7 @@ export interface SimpleAuctionInterface extends utils.Interface {
     'CURRENCY()': FunctionFragment;
     'DEFAULT_ADMIN_ROLE()': FunctionFragment;
     'META_TX_FORWARDER()': FunctionFragment;
-    'bidCollateral(address,uint256)': FunctionFragment;
+    '_bidCollateral(address,uint256)': FunctionFragment;
     'freeport()': FunctionFragment;
     'getRoleAdmin(bytes32)': FunctionFragment;
     'grantRole(bytes32,address)': FunctionFragment;
@@ -67,7 +67,7 @@ export interface SimpleAuctionInterface extends utils.Interface {
     values?: undefined
   ): string;
   encodeFunctionData(
-    functionFragment: 'bidCollateral',
+    functionFragment: '_bidCollateral',
     values: [string, BigNumberish]
   ): string;
   encodeFunctionData(functionFragment: 'freeport', values?: undefined): string;
@@ -164,7 +164,7 @@ export interface SimpleAuctionInterface extends utils.Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(
-    functionFragment: 'bidCollateral',
+    functionFragment: '_bidCollateral',
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: 'freeport', data: BytesLike): Result;
@@ -383,18 +383,18 @@ export interface SimpleAuction extends BaseContract {
     'META_TX_FORWARDER()'(overrides?: CallOverrides): Promise<[string]>;
 
     /**
-     * Tracking amount of collateral NFTs.
+     * This field is reserved for the bidCollateral variable, for compatibility between upgrades.
      */
-    bidCollateral(
+    _bidCollateral(
       arg0: string,
       arg1: BigNumberish,
       overrides?: CallOverrides
     ): Promise<[BigNumber]>;
 
     /**
-     * Tracking amount of collateral NFTs.
+     * This field is reserved for the bidCollateral variable, for compatibility between upgrades.
      */
-    'bidCollateral(address,uint256)'(
+    '_bidCollateral(address,uint256)'(
       arg0: string,
       arg1: BigNumberish,
       overrides?: CallOverrides
@@ -745,18 +745,18 @@ export interface SimpleAuction extends BaseContract {
   'META_TX_FORWARDER()'(overrides?: CallOverrides): Promise<string>;
 
   /**
-   * Tracking amount of collateral NFTs.
+   * This field is reserved for the bidCollateral variable, for compatibility between upgrades.
    */
-  bidCollateral(
+  _bidCollateral(
     arg0: string,
     arg1: BigNumberish,
     overrides?: CallOverrides
   ): Promise<BigNumber>;
 
   /**
-   * Tracking amount of collateral NFTs.
+   * This field is reserved for the bidCollateral variable, for compatibility between upgrades.
    */
-  'bidCollateral(address,uint256)'(
+  '_bidCollateral(address,uint256)'(
     arg0: string,
     arg1: BigNumberish,
     overrides?: CallOverrides
@@ -1107,18 +1107,18 @@ export interface SimpleAuction extends BaseContract {
     'META_TX_FORWARDER()'(overrides?: CallOverrides): Promise<string>;
 
     /**
-     * Tracking amount of collateral NFTs.
+     * This field is reserved for the bidCollateral variable, for compatibility between upgrades.
      */
-    bidCollateral(
+    _bidCollateral(
       arg0: string,
       arg1: BigNumberish,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
     /**
-     * Tracking amount of collateral NFTs.
+     * This field is reserved for the bidCollateral variable, for compatibility between upgrades.
      */
-    'bidCollateral(address,uint256)'(
+    '_bidCollateral(address,uint256)'(
       arg0: string,
       arg1: BigNumberish,
       overrides?: CallOverrides
@@ -1560,18 +1560,18 @@ export interface SimpleAuction extends BaseContract {
     'META_TX_FORWARDER()'(overrides?: CallOverrides): Promise<BigNumber>;
 
     /**
-     * Tracking amount of collateral NFTs.
+     * This field is reserved for the bidCollateral variable, for compatibility between upgrades.
      */
-    bidCollateral(
+    _bidCollateral(
       arg0: string,
       arg1: BigNumberish,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
     /**
-     * Tracking amount of collateral NFTs.
+     * This field is reserved for the bidCollateral variable, for compatibility between upgrades.
      */
-    'bidCollateral(address,uint256)'(
+    '_bidCollateral(address,uint256)'(
       arg0: string,
       arg1: BigNumberish,
       overrides?: CallOverrides
@@ -1926,18 +1926,18 @@ export interface SimpleAuction extends BaseContract {
     ): Promise<PopulatedTransaction>;
 
     /**
-     * Tracking amount of collateral NFTs.
+     * This field is reserved for the bidCollateral variable, for compatibility between upgrades.
      */
-    bidCollateral(
+    _bidCollateral(
       arg0: string,
       arg1: BigNumberish,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
     /**
-     * Tracking amount of collateral NFTs.
+     * This field is reserved for the bidCollateral variable, for compatibility between upgrades.
      */
-    'bidCollateral(address,uint256)'(
+    '_bidCollateral(address,uint256)'(
       arg0: string,
       arg1: BigNumberish,
       overrides?: CallOverrides
