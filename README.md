@@ -2,6 +2,10 @@
 
 ### Releases
 
+#### v8.3.0
+
+- Include the staging deployments.
+
 #### v8.2.0
 
 - Separate buyNftByUsd and buyNftsByUsd (plural) functions to support multiple
