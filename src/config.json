@@ -25,7 +25,10 @@
       "NFTAttachment": "0x84766787c6b9131927A76634F7DDCfcf3ff2e9d1",
       "MinimalForwarder": "0x03988B5eaf8EFC804320B860dBb7f281EdF92420",
       "USDC": "0x5517c3c3fe3688AEF2B5BBEc2B4D3b523B9E8144",
-      "ERC20": "0x93E73E25F290f8A50281A801109f75CB4E8e3233"
+      "ERC20": "0x93E73E25F290f8A50281A801109f75CB4E8e3233",
+      "CollectionFactory": "0x3ddb5ef7a725FDf74A680a312Bf0e4fa3a7D2874",
+      "Marketplace": "0x89121a08cCb7C52d7bd6C6e93bF1c9Cdf341dC13",
+      "Auction": "0xF04c34Cc5773fd726e544a32c25e7Ad6FF7eb875"
     },
     "Token": {
       "symbol": "USDC",
