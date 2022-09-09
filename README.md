@@ -2,6 +2,10 @@
 
 ### Releases
 
+#### v8.3.1
+
+- Include the Davinci prod deployment.
+
 #### v8.3.0
 
 - Include the staging deployments.
