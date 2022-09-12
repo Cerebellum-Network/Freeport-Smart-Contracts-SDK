@@ -2,6 +2,12 @@
 
 ### Releases
 
+#### v8.4.0
+
+- New method on NftAttachment contract (_collectionManagerAttachToNFT_) for
+  attaching assets by Collections.
+- Deployed to DEV davinci and DEV liveone
+
 #### v8.3.2
 
 - Include the Liveone prod deployment.
