@@ -20,9 +20,11 @@ import { TypedEventFilter, TypedEvent, TypedListener, OnEvent } from './common';
 
 export interface NFTAttachmentInterface extends utils.Interface {
   functions: {
+    'COLLECTION_MANAGER_ROLE()': FunctionFragment;
     'DEFAULT_ADMIN_ROLE()': FunctionFragment;
     'META_TX_FORWARDER()': FunctionFragment;
     'freeport()': FunctionFragment;
+    'getGlobalNftId(uint32)': FunctionFragment;
     'getRoleAdmin(bytes32)': FunctionFragment;
     'grantRole(bytes32,address)': FunctionFragment;
     'hasRole(bytes32,address)': FunctionFragment;
@@ -34,11 +36,16 @@ export interface NFTAttachmentInterface extends utils.Interface {
     'upgradeToAndCall(address,bytes)': FunctionFragment;
     'initialize(address)': FunctionFragment;
     'minterAttachToNFT(uint256,bytes)': FunctionFragment;
+    'collectionManagerAttachToNFT(uint256,bytes)': FunctionFragment;
     'ownerAttachToNFT(uint256,bytes)': FunctionFragment;
     'anonymAttachToNFT(uint256,bytes)': FunctionFragment;
     '_minterFromNftId(uint256)': FunctionFragment;
   };
 
+  encodeFunctionData(
+    functionFragment: 'COLLECTION_MANAGER_ROLE',
+    values?: undefined
+  ): string;
   encodeFunctionData(
     functionFragment: 'DEFAULT_ADMIN_ROLE',
     values?: undefined
@@ -48,6 +55,10 @@ export interface NFTAttachmentInterface extends utils.Interface {
     values?: undefined
   ): string;
   encodeFunctionData(functionFragment: 'freeport', values?: undefined): string;
+  encodeFunctionData(
+    functionFragment: 'getGlobalNftId',
+    values: [BigNumberish]
+  ): string;
   encodeFunctionData(
     functionFragment: 'getRoleAdmin',
     values: [BytesLike]
@@ -87,6 +98,10 @@ export interface NFTAttachmentInterface extends utils.Interface {
     values: [BigNumberish, BytesLike]
   ): string;
   encodeFunctionData(
+    functionFragment: 'collectionManagerAttachToNFT',
+    values: [BigNumberish, BytesLike]
+  ): string;
+  encodeFunctionData(
     functionFragment: 'ownerAttachToNFT',
     values: [BigNumberish, BytesLike]
   ): string;
@@ -100,6 +115,10 @@ export interface NFTAttachmentInterface extends utils.Interface {
   ): string;
 
   decodeFunctionResult(
+    functionFragment: 'COLLECTION_MANAGER_ROLE',
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
     functionFragment: 'DEFAULT_ADMIN_ROLE',
     data: BytesLike
   ): Result;
@@ -108,6 +127,10 @@ export interface NFTAttachmentInterface extends utils.Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: 'freeport', data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: 'getGlobalNftId',
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(
     functionFragment: 'getRoleAdmin',
     data: BytesLike
@@ -135,6 +158,10 @@ export interface NFTAttachmentInterface extends utils.Interface {
   decodeFunctionResult(functionFragment: 'initialize', data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: 'minterAttachToNFT',
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: 'collectionManagerAttachToNFT',
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -261,6 +288,16 @@ export interface NFTAttachment extends BaseContract {
   removeListener: OnEvent<this>;
 
   functions: {
+    /**
+     * Collection manager role.  Used for configuring the amounts and beneficiaries of royalties on primary and secondary transfers of this NFT.
+     */
+    COLLECTION_MANAGER_ROLE(overrides?: CallOverrides): Promise<[string]>;
+
+    /**
+     * Collection manager role.  Used for configuring the amounts and beneficiaries of royalties on primary and secondary transfers of this NFT.
+     */
+    'COLLECTION_MANAGER_ROLE()'(overrides?: CallOverrides): Promise<[string]>;
+
     DEFAULT_ADMIN_ROLE(overrides?: CallOverrides): Promise<[string]>;
 
     'DEFAULT_ADMIN_ROLE()'(overrides?: CallOverrides): Promise<[string]>;
@@ -278,6 +315,22 @@ export interface NFTAttachment extends BaseContract {
      * This attachment contract refers to the NFT contract in this variable.
      */
     'freeport()'(overrides?: CallOverrides): Promise<[string]>;
+
+    /**
+     * Calculate the global ID of an NFT type, identifying its inner nft id.
+     */
+    getGlobalNftId(
+      innerNftId: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<[BigNumber]>;
+
+    /**
+     * Calculate the global ID of an NFT type, identifying its inner nft id.
+     */
+    'getGlobalNftId(uint32)'(
+      innerNftId: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<[BigNumber]>;
 
     /**
      * Returns the admin role that controls `role`. See {grantRole} and {revokeRole}. To change a role's admin, use {_setRoleAdmin}.
@@ -447,6 +500,24 @@ export interface NFTAttachment extends BaseContract {
     ): Promise<ContractTransaction>;
 
     /**
+     * Attach data `attachment` to the NFT type `nftId`, as manager of collection. This only works with NFTs on Collections.
+     */
+    collectionManagerAttachToNFT(
+      nftId: BigNumberish,
+      attachment: BytesLike,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
+
+    /**
+     * Attach data `attachment` to the NFT type `nftId`, as manager of collection. This only works with NFTs on Collections.
+     */
+    'collectionManagerAttachToNFT(uint256,bytes)'(
+      nftId: BigNumberish,
+      attachment: BytesLike,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
+
+    /**
      * Attach data `attachment` to the NFT type `nftId`, as a current owner of an NFT of this type. This works for NFTs in the ERC-1155 or Freeport standards.
      */
     ownerAttachToNFT(
@@ -499,6 +570,16 @@ export interface NFTAttachment extends BaseContract {
     ): Promise<[string] & { minter: string }>;
   };
 
+  /**
+   * Collection manager role.  Used for configuring the amounts and beneficiaries of royalties on primary and secondary transfers of this NFT.
+   */
+  COLLECTION_MANAGER_ROLE(overrides?: CallOverrides): Promise<string>;
+
+  /**
+   * Collection manager role.  Used for configuring the amounts and beneficiaries of royalties on primary and secondary transfers of this NFT.
+   */
+  'COLLECTION_MANAGER_ROLE()'(overrides?: CallOverrides): Promise<string>;
+
   DEFAULT_ADMIN_ROLE(overrides?: CallOverrides): Promise<string>;
 
   'DEFAULT_ADMIN_ROLE()'(overrides?: CallOverrides): Promise<string>;
@@ -516,6 +597,22 @@ export interface NFTAttachment extends BaseContract {
    * This attachment contract refers to the NFT contract in this variable.
    */
   'freeport()'(overrides?: CallOverrides): Promise<string>;
+
+  /**
+   * Calculate the global ID of an NFT type, identifying its inner nft id.
+   */
+  getGlobalNftId(
+    innerNftId: BigNumberish,
+    overrides?: CallOverrides
+  ): Promise<BigNumber>;
+
+  /**
+   * Calculate the global ID of an NFT type, identifying its inner nft id.
+   */
+  'getGlobalNftId(uint32)'(
+    innerNftId: BigNumberish,
+    overrides?: CallOverrides
+  ): Promise<BigNumber>;
 
   /**
    * Returns the admin role that controls `role`. See {grantRole} and {revokeRole}. To change a role's admin, use {_setRoleAdmin}.
@@ -685,6 +782,24 @@ export interface NFTAttachment extends BaseContract {
   ): Promise<ContractTransaction>;
 
   /**
+   * Attach data `attachment` to the NFT type `nftId`, as manager of collection. This only works with NFTs on Collections.
+   */
+  collectionManagerAttachToNFT(
+    nftId: BigNumberish,
+    attachment: BytesLike,
+    overrides?: Overrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
+
+  /**
+   * Attach data `attachment` to the NFT type `nftId`, as manager of collection. This only works with NFTs on Collections.
+   */
+  'collectionManagerAttachToNFT(uint256,bytes)'(
+    nftId: BigNumberish,
+    attachment: BytesLike,
+    overrides?: Overrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
+
+  /**
    * Attach data `attachment` to the NFT type `nftId`, as a current owner of an NFT of this type. This works for NFTs in the ERC-1155 or Freeport standards.
    */
   ownerAttachToNFT(
@@ -737,6 +852,16 @@ export interface NFTAttachment extends BaseContract {
   ): Promise<string>;
 
   callStatic: {
+    /**
+     * Collection manager role.  Used for configuring the amounts and beneficiaries of royalties on primary and secondary transfers of this NFT.
+     */
+    COLLECTION_MANAGER_ROLE(overrides?: CallOverrides): Promise<string>;
+
+    /**
+     * Collection manager role.  Used for configuring the amounts and beneficiaries of royalties on primary and secondary transfers of this NFT.
+     */
+    'COLLECTION_MANAGER_ROLE()'(overrides?: CallOverrides): Promise<string>;
+
     DEFAULT_ADMIN_ROLE(overrides?: CallOverrides): Promise<string>;
 
     'DEFAULT_ADMIN_ROLE()'(overrides?: CallOverrides): Promise<string>;
@@ -754,6 +879,22 @@ export interface NFTAttachment extends BaseContract {
      * This attachment contract refers to the NFT contract in this variable.
      */
     'freeport()'(overrides?: CallOverrides): Promise<string>;
+
+    /**
+     * Calculate the global ID of an NFT type, identifying its inner nft id.
+     */
+    getGlobalNftId(
+      innerNftId: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    /**
+     * Calculate the global ID of an NFT type, identifying its inner nft id.
+     */
+    'getGlobalNftId(uint32)'(
+      innerNftId: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
 
     /**
      * Returns the admin role that controls `role`. See {grantRole} and {revokeRole}. To change a role's admin, use {_setRoleAdmin}.
@@ -920,6 +1061,24 @@ export interface NFTAttachment extends BaseContract {
     ): Promise<void>;
 
     /**
+     * Attach data `attachment` to the NFT type `nftId`, as manager of collection. This only works with NFTs on Collections.
+     */
+    collectionManagerAttachToNFT(
+      nftId: BigNumberish,
+      attachment: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    /**
+     * Attach data `attachment` to the NFT type `nftId`, as manager of collection. This only works with NFTs on Collections.
+     */
+    'collectionManagerAttachToNFT(uint256,bytes)'(
+      nftId: BigNumberish,
+      attachment: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    /**
      * Attach data `attachment` to the NFT type `nftId`, as a current owner of an NFT of this type. This works for NFTs in the ERC-1155 or Freeport standards.
      */
     ownerAttachToNFT(
@@ -1058,6 +1217,16 @@ export interface NFTAttachment extends BaseContract {
   };
 
   estimateGas: {
+    /**
+     * Collection manager role.  Used for configuring the amounts and beneficiaries of royalties on primary and secondary transfers of this NFT.
+     */
+    COLLECTION_MANAGER_ROLE(overrides?: CallOverrides): Promise<BigNumber>;
+
+    /**
+     * Collection manager role.  Used for configuring the amounts and beneficiaries of royalties on primary and secondary transfers of this NFT.
+     */
+    'COLLECTION_MANAGER_ROLE()'(overrides?: CallOverrides): Promise<BigNumber>;
+
     DEFAULT_ADMIN_ROLE(overrides?: CallOverrides): Promise<BigNumber>;
 
     'DEFAULT_ADMIN_ROLE()'(overrides?: CallOverrides): Promise<BigNumber>;
@@ -1075,6 +1244,22 @@ export interface NFTAttachment extends BaseContract {
      * This attachment contract refers to the NFT contract in this variable.
      */
     'freeport()'(overrides?: CallOverrides): Promise<BigNumber>;
+
+    /**
+     * Calculate the global ID of an NFT type, identifying its inner nft id.
+     */
+    getGlobalNftId(
+      innerNftId: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    /**
+     * Calculate the global ID of an NFT type, identifying its inner nft id.
+     */
+    'getGlobalNftId(uint32)'(
+      innerNftId: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
 
     /**
      * Returns the admin role that controls `role`. See {grantRole} and {revokeRole}. To change a role's admin, use {_setRoleAdmin}.
@@ -1241,6 +1426,24 @@ export interface NFTAttachment extends BaseContract {
      * Attach data `attachment` to the NFT type `nftId`, as the minter of this NFT type. This only works for NFT IDs in the Freeport format.
      */
     'minterAttachToNFT(uint256,bytes)'(
+      nftId: BigNumberish,
+      attachment: BytesLike,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<BigNumber>;
+
+    /**
+     * Attach data `attachment` to the NFT type `nftId`, as manager of collection. This only works with NFTs on Collections.
+     */
+    collectionManagerAttachToNFT(
+      nftId: BigNumberish,
+      attachment: BytesLike,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<BigNumber>;
+
+    /**
+     * Attach data `attachment` to the NFT type `nftId`, as manager of collection. This only works with NFTs on Collections.
+     */
+    'collectionManagerAttachToNFT(uint256,bytes)'(
       nftId: BigNumberish,
       attachment: BytesLike,
       overrides?: Overrides & { from?: string | Promise<string> }
@@ -1300,6 +1503,20 @@ export interface NFTAttachment extends BaseContract {
   };
 
   populateTransaction: {
+    /**
+     * Collection manager role.  Used for configuring the amounts and beneficiaries of royalties on primary and secondary transfers of this NFT.
+     */
+    COLLECTION_MANAGER_ROLE(
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    /**
+     * Collection manager role.  Used for configuring the amounts and beneficiaries of royalties on primary and secondary transfers of this NFT.
+     */
+    'COLLECTION_MANAGER_ROLE()'(
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
     DEFAULT_ADMIN_ROLE(
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
@@ -1323,6 +1540,22 @@ export interface NFTAttachment extends BaseContract {
      * This attachment contract refers to the NFT contract in this variable.
      */
     'freeport()'(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    /**
+     * Calculate the global ID of an NFT type, identifying its inner nft id.
+     */
+    getGlobalNftId(
+      innerNftId: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    /**
+     * Calculate the global ID of an NFT type, identifying its inner nft id.
+     */
+    'getGlobalNftId(uint32)'(
+      innerNftId: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
 
     /**
      * Returns the admin role that controls `role`. See {grantRole} and {revokeRole}. To change a role's admin, use {_setRoleAdmin}.
@@ -1489,6 +1722,24 @@ export interface NFTAttachment extends BaseContract {
      * Attach data `attachment` to the NFT type `nftId`, as the minter of this NFT type. This only works for NFT IDs in the Freeport format.
      */
     'minterAttachToNFT(uint256,bytes)'(
+      nftId: BigNumberish,
+      attachment: BytesLike,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
+
+    /**
+     * Attach data `attachment` to the NFT type `nftId`, as manager of collection. This only works with NFTs on Collections.
+     */
+    collectionManagerAttachToNFT(
+      nftId: BigNumberish,
+      attachment: BytesLike,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
+
+    /**
+     * Attach data `attachment` to the NFT type `nftId`, as manager of collection. This only works with NFTs on Collections.
+     */
+    'collectionManagerAttachToNFT(uint256,bytes)'(
       nftId: BigNumberish,
       attachment: BytesLike,
       overrides?: Overrides & { from?: string | Promise<string> }
