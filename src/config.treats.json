@@ -1,0 +1,38 @@
+{
+  "dev": {
+    "80001": {
+      "Freeport": "0xcce173dF71daD054c4E9eD6030ff69e48D758Ee6",
+      "FiatGateway": "0x349b93a02d1163fAB56E7BBaAFF0E2B894870531",
+      "SimpleAuction": "0xf7c40c6aFe9ab452F3e7a4264437127CE0eac79a",
+      "NFTAttachment": "0x3da83FB0b95043B484963f42cdB8784fe1a52DAa",
+      "MinimalForwarder": "0x2d7FCbBfe773c5E7C7fccbA8434386048267c16D",
+      "USDC": "0x5517c3c3fe3688AEF2B5BBEc2B4D3b523B9E8144",
+      "ERC20": "0x4e5a86E128f8Fb652169f6652e2Cd17aAe409e96",
+      "CollectionFactory": "0x0920f9CD1FD0fD9Ca4cd961c108324A33cfAfEb6",
+      "Marketplace": "0x186F878E646981E10A0835597b45B7d4454820E2",
+      "Auction": "0x7C7cAEe1b17dc23BBB8F1C0d312d6Be753B27e36"
+    },
+    "Token": {
+      "symbol": "USDC",
+      "decimals": 6
+    }
+  },
+  "stage": {
+    "80001": {
+      "Freeport": "0x701624d69162B7B44d576ce13E2b2DE4cBAB4f4F",
+      "FiatGateway": "0x57a571f32676F4F5D3b8109E731439e081D7C1Bb",
+      "SimpleAuction": "0x03F21211bf6BC2F2d781CcCE1908f7Cc785826f3",
+      "NFTAttachment": "0x886F2a3a9b52170d277414B4DaB976fe98B6926d",
+      "MinimalForwarder": "0x03988B5eaf8EFC804320B860dBb7f281EdF92420",
+      "USDC": "0x5517c3c3fe3688AEF2B5BBEc2B4D3b523B9E8144",
+      "ERC20": "0x93E73E25F290f8A50281A801109f75CB4E8e3233",
+      "CollectionFactory": "0x41E14Dc1F5D36B3Be030D36bE20d82369393CcDc",
+      "Marketplace": "0x655d67053238BB8CAdc856ff7d0E1CCC0A76813F",
+      "Auction": "0x2682ac047a8C760F6f00F7D7ae261f48EeB9Bb79"
+    },
+    "Token": {
+      "symbol": "USDC",
+      "decimals": 6
+    }
+  }
+}

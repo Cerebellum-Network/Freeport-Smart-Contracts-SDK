@@ -2,6 +2,7 @@ import 'dotenv/config';
 
 import config from './config.json';
 import configLiveone from './config.liveone.json';
+import treatsLiveone from './config.treats.json';
 import {
   ApplicationEnum,
   createCollectionFactory,
@@ -166,4 +167,13 @@ test('Application parameter should use different config', () => {
   });
 
   expect(liveOneContractAddress).toEqual(configLiveone.dev['80001'].Freeport);
+
+  const treatsContractAddress = getContractAddress({
+    chainId: 80_001,
+    contractName: 'Freeport',
+    deployment: 'dev',
+    application: ApplicationEnum.TREATS,
+  });
+
+  expect(treatsContractAddress).toEqual(treatsLiveone.dev['80001'].Freeport);
 });
