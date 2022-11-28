@@ -2,6 +2,10 @@
 
 ### Releases
 
+#### v8.5.0
+
+- Added Treats config
+
 #### v8.4.0
 
 - New method on NftAttachment contract (_collectionManagerAttachToNFT_) for

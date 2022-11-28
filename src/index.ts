@@ -30,6 +30,7 @@ import {
 } from './abi-types';
 import config from './config.json';
 import configLiveOne from './config.liveone.json';
+import configTreats from './config.treats.json';
 
 export * from './abi-types';
 export * from './metatx';
@@ -43,6 +44,7 @@ declare global {
 export enum ApplicationEnum {
   DAVINCI = 'DAVINCI',
   LIVEONE = 'LIVEONE',
+  TREATS = 'TREATS',
 }
 
 type Config = typeof config;
@@ -176,6 +178,10 @@ const getNetworks = (
 
   if (application === ApplicationEnum.LIVEONE) {
     return configLiveOne[deployment];
+  }
+
+  if (application === ApplicationEnum.TREATS) {
+    return configTreats[deployment];
   }
 
   throw new Error('Unknown application');
