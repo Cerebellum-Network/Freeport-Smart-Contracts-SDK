@@ -33,6 +33,13 @@ import configLiveOne from './config.liveone.json';
 import configTreats from './config.treats.json';
 
 export * from './abi-types';
+export { default as auctionArtifacts } from './artifacts/Auction.json';
+export { default as collectionArtifacts } from './artifacts/Collection.json';
+export { default as collectionFactoryArtifacts } from './artifacts/CollectionFactory.json';
+export { default as fiatGatewayArtifacts } from './artifacts/FiatGateway.json';
+export { default as freeportArtifacts } from './artifacts/Freeport.json';
+export { default as marketplaceArtifacts } from './artifacts/Marketplace.json';
+export { default as nftAttachmentArtifacts } from './artifacts/NFTAttachment.json';
 export * from './metatx';
 
 declare global {
