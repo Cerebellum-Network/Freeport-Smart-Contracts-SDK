@@ -2,6 +2,10 @@
 
 ### Releases
 
+#### v8.6.0
+
+- Export for artifacts
+
 #### v8.5.0
 
 - Added Treats config
