@@ -31,6 +31,7 @@ import {
 import config from './config.json';
 import configLiveOne from './config.liveone.json';
 import configTreats from './config.treats.json';
+import configCerefans from './config.cerefans.json';
 
 export * from './abi-types';
 export { default as auctionArtifacts } from './artifacts/Auction.json';
@@ -52,6 +53,7 @@ export enum ApplicationEnum {
   DAVINCI = 'DAVINCI',
   LIVEONE = 'LIVEONE',
   TREATS = 'TREATS',
+  CEREFANS = 'CEREFANS',
 }
 
 type Config = typeof config;
@@ -189,6 +191,10 @@ const getNetworks = (
 
   if (application === ApplicationEnum.TREATS) {
     return configTreats[deployment];
+  }
+
+  if (application === ApplicationEnum.CEREFANS) {
+    return configCerefans[deployment];
   }
 
   throw new Error('Unknown application');
