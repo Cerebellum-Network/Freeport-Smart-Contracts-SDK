@@ -28,6 +28,7 @@ import {
   TestERC20__factory as ERC20__factory,
   USDC__factory,
 } from './abi-types';
+import configCerefans from './config.cerefans.json';
 import config from './config.json';
 import configLiveOne from './config.liveone.json';
 import configTreats from './config.treats.json';
@@ -52,6 +53,7 @@ export enum ApplicationEnum {
   DAVINCI = 'DAVINCI',
   LIVEONE = 'LIVEONE',
   TREATS = 'TREATS',
+  CEREFANS = 'CEREFANS',
 }
 
 type Config = typeof config;
@@ -189,6 +191,10 @@ const getNetworks = (
 
   if (application === ApplicationEnum.TREATS) {
     return configTreats[deployment];
+  }
+
+  if (application === ApplicationEnum.CEREFANS) {
+    return configCerefans[deployment];
   }
 
   throw new Error('Unknown application');
