@@ -28,10 +28,10 @@ import {
   TestERC20__factory as ERC20__factory,
   USDC__factory,
 } from './abi-types';
+import configCerefans from './config.cerefans.json';
 import config from './config.json';
 import configLiveOne from './config.liveone.json';
 import configTreats from './config.treats.json';
-import configCerefans from './config.cerefans.json';
 
 export * from './abi-types';
 export { default as auctionArtifacts } from './artifacts/Auction.json';
